@@ -1,4 +1,6 @@
 <meta>
+    <script src='client/network.lua' type='client'/>
+
     <script src='server/id.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
 
