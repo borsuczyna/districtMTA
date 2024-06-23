@@ -10,7 +10,7 @@ addEventListener('load', () => {
 // });
 
 function setRemSize(size) {
-    size = Math.max(Math.min(size, 25), 8);
+    size = Math.max(Math.min(size, 22), 8);
     document.querySelector('html').style.fontSize = `${size}px`;
 }
 
