@@ -1,0 +1,42 @@
+let events = [];
+let timers = [];
+
+function addEvent(interfaceElement, name, callback) {
+    let event = { interfaceElement, name, callback };
+    events.push(event);
+}
+
+function removeEvent(interfaceElement, name) {
+    events = events.filter(event => event.interfaceElement !== interfaceElement || event.name !== name);
+}
+
+function removeElementEvents(interfaceElement) {
+    events = events.filter(event => event.interfaceElement !== interfaceElement);
+    timers = timers.filter(timer => timer.interfaceElement !== interfaceElement);
+}
+
+function triggerEvent(interfaceName, name, ...args) {
+    events.forEach(event => {
+        if (event.name === name && event.interfaceElement === interfaceName) {
+            event.callback(...args);
+        }
+    });
+}
+
+function setTimer(interfaceElement, callback, delay, ...args) {
+    let timer = { interfaceElement, callback, callTime: Date.now() + delay, args };
+    timers.push(timer);
+}
+
+function updateTimers() {
+    timers.forEach(timer => {
+        if (Date.now() >= timer.callTime) {
+            timer.callback(...timer.args);
+        }
+    });
+
+    timers = timers.filter(timer => Date.now() < timer.callTime);
+    requestAnimationFrame(updateTimers);
+}
+
+requestAnimationFrame(updateTimers);

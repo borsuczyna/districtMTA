@@ -1,0 +1,39 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/main.html'/>
+    <file src='data/main.js'/>
+    <file src='data/event.js'/>
+    <file src='data/interface.js'/>
+    <file src='data/style.css'/>
+    <file src='data/switch.css'/>
+    <file src='data/input.css'/>
+    <file src='data/button.css'/>
+    
+    <file src='data/interface/login.html'/>
+    <file src='data/interface/test.html'/>
+    
+    <file src='data/images/background.png'/>
+    <file src='data/images/spinner.png'/>
+
+    <file src='data/fonts/Inter-Black.ttf'/>
+    <file src='data/fonts/Inter-Bold.ttf'/>
+    <file src='data/fonts/Inter-ExtraBold.ttf'/>
+    <file src='data/fonts/Inter-ExtraLight.ttf'/>
+    <file src='data/fonts/Inter-Light.ttf'/>
+    <file src='data/fonts/Inter-Medium.ttf'/>
+    <file src='data/fonts/Inter-Regular.ttf'/>
+    <file src='data/fonts/Inter-SemiBold.ttf'/>
+    <file src='data/fonts/Inter-Thin.ttf'/>
+    <file src='data/fonts/Inter.ttf'/>
+
+    <export function='isLoaded' type='client'/>
+    <export function='setInterfaceVisible' type='client'/>
+    <export function='loadInterfaceElement' type='client'/>
+    <export function='loadInterfaceElementFromCode' type='client'/>
+    <export function='destroyInterfaceElement' type='client'/>
+    <export function='executeJavascript' type='client'/>
+    <export function='setInterfaceData' type='client'/>
+    <export function='addEventHandlerToInterfaceElement' type='client'/>
+    <export function='triggerInterfaceEvent' type='client'/>
+</meta>

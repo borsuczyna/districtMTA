@@ -1,0 +1,18 @@
+<meta>
+    <script src='server/id.lua' type='server'/>
+    <script src='server/whitelist.lua' type='server'/>
+
+    <!-- accounts -->
+    <script src='server/accounts/main.lua' type='server'/>
+    <script src='server/accounts/create.lua' type='server'/>
+    <script src='server/accounts/login.lua' type='server'/>
+
+    <script src='shared/players.lua' type='server'/>
+    <script src='shared/useful.lua' type='shared' cache='false'/>
+
+    <export function='getPlayerFromPartialName' type='shared'/>
+    <export function='getPlayerById' type='shared'/>
+
+    <export function='createAccount' type='server'/>
+    <export function='loginToAccount' type='server'/>
+</meta>
