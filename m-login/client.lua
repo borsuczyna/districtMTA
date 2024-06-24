@@ -71,6 +71,8 @@ function showInterface()
     exports['m-ui']:loadInterfaceElementFromFile('login', 'm-login/data/login.html')
     shader = dxCreateShader('data/shader.fx')
     screenSource = dxCreateScreenSource(sx, sy)
+
+    moveCamera(1936, 1628, 80, 1606.15, -1595.12, 103.31, 150)
     addEventHandler('onClientRender', root, render, true, 'high+9999')
     dxSetShaderValue(shader, 'screenSource', screenSource)
     guiSetInputMode('no_binds')
@@ -82,16 +84,50 @@ end
 function hideInterface()
     exports['m-ui']:destroyInterfaceElement('login')
     removeEventHandler('onClientRender', root, render)
+
     if isElement(shader) then
         destroyElement(shader)
     end
+
+    if isElement(object) then
+        detachElements(getCamera(), object)
+        destroyElement(object)
+    end
+
     if isElement(screenSource) then
         destroyElement(screenSource)
     end
+
     showCursor(false)
     showChat(true)
     guiSetInputMode('allow_binds')
 end
+
+function moveCamera(x, y, z, x2, y2, z2, time)
+    local camera = getCamera()
+
+    local function startCameraMove(fromX, fromY, fromZ, toX, toY, toZ)
+        object = createObject(1337, fromX, fromY, fromZ)
+        
+        setElementAlpha(object, 0)
+        setObjectScale(object, 0.01)
+        moveObject(object, time * 1000, toX, toY, toZ, 0, 0, 0, 'InOutQuad')
+        
+        setElementPosition(camera, 0, 0, 0)
+        attachElements(camera, object)
+        
+        local function onMovementEnd()
+            detachElements(camera, object)
+            destroyElement(object)
+
+            startCameraMove(toX, toY, toZ, fromX, fromY, fromZ)
+        end
+
+        setTimer(onMovementEnd, time * 1000, 1)
+    end
+    
+    startCameraMove(x, y, z, x2, y2, z2)
+end 
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
     addEventHandler('interfaceLoaded', root, showInterface)
