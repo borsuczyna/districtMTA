@@ -1,5 +1,9 @@
 <style>
     #login {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -16,8 +20,26 @@
         gap: 0.8rem;
     }
 
+    #login #login-panel.go-hide {
+        opacity: 0;
+        animation: hide-panel 0.5s;
+    }
+
+    @keyframes hide-panel {
+        0% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(0.1) translateY(100%);
+        }
+    }
+
     #login .logo {
         display: flex;
+        text-wrap: nowrap;
         gap: 0.313rem;
         align-items: center;
         font-weight: 500;
@@ -260,10 +282,10 @@
                     <span class="gradient-text text-glow">MTA</span>
                 </span>
             </div>
-        
+
             <div class="nice-input">
                 <div class="input">
-                    <input type="text" name="login" id="login" placeholder="Login lub email">
+                    <input type="text" name="login" id="login-i" placeholder="Login">
                 </div>
                 <div class="nice-input-bar"></div>
             </div>
@@ -317,14 +339,14 @@
     
             <div class="nice-input">
                 <div class="input">
-                    <input type="text" name="login" id="login" placeholder="Login">
+                    <input type="text" name="login" id="login-i-r" placeholder="Login">
                 </div>
                 <div class="nice-input-bar"></div>
             </div>
         
             <div class="nice-input">
                 <div class="input">
-                    <input type="password" name="password" id="password" placeholder="Hasło">
+                    <input type="password" name="password" id="password-r" placeholder="Hasło">
                     <div class="hidden" id="password-toggle-hide" onclick="login_togglePassword('register-view')"><svg width="1.25rem" height="1.25rem" style="width: 1.25rem !important; height: 1.25rem !important; scale: 1.5;" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M3,12 C3,12 5.45454545,6 12,6 C16.9090909,6 21,12 21,12 C21,12 16.9090909,18 12,18 C5.45454545,18 3,12 3,12 Z" fill="white" fill-rule="nonzero" opacity="0.3"/><path d="M12,15 C10.3431458,15 9,13.6568542 9,12 C9,10.3431458 10.3431458,9 12,9 C13.6568542,9 15,10.3431458 15,12 C15,13.6568542 13.6568542,15 12,15 Z" fill="white" opacity="0.3"/></g></svg></div>
                     <div id="password-toggle-show" onclick="login_togglePassword('register-view')"><svg width="1.25rem" height="1.25rem" style="width: 1.25rem !important; height: 1.25rem !important; scale: 1.5;" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M19.2078777,9.84836149 C20.3303823,11.0178941 21,12 21,12 C21,12 16.9090909,18 12,18 C11.6893441,18 11.3879033,17.9864845 11.0955026,17.9607365 L19.2078777,9.84836149 Z" fill="white" fill-rule="nonzero" opacity="0.3"/><path d="M14.5051465,6.49485351 L12,9 C10.3431458,9 9,10.3431458 9,12 L5.52661464,15.4733854 C3.75006453,13.8334911 3,12 3,12 C3,12 5.45454545,6 12,6 C12.8665422,6 13.7075911,6.18695134 14.5051465,6.49485351 Z" fill="white" fill-rule="nonzero" opacity="0.3"/><rect fill="white" opacity="0.3" transform="translate(12.524621, 12.424621) rotate(-45.000000) translate(-12.524621, -12.424621) " x="3.02462111" y="11.4246212" width="19" height="2"/></g></svg></div>
                 </div>
@@ -369,7 +391,7 @@
     window.login_waiting = false;
 
     async function login_loginInternal() {
-        let login = document.querySelector('#login-view #login').value;
+        let login = document.querySelector('#login-view #login-i').value;
         let password = document.querySelector('#login-view #password').value;
 
         mta.triggerEvent('login:login', login, password);
@@ -391,17 +413,18 @@
 
         let success = await login_loginInternal();
 
-        button.innerHTML = preHTML;
-        window.login_waiting = false;
-
         if (success) {
+            login_hideLoginPanel();
+        } else {
+            button.innerHTML = preHTML;
+            window.login_waiting = false;
         }
     }
 
     async function registerInternal() {
         let email = document.querySelector('#register-view #email').value;
-        let login = document.querySelector('#register-view #login').value;
-        let password = document.querySelector('#register-view #password').value;
+        let login = document.querySelector('#register-view #login-i-r').value;
+        let password = document.querySelector('#register-view #password-r').value;
 
         mta.triggerEvent('login:register', email, login, password);
 
@@ -414,6 +437,12 @@
     }
 
     window.login_register = async (button) => {
+        let accept = document.querySelector('#register-view .switch-box').classList.contains('switched');
+        if (!accept) {
+            notis_addNotification('error', 'Rejestracja', 'Musisz zaakceptować regulamin serwera!')
+            return;
+        }
+
         if (window.login_waiting) return;
         window.login_waiting = true;
 
@@ -428,10 +457,10 @@
         if (success) {
             login_toggleLoginView('login-view');
 
-            let login = document.querySelector('#register-view #login');
-            let password = document.querySelector('#register-view #password');
+            let login = document.querySelector('#register-view #login-i-r');
+            let password = document.querySelector('#register-view #password-r');
 
-            document.querySelector('#login-view #login').value = login.value;
+            document.querySelector('#login-view #login-i').value = login.value;
             document.querySelector('#login-view #password').value = password.value;
         }
     }
@@ -440,10 +469,23 @@
         let passwordInput = document.querySelector(`#${view} #password`);
         let passwordToggleHide = document.querySelector(`#${view} #password-toggle-hide`);
         let passwordToggleShow = document.querySelector(`#${view} #password-toggle-show`);
+        if (!passwordInput) passwordInput = document.querySelector(`#${view} #password-r`);
 
         passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
         passwordToggleHide.classList.toggle('hidden');
         passwordToggleShow.classList.toggle('hidden');
+    }
+
+    window.login_hideLoginPanelInner = () => {
+        let remember = document.querySelector('#login-view .switch-box').classList.contains('switched');
+        let login = document.querySelector('#login-view #login-i').value;
+        let password = document.querySelector('#login-view #password').value;
+        mta.triggerEvent('login:hideLoginPanel', remember, login, password);
+    }
+
+    window.login_hideLoginPanel = () => {
+        document.querySelector('#login-panel').classList.add('go-hide');
+        setTimer('login', login_hideLoginPanelInner, 500);
     }
 
     function login_toggleLoginViewFlip(target) {
@@ -529,5 +571,14 @@
 
         let firstUpdate = updatesData[0];
         login_changeUpdate(firstUpdate);
+    });
+
+    addEvent('login', 'interface:data:login-cached', (data) => {
+        let login = data[0].login;
+        let password = data[0].password;
+
+        document.querySelector('#login-view #login-i').value = login;
+        document.querySelector('#login-view #password').value = password;
+        document.querySelector('#login-view .switch-box').classList.add('switched');
     });
 </script>

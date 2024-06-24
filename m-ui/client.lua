@@ -11,11 +11,8 @@ addEvent('interfaceElement:load', true)
 addEvent('interface:load', true)
 addEventHandler('interfaceLoaded', resourceRoot, function()
     uiLoaded = true
-    showCursor(false)
-    showChat(true)
     
-    -- setDevelopmentMode(true, true)
-    -- toggleBrowserDevTools(browser, true)
+    -- setDevelopmentMode(true, true) toggleBrowserDevTools(browser, true)
     -- loadInterfaceElement('login')
     -- loadInterfaceElement('test')
 end)
@@ -41,11 +38,21 @@ function loadInterfaceElementFromCode(name, code)
     executeBrowserJavascript(browser, 'loadInterfaceElementFromCode("'..name..'", `'..code..'`)')
 end
 
+function loadInterfaceElementFromFile(name, path)
+    if not uiLoaded or not browser then return end
+    executeBrowserJavascript(browser, 'loadInterfaceElementFromFile("'..name..'", "'..path..'")')
+end
+
 function addEventHandlerToInterfaceElement(name, event, handlerCode)
     if not uiLoaded or not browser then return end
     handlerCode = handlerCode:gsub('`', '\\`')
     handlerCode = handlerCode:gsub('%${', '\\${')
     executeBrowserJavascript(browser, 'addEventHandlerToInterfaceElement("'..name..'", "'..event..'", `'..handlerCode..'`)')
+end
+
+function setInterfaceZIndex(name, zIndex)
+    if not uiLoaded or not browser then return end
+    executeBrowserJavascript(browser, 'setInterfaceZIndex("'..name..'", '..tostring(zIndex)..')')
 end
 
 function destroyInterfaceElement(name)
@@ -131,11 +138,19 @@ function clickInterface(button, state, cx, cy)
     end
 end
 
+function scrollInterface(key, state)
+    if not uiLoaded then return end
+    if key == 'mouse_wheel_down' then
+        injectBrowserMouseWheel(browser, -40, 0)
+    elseif key == 'mouse_wheel_up' then
+        injectBrowserMouseWheel(browser, 40, 0)
+    end
+end
+
 function initializeInterface()
-    showCursor(true)
-    showChat(false)
     addEventHandler('onClientRender', root, renderInterface)
     addEventHandler('onClientClick', root, clickInterface)
+    addEventHandler('onClientKey', root, scrollInterface)
 
     browser = createBrowser(sx, sy, true, true)
     addEventHandler('onClientBrowserCreated', browser, function()

@@ -22,3 +22,9 @@
     padding: 0.5rem 1rem;
     font-size: 0.75rem;
 }
+
+.nice-button.grayed {
+    background: linear-gradient(135deg, rgb(55, 55, 55) 0.01%, rgb(50, 50, 50) 25%, rgb(45, 45, 45) 50%, rgb(50, 50, 50) 75%, rgb(55, 55, 55) 100%);
+    color: rgba(255, 255, 255, 0.602);
+    text-shadow: 0.063rem 0.063rem 0.125rem rgba(255, 255, 255, 0.4);
+}

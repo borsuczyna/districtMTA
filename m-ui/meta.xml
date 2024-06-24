@@ -10,9 +10,6 @@
     <file src='data/input.css'/>
     <file src='data/button.css'/>
     
-    <file src='data/interface/login.html'/>
-    <file src='data/interface/test.html'/>
-    
     <file src='data/images/background.png'/>
     <file src='data/images/spinner.png'/>
 
@@ -31,9 +28,11 @@
     <export function='setInterfaceVisible' type='client'/>
     <export function='loadInterfaceElement' type='client'/>
     <export function='loadInterfaceElementFromCode' type='client'/>
+    <export function='loadInterfaceElementFromFile' type='client'/>
     <export function='destroyInterfaceElement' type='client'/>
     <export function='executeJavascript' type='client'/>
     <export function='setInterfaceData' type='client'/>
     <export function='addEventHandlerToInterfaceElement' type='client'/>
     <export function='triggerInterfaceEvent' type='client'/>
+    <export function='setInterfaceZIndex' type='client'/>
 </meta>

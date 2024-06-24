@@ -1,0 +1,9 @@
+<meta>
+    <include resource='m-ui'/>
+    
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/map.png'/>
+    <file src='data/marker.png'/>
+</meta>

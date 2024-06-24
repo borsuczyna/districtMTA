@@ -3,6 +3,8 @@ local resourceNames = {
     'm-mysql',
     'm-core',
     'm-ui',
+    'm-maps',
+    'm-notis',
     'm-login',
 }
 

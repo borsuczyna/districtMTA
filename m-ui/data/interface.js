@@ -37,6 +37,21 @@ async function loadInterfaceElement(name) {
     }
 }
 
+async function loadInterfaceElementFromFile(name, path) {
+    try {
+        let code = await fetch(`../../${path}`);
+        let html = await code.text();
+        let element = getInterfaceElement(name);
+        element.innerHTML = html;
+        executeElementScripts(element);
+        
+        mta.triggerEvent('interface:load', name);
+    }
+    catch (e) {
+        console.error(e);
+    }
+}
+
 function loadInterfaceElementFromCode(name, code) {
     let element = getInterfaceElement(name);
     element.innerHTML = code;
@@ -62,4 +77,11 @@ function destroyInterfaceElement(name) {
 
 function setInterfaceData(interfaceName, key, value) {
     triggerEvent(interfaceName, 'interface:data:' + key, value);
+}
+
+function setInterfaceZIndex(name, zIndex) {
+    let element = document.getElementById(name);
+    if (element) {
+        element.style.zIndex = zIndex;
+    }
 }
