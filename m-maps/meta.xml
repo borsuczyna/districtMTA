@@ -1,4 +1,5 @@
 <meta>
+    <download_priority_group>9950</download_priority_group>
     <include resource='m-ui'/>
     
     <script src='client.lua' type='client' cache='false'/>

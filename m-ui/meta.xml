@@ -1,4 +1,5 @@
 <meta>
+    <download_priority_group>9999</download_priority_group>
     <script src='client.lua' type='client' cache='false'/>
 
     <file src='data/main.html'/>
