@@ -8,5 +8,6 @@
     <file src='data/login.html'/>
     <file src='data/spawn.html'/>
     <file src='data/logo.png'/>
+    <file src='data/music.mp3'/>
     <file src='data/shader.fx'/>
 </meta>

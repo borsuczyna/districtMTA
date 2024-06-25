@@ -71,6 +71,7 @@ function showInterface()
     exports['m-ui']:loadInterfaceElementFromFile('login', 'm-login/data/login.html')
     shader = dxCreateShader('data/shader.fx')
     screenSource = dxCreateScreenSource(sx, sy)
+    sound = playSound('data/music.mp3')
 
     moveCamera(1936, 1628, 80, 1606.15, -1595.12, 103.31, 150)
     addEventHandler('onClientRender', root, render, true, 'high+9999')
@@ -92,6 +93,11 @@ function hideInterface()
     if isElement(object) then
         detachElements(getCamera(), object)
         destroyElement(object)
+    end
+
+    if isElement(sound) then
+        stopSound(sound)
+        destroyElement(sound)
     end
 
     if isElement(screenSource) then
