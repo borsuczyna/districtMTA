@@ -23,12 +23,21 @@ function triggerEvent(interfaceName, name, ...args) {
     });
 }
 
+function triggerAllEvents(name, ...args) {
+    events.forEach(event => {
+        if (event.name === name) {
+            event.callback(...args);
+        }
+    });
+}
+
 function setTimer(interfaceElement, callback, delay, ...args) {
     let timer = { interfaceElement, callback, callTime: Date.now() + delay, args };
     timers.push(timer);
 }
 
 function updateTimers() {
+    requestAnimationFrame(updateTimers);
     timers.forEach(timer => {
         if (Date.now() >= timer.callTime) {
             timer.callback(...timer.args);
@@ -36,7 +45,6 @@ function updateTimers() {
     });
 
     timers = timers.filter(timer => Date.now() < timer.callTime);
-    requestAnimationFrame(updateTimers);
 }
 
 requestAnimationFrame(updateTimers);

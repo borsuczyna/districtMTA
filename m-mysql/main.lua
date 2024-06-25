@@ -1,9 +1,9 @@
 local connection, settings;
 local settings = {
-    host = 'localhost',
-    user = 'root',
-    password = '',
-    database = 'mta',
+    host = 'sql.22.svpj.link',
+    user = 'db_104668',
+    password = 'qtMAtF0j6BPL',
+    database = 'db_104668',
     timeout = 10000,
 }
 
@@ -30,8 +30,9 @@ function alive()
             outputServerLog('[CRITICAL] Lost connection to the database')
             connectDatabase()
         end
+    else
+        connectDatabase()
     end
-    return false
 end
 
 function query(queryString, ...)

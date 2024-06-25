@@ -1,0 +1,85 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='radar.lua' type='client' cache='false'/>
+
+    <file src='data/interface/hud.html'/>
+    <file src='data/images/user.png'/>
+    <file src='data/images/bg.png'/>
+    <file src='data/images/overlay.png'/>
+    <file src='data/images/circle_mask.png'/>
+    <file src='data/images/crosshair.png'/>
+    <file src='data/images/player.png'/>
+    <file src='data/images/world.png'/>
+    <file src='data/images/blur-mask.png'/>
+
+    <file src="data/images/blips/0.png"/>
+	<file src="data/images/blips/1.png"/>
+	<file src="data/images/blips/2.png"/>
+	<file src="data/images/blips/3.png"/>
+	<file src="data/images/blips/4.png"/>
+	<file src="data/images/blips/5.png"/>
+	<file src="data/images/blips/6.png"/>
+	<file src="data/images/blips/7.png"/>
+	<file src="data/images/blips/8.png"/>
+	<file src="data/images/blips/9.png"/>
+	<file src="data/images/blips/10.png"/>
+	<file src="data/images/blips/11.png"/>
+	<file src="data/images/blips/12.png"/>
+	<file src="data/images/blips/13.png"/>
+	<file src="data/images/blips/14.png"/>
+	<file src="data/images/blips/15.png"/>
+	<file src="data/images/blips/16.png"/>
+	<file src="data/images/blips/17.png"/>
+	<file src="data/images/blips/18.png"/>
+	<file src="data/images/blips/19.png"/>
+	<file src="data/images/blips/20.png"/>
+	<file src="data/images/blips/21.png"/>
+	<file src="data/images/blips/22.png"/>
+	<file src="data/images/blips/23.png"/>
+	<file src="data/images/blips/24.png"/>
+	<file src="data/images/blips/25.png"/>
+	<file src="data/images/blips/26.png"/>
+	<file src="data/images/blips/27.png"/>
+	<file src="data/images/blips/28.png"/>
+	<file src="data/images/blips/29.png"/>
+	<file src="data/images/blips/30.png"/>
+	<file src="data/images/blips/31.png"/>
+	<file src="data/images/blips/32.png"/>
+	<file src="data/images/blips/33.png"/>
+	<file src="data/images/blips/34.png"/>
+	<file src="data/images/blips/35.png"/>
+	<file src="data/images/blips/36.png"/>
+	<file src="data/images/blips/37.png"/>
+	<file src="data/images/blips/38.png"/>
+	<file src="data/images/blips/39.png"/>
+	<file src="data/images/blips/40.png"/>
+	<file src="data/images/blips/41.png"/>
+	<file src="data/images/blips/42.png"/>
+	<file src="data/images/blips/43.png"/>
+	<file src="data/images/blips/44.png"/>
+	<file src="data/images/blips/45.png"/>
+	<file src="data/images/blips/46.png"/>
+	<file src="data/images/blips/47.png"/>
+	<file src="data/images/blips/48.png"/>
+	<file src="data/images/blips/49.png"/>
+	<file src="data/images/blips/50.png"/>
+	<file src="data/images/blips/51.png"/>
+	<file src="data/images/blips/52.png"/>
+	<file src="data/images/blips/53.png"/>
+	<file src="data/images/blips/54.png"/>
+	<file src="data/images/blips/55.png"/>
+	<file src="data/images/blips/56.png"/>
+	<file src="data/images/blips/57.png"/>
+	<file src="data/images/blips/58.png"/>
+	<file src="data/images/blips/59.png"/>
+	<file src="data/images/blips/60.png"/>
+	<file src="data/images/blips/61.png"/>
+	<file src="data/images/blips/62.png"/>
+	<file src="data/images/blips/63.png"/>
+
+    <file src='data/hud_mask.fx'/>
+    <file src='data/tex_matrix.fx'/>
+
+    <export function='setHudVisible' type='client'/>
+    <min_mta_version server='1.5.8' client='1.5.8'/>
+</meta>

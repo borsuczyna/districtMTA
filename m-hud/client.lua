@@ -1,0 +1,89 @@
+local hudLoaded = false
+local hudVisible = false
+local lastSentData = {}
+
+addEvent('interface:load', true)
+addEvent('interfaceLoaded', true)
+
+function updateHud()
+    if not hudVisible then return end
+
+    local data = {
+        nickname = getPlayerName(localPlayer),
+        health = getElementHealth(localPlayer),
+        money = getPlayerMoney(localPlayer),
+        level = 0,
+        exp = 0,
+    }
+
+    local anythingChanged = false
+    for key, value in pairs(data) do
+        if lastSentData[key] ~= value then
+            anythingChanged = true
+            break
+        end
+    end
+
+    if not anythingChanged then return end
+
+    lastSentData = data
+    exports['m-ui']:setInterfaceData('hud', 'hud:data', data)
+end
+
+addEventHandler('interface:load', root, function(name)
+    if name == 'hud' then
+        exports['m-ui']:setInterfaceVisible(name, true)
+        exports['m-ui']:setInterfaceZIndex('hud', 1001)
+        lastSentData = {}
+        updateHud()
+        addEventHandler('onClientRender', root, updateHud)
+        hudLoaded = true
+    end
+end)
+
+function showHudInterface()
+    exports['m-ui']:loadInterfaceElementFromFile('hud', 'm-hud/data/interface/hud.html')
+
+    setPlayerHudComponentVisible('money', false)
+    setPlayerHudComponentVisible('ammo', false)
+    setPlayerHudComponentVisible('clock', false)
+    setPlayerHudComponentVisible('health', false)
+    setPlayerHudComponentVisible('armour', false)
+    setPlayerHudComponentVisible('breath', false)
+    setPlayerHudComponentVisible('area_name', false)
+    setPlayerHudComponentVisible('vehicle_name', false)
+    setPlayerHudComponentVisible('weapon', false)
+    setPlayerHudComponentVisible('radar', false)
+    setBlurLevel(0)
+end
+
+function setHudVisible(visible)
+    hudVisible = visible
+
+    if not hudLoaded and visible then
+        showHudInterface()
+    else
+        if not visible then
+            exports['m-ui']:destroyInterfaceElement('hud')
+            hudLoaded = false
+        else
+            exports['m-ui']:setInterfaceVisible('hud', true)
+        end
+    end
+end
+
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    if getElementData(localPlayer, 'player:spawn') then
+        setHudVisible(true)
+    end
+
+    addEventHandler('interfaceLoaded', root, function()
+        hudLoaded = false
+        lastSentData = {}
+        setHudVisible(hudVisible)
+    end)
+end)
+
+addEventHandler('onClientResourceStop', resourceRoot, function()
+    exports['m-ui']:destroyInterfaceElement('hud')
+end)

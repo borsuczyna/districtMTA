@@ -1,0 +1,190 @@
+<style>
+    #hud {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+    }
+
+    #hud .avatar-box {
+        position: relative;
+        border-radius: 50%;
+        width: 8rem;
+        height: 8rem;
+    }
+
+    #hud .avatar {
+        background-image: url('../../m-hud/data/images/user.png?v2');
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    #hud .level {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 60%);
+        color: #ffffff;
+        padding: 0.4rem;
+        border-radius: 50%;
+        border: 0.125rem solid #383838;
+        background: #2a2a2a;
+        box-shadow: 0 0 0.125rem 0 rgba(0, 0, 0, 0.5);
+        font-size: 0.9rem;
+        font-weight: 500;
+        width: 1rem;
+        height: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #hud .border {
+        background-color: #2a2a2a;
+        border-radius: 50%;
+        width: calc(100% + 0.6rem);
+        height: calc(100% + 0.6rem);
+        transform: translate(-0.3rem, -0.3rem);
+        position: absolute;
+    }
+
+    #hud .exp {
+        color: #FFB155;
+        width: calc(100% + 2.2rem);
+        height: calc(100% + 2.2rem);
+        transform: translate(-1.1rem, -1.1rem);
+        position: absolute;
+    }
+
+    #hud .health {
+        color: #DA4A4A;
+        width: calc(100% + 1.6rem);
+        height: calc(100% + 1.6rem);
+        transform: translate(-0.8rem, -0.8rem);
+        position: absolute;
+    }
+
+    #hud .nickname {
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: bold;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+    }
+
+    #hud .money {
+        color: #00ce48;
+        font-size: 1rem;
+        font-weight: bold;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+    }
+
+    #hud .job {
+        background: linear-gradient(-90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        width: 20rem;
+        color: #ffffff;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+    }
+
+    #hud .title {
+        color: #FFAB48;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-shadow: 0 0 1rem #ffaa48ba;
+    }
+</style>
+
+<div class="d-flex flex-column gap-4 align-items-end">
+    <div class="d-flex flex-column gap-3 align-items-center">
+        <div class="avatar-box">
+            <div class="border"></div>
+            <svg class="exp" viewBox="0 0 110 110"><defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+                <path fill="currentColor" filter="url(#glow)" transform="translate(5, 5)"/>
+            </svg>
+            <svg class="health" viewBox="0 0 110 110"><defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+                <path fill="currentColor" filter="url(#glow)" transform="translate(5, 5)"/>
+            </svg>
+            <div class="avatar"></div>
+            <div class="level">0</div>
+        </div>
+        <div class="d-flex flex-column text-center mt-2">
+            <div class="nickname">-</div>
+            <div class="money">$0</div>
+        </div>
+    </div>
+
+    <!-- <div class="job d-flex flex-column gap-1 align-items-end">
+        <div class="title">Magazynier</div>
+        <span>Aktualnie przepracowano: 0h 0m</span>
+        <span>Zarobiono: $0</span>
+    </div> -->
+</div>
+
+<script>
+    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+            x: centerX + (radius * Math.cos(angleInRadians)),
+            y: centerY + (radius * Math.sin(angleInRadians))
+        };
+    }
+
+    function setArcStartAndEndAngle(element, start, end) {
+        const radius = 50;
+        const centerX = 50;
+        const centerY = 50;
+        const startCoords = polarToCartesian(centerX, centerY, radius, end);
+        const endCoords = polarToCartesian(centerX, centerY, radius, start);
+
+        const largeArcFlag = end - start <= 180 ? "0" : "1";
+
+        const d = [
+            "M", centerX, centerY,
+            "L", startCoords.x, startCoords.y,
+            "A", radius, radius, 0, largeArcFlag, 0, endCoords.x, endCoords.y,
+            "Z"
+        ].join(" ");
+
+        element.querySelector('path').setAttribute('d', d);
+    }
+
+    function setArcPercent(element, percent, maxAnglePercent = 100) {
+        const start = 193;
+        const end = 527;
+        const angle = start + (end - start) * (maxAnglePercent / 100) * percent / 100;
+        setArcStartAndEndAngle(element, start, angle);
+    }
+
+    window.hud_setLevel = (level) => {
+        document.querySelector('#hud .level').textContent = level;
+    }
+
+    window.hud_setHealth = (health) => {
+        setArcPercent(document.querySelector('#hud .health'), health, 35);
+    }
+
+    window.hud_setExp = (exp) => {
+        setArcPercent(document.querySelector('#hud .exp'), exp, 30);
+    }
+
+    window.hud_setNickname = (nickname) => {
+        document.querySelector('#hud .nickname').textContent = nickname;
+    }
+
+    window.hud_setMoney = (money) => {
+        document.querySelector('#hud .money').textContent = `$${money}`;
+    }
+
+    addEvent('hud', 'interface:data:hud:data', (data) => {
+        let { money, health, level, exp, nickname } = data[0];
+
+        window.hud_setHealth(health);
+        window.hud_setExp(exp);
+        window.hud_setLevel(level);
+        window.hud_setNickname(nickname);
+        window.hud_setMoney(money);
+    });
+</script>

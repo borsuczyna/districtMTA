@@ -7,6 +7,11 @@
     src: url('fonts/Inter.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Exo 2';
+    src: url('fonts/Exo2.ttf') format('truetype');
+}
+
 * {
     user-select: none;
     outline: none;
@@ -32,23 +37,23 @@ body {
 }
 
 .gap-1 {
-    gap: 0.25rem;
+    gap: 0.25rem !important;
 }
 
 .gap-2 {
-    gap: 0.5rem;
+    gap: 0.5rem !important;
 }
 
 .gap-3 {
-    gap: 1rem;
+    gap: 1rem !important;
 }
 
 .gap-4 {
-    gap: 2rem;
+    gap: 2rem !important;
 }
 
 .gap-5 {
-    gap: 4rem;
+    gap: 4rem !important;
 }
 
 .align-items-center {

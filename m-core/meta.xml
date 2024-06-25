@@ -17,4 +17,5 @@
 
     <export function='createAccount' type='server'/>
     <export function='loginToAccount' type='server'/>
+    <export function='assignPlayerData' type='server'/>
 </meta>

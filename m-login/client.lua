@@ -1,5 +1,5 @@
 local sx, sy = guiGetScreenSize()
-local shader, screenSource;
+local shader, screenSource, cameraObject, cameraTimer;
 
 addEvent('interface:load', true)
 addEvent('login:login', true)
@@ -71,7 +71,7 @@ function showInterface()
     exports['m-ui']:loadInterfaceElementFromFile('login', 'm-login/data/login.html')
     shader = dxCreateShader('data/shader.fx')
     screenSource = dxCreateScreenSource(sx, sy)
-    sound = playSound('data/music.mp3')
+    sound = playSound('data/music.mp3', true)
 
     moveCamera(1936, 1628, 80, 1606.15, -1595.12, 103.31, 150)
     addEventHandler('onClientRender', root, render, true, 'high+9999')
@@ -90,18 +90,21 @@ function hideInterface()
         destroyElement(shader)
     end
 
-    if isElement(object) then
-        detachElements(getCamera(), object)
-        destroyElement(object)
+    if isElement(cameraObject) then
+        detachElements(getCamera(), cameraObject)
+        destroyElement(cameraObject)
     end
 
     if isElement(sound) then
-        stopSound(sound)
         destroyElement(sound)
     end
 
     if isElement(screenSource) then
         destroyElement(screenSource)
+    end
+
+    if isTimer(cameraTimer) then
+        killTimer(cameraTimer)
     end
 
     showCursor(false)
@@ -113,23 +116,22 @@ function moveCamera(x, y, z, x2, y2, z2, time)
     local camera = getCamera()
 
     local function startCameraMove(fromX, fromY, fromZ, toX, toY, toZ)
-        object = createObject(1337, fromX, fromY, fromZ)
+        cameraObject = createObject(1337, fromX, fromY, fromZ)
         
-        setElementAlpha(object, 0)
-        setObjectScale(object, 0.01)
-        moveObject(object, time * 1000, toX, toY, toZ, 0, 0, 0, 'InOutQuad')
+        setElementAlpha(cameraObject, 0)
+        moveObject(cameraObject, time * 1000, toX, toY, toZ, 0, 0, 0, 'InOutQuad')
         
         setElementPosition(camera, 0, 0, 0)
-        attachElements(camera, object)
+        attachElements(camera, cameraObject)
         
         local function onMovementEnd()
-            detachElements(camera, object)
-            destroyElement(object)
+            detachElements(camera, cameraObject)
+            destroyElement(cameraObject)
 
             startCameraMove(toX, toY, toZ, fromX, fromY, fromZ)
         end
 
-        setTimer(onMovementEnd, time * 1000, 1)
+        cameraTimer = setTimer(onMovementEnd, time * 1000, 1)
     end
     
     startCameraMove(x, y, z, x2, y2, z2)

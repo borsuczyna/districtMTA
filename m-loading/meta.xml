@@ -1,0 +1,9 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/bg.png'/>
+    <file src='data/bg-1.png'/>
+    <file src='data/bg-2.png'/>
+    <file src='data/bg-3.png'/>
+</meta>

@@ -1,3 +1,6 @@
+let loadedInterfaces = [];
+let visibleInterfaces = [];
+
 function getInterfaceElement(name) {
     let element = document.getElementById(name);
     if (element === null) {
@@ -31,6 +34,7 @@ async function loadInterfaceElement(name) {
         executeElementScripts(element);
         
         mta.triggerEvent('interface:load', name);
+        loadedInterfaces.push(name);
     }
     catch (e) {
         console.error(e);
@@ -46,6 +50,7 @@ async function loadInterfaceElementFromFile(name, path) {
         executeElementScripts(element);
         
         mta.triggerEvent('interface:load', name);
+        loadedInterfaces.push(name);
     }
     catch (e) {
         console.error(e);
@@ -58,6 +63,7 @@ function loadInterfaceElementFromCode(name, code) {
     executeElementScripts(element);
 
     mta.triggerEvent('interface:load', name);
+    loadedInterfaces.push(name);
 }
 
 async function setInterfaceVisible(name, visible) {
@@ -65,6 +71,16 @@ async function setInterfaceVisible(name, visible) {
     if (!element) return;
     
     element.style.display = visible ? 'flex' : 'none';
+
+    if (visible) {
+        if (!visibleInterfaces.includes(name)) {
+            visibleInterfaces.push(name);
+        }
+    } else {
+        visibleInterfaces = visibleInterfaces.filter(i => i !== name);
+    }
+
+    triggerAllEvents('interface:visible', name, visible);
 }
 
 function destroyInterfaceElement(name) {
@@ -73,6 +89,10 @@ function destroyInterfaceElement(name) {
         element.remove();
     }
     removeElementEvents(name);
+    loadedInterfaces = loadedInterfaces.filter(i => i !== name);
+    visibleInterfaces = visibleInterfaces.filter(i => i !== name);
+    
+    triggerAllEvents('interface:visible', name, false);
 }
 
 function setInterfaceData(interfaceName, key, value) {
@@ -84,4 +104,12 @@ function setInterfaceZIndex(name, zIndex) {
     if (element) {
         element.style.zIndex = zIndex;
     }
+}
+
+function isInterfaceVisible(name) {
+    return visibleInterfaces.includes(name);
+}
+
+function isInterfaceLoaded(name) {
+    return loadedInterfaces.includes(name);
 }

@@ -9,6 +9,7 @@ local totalWidth = textWidth + 50/zoom + 20/zoom
 addEvent('interfaceLoaded', true)
 addEvent('interfaceElement:load', true)
 addEvent('interface:load', true)
+addEvent('interface:visibilityChange', true)
 addEventHandler('interfaceLoaded', resourceRoot, function()
     uiLoaded = true
     
@@ -24,6 +25,7 @@ end)
 function setInterfaceVisible(name, visible)
     if not uiLoaded or not browser then return end
     executeBrowserJavascript(browser, 'setInterfaceVisible("'..name..'", '..tostring(visible)..')')
+    triggerEvent('interface:visibilityChange', resourceRoot, name, visible)
 end
 
 function loadInterfaceElement(name)
@@ -58,6 +60,7 @@ end
 function destroyInterfaceElement(name)
     if not uiLoaded or not browser then return end
     executeBrowserJavascript(browser, 'destroyInterfaceElement("'..name..'")')
+    triggerEvent('interface:visibilityChange', resourceRoot, name, false)
 end
 
 function setInterfaceData(interfaceName, key, value)
