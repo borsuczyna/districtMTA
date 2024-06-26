@@ -1,6 +1,9 @@
 <meta>
     <script src='client/network.lua' type='client'/>
 
+    <!-- vehicles -->
+    <script src='client/vehicles/damage.lua' type='client'/>
+
     <script src='server/id.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
 
@@ -9,6 +12,9 @@
     <script src='server/accounts/create.lua' type='server'/>
     <script src='server/accounts/login.lua' type='server'/>
     <script src='server/accounts/data.lua' type='server'/>
+
+    <!-- vehicles -->
+    <script src='server/vehicles/damage.lua' type='server'/>
 
     <script src='shared/players.lua' type='server'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
