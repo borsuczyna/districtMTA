@@ -104,6 +104,6 @@ function constructRadar()
         dxSetShaderValue(radar.shader, "sMaskTexture", radar.maskTexture)
     end
 
-    addEventHandler('onClientRender', root, renderRadar, 'high+999')
+    addEventHandler('onClientRender', root, renderRadar, true, 'high+999')
 end
 addEventHandler('onClientResourceStart', resourceRoot, constructRadar)

@@ -74,10 +74,54 @@
     }
 
     #hud .money {
-        color: #00ce48;
+        color: #2ecc71;
         font-size: 1rem;
         font-weight: bold;
         text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease-in-out;
+    }
+
+    #hud .money-change {
+        display: none;
+        color: #2ecc71;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease-in-out;
+    }
+
+    #hud .money-change.appear {
+        animation: money-change-animation 0.5s ease-in-out forwards;
+    }
+
+    #hud .money-change.disappear {
+        animation: money-change-animation-reverse 0.5s ease-in-out forwards;
+    }
+
+    #hud .money-change.negative {
+        color: #DA4A4A;
+    }
+
+    @keyframes money-change-animation {
+        0% {
+            opacity: 0;
+            transform: translateY(-12px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes money-change-animation-reverse {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-12px);
+        }
     }
 
     #hud .job {
@@ -113,6 +157,7 @@
         <div class="d-flex flex-column text-center mt-2">
             <div class="nickname">-</div>
             <div class="money">$0</div>
+            <div class="money-change">$0</div>
         </div>
     </div>
 
@@ -171,11 +216,35 @@
     }
 
     window.hud_setNickname = (nickname) => {
-        document.querySelector('#hud .nickname').textContent = nickname;
+        nickname = nickname.toString().replace(/#[0-9a-fA-F]{6}/g, '');
+        document.querySelector('#hud .nickname').textContent = `${nickname}`;
     }
 
-    window.hud_setMoney = (money) => {
-        document.querySelector('#hud .money').textContent = `$${money}`;
+    window.hud_setMoney = (money) => {        
+        let moneyElement = document.querySelector('#hud .money');
+        let moneyChangeElement = document.querySelector('#hud .money-change');
+        let currentMoney = moneyElement.textContent.replace(/\D/g, '');
+        let change = money - currentMoney;
+
+        if (change != 0) {
+            moneyChangeElement.innerText = `${change > 0 ? '+ ' : '- '}$ ${Math.abs(change).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;   
+            moneyChangeElement.style.display = 'block';
+            moneyChangeElement.classList.add('appear');
+            moneyChangeElement.classList.toggle('negative', change < 0);
+        }
+
+        money = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        moneyElement.textContent = `$ ${money}`;
+        
+        setTimer('hud', (element) => {
+            element.classList.remove('appear');
+            element.classList.add('disappear');
+        }, 1500, moneyChangeElement);
+
+        setTimer('hud', (element) => {
+            element.classList.remove('disappear');
+            element.style.display = 'none';
+        }, 2000, moneyChangeElement);
     }
 
     addEvent('hud', 'interface:data:hud:data', (data) => {
