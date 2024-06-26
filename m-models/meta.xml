@@ -1,0 +1,11 @@
+<meta>
+    <script src="client.lua" type="client" cache="false" />
+    <script src="shared.lua" type="shared" cache="false" />
+    <script src="server.lua" type="server" />
+    
+    <!-- automatically added -->
+    
+    <file src="data/encoded/int-1.dff"></file>
+    <file src="data/encoded/int-1.col"></file>
+    <file src="data/encoded/int-1.txd"></file>
+</meta>

@@ -3,9 +3,11 @@ local resourceNames = {
     'm-mysql',
     'm-core',
     'm-ui',
+    'm-blur',
     'm-maps',
     'm-notis',
     'm-login',
+    'm-hud',
 }
 
 function startResourcesInOrder()

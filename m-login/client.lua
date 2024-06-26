@@ -1,5 +1,5 @@
 local sx, sy = guiGetScreenSize()
-local shader, screenSource, cameraObject, cameraTimer;
+local shader, screenSource, cameraObject, cameraTimer, dontDrawBlackWhite;
 
 addEvent('interface:load', true)
 addEvent('login:login', true)
@@ -7,6 +7,7 @@ addEvent('login:register', true)
 addEvent('login:login-response', true)
 addEvent('login:register-response', true)
 addEvent('login:hideLoginPanel', true)
+addEvent('core:enbDetected', true)
 
 function setUpdates()
     local updates = exports['m-updates']:getUpdates()
@@ -61,6 +62,8 @@ addEventHandler('login:hideLoginPanel', root, function(remember, login, password
 end)
 
 function render()
+    showChat(false)
+    if dontDrawBlackWhite then return end
     dxUpdateScreenSource(screenSource)
     dxDrawImage(0, 0, sx, sy, shader)
 end
@@ -147,4 +150,14 @@ end)
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('login')
     exports['m-ui']:destroyInterfaceElement('login-spawn')
+end)
+
+addEventHandler('core:enbDetected', root, function()
+    dontDrawBlackWhite = true
+    if isElement(shader) then
+        destroyElement(shader)
+    end
+    if isElement(screenSource) then
+        destroyElement(screenSource)
+    end
 end)

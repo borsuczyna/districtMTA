@@ -22,6 +22,11 @@ end)
 --     setInterfaceVisible(name, true)
 -- end)
 
+addCommandHandler('browserdebug', function()
+    setDevelopmentMode(true, true)
+    toggleBrowserDevTools(browser, true)
+end)
+
 function setInterfaceVisible(name, visible)
     if not uiLoaded or not browser then return end
     executeBrowserJavascript(browser, 'setInterfaceVisible("'..name..'", '..tostring(visible)..')')

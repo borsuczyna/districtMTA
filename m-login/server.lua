@@ -1,9 +1,31 @@
 local waitingHashes = {}
+local enbClients = {}
+local loadedResources = {}
 
 addEvent('login:login', true)
 addEvent('login:register', true)
 addEvent('login:spawn', true)
 addEvent('onAccountResponse', true)
+
+addEventHandler('onPlayerResourceStart', root, function(resource)
+    if resource ~= getThisResource() then return end
+    loadedResources[source] = true
+
+    if enbClients[source] then
+        triggerClientEvent(source, 'core:enbDetected', root)
+    end
+end)
+
+function handleOnPlayerACInfo(detectedACList, d3d9Size, d3d9MD5, d3d9SHA256)
+    if d3d9Size == 0 then return end
+
+    enbClients[source] = true
+    if loadedResources[source] then
+        triggerClientEvent(source, 'core:enbDetected', root)
+    end
+end
+	
+addEventHandler("onPlayerACInfo", root, handleOnPlayerACInfo)
 
 addEventHandler('onAccountResponse', root, function(hash, response)
     local data = waitingHashes[hash]
@@ -70,12 +92,10 @@ addEventHandler('login:register', resourceRoot, function(email, login, password)
 end)
 
 addEventHandler('login:spawn', resourceRoot, function(data)
-    -- if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') then return end
-    -- if getElementData(client, 'player:spawned') then return end
+    if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then return end
 
     local x, y, z = data['2'], data['3'], data['4']
     spawnPlayer(client, x, y, z)
-    setElementData(client, 'player:spawned', true)
     setElementData(client, 'player:spawn', {x, y, z})
     setCameraTarget(client, client)
 end)

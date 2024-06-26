@@ -8,6 +8,8 @@
         background-image: url('../../m-loading/data/bg.png?v2');
         background-position: center;
         background-size: cover;
+        opacity: 0;
+        transition: opacity 1s cubic-bezier(0.4, 0.22, 0.22, 1);
     }
 
     #loading .item {
@@ -60,7 +62,7 @@
 
     #loading .list {
         position: absolute;
-        top: calc(50% + 11rem);
+        top: calc(50% + 12rem);
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -92,37 +94,89 @@
         color: rgb(217, 217, 217);
         text-shadow: 0.0625rem 0.0625rem 0.0625rem rgba(0, 0, 0, 0.5);
     }
+
+    #loading.visible {
+        opacity: 1;
+    }
+
+    #loading .progress {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 25rem;
+        height: 0.8rem;
+        background-color: rgba(54, 54, 54, 0.5);
+        border-radius: 1rem;
+        transition: bottom 1s ease-in-out;
+    }
+
+    #loading .progress-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(to right, #FFAC4A, #ff9437);
+        border-radius: 1rem;
+    }
+
+    #loading .progress.hidden {
+        display: none;
+    }
+
+    #loading .text {
+        position: absolute;
+        left: 50%;
+        bottom: 2.2rem;
+        transform: translateX(-50%);
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.818);
+        text-shadow: 0.125rem 0.125rem 0.125rem rgba(0, 0, 0, 0.5);
+        transition: bottom 1s ease-in-out;
+    }
+
+    #loading .text.disappear {
+        bottom: -3rem !important;
+    }
+
+    #loading .progress.disappear {
+        bottom: -5rem !important;
+    }
+
+    #loading:has(.progress.hidden) .text {
+        bottom: 1rem;
+    }
 </style>
 
 <div class="item item-left">
-    <div class="title">test</div>
-    <div class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem inventore alias laborum. Doloribus, esse. Esse voluptates consectetur recusandae ipsa consequatur architecto totam nesciunt ex distinctio, tempora placeat consequuntur provident dicta?</div>
+    <div class="title"></div>
+    <div class="description"></div>
 </div>
 <div class="item item-right">
-    <div class="title">test</div>
-    <div class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem inventore alias laborum. Doloribus, esse. Esse voluptates consectetur recusandae ipsa consequatur architecto totam nesciunt ex distinctio, tempora placeat consequuntur provident dicta?</div>
+    <div class="title"></div>
+    <div class="description"></div>
 </div>
 <div class="item item-right-hide">
-    <div class="title">test</div>
-    <div class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem inventore alias laborum. Doloribus, esse. Esse voluptates consectetur recusandae ipsa consequatur architecto totam nesciunt ex distinctio, tempora placeat consequuntur provident dicta?</div>
+    <div class="title"></div>
+    <div class="description"></div>
 </div>
 <div class="item">
-    <div class="title">test</div>
-    <div class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem inventore alias laborum. Doloribus, esse. Esse voluptates consectetur recusandae ipsa consequatur architecto totam nesciunt ex distinctio, tempora placeat consequuntur provident dicta?</div>
+    <div class="title"></div>
+    <div class="description"></div>
 </div>
 
-<div class="list">
-    <!-- <div class="dot"></div>
-    <div class="dot active"></div>
-    <div class="dot"></div> -->
+<div class="list"></div>
+
+<div class="progress">
+    <div class="progress-bar"></div>
 </div>
+
+<div class="text">Ładowanie kogoś pod chuja</div>
 
 <script>
     let maxImages = 3;
     let data = [
-        ['test', 'Lorem ipsum dsau dhsauih dsioaj disabd hjsavdu asbuid sa'],
-        ['test', 'Lorem ipsum dsau dhsauih dsioaj disabd hjsavdu asbuid sa'],
-        ['test', 'Lorem ipsum dsau dhsauih dsioaj disabd hjsavdu asbuid sa'],
+        ['Bezpieczeństwo konta', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non turpis non nisi gravida lobortis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec non molestie augue. Duis tincidunt quam ullamcorper erat lobortis viverra. Sed non justo eros. Aliquam rhoncus turpis eu tortor sagittis tincidunt. Curabitur pharetra at nisl iaculis imperdiet.'],
+        ['Testowa informacja', 'Lorem ipsum dolor sit amet, eros. Aliquam rhoncus turpis eu tortor sagittis tincidunt. Curabitur pharetra at nisl iaculis imperdiet.'],
+        ['Administracja', 'Lorem ipsum dolor sit amet, lobortis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec non molestie augue. Duis tincidunt quam ullamcorper erat lobortis viverra. Sed non justo eros. Aliquam rhoncus turpis eu tortor sagittis tincidunt. Curabitur pharetra at nisl iaculis imperdiet.'],
     ]
 
     function getNextImage(id) {
@@ -223,6 +277,48 @@
             dots.appendChild(dot);
         }
     }
+
+    window.loading_setProgress = (progress, time) => {
+        let bar = document.querySelector('#loading .progress-bar');
+        bar.style.width = `${progress}%`;
+        bar.style.transition = `width ${time}ms linear`;
+    }
+
+    addEvent('loading', 'interface:visible', async (name, visible) => {
+        if (name == 'loading') {
+            let loading = document.querySelector('#loading');
+            if (visible) {
+                await new Promise(resolve => setTimeout(resolve, 10));
+                loading.classList.add('visible');
+            }
+        }
+    });
+
+    addEvent('loading', 'interface:data:loading-data', async (data) => {
+        data = data[0];
+
+        if (data.time && data.time > 0)
+            setTimer('loading', loading_setProgress, 100, data.progress ?? 100, data.time);
+        else if (data.progress) {
+            loading_setProgress(data.progress, 0);
+        }
+
+        document.querySelector('#loading .text').innerText = data.text;
+
+        document.querySelector('#loading .progress').classList.toggle('hidden', data.time == 0);
+        document.querySelector('#loading .progress').classList.add('disappear');
+        document.querySelector('#loading .text').classList.add('disappear');
+        
+        await new Promise(resolve => setTimeout(resolve, 10));
+        document.querySelector('#loading .progress').classList.remove('disappear');
+        document.querySelector('#loading .text').classList.remove('disappear');
+    });
+    
+    addEvent('loading', 'interface:data:loading-hide', async () => {
+        document.querySelector('#loading .progress').classList.add('disappear');
+        document.querySelector('#loading .text').classList.add('disappear');
+        document.querySelector('#loading').classList.remove('visible');
+    });
 
     firstLoad();
     setTimer('loading', changeLoadingImage, 5000);
