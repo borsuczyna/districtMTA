@@ -39,8 +39,8 @@ function loginToAccount(data)
     assert(type(data.usernameOrEmail) == 'string', 'createAccount: data.usernameOrEmail is not a string')
     assert(type(data.password) == 'string', 'createAccount: data.password is not a string')
 
-    if #data.usernameOrEmail < 3 then return false, 'Nieprawidłowa nazwa użytkownika lub email' end
-    if #data.usernameOrEmail > 18 then return false, 'Nieprawidłowa nazwa użytkownika lub email' end
+    if #data.usernameOrEmail < 3 then return false, 'Nieprawidłowa Login lub email' end
+    if #data.usernameOrEmail > 18 then return false, 'Nieprawidłowa Login lub email' end
     if #data.password < 3 then return false, 'Nieprawidłowe hasło' end
     if #data.password > 18 then return false, 'Nieprawidłowe hasło' end
 

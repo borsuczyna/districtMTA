@@ -1,6 +1,7 @@
 function assignPlayerData(player, data)
     setElementData(player, 'player:logged', true)
     setElementData(player, 'player:uid', data.uid)
+    setElementData(player, 'player:skin', data.skin)
     setPlayerName(player, data.username)
     setElementModel(player, data.skin)
     setPlayerMoney(player, data.money)
@@ -20,15 +21,16 @@ function savePlayerData(player)
 
     local skin = getElementModel(player)
     local money = getPlayerMoney(player)
+    local playerName = getPlayerName(player)
 
     dbQuery(function(qh)
         local result, modifiedRows = dbPoll(qh, 0)
         if not result then return end
 
         if modifiedRows == 0 then
-            exports['m-logs']:sendLog('accounts', 'info', 'Nie było nic do zapisania dla gracza ' .. getPlayerName(player))
+            exports['m-logs']:sendLog('accounts', 'info', 'Nie było nic do zapisania dla gracza ' .. playerName)
         else
-            exports['m-logs']:sendLog('accounts', 'success', 'Zapisano dane gracza ' .. getPlayerName(player))
+            exports['m-logs']:sendLog('accounts', 'success', 'Zapisano dane gracza ' .. playerName)
         end
     end, connection, 'UPDATE `m-users` SET skin = ?, money = ? WHERE uid = ?', skin, money, uid)
 end

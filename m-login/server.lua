@@ -38,6 +38,7 @@ addEventHandler('onAccountResponse', root, function(hash, response)
     if time < getTickCount() then return end
 
     killTimer(timer)
+    waitingHashes[hash] = nil
 
     if not response[2] then
         local title = response[1] == 'login' and 'Błąd logowania' or 'Błąd rejestracji'
@@ -95,7 +96,7 @@ addEventHandler('login:spawn', resourceRoot, function(data)
     if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then return end
 
     local x, y, z = data['2'], data['3'], data['4']
-    spawnPlayer(client, x, y, z)
+    spawnPlayer(client, x, y, z, 0, getElementData(client, 'player:skin'))
     setElementData(client, 'player:spawn', {x, y, z})
     setCameraTarget(client, client)
 end)
