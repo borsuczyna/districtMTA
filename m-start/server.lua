@@ -1,8 +1,11 @@
 local resourceNames = {
+    'm-models',
+    'm-logs',
     'm-updates',
     'm-mysql',
     'm-core',
     'm-ui',
+    'm-loading',
     'm-blur',
     'm-maps',
     'm-notis',

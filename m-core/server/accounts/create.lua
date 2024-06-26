@@ -63,6 +63,9 @@ function createAccount(data)
 
     if #data.username < 3 then return false, 'Nazwa użytkownika jest za krótka' end
     if #data.username > 18 then return false, 'Nazwa użytkownika jest za długa' end
+    if string.match(data.username, '[ąćęłńóśźż]') then return false, 'Nazwa użytkownika nie może zawierać polskich znaków' end
+    if string.match(data.username, '[^%w_]') then return false, 'Nazwa użytkownika może zawierać tylko litery, cyfry i znak _' end
+    if string.match(data.username, '%s') then return false, 'Nazwa użytkownika nie może zawierać spacji' end
     if #data.password < 3 then return false, 'Hasło jest za krótkie' end
     if #data.password > 18 then return false, 'Hasło jest za długie' end
     if #data.email < 3 then return false, 'Email jest za krótki' end

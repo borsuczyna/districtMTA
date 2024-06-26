@@ -46,7 +46,6 @@ function loadModel(name, data)
         local col = decodeFileIn(filePath .. '.col', getEncodeHash(name .. '.txd'))
         engineReplaceCOL(engineLoadCOL(col), model)
     end
-    stopStealProtection()
 
     local total = getElementData(localPlayer, 'models:loading:total')
     local loaded = getElementData(localPlayer, 'models:loading:progress') + 1
