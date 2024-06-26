@@ -114,8 +114,9 @@
     #loading .progress-bar {
         width: 0%;
         height: 100%;
-        background: linear-gradient(to right, #FFAC4A, #ff9437);
+        background: linear-gradient(90deg, #ffab48 0.01%, #fc8c5b 100%);
         border-radius: 1rem;
+        box-shadow: 0px 0px 1.325rem #FFAC4Aaa;
     }
 
     #loading .progress.hidden {
@@ -169,7 +170,7 @@
     <div class="progress-bar"></div>
 </div>
 
-<div class="text">Ładowanie kogoś pod chuja</div>
+<div class="text text-center">Ładowanie kogoś pod chuja</div>
 
 <script>
     let maxImages = 3;
@@ -296,22 +297,28 @@
 
     addEvent('loading', 'interface:data:loading-data', async (data) => {
         data = data[0];
+        let loadingIsVisible = document.querySelector('#loading').classList.contains('visible');
 
-        if (data.time && data.time > 0)
-            setTimer('loading', loading_setProgress, 100, data.progress ?? 100, data.time);
-        else if (data.progress) {
-            loading_setProgress(data.progress, 0);
+        if (!loadingIsVisible) {
+            if (data.time && data.time > 0)
+                setTimer('loading', loading_setProgress, 100, data.progress ?? 100, data.time);
+            else if (data.progress) {
+                loading_setProgress(data.progress, 0);
+            }
+
+            document.querySelector('#loading .text').innerHTML = data.text;
+
+            document.querySelector('#loading .progress').classList.toggle('hidden', data.time == 0);
+            document.querySelector('#loading .progress').classList.add('disappear');
+            document.querySelector('#loading .text').classList.add('disappear');
+            
+            await new Promise(resolve => setTimeout(resolve, 10));
+            document.querySelector('#loading .progress').classList.remove('disappear');
+            document.querySelector('#loading .text').classList.remove('disappear');
+        } else {
+            loading_setProgress(data.progress, data.time ?? 0);
+            document.querySelector('#loading .text').innerHTML = data.text;
         }
-
-        document.querySelector('#loading .text').innerText = data.text;
-
-        document.querySelector('#loading .progress').classList.toggle('hidden', data.time == 0);
-        document.querySelector('#loading .progress').classList.add('disappear');
-        document.querySelector('#loading .text').classList.add('disappear');
-        
-        await new Promise(resolve => setTimeout(resolve, 10));
-        document.querySelector('#loading .progress').classList.remove('disappear');
-        document.querySelector('#loading .text').classList.remove('disappear');
     });
     
     addEvent('loading', 'interface:data:loading-hide', async () => {

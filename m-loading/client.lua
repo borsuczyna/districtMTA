@@ -38,6 +38,10 @@ function setLoadingProgress(progress, time)
     updateLoadingData()
 end
 
+function isLoadingVisible()
+    return loadingData.visible
+end
+
 function setLoadingVisible(visible, text, time)
     if loadingTimer and isTimer(loadingTimer) then
         killTimer(loadingTimer)
