@@ -43,6 +43,15 @@ addEventHandler('onClientTransferBoxProgressChange', root, function(downloaded, 
     end
 end)
 
+addEventHandler('onClientTransferBoxVisibilityChange', root, function(visible)
+    if not isLoadingVisible() or not lastDownloaded.visible then return end
+
+    if not visible then
+        setLoadingVisible(false)
+        lastDownloaded.visible = false
+    end
+end)
+
 function updateDownloading()
     if not isLoadingVisible() or not lastDownloaded.visible then return end
 
@@ -52,3 +61,5 @@ function updateDownloading()
         lastDownloaded.visible = false
     end
 end
+
+setTimer(updateDownloading, 1000, 0)

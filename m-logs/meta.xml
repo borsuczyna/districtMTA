@@ -1,0 +1,7 @@
+<meta>
+    <script src='server.lua' type='server'/>
+
+    <export function='sendLog' type='server'/>
+
+    <min_mta_version server="1.5.8"/>
+</meta>

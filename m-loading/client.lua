@@ -79,7 +79,7 @@ addEventHandler('onClientResourceStart', resourceRoot, function()
 
     addEventHandler('interfaceLoaded', root, function()
         loadingLoaded = false
-        setLoadingVisible(loadingVisible)
+        setLoadingVisible(loadingData.visible, loadingData.text, loadingData.time)
     end)
 end)
 

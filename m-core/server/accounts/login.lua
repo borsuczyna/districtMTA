@@ -51,16 +51,6 @@ function loginToAccount(data)
     return hash
 end
 
-function assignPlayerData(player, data)
-    setElementData(player, 'player:logged', true)
-    setElementData(player, 'player:uid', data.uid)
-
-    local connection = exports['m-mysql']:getConnection()
-    if not connection then return end
-
-    dbExec(connection, 'UPDATE `m-users` SET lastActive = NOW() WHERE uid = ?', data.uid)
-end
-
 -- TEST - login
 -- addEventHandler('onResourceStart', resourceRoot, function()
 --     addEvent('onAccountResponse', true)

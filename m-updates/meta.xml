@@ -3,6 +3,7 @@
 
     <file src='data/1.png'/>
     <file src='data/2.png'/>
+    <file src='data/3.png'/>
 
     <export function='getUpdates' type='shared'/>
 </meta>

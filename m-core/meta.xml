@@ -8,6 +8,7 @@
     <script src='server/accounts/main.lua' type='server'/>
     <script src='server/accounts/create.lua' type='server'/>
     <script src='server/accounts/login.lua' type='server'/>
+    <script src='server/accounts/data.lua' type='server'/>
 
     <script src='shared/players.lua' type='server'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
@@ -18,4 +19,5 @@
     <export function='createAccount' type='server'/>
     <export function='loginToAccount' type='server'/>
     <export function='assignPlayerData' type='server'/>
+    <export function='savePlayerData' type='server'/>
 </meta>
