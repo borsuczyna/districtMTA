@@ -1,6 +1,9 @@
 function assignPlayerData(player, data)
     setElementData(player, 'player:logged', true)
     setElementData(player, 'player:uid', data.uid)
+    setPlayerName(player, data.username)
+    setElementModel(player, data.skin)
+    setPlayerMoney(player, data.money)
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
@@ -37,5 +40,9 @@ function saveAllPlayers()
 
     exports['m-logs']:sendLog('accounts', 'info', 'Zapisano dane wszystkich graczy')
 end
+
+addEventHandler('onPlayerQuit', root, function()
+    savePlayerData(source)
+end)
 
 setTimer(saveAllPlayers, 300000, 0) -- 5 minutes
