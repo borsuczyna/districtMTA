@@ -111,7 +111,7 @@ function setScoreboardVisible(visible)
             -- scoreboardLoaded = false
             exports['m-ui']:triggerInterfaceEvent('scoreboard', 'play-animation', false)
             scoreboardHideTimer = setTimer(function()
-                exports['m-ui']:destroyInterfaceElement('loading')
+                exports['m-ui']:destroyInterfaceElement('scoreboard')
                 scoreboardLoaded = false
             end, 500, 1)
         else
