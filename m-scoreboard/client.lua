@@ -63,7 +63,7 @@ end)
 addEventHandler('interface:load', root, function(name)
     if name == 'scoreboard' then
         exports['m-ui']:setInterfaceVisible(name, true)
-        exports['m-ui']:setInterfaceZIndex('scoreboard', 999)
+        exports['m-ui']:setInterfaceZIndex('scoreboard', 998)
         exports['m-ui']:triggerInterfaceEvent('scoreboard', 'play-animation', true)
         scoreboardLoaded = true
         updateScoreboardData()
@@ -123,6 +123,7 @@ function setScoreboardVisible(visible)
 end
 
 function toggleScoreboard()
+    if not getElementData(localPlayer, 'player:spawn') then return end
     setScoreboardVisible(not scoreboardVisible)
 end
 

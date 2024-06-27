@@ -30,6 +30,7 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:setInterfaceVisible(name, true)
         setUpdates()
         setRememberedData()
+        exports['m-ui']:setInterfaceZIndex('scoreboard', 999)
     end
 end)
 
