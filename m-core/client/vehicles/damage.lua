@@ -1,11 +1,11 @@
 addEventHandler('onClientVehicleDamage', root, function(_, _, loss)
     local health = getElementHealth(source)
-    local rx, ry = getElementRotation(source)
+    local matrix = getElementMatrix(source)
     local newHealth = health - loss
 
     if newHealth <= 315 then
-        if rx > 90 and rx < 270 or ry > 90 and ry < 270 then
-            setElementHealth(source, 350)
+        if matrix[3][3] < 0 then
+            setElementHealth(source, 315)
         end
         
         if loss >= 100 then
