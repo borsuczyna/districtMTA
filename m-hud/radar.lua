@@ -17,11 +17,11 @@ addEventHandler('interface:visibilityChange', root, function(name, visible)
 end)
 
 local textures = {
-	dxCreateTexture('data/images/blur-mask.png'),
+    dxCreateTexture('data/images/blur_mask.png'),
 	dxCreateTexture('data/images/world.png'),
 	dxCreateTexture('data/images/bg.png'),
 	dxCreateTexture('data/images/overlay.png'),
-	dxCreateTexture('data/images/blur-mask.png'),
+	dxCreateTexture('data/images/blur_mask.png'),
 }
 
 local fonts = {
@@ -45,7 +45,7 @@ function renderRadar()
     dxSetShaderValue(radar.shader, "gUVRotAngle", math.rad(-camrot))
     
     local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSettings.size - 45/zoom, radarSettings.size, radarSettings.size
-    exports['m-blur']:dxDrawBlur(radarX, radarY, radarW, radarH, textures[5])
+    dxDrawBlur(radarX, radarY, radarW, radarH, textures[5])
     dxDrawImage(radarX, radarY, radarW, radarH, textures[4], 0, 0, 0, tocolor(175, 175, 175, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, radar.shader, 0, 0, 0, tocolor(255, 255, 255, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, textures[3], 0, 0, 0, tocolor(255, 255, 255, 255))

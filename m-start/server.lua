@@ -1,27 +1,13 @@
-local resourceNames = {
-    'm-models',
-    'm-logs',
-    'm-updates',
-    'm-mysql',
-    'm-core',
-    'm-ui',
-    'm-loading',
-    'm-blur',
-    'm-maps',
-    'm-notis',
-    'm-login',
-    'm-hud',
-}
+function startResources()
+    local resources = getResources()
 
-function startResourcesInOrder()
-    for i, resourceName in ipairs(resourceNames) do
-        local resource = getResourceFromName(resourceName)
-        if resource then
+    for _, resource in ipairs(resources) do
+        local resourceName = getResourceName(resource)
+
+        if string.find(resourceName, '^m%-') then
             startResource(resource)
-        else
-            outputDebugString('Failed to start resource: '..resourceName)
         end
     end
 end
 
-addEventHandler('onResourceStart', resourceRoot, startResourcesInOrder)
+addEventHandler('onResourceStart', resourceRoot, startResources)

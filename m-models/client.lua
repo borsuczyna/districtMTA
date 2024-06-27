@@ -54,8 +54,8 @@ function loadModel(name, data)
     setElementData(localPlayer, 'models:loading:progress', loaded)
     data.loaded = true
 
-    -- local x, y, z = getElementPosition(localPlayer)
-    -- createObject(model, x, y, z-1)
+    local x, y, z = getElementPosition(localPlayer)
+    createObject(model, x, y, z-1)
 
     if total == loaded then
         outputConsole('Załadowano wszystkie modele')

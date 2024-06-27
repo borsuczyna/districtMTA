@@ -1,4 +1,5 @@
 <meta>
+	<script src='blur.lua' type='client' cache='false'/>
     <script src='client.lua' type='client' cache='false'/>
     <script src='radar.lua' type='client' cache='false'/>
 
@@ -6,11 +7,12 @@
     <file src='data/images/user.png'/>
     <file src='data/images/bg.png'/>
     <file src='data/images/overlay.png'/>
+	<file src='data/images/blur_mask.png'/>
+	<file src='data/images/mask.png'/>
     <file src='data/images/circle_mask.png'/>
     <file src='data/images/crosshair.png'/>
     <file src='data/images/player.png'/>
     <file src='data/images/world.png'/>
-    <file src='data/images/blur-mask.png'/>
 
     <file src="data/images/blips/0.png"/>
 	<file src="data/images/blips/1.png"/>
@@ -79,6 +81,8 @@
 
     <file src='data/hud_mask.fx'/>
     <file src='data/tex_matrix.fx'/>
+	<file src='data/fxBlurH.fx'/>
+    <file src='data/fxBlurV.fx'/>
 
     <export function='setHudVisible' type='client'/>
     <min_mta_version server='1.5.8' client='1.5.8'/>

@@ -7,6 +7,8 @@ addEvent('interfaceLoaded', true)
 
 function updateHud()
     if not hudVisible then return end
+    
+    setPlayerHudComponentVisible('all', false)
 
     local data = {
         nickname = getPlayerName(localPlayer),
@@ -43,17 +45,6 @@ end)
 
 function showHudInterface()
     exports['m-ui']:loadInterfaceElementFromFile('hud', 'm-hud/data/interface/hud.html')
-
-    setPlayerHudComponentVisible('money', false)
-    setPlayerHudComponentVisible('ammo', false)
-    setPlayerHudComponentVisible('clock', false)
-    setPlayerHudComponentVisible('health', false)
-    setPlayerHudComponentVisible('armour', false)
-    setPlayerHudComponentVisible('breath', false)
-    setPlayerHudComponentVisible('area_name', false)
-    setPlayerHudComponentVisible('vehicle_name', false)
-    setPlayerHudComponentVisible('weapon', false)
-    setPlayerHudComponentVisible('radar', false)
     setBlurLevel(0)
 end
 
