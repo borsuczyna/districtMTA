@@ -1,0 +1,264 @@
+<style>
+    #f11 {
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #f11 #legend {
+        background-color: #202020;
+        display: flex;
+        flex-direction: column;
+        color: #d8d8d8;
+        padding: 1rem 0;
+        gap: 0.625rem;
+        justify-content: space-between;
+    }
+
+    #f11 .top {
+        font-weight: 700;
+        font-size: 1.5625rem;
+        color: #d8d8d8;
+        padding-inline: 1.25rem;
+    }
+
+    #f11 .top .small {
+        font-weight: 500;
+        font-size: 1.25rem;
+        color: #d8d8d8;
+    }
+
+    #f11 #legend hr {
+        width: 100%;
+        border: 0;
+        border-top: 3px solid #252525;
+        margin: 0 !important;
+    }
+
+    #f11 .list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0 0.625rem;
+        flex-grow: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: 0.625rem;
+    }
+
+    #f11 .item {
+        background: #2c2c2c;
+        border-radius: 0.225rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.75);
+        padding: 0.425rem 0.825rem 0.425rem 0.525rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        width: 20rem;
+        max-width: 20rem;
+        transition: background 0.1s;
+    }
+
+    #f11 .item:hover {
+        background: #3c3c3c;
+    }
+
+    #f11 .list::-webkit-scrollbar {
+        width: 0.4rem;
+    }
+
+    #f11 .list::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #f39f3f 0%, #ffaf52 100%);
+        border-radius: 0.25rem;
+    }
+
+    #f11 .list::-webkit-scrollbar-track {
+        background: #363636;
+        border-radius: 0.25rem;
+    }
+
+    #f11 .item .icon {
+        width: 1.875rem;
+        height: 1.875rem;
+    }
+
+    #f11 #map {
+        background: rgba(32, 32, 32, 0.95);
+        flex-grow: 1;
+    }
+
+    #f11 .category {
+        color: #a3a3a3;
+        transition: color 0.1s;
+    }
+
+    #f11 .category:hover {
+        color: #e4e4e4;
+    }
+</style>
+
+<div id="legend">
+    <div class="top d-flex flex-column align-items-center">
+        <span>MAPA SERWERA</span>
+        <span class="small">Legenda mapy</span>
+    </div>
+    <hr>
+    <div class="list" style="flex: 10;">
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        
+    </div>
+    <hr>
+    <div class="top text-center">
+        <div class="small d-flex gap-2 align-items-center justify-center">
+            <svg viewBox="0 0 15 15" fill="none" style="width: 0.8rem; height: 0.8rem;">
+                <circle cx="7.5" cy="7.5" r="7.5" fill="#D9D9D9" />
+            </svg>
+            Kolory graczy na mapie
+        </div>
+    </div>
+    <div class="list" style="flex: 6;">
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+        <div class="item">
+            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
+            Praca dorywcza, Magazynier
+        </div>
+    </div>
+    <hr>
+    <div class="top text-center">
+        <div class="small d-flex gap-2 align-items-center justify-center">
+            <svg viewBox="0 0 18 18" fill="none" style="width: 1.1rem; height: 1.1rem;">
+                <path d="M0 4.5H4.5V0H0V4.5ZM6.75 18H11.25V13.5H6.75V18ZM0 18H4.5V13.5H0V18ZM0 11.25H4.5V6.75H0V11.25ZM6.75 11.25H11.25V6.75H6.75V11.25ZM13.5 0V4.5H18V0H13.5ZM6.75 4.5H11.25V0H6.75V4.5ZM13.5 11.25H18V6.75H13.5V11.25ZM13.5 18H18V13.5H13.5V18Z" fill="#D8D8D8" />
+            </svg>
+            Kategorie
+        </div>
+    </div>
+    <div class="d-flex justify-center align-items-center gap-2">
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M22.0455 14.5V15H22.5455H24.8182C24.9485 15 25.0754 15.0622 25.1521 15.1587C25.1524 15.1591 25.1527 15.1595 25.153 15.1599L27.2405 17.8417C27.2408 17.842 27.241 17.8423 27.2412 17.8426C27.3389 17.9694 27.4096 18.1091 27.4522 18.2545L26.9877 17.6842L25.2059 15.4967L25.0558 15.3125H24.8182H22.5455H22.0455V15.8125V18V18.5H22.5455H26.6H27.4968C27.4989 18.5287 27.5 18.5575 27.5 18.5863V21.5C27.5 21.6873 27.333 21.875 27.0909 21.875H26.1818H25.6818V22.375C25.6818 23.5335 24.7057 24.5 23.4545 24.5C22.2034 24.5 21.2273 23.5335 21.2273 22.375V21.875H20.7273H15.2727H14.7727V22.375C14.7727 23.5335 13.7966 24.5 12.5455 24.5C11.2943 24.5 10.3182 23.5335 10.3182 22.375V21.875H9.81818C9.07614 21.875 8.5 21.2935 8.5 20.625V12.75C8.5 12.0815 9.07614 11.5 9.81818 11.5H20.7273C21.4693 11.5 22.0455 12.0815 22.0455 12.75V14.5ZM11.1364 22.375C11.1364 23.1502 11.7875 23.75 12.5455 23.75C13.3034 23.75 13.9545 23.1502 13.9545 22.375C13.9545 21.5998 13.3034 21 12.5455 21C11.7875 21 11.1364 21.5998 11.1364 22.375ZM22.0455 22.375C22.0455 23.1502 22.6966 23.75 23.4545 23.75C24.2125 23.75 24.8636 23.1502 24.8636 22.375C24.8636 21.5998 24.2125 21 23.4545 21C22.6966 21 22.0455 21.5998 22.0455 22.375Z" fill="#CBCBCB" stroke="currentColor" />
+        </svg>
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M19.3056 18.4095L19.7606 20.6623C19.8328 21.0172 19.4933 21.2978 19.2189 21.108L17.5 19.9197L15.7739 21.108C15.4994 21.2978 15.16 21.0172 15.2322 20.6623L15.6944 18.4178L14.1778 16.9241C13.9322 16.6848 14.0622 16.2309 14.38 16.1979L16.3878 15.9999L17.1678 13.8873C17.2906 13.549 17.7094 13.549 17.8322 13.8873L18.6122 15.9916L20.62 16.1897C20.9378 16.2227 21.0678 16.6766 20.8222 16.9159L19.3056 18.4095ZM11.8594 11.7088C11.3394 11.9728 11 12.567 11 13.2189V17.0974C11 21.6774 13.7733 25.9602 17.5 27C21.2267 25.9602 24 21.6774 24 17.0974V13.2189C24 12.567 23.6606 11.9728 23.1406 11.7088L18.085 9.14235C17.7094 8.95255 17.2833 8.95255 16.915 9.14235L11.8594 11.7088Z" fill="currentColor" />
+        </svg>
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M17.5 23.237L21.6224 25.8458C22.3773 26.324 23.3011 25.6172 23.1025 24.7233L22.0098 19.8174L25.6554 16.5122C26.3209 15.9093 25.9633 14.766 25.0891 14.6932L20.2913 14.2671L18.4139 9.63143C18.0761 8.78952 16.9239 8.78952 16.5861 9.63143L14.7087 14.2567L9.91085 14.6828C9.03671 14.7556 8.67911 15.8989 9.34465 16.5018L12.9902 19.807L11.8975 24.7129C11.6989 25.6068 12.6227 26.3136 13.3776 25.8355L17.5 23.237Z" fill="currentColor" />
+        </svg>
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M22.2222 16.5556V10.8889C22.2222 9.85 21.3722 9 20.3333 9H14.6667C13.6278 9 12.7778 9.85 12.7778 10.8889V12.7778H10.8889C9.85 12.7778 9 13.6278 9 14.6667V24.1111C9 25.15 9.85 26 10.8889 26H15.6111C16.1306 26 16.5556 25.575 16.5556 25.0556V22.2222H18.4444V25.0556C18.4444 25.575 18.8694 26 19.3889 26H24.1111C25.15 26 26 25.15 26 24.1111V18.4444C26 17.4056 25.15 16.5556 24.1111 16.5556H22.2222ZM12.7778 24.1111H10.8889V22.2222H12.7778V24.1111ZM12.7778 20.3333H10.8889V18.4444H12.7778V20.3333ZM12.7778 16.5556H10.8889V14.6667H12.7778V16.5556ZM16.5556 20.3333H14.6667V18.4444H16.5556V20.3333ZM16.5556 16.5556H14.6667V14.6667H16.5556V16.5556ZM16.5556 12.7778H14.6667V10.8889H16.5556V12.7778ZM20.3333 20.3333H18.4444V18.4444H20.3333V20.3333ZM20.3333 16.5556H18.4444V14.6667H20.3333V16.5556ZM20.3333 12.7778H18.4444V10.8889H20.3333V12.7778ZM24.1111 24.1111H22.2222V22.2222H24.1111V24.1111ZM24.1111 20.3333H22.2222V18.4444H24.1111V20.3333Z" fill="currentColor" />
+        </svg>
+    </div>
+</div>
+
+<div id="map"></div>
+
+<script>
+    createMap({
+        element: document.querySelector('#f11 #map'),
+        minZoom: 1,
+        zoom: 1.5,
+        maxZoom: 4,
+        x: 0,
+        y: 0,
+        limitBounds: true,
+        bounds: { x: 600, y: 600 },
+        texture: 'map-transparent.png'
+    });
+</script>

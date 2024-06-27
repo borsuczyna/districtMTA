@@ -45,7 +45,7 @@ end)
 addEventHandler('interface:load', root, function(name)
     if name == 'hud' then
         exports['m-ui']:setInterfaceVisible(name, true)
-        exports['m-ui']:setInterfaceZIndex('hud', 1001)
+        exports['m-ui']:setInterfaceZIndex('hud', 997)
         lastSentData = {}
         updateHud()
         addEventHandler('onClientRender', root, updateHud)

@@ -63,7 +63,7 @@ end)
 addEventHandler('interface:load', root, function(name)
     if name == 'scoreboard' then
         exports['m-ui']:setInterfaceVisible(name, true)
-        exports['m-ui']:setInterfaceZIndex('scoreboard', 998)
+        exports['m-ui']:setInterfaceZIndex('scoreboard', 990)
         exports['m-ui']:triggerInterfaceEvent('scoreboard', 'play-animation', true)
         scoreboardLoaded = true
         updateScoreboardData()
