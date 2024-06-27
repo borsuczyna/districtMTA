@@ -15,6 +15,9 @@ function sendDiscordWebhook(url, message)
         formFields = {
             content = message,
         },
+        queueName = 'logs',
+        connectionAttempts = 1,
+        connectTimeout = 5000,
     }
     
     fetchRemote(url, sendOptions, function() end)

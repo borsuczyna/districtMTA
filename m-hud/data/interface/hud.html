@@ -247,6 +247,15 @@
         }, 2000, moneyChangeElement);
     }
 
+    window.hud_setAvatar = (avatar) => {
+        if (avatar.length > 100) {
+            document.querySelector('#hud .avatar').style.backgroundImage = `url('data:image/png;base64,${avatar}')`;
+        } else {
+            avatar = `../../${avatar.slice(1)}`;
+            document.querySelector('#hud .avatar').style.backgroundImage = `url('${avatar}')`;
+        }
+    }
+
     addEvent('hud', 'interface:data:hud:data', (data) => {
         let { money, health, level, exp, nickname } = data[0];
 

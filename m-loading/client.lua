@@ -50,7 +50,7 @@ function setLoadingVisible(visible, text, time)
     _G[visible and 'addEventHandler' or 'removeEventHandler']('onClientRender', root, noChat)
     showCursor(visible)
     showChat(not visible)
-    loadingData = {visible = visible, text = text, time = time or 0}
+    loadingData = {visible = visible, text = text or loadingData.text, time = time or 0}
 
     if not loadingLoaded and visible then
         showLoadingInterface()

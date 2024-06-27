@@ -26,4 +26,7 @@
     <export function='loginToAccount' type='server'/>
     <export function='assignPlayerData' type='server'/>
     <export function='savePlayerData' type='server'/>
+    <export function='getPlayerByUid' type='shared'/>
+    <export function='getPlayerById' type='shared'/>
+    <export function='getPlayerFromPartialName' type='shared'/>
 </meta>

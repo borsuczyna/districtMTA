@@ -4,8 +4,9 @@ local lastSentData = {}
 
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
+addEvent('avatars:onPlayerAvatarChange', true)
 
-function updateHud()
+function updateHud(avatar)
     if not hudVisible then return end
     
     setPlayerHudComponentVisible('all', false)
@@ -32,6 +33,14 @@ function updateHud()
     exports['m-ui']:setInterfaceData('hud', 'hud:data', data)
 end
 
+function updateAvatar(avatar)
+    exports['m-ui']:executeJavascript('hud_setAvatar("' .. avatar .. '")')
+end
+
+addEventHandler('avatars:onPlayerAvatarChange', root, function(player, avatar)
+    updateAvatar(avatar)
+end)
+
 addEventHandler('interface:load', root, function(name)
     if name == 'hud' then
         exports['m-ui']:setInterfaceVisible(name, true)
@@ -40,6 +49,9 @@ addEventHandler('interface:load', root, function(name)
         updateHud()
         addEventHandler('onClientRender', root, updateHud)
         hudLoaded = true
+
+        local avatar = exports['m-avatars']:getPlayerAvatar(localPlayer)
+        updateAvatar(avatar)
     end
 end)
 

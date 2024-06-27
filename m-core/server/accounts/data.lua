@@ -12,7 +12,7 @@ function assignPlayerData(player, data)
     dbExec(connection, 'UPDATE `m-users` SET lastActive = NOW() WHERE uid = ?', data.uid)
 end
 
-function savePlayerData(player)
+function savePlayerData(player, noLogs)
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
@@ -27,17 +27,19 @@ function savePlayerData(player)
         local result, modifiedRows = dbPoll(qh, 0)
         if not result then return end
 
-        if modifiedRows == 0 then
-            exports['m-logs']:sendLog('accounts', 'info', 'Nie było nic do zapisania dla gracza ' .. playerName)
-        else
-            exports['m-logs']:sendLog('accounts', 'success', 'Zapisano dane gracza ' .. playerName)
+        if not noLogs then
+            if modifiedRows == 0 then
+                exports['m-logs']:sendLog('accounts', 'info', 'Nie było nic do zapisania dla gracza ' .. playerName)
+            else
+                exports['m-logs']:sendLog('accounts', 'success', 'Zapisano dane gracza ' .. playerName)
+            end
         end
     end, connection, 'UPDATE `m-users` SET skin = ?, money = ? WHERE uid = ?', skin, money, uid)
 end
 
 function saveAllPlayers()
     for i, player in ipairs(getElementsByType('player')) do
-        savePlayerData(player)
+        savePlayerData(player, true)
     end
 
     exports['m-logs']:sendLog('accounts', 'info', 'Zapisano dane wszystkich graczy')
