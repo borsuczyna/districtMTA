@@ -45,16 +45,13 @@ function renderRadar()
     dxSetShaderValue(radar.shader, "gUVRotAngle", math.rad(-camrot))
     
     local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSettings.size - 45/zoom, radarSettings.size, radarSettings.size
-    dxDrawBlur(radarX, radarY, radarW, radarH, textures[5])
     dxDrawImage(radarX, radarY, radarW, radarH, textures[4], 0, 0, 0, tocolor(175, 175, 175, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, radar.shader, 0, 0, 0, tocolor(255, 255, 255, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, textures[3], 0, 0, 0, tocolor(255, 255, 255, 255))
-
-
     -- draw zone name
     local zone = getZoneName(px, py, pz, true)
     dxDrawText(zone, radarX + radarW + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 200), 1, fonts[1], 'left', 'bottom', false, false, false, true)
-    dxDrawText(zone, radarX + radarW, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 223, 135, 225), 1, fonts[1], 'left', 'bottom', false, false, false, true)
+    dxDrawText(zone, radarX + radarW, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 177, 85, 225), 1, fonts[1], 'left', 'bottom', false, false, false, true)
 
     local zone = getZoneName(px, py, pz, false)
     dxDrawText(zone, radarX + radarW - 20/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 200), 1, fonts[2], 'left', 'top', false, false, false, true)
