@@ -16,7 +16,11 @@ function getPlayerFromPartialName(name)
 end
 
 function getPlayerById(id)
-    return isElement(ids[id]) and ids[id] or false
+    for i, player in ipairs(getElementsByType('player')) do
+        if getElementData(player, 'player:id') == id then
+            return player
+        end
+    end
 end
 
 function getPlayerByUid(uid)

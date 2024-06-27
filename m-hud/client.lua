@@ -34,10 +34,11 @@ function updateHud(avatar)
 end
 
 function updateAvatar(avatar)
-    exports['m-ui']:executeJavascript('hud_setAvatar("' .. avatar .. '")')
+    exports['m-ui']:executeJavascript(string.format('hud_setAvatar(%q)', avatar or ''))
 end
 
 addEventHandler('avatars:onPlayerAvatarChange', root, function(player, avatar)
+    if player ~= localPlayer then return end
     updateAvatar(avatar)
 end)
 

@@ -2,7 +2,7 @@ local ids = {}
 
 function findFreeId()
     local id = 1
-    while ids[id] do
+    while getPlayerById(id) do
         id = id + 1
     end
     return id

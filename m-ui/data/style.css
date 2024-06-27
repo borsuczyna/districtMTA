@@ -49,11 +49,11 @@ body {
 }
 
 .gap-4 {
-    gap: 2rem !important;
+    gap: 1.5rem !important;
 }
 
 .gap-5 {
-    gap: 4rem !important;
+    gap: 2rem !important;
 }
 
 .align-items-center {
@@ -366,4 +366,8 @@ body {
 
 .position-absolute {
     position: absolute;
+}
+
+.d-none {
+    display: none !important;
 }

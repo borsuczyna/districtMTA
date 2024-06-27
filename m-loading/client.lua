@@ -56,8 +56,6 @@ function setLoadingVisible(visible, text, time)
         showLoadingInterface()
     else
         if not visible then
-            -- exports['m-ui']:destroyInterfaceElement('loading')
-            -- loadingLoaded = false
             exports['m-ui']:setInterfaceData('loading', 'loading-hide', true)
             loadingTimer = setTimer(function()
                 exports['m-ui']:destroyInterfaceElement('loading')
@@ -74,7 +72,6 @@ function setLoadingVisible(visible, text, time)
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    -- setLoadingVisible(true, 'Ladowanie chuja', 3000)
     setPlayerHudComponentVisible('all', false)
 
     addEventHandler('interfaceLoaded', root, function()
