@@ -1,5 +1,7 @@
 <meta>
-    <script src='client.lua' type='client' cache='false'/>
+	<include resource='m-ui'/>
+
+	<script src='client.lua' type='client' cache='false'/>
     <script src='radar.lua' type='client' cache='false'/>
 
     <file src='data/interface/hud.html'/>

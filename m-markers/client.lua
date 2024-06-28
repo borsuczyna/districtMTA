@@ -1,7 +1,7 @@
 local markersData = {}
-local markerTexture = createDecodedTexture('data/texture.png')
-local markerGlowTexture = createDecodedTexture('data/glow.png')
-local markerGroundTexture = createDecodedTexture('data/ground.png')
+local markerTexture = dxCreateTexture('data/texture.png')
+local markerGlowTexture = dxCreateTexture('data/glow.png')
+local markerGroundTexture = dxCreateTexture('data/ground.png')
 
 local id = engineRequestModel('object', 1649)
 local idSquare = engineRequestModel('object', 1649)
@@ -11,37 +11,30 @@ engineSetModelFlag(id, 'no_zbuffer_write', true)
 engineSetModelFlag(idSquare, 'draw_last', true)
 engineSetModelFlag(idSquare, 'additive', true)
 engineSetModelFlag(idSquare, 'no_zbuffer_write', true)
-local txd = engineLoadTXD(decodeFile('data/marker.txd'))
+local txd = engineLoadTXD('data/marker.txd')
 engineImportTXD(txd, id)
-engineReplaceModel(engineLoadDFF(decodeFile('data/marker.dff')), id, true)
+engineReplaceModel(engineLoadDFF('data/marker.dff'), id, true)
 engineImportTXD(txd, idSquare)
-engineReplaceModel(engineLoadDFF(decodeFile('data/square-marker.dff')), idSquare, true)
-
--- local marker = createMarker(1936.52, -1769.74, 13.38-1, 'cylinder', 1, 255, 100, 0)
--- local marker = createMarker(1944.55, -1772.79, 13.39-1, 'cylinder', 3, 255, 100, 0)
--- setElementData(marker, 'marker:icon', 'salon')
--- setElementData(marker, 'marker:square', {4.5, 15})
--- setElementData(marker, 'marker:title', 'Stacja benzynowa')
--- setElementData(marker, 'marker:desc', 'Tankowanie pojazdów')
--- engineApplyShaderToWorldTexture(shader, 'cj_w_grad')
+engineReplaceModel(engineLoadDFF('data/square-marker.dff'), idSquare, true)
 
 function updateRenderTarget(marker, rt)
     dxSetRenderTarget(rt, true)
 
     local r, g, b = getMarkerColor(marker)
     local title = getElementData(marker, "marker:title") or "Przechowalnia"
-    local icon = getElementData(marker, "marker:icon") or "enter"
+    local icon = getElementData(marker, "marker:icon") or "entrance"
     local desc = getElementData(marker, "marker:desc") or "Odbiór pojazdów"
 
-    dxDrawImage(100, 0, 200, 200, 'data/background.png')
+    -- dxDrawImage(100, 0, 200, 200, 'data/background.png')
     dxSetBlendMode('modulate_add')
-    dxDrawImage(100, 0, 200, 200, 'data/overlay.png', 0, 0, 0, tocolor(r, g, b, 255))
-    dxDrawImage(100, 0, 200, 200, 'data/overlay.png', 0, 0, 0, tocolor(r, g, b, 100))
+    -- dxDrawImage(100, 0, 200, 200, 'data/overlay.png', 0, 0, 0, tocolor(r, g, b, 255))
+    -- dxDrawImage(100, 0, 200, 200, 'data/overlay.png', 0, 0, 0, tocolor(r, g, b, 100))
     dxSetBlendMode('blend')
-    dxDrawImage(150, 50, 100, 100, 'data/' .. icon .. '.png')
+    dxDrawImage(100, 0, 200, 200, 'data/icons/' .. icon .. '.png')
+    -- dxDrawImage(150, 50, 200, 100, 'data/icons/' .. icon .. '.png')
 
-    dxDrawText(title, 200, 255, nil, nil, white, 1, getFigmaFont('Inter-Bold', 25), 'center', 'bottom')
-    dxDrawText(desc, 200, 255, nil, nil, 0xFFCCCCCC, 1, getFigmaFont('Inter-Medium', 23), 'center', 'top')
+    dxDrawText(title, 200, 255, nil, nil, white, 1, getFont('Inter-Bold', 25), 'center', 'bottom')
+    dxDrawText(desc, 200, 255, nil, nil, 0xFFCCCCCC, 1, getFont('Inter-Medium', 23), 'center', 'top')
 
     dxSetRenderTarget()
 end
@@ -53,10 +46,18 @@ function updateMarker(marker)
         local x, y, z = getElementPosition(marker)
         local size = getMarkerSize(marker)
         local squareSize = getElementData(marker, 'marker:square')
+        local r, g, b = getMarkerColor(marker)
+        local h, s, l = rgbToHsl(r, g, b)
+        local h2, s2, l2 = rgbToHsl(r, g, b)
+        r, g, b = hslToRgb(h, s, l + 0.1, 1)
+        local r2, g2, b2 = hslToRgb(h, s, l + 0.2, 1)
+
         markersData[marker] = {
             object = createObject(squareSize and idSquare or id, x, y, z+0.4),
-            shader = dxCreateShader(decodeFile('data/shader.fx'), 0, 0, false, 'all'),
+            shader = dxCreateShader('data/shader.fx', 0, 0, false, 'all'),
             rt = dxCreateRenderTarget(400, 290, true),
+            r = r, g = g, b = b,
+            r2 = r2, g2 = g2, b2 = b2
         }
 
         setObjectScale(markersData[marker].object, squareSize and squareSize[1] or size, squareSize and squareSize[2] or size, 1)
@@ -120,14 +121,11 @@ function renderMarkers()
                         squareSize = {size, size}
                     end
 
-                    local r, g, b = getMarkerColor(k)
-                    local h, s, l = rgbToHsl(r, g, b)
-                    r, g, b = hslToRgb(h, s, l + 0.1, 1)
+                    local r, g, b = v.r, v.g, v.b
                     dxDrawMaterialLine3D(x+0.8*squareSize[1], y, groundZ, x-0.8*squareSize[1], y, groundZ, markerGroundTexture, 1.6*squareSize[2], tocolor(r, g, b), x, y, groundZ + 0.5)
                     
                     groundZ = groundZ + 0.01
-                    local h, s, l = rgbToHsl(r, g, b)
-                    r, g, b = hslToRgb(h, s, l + 0.2, 1)
+                    local r, g, b = v.r2, v.g2, v.b2
                     dxDrawMaterialLine3D(x+0.5*squareSize[1], y, groundZ, x-0.5*squareSize[1], y, groundZ, markerGroundTexture, squareSize[2], tocolor(r, g, b, a), x, y, groundZ + 0.5)
                 end
             end

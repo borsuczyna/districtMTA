@@ -1,14 +1,14 @@
 local colorCache = {}
 sx, sy = guiGetScreenSize()
 zoom = (sx < 2048) and math.min(2.2, 2048/sx) or 1
-local figmaFonts = {}
+local fonts = {}
 
-function getFigmaFont(font, size)
-    if not figmaFonts[font..size] then
-        figmaFonts[font..size] = exports['figma']:getFont(font, size)
+function getFont(font, size)
+    if not fonts[font..size] then
+        fonts[font..size] = exports['m-ui']:getFont(font, size)
     end
 
-    return figmaFonts[font..size]
+    return fonts[font..size]
 end
 
 function rgbToHsl(r, g, b, a)

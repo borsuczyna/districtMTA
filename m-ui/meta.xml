@@ -1,6 +1,7 @@
 <meta>
     <download_priority_group>9999</download_priority_group>
     <script src='client.lua' type='client' cache='false'/>
+    <script src='fonts.lua' type='client' cache='false'/>
 
     <file src='data/main.html'/>
     <file src='data/main.js'/>
@@ -37,4 +38,5 @@
     <export function='addEventHandlerToInterfaceElement' type='client'/>
     <export function='triggerInterfaceEvent' type='client'/>
     <export function='setInterfaceZIndex' type='client'/>
+    <export function='getFont' type='client'/>
 </meta>
