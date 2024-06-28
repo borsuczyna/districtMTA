@@ -261,6 +261,17 @@
         requestAnimationFrame(updateMap.bind(null, map));
     }
 
+    window.destroyAllMapBlips = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.blips.forEach(blip => {
+            blip.element.remove();
+        });
+
+        map.blips = [];
+    }
+
     window.destroyMap = (element) => {
         let map = maps.find(map => map.element === element);
         if (!map) return;

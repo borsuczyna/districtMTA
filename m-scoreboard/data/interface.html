@@ -352,7 +352,7 @@
         document.querySelector('#scoreboard #player-list').innerHTML = '';
     }
 
-    window.scoreboard_addPlayer = function(uid, id, name, ping, organization, status, level, me, category) {
+    window.scoreboard_addPlayer = function(uid, id, name, ping, organization, status, statusColor, level, me, category) {
         const table = document.querySelector('#scoreboard #player-list');
         const item = document.createElement('div');
         const avatar = (avatars[uid] && avatars[uid].length > 100) ? `data:image/png;base64,${avatars[uid]}` : '../../m-avatars/data/user.png';
@@ -370,8 +370,8 @@
                         <div class="nickname">(${id}) ${name}</div>
                         <div class="status">
                             <svg viewBox="0 0 12 12" fill="none" style="width: 1rem; height: 1rem;">
-                                <circle cx="6" cy="6" r="4" fill="#3AF36D" fill-opacity="0.75" />
-                                <circle cx="6" cy="6" r="5" stroke="#3AF36D" stroke-opacity="0.25" stroke-width="2" />
+                                <circle cx="6" cy="6" r="4" fill="${statusColor}" fill-opacity="0.75" />
+                                <circle cx="6" cy="6" r="5" stroke="${statusColor}" stroke-opacity="0.25" stroke-width="2" />
                             </svg>
                             <span>${status}</span>
                         </div>
@@ -443,8 +443,8 @@
         data.sort((a, b) => a.me ? -1 : b.me ? 1 : a.id - b.id);
         
         for (let player of data) {
-            let { uid, id, name, ping, organization, status, level, me, category } = player;
-            window.scoreboard_addPlayer(uid, id, name, ping, organization, status, level, me, category);
+            let { uid, id, name, ping, organization, status, statusColor, level, me, category } = player;
+            window.scoreboard_addPlayer(uid, id, name, ping, organization, status, statusColor, level, me, category);
         }
 
         scoreboard_addCursorInfo();

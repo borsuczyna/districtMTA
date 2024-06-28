@@ -1,0 +1,36 @@
+<meta>
+    <script src='image-encode.lua' type='client' cache='false'/>
+    <script src='utils.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server' cache='false'/>
+
+    <file src='data/marker.dff.brsk'/>
+    <file src='data/square-marker.dff.brsk'/>
+    <file src='data/marker.txd.brsk'/>
+    <file src='data/texture.png.brsk'/>
+    <file src='data/shader.fx.brsk'/>
+    <file src='data/glow.png.brsk'/>
+    <file src='data/background.png.brsk'/>
+    <file src='data/overlay.png.brsk'/>
+    <file src='data/ground.png.brsk'/>
+    <file src='mta-helper.fx'/>
+
+    <file src='data/enter.png.brsk'/>
+    <file src='data/cheese.png.brsk'/>
+    <file src='data/clothing.png.brsk'/>
+    <file src='data/default.png.brsk'/>
+    <file src='data/entrance.png.brsk'/>
+    <file src='data/gielda.png.brsk'/>
+    <file src='data/house.png.brsk'/>
+    <file src='data/icecream.png.brsk'/>
+    <file src='data/pack.png.brsk'/>
+    <file src='data/parking.png.brsk'/>
+    <file src='data/prawojazdy.png.brsk'/>
+    <file src='data/repair.png.brsk'/>
+    <file src='data/salon.png.brsk'/>
+    <file src='data/skin.png.brsk'/>
+    <file src='data/snacks.png.brsk'/>
+    <file src='data/treasure.png.brsk'/>
+    <file src='data/tshirt.png.brsk'/>
+    <file src='data/vegetables.png.brsk'/>
+</meta>

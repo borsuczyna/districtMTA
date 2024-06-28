@@ -18,7 +18,12 @@ function updateScoreboardData()
         local name = getPlayerName(player)
         local ping = getPlayerPing(player)
         local organization = getElementData(player, 'player:organization') or ''
-        local status = getElementData(player, 'player:status') or 'W grze'
+        local status = 'W grze'
+        local statusColor = '#3AF36D'
+        if uid == 0 then
+            status = 'Loguje się'
+            statusColor = '#cccccc'
+        end
         local level = getElementData(player, 'player:level') or 0
 
         table.insert(data, {
@@ -28,6 +33,7 @@ function updateScoreboardData()
             ping = ping,
             organization = organization,
             status = status,
+            statusColor = statusColor,
             level = level,
             category = 'players',
             me = player == localPlayer
@@ -107,13 +113,11 @@ function setScoreboardVisible(visible)
         showScoreboardInterface()
     else
         if not visible then
-            -- exports['m-ui']:destroyInterfaceElement('scoreboard')
-            -- scoreboardLoaded = false
             exports['m-ui']:triggerInterfaceEvent('scoreboard', 'play-animation', false)
             scoreboardHideTimer = setTimer(function()
                 exports['m-ui']:destroyInterfaceElement('scoreboard')
                 scoreboardLoaded = false
-            end, 500, 1)
+            end, 300, 1)
         else
             exports['m-ui']:setInterfaceVisible('scoreboard', true)
             exports['m-ui']:triggerInterfaceEvent('scoreboard', 'play-animation', true)

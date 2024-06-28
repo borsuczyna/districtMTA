@@ -1,0 +1,18 @@
+<meta>
+    <!-- it's a default mta-figma-exporter resource, don't modify code, just add fonts in meta -->
+    <download_priority_group>21</download_priority_group>
+
+    <script src='fonts.lua' type='client' cache='false'/>
+
+    <export function='getFont' type='client'/>
+
+    <file src="data/fonts/Inter-Black.ttf"/>
+    <file src="data/fonts/Inter-Bold.ttf"/>
+    <file src="data/fonts/Inter-ExtraBold.ttf"/>
+    <file src="data/fonts/Inter-ExtraLight.ttf"/>
+    <file src="data/fonts/Inter-Light.ttf"/>
+    <file src="data/fonts/Inter-Medium.ttf"/>
+    <file src="data/fonts/Inter-Regular.ttf"/>
+    <file src="data/fonts/Inter-SemiBold.ttf"/>
+    <file src="data/fonts/Inter-Thin.ttf"/>
+</meta>

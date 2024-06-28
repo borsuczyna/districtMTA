@@ -6,6 +6,8 @@
         top: 0;
         width: 100%;
         height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s;
     }
 
     #f11 #legend {
@@ -16,6 +18,7 @@
         padding: 1rem 0;
         gap: 0.625rem;
         justify-content: space-between;
+        border-right: 2px solid #252525;
     }
 
     #f11 .top {
@@ -54,18 +57,45 @@
         border-radius: 0.225rem;
         font-weight: 500;
         font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.75);
+        color: rgba(255, 255, 255, 1.15);
         padding: 0.425rem 0.825rem 0.425rem 0.525rem;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 0.4rem;
         width: 20rem;
         max-width: 20rem;
         transition: background 0.1s;
     }
 
+    #f11 .controls {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    #f11 .controls svg {
+        color: #ffffff73;
+        padding: 0.2rem;
+    }
+
+    #f11 .controls svg:hover {
+        color: #ffffff;
+    }
+
     #f11 .item:hover {
-        background: #3c3c3c;
+        background: #343434;
+    }
+
+    #f11 .item.active {
+        background: #434343;
+    }
+
+    #f11 .item .icon {
+        width: 1.875rem;
+        height: 1.875rem;
     }
 
     #f11 .list::-webkit-scrollbar {
@@ -82,11 +112,6 @@
         border-radius: 0.25rem;
     }
 
-    #f11 .item .icon {
-        width: 1.875rem;
-        height: 1.875rem;
-    }
-
     #f11 #map {
         background: rgba(32, 32, 32, 0.95);
         flex-grow: 1;
@@ -100,6 +125,20 @@
     #f11 .category:hover {
         color: #e4e4e4;
     }
+
+    #f11 .category.active {
+        color: #ffc368;
+    }
+
+    #f11 .blip {
+        width: 1.875rem !important;
+        height: 1.875rem !important;
+    }
+
+    #f11 .blip:hover {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
 </style>
 
 <div id="legend">
@@ -108,57 +147,7 @@
         <span class="small">Legenda mapy</span>
     </div>
     <hr>
-    <div class="list" style="flex: 10;">
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        
-    </div>
+    <div class="list" style="flex: 10;"></div>
     <hr>
     <div class="top text-center">
         <div class="small d-flex gap-2 align-items-center justify-center">
@@ -168,56 +157,7 @@
             Kolory graczy na mapie
         </div>
     </div>
-    <div class="list" style="flex: 6;">
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-        <div class="item">
-            <img src="../../m-maps/data/blips/job.png" class="icon" alt=""/>
-            Praca dorywcza, Magazynier
-        </div>
-    </div>
+    <div class="list" style="flex: 6;" id="colors"></div>
     <hr>
     <div class="top text-center">
         <div class="small d-flex gap-2 align-items-center justify-center">
@@ -228,37 +168,276 @@
         </div>
     </div>
     <div class="d-flex justify-center align-items-center gap-2">
-        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
-            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
-            <path d="M22.0455 14.5V15H22.5455H24.8182C24.9485 15 25.0754 15.0622 25.1521 15.1587C25.1524 15.1591 25.1527 15.1595 25.153 15.1599L27.2405 17.8417C27.2408 17.842 27.241 17.8423 27.2412 17.8426C27.3389 17.9694 27.4096 18.1091 27.4522 18.2545L26.9877 17.6842L25.2059 15.4967L25.0558 15.3125H24.8182H22.5455H22.0455V15.8125V18V18.5H22.5455H26.6H27.4968C27.4989 18.5287 27.5 18.5575 27.5 18.5863V21.5C27.5 21.6873 27.333 21.875 27.0909 21.875H26.1818H25.6818V22.375C25.6818 23.5335 24.7057 24.5 23.4545 24.5C22.2034 24.5 21.2273 23.5335 21.2273 22.375V21.875H20.7273H15.2727H14.7727V22.375C14.7727 23.5335 13.7966 24.5 12.5455 24.5C11.2943 24.5 10.3182 23.5335 10.3182 22.375V21.875H9.81818C9.07614 21.875 8.5 21.2935 8.5 20.625V12.75C8.5 12.0815 9.07614 11.5 9.81818 11.5H20.7273C21.4693 11.5 22.0455 12.0815 22.0455 12.75V14.5ZM11.1364 22.375C11.1364 23.1502 11.7875 23.75 12.5455 23.75C13.3034 23.75 13.9545 23.1502 13.9545 22.375C13.9545 21.5998 13.3034 21 12.5455 21C11.7875 21 11.1364 21.5998 11.1364 22.375ZM22.0455 22.375C22.0455 23.1502 22.6966 23.75 23.4545 23.75C24.2125 23.75 24.8636 23.1502 24.8636 22.375C24.8636 21.5998 24.2125 21 23.4545 21C22.6966 21 22.0455 21.5998 22.0455 22.375Z" fill="#CBCBCB" stroke="currentColor" />
-        </svg>
-        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
-            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
-            <path d="M19.3056 18.4095L19.7606 20.6623C19.8328 21.0172 19.4933 21.2978 19.2189 21.108L17.5 19.9197L15.7739 21.108C15.4994 21.2978 15.16 21.0172 15.2322 20.6623L15.6944 18.4178L14.1778 16.9241C13.9322 16.6848 14.0622 16.2309 14.38 16.1979L16.3878 15.9999L17.1678 13.8873C17.2906 13.549 17.7094 13.549 17.8322 13.8873L18.6122 15.9916L20.62 16.1897C20.9378 16.2227 21.0678 16.6766 20.8222 16.9159L19.3056 18.4095ZM11.8594 11.7088C11.3394 11.9728 11 12.567 11 13.2189V17.0974C11 21.6774 13.7733 25.9602 17.5 27C21.2267 25.9602 24 21.6774 24 17.0974V13.2189C24 12.567 23.6606 11.9728 23.1406 11.7088L18.085 9.14235C17.7094 8.95255 17.2833 8.95255 16.915 9.14235L11.8594 11.7088Z" fill="currentColor" />
-        </svg>
-        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category active" onclick="f11_setCategory(this, 'all')">
             <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
             <path d="M17.5 23.237L21.6224 25.8458C22.3773 26.324 23.3011 25.6172 23.1025 24.7233L22.0098 19.8174L25.6554 16.5122C26.3209 15.9093 25.9633 14.766 25.0891 14.6932L20.2913 14.2671L18.4139 9.63143C18.0761 8.78952 16.9239 8.78952 16.5861 9.63143L14.7087 14.2567L9.91085 14.6828C9.03671 14.7556 8.67911 15.8989 9.34465 16.5018L12.9902 19.807L11.8975 24.7129C11.6989 25.6068 12.6227 26.3136 13.3776 25.8355L17.5 23.237Z" fill="currentColor" />
         </svg>
-        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category">
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category" onclick="f11_setCategory(this, 'job')">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M22.0455 14.5V15H22.5455H24.8182C24.9485 15 25.0754 15.0622 25.1521 15.1587C25.1524 15.1591 25.1527 15.1595 25.153 15.1599L27.2405 17.8417C27.2408 17.842 27.241 17.8423 27.2412 17.8426C27.3389 17.9694 27.4096 18.1091 27.4522 18.2545L26.9877 17.6842L25.2059 15.4967L25.0558 15.3125H24.8182H22.5455H22.0455V15.8125V18V18.5H22.5455H26.6H27.4968C27.4989 18.5287 27.5 18.5575 27.5 18.5863V21.5C27.5 21.6873 27.333 21.875 27.0909 21.875H26.1818H25.6818V22.375C25.6818 23.5335 24.7057 24.5 23.4545 24.5C22.2034 24.5 21.2273 23.5335 21.2273 22.375V21.875H21.1273H15.2727H14.7727V22.375C14.7727 23.5335 13.7966 24.5 12.5455 24.5C11.2943 24.5 10.3182 23.5335 10.3182 22.375V21.875H9.81818C9.07614 21.875 8.5 21.2935 8.5 20.625V12.75C8.5 12.0815 9.07614 11.5 9.81818 11.5H21.1273C21.4693 11.5 22.0455 12.0815 22.0455 12.75V14.5ZM11.1364 22.375C11.1364 23.1502 11.7875 23.75 12.5455 23.75C13.3034 23.75 13.9545 23.1502 13.9545 22.375C13.9545 21.5998 13.3034 21 12.5455 21C11.7875 21 11.1364 21.5998 11.1364 22.375ZM22.0455 22.375C22.0455 23.1502 22.6966 23.75 23.4545 23.75C24.2125 23.75 24.8636 23.1502 24.8636 22.375C24.8636 21.5998 24.2125 21 23.4545 21C22.6966 21 22.0455 21.5998 22.0455 22.375Z" fill="currentColor" stroke="currentColor" />
+        </svg>
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category" onclick="f11_setCategory(this, 'departments')">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M19.3056 18.4095L19.7606 20.6623C19.8328 21.0172 19.4933 21.2978 19.2189 21.108L17.5 19.9197L15.7739 21.108C15.4994 21.2978 15.16 21.0172 15.2322 20.6623L15.6944 18.4178L14.1778 16.9241C13.9322 16.6848 14.0622 16.2309 14.38 16.1979L16.3878 15.9999L17.1678 13.8873C17.2906 13.549 17.7094 13.549 17.8322 13.8873L18.6122 15.9916L20.62 16.1897C20.9378 16.2227 21.0678 16.6766 20.8222 16.9159L19.3056 18.4095ZM11.8594 11.7088C11.3394 11.9728 11 12.567 11 13.2189V17.0974C11 21.6774 13.7733 25.9602 17.5 27C21.2267 25.9602 24 21.6774 24 17.0974V13.2189C24 12.567 23.6606 11.9728 23.1406 11.7088L18.085 9.14235C17.7094 8.95255 17.2833 8.95255 16.915 9.14235L11.8594 11.7088Z" fill="currentColor" />
+        </svg>
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category" onclick="f11_setCategory(this, 'houses')">
             <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
             <path d="M22.2222 16.5556V10.8889C22.2222 9.85 21.3722 9 20.3333 9H14.6667C13.6278 9 12.7778 9.85 12.7778 10.8889V12.7778H10.8889C9.85 12.7778 9 13.6278 9 14.6667V24.1111C9 25.15 9.85 26 10.8889 26H15.6111C16.1306 26 16.5556 25.575 16.5556 25.0556V22.2222H18.4444V25.0556C18.4444 25.575 18.8694 26 19.3889 26H24.1111C25.15 26 26 25.15 26 24.1111V18.4444C26 17.4056 25.15 16.5556 24.1111 16.5556H22.2222ZM12.7778 24.1111H10.8889V22.2222H12.7778V24.1111ZM12.7778 20.3333H10.8889V18.4444H12.7778V20.3333ZM12.7778 16.5556H10.8889V14.6667H12.7778V16.5556ZM16.5556 20.3333H14.6667V18.4444H16.5556V20.3333ZM16.5556 16.5556H14.6667V14.6667H16.5556V16.5556ZM16.5556 12.7778H14.6667V10.8889H16.5556V12.7778ZM20.3333 20.3333H18.4444V18.4444H20.3333V20.3333ZM20.3333 16.5556H18.4444V14.6667H20.3333V16.5556ZM20.3333 12.7778H18.4444V10.8889H20.3333V12.7778ZM24.1111 24.1111H22.2222V22.2222H24.1111V24.1111ZM24.1111 20.3333H22.2222V18.4444H24.1111V20.3333Z" fill="currentColor" />
+        </svg>
+        <svg viewBox="0 0 35 35" fill="none" style="width: 2.2rem; height: 2.2rem;" class="category" onclick="f11_setCategory(this, 'services')">
+            <circle cx="17.5" cy="17.5" r="16.5" fill="#262626" stroke="currentColor" stroke-width="2" />
+            <path d="M21.1898 9.04163C19.7802 9.19119 18.8968 9.63654 18.1894 10.3445C17.3791 11.162 16.9374 12.086 16.8377 13.1728C16.7813 13.7777 16.8344 14.1632 17.0835 15.0639C17.1765 15.3962 17.2628 15.2899 15.1672 17.3903C14.1244 18.4372 13.2211 19.318 13.158 19.3479C13.0517 19.3977 13.0451 19.3977 12.879 19.2914C12.6731 19.1585 12.424 19.1252 12.2115 19.2083C12.1019 19.2482 11.7598 19.5739 10.5709 21.1637C9.00332 22.3391 9 22.3424 9 22.6182C9 22.8941 9.00664 22.9007 10.5044 24.4063C11.2949 25.1973 11.9856 25.8753 12.0421 25.9119C12.1816 25.9983 12.4041 26.0249 12.5868 25.975C12.7229 25.9418 12.879 25.7922 14.2406 24.4362C15.4296 23.2464 15.7551 22.9041 15.7949 22.7944C15.8713 22.595 15.8447 22.3291 15.7318 22.1563C15.5458 21.8771 15.4362 22.0134 17.4787 19.9661C18.485 18.9524 19.385 18.065 19.4713 17.9952C19.6573 17.8457 19.7337 17.8357 20.0127 17.9354C20.5739 18.1315 21.4407 18.2179 22.0219 18.1348C23.0548 17.9852 23.9249 17.5465 24.6688 16.7954C25.6651 15.7917 26.1533 14.3493 25.9574 12.9767C25.9009 12.5812 25.8677 12.5147 25.7315 12.5147C25.6386 12.5147 25.4858 12.6543 24.3633 13.7743C22.9983 15.1337 23.0315 15.1071 22.6728 15.1071C22.5865 15.1071 22.4603 15.0838 22.3906 15.0572C22.2212 14.9874 20.0426 12.8172 19.9562 12.631C19.923 12.5579 19.8931 12.425 19.8931 12.3319C19.8931 11.9663 19.8632 12.0029 21.2049 10.6535C21.8857 9.9689 22.4537 9.37399 22.4636 9.3341C22.4968 9.23107 22.437 9.13469 22.3108 9.09481C21.992 8.9951 21.278 8.96852 21.1898 9.04163ZM12.7229 21.3686C13.0617 21.4484 13.3871 21.7009 13.5432 22.01C13.8554 22.6182 13.5864 23.3959 12.9587 23.705C12.7893 23.7881 12.7329 23.7981 12.4373 23.7981C12.1484 23.7981 12.082 23.7881 11.9159 23.7084C11.6535 23.5854 11.4443 23.3827 11.3148 23.1201C11.2152 22.9174 11.2085 22.8775 11.2085 22.5684C11.2085 22.2726 11.2185 22.2161 11.3015 22.0466C11.5672 21.5049 12.1417 21.229 12.7229 21.3686Z" fill="currentColor" />
         </svg>
     </div>
 </div>
 
-<div id="map"></div>
+<div id="map" onclick="f11_onMapClick(event)"></div>
 
 <script>
+    let currentBlips = [];
+    let firstRender = true;
+    let activeBlip = false;
+    let currentCategory = 'all';
+    let playerBlip = `<svg viewBox="0 0 15 15" fill="none" style="width: 0.8rem; height: 0.8rem;">
+        <circle cx="7.5" cy="7.5" r="7.5" fill="{{ color }}" />
+    </svg>`;
+
+    let playerColors = {
+        player: '#d9d9d9',
+        friend: '#43D987',
+        sapd: '#4ECDF7',
+        sara: '#FBC063',
+        samd: '#FD9DFF',
+        tsa: '#F2E951',
+        safd: '#FF5252'
+    };
+
+    let longNames = {
+        player: 'Gracz',
+        friend: 'Znajomy',
+        sapd: 'San Andreas Police Department',
+        sara: 'San Andreas Road Assistance',
+        samd: 'San Andreas Medical Department',
+        tsa: 'Transport San Andreas',
+        safd: 'San Andreas Fire Department'
+    };
+
+    let legend = {
+        41: ['Praca dorywcza', 'job'],
+        42: ['Truth', 'job'],
+        43: ['Grove Street Families', 'departments'],
+        44: ['Ballas', 'departments'],
+        45: ['Vagos', 'departments'],
+        46: ['Los Santos Vagos', 'departments'],
+        47: ['Marabunta Grande', 'departments'],
+        48: ['Varrios Los Aztecas', 'departments'],
+        49: ['San Fierro Rifa', 'departments'],
+        30: ['Dom', 'houses'],
+        31: ['Lokal', 'houses'],
+        32: ['Biuro', 'houses'],
+        33: ['Sklep', 'houses'],
+        34: ['Warsztat', 'houses'],
+        35: ['Magazyn', 'houses'],
+        36: ['Apartament', 'houses'],
+        37: ['Penthouse', 'houses'],
+        38: ['Klub', 'houses'],
+        39: ['Restauracja', 'houses'],
+        50: ['Serwis', 'services'],
+        51: ['Warsztat', 'services'],
+        52: ['Salon', 'services'],
+        53: ['Restauracja', 'services'],
+        54: ['Kawiarnia', 'services'],
+        55: ['Bank', 'services'],
+        56: ['Klub', 'services'],
+        57: ['Sklep', 'services'],
+        58: ['Stacja paliw', 'services'],
+        59: ['Szpital', 'services']
+    };
+
+    function renderColors() {
+        let colors = document.querySelector('#colors');
+        colors.innerHTML = '';
+
+        for (let [key, value] of Object.entries(playerColors)) {
+            colors.innerHTML += `<div class="item">
+                <div class="d-flex align-items-center gap-2">
+                    ${playerBlip.replace('{{ color }}', value)}
+                    ${longNames[key]}
+                </div>
+            </div>`;
+        }
+    }
+
+    function getBlipsCountByIcon(icon) {
+        icon = parseInt(icon);
+        return currentBlips.filter(b => b.icon === icon).length;
+    }
+
+    function getLegendDOMByIcon(icon) {
+        return document.querySelector(`#legend .list .item[data-icon="${icon}"]`);
+    }
+
+    function renderLegend() {
+        if (firstRender) {
+            let list = document.querySelector('#legend .list');
+            list.innerHTML = '';
+
+            for (let [blipId, data] of Object.entries(legend)) {
+                if (currentCategory !== 'all' && currentCategory !== data[1]) continue;
+                let count = getBlipsCountByIcon(blipId);
+                let currentBlipActive = (activeBlip && activeBlip[0] == blipId);
+
+                list.innerHTML += `<div class="item ${currentBlipActive ? 'active' : ''}" onclick="f11_setBlip(event, ${blipId})" data-icon="${blipId}">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="../../m-hud/data/images/blips/${blipId}.png" class="icon" alt=""/>
+                        <span>${data[0]}</span>
+                    </div>
+                    ${currentBlipActive ? `<span class="controls">
+                        <svg viewBox="0 0 36 36" fill="none" style="width: 1rem; height: 1rem;" onclick="f11_arrowNavigate(${blipId}, true, this)">
+                            <path d="M24 6L12 18L24 30" stroke="currentColor" stroke-width="5" />
+                        </svg>
+                        <span class="navigate">${activeBlip[1]} / ${count}</span>
+                        <svg viewBox="0 0 36 36" fill="none" style="width: 1rem; height: 1rem;" onclick="f11_arrowNavigate(${blipId}, false, this)">
+                            <path d="M12 30L24 18L12 6" stroke="currentColor" stroke-width="5" />
+                        </svg>` : ''}
+                    </span>
+                </div>`;
+            }
+
+            firstRender = false;
+        } else {
+            let active = document.querySelector('#legend .list .item.active');
+            if (active) {
+                let blipId = active.getAttribute('data-icon');
+                let count = getBlipsCountByIcon(blipId);
+                active.querySelector('.navigate').innerText = `${activeBlip[1]} / ${count}`;
+            }
+        }
+    }
+    
+    f11_arrowNavigate = (blipId, left, element) => {
+        let max = getBlipsCountByIcon(blipId);
+        activeBlip[1] += left ? -1 : 1;
+        if (activeBlip[1] < 1) activeBlip[1] = max;
+        if (activeBlip[1] > max) activeBlip[1] = 1;
+
+        let navigate = element.parentElement.querySelector('.navigate');
+        navigate.innerText = `${activeBlip[1]} / ${max}`;
+
+        let blipData = currentBlips.filter(b => b.icon === blipId)[activeBlip[1] - 1];
+        if (!blipData) return;
+        mapGoToPosition(document.querySelector('#f11 #map'), blipData.x, blipData.y, 500);
+
+        return;
+    }
+
+    f11_setBlip = (event, blipId) => {
+        if (event.target.tagName === 'svg' || event.target.tagName === 'path') return;
+        if (activeBlip && activeBlip[0] == blipId) {
+            activeBlip = false;
+        } else {
+            activeBlip = [blipId, 1];
+            let dom = getLegendDOMByIcon(blipId);
+            dom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            let blipData = currentBlips.filter(b => b.icon === blipId)[0];
+            if (!blipData) {
+                activeBlip = false;
+            } else {
+                mapGoToPosition(document.querySelector('#f11 #map'), blipData.x, blipData.y, 500);
+            }
+        }
+
+        firstRender = true;
+        renderLegend();
+        f11_renderBlips();
+    }
+
+    f11_setCategory = (button, category) => {
+        let categories = document.querySelectorAll('.category');
+        categories.forEach(c => c.classList.remove('active'));
+        button.classList.add('active');
+
+        currentCategory = category;
+        firstRender = true;
+        renderLegend();
+    }
+
+    f11_createBlip = (blip, i) => {
+        createMapBlip({
+            element: document.querySelector('#f11 #map'),
+            icon: `../../m-hud/data/images/blips/${blip.icon}.png`,
+            size: 15,
+            x: blip.x,
+            y: blip.y,
+            class: 'blip',
+            specialKey: `${blip.icon}-${i}`
+        });
+    }
+
+    f11_renderBlips = () => {
+        destroyAllMapBlips(document.querySelector('#f11 #map'));
+        renderLegend();
+
+        for (let i = 0; i < currentBlips.length; i++) {
+            let blip = currentBlips[i];
+            f11_createBlip(blip, i);
+        }
+    }
+
+    f11_onMapClick = (event) => {
+        let target = event.target;
+        let isBlip = target.classList.contains('blip');
+        if (!isBlip) return;
+
+        let specialKey = target.getAttribute('data-special-key');
+        let [icon, index] = specialKey.split('-');
+        icon = parseInt(icon);
+        index = parseInt(index);
+
+        let blipData = currentBlips[index];
+        if (!blipData) return;
+
+        let currentIndex = currentBlips.filter(b => b.icon === icon).indexOf(blipData);
+        activeBlip = [icon, currentIndex + 1];
+        let dom = getLegendDOMByIcon(icon);
+        dom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        mapGoToPosition(document.querySelector('#f11 #map'), blipData.x, blipData.y, 500);
+
+        firstRender = true;
+        renderLegend();
+    }
+
+    renderColors();
+    renderLegend();
+
     createMap({
         element: document.querySelector('#f11 #map'),
-        minZoom: 1,
+        minZoom: 0.8,
         zoom: 1.5,
         maxZoom: 4,
         x: 0,
         y: 0,
         limitBounds: true,
-        bounds: { x: 600, y: 600 },
-        texture: 'map-transparent.png'
+        bounds: { x: 1400, y: 1400 },
+        texture: 'map-transparent.png?v1.01'
+    });
+
+    addEvent('f11', 'interface:data:blips', async (blips) => {
+        blips = blips[0];
+        currentBlips = blips;
+
+        f11_renderBlips();
+    });
+
+    addEvent('f11', 'interface:data:position', async (data) => {
+        data = data[0];
+        mapGoToPosition(document.querySelector('#f11 #map'), data.x, data.y, 100);
+    });
+
+    addEvent('f11', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#f11').style.opacity = appear ? '1' : '0';
     });
 </script>
