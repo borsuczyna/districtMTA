@@ -28,3 +28,17 @@
     color: rgba(255, 255, 255, 0.602);
     text-shadow: 0.063rem 0.063rem 0.125rem rgba(255, 255, 255, 0.4);
 }
+
+.keycap {
+    background-color: #fff;
+    color: #333;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    box-shadow: inset 0 -0.16rem 0.15rem rgba(0, 0, 0, 0.5);
+}
+
+.keycap-sm {
+    padding: 0.1rem 0.3rem;
+}

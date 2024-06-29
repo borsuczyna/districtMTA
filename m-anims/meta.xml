@@ -1,0 +1,10 @@
+<meta>
+    <script src="server.lua" type="client"/>
+    <script src="client.lua" type="client" cache="false"/>
+    <script src="editor.lua" type="client" cache="false"/>
+
+    <file src="data/circle.png"/>
+
+    <export function="removeCustomAnimation" type="shared"/>
+    <export function="playCustomAnimation" type="shared"/>
+</meta>

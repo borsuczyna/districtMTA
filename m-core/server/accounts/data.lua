@@ -19,7 +19,7 @@ function savePlayerData(player, noLogs)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    local skin = getElementModel(player)
+    local skin = getElementData(player, 'player:skin')
     local money = getPlayerMoney(player)
     local playerName = getPlayerName(player)
 
