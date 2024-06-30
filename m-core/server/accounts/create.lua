@@ -1,4 +1,4 @@
-function createAccountResult(queryResult, hash)
+local function createAccountResult(queryResult, hash)
     local result = dbPoll(queryResult, 0)
     if result then
         sendAccountResponse(hash, {'register', true, 'Konto zostało utworzone'})
@@ -7,7 +7,7 @@ function createAccountResult(queryResult, hash)
     end
 end
 
-function checkAccountExistsResult(queryResult, hash, data)
+local function checkAccountExistsResult(queryResult, hash, data)
     local result = dbPoll(queryResult, 0)
     
     if #result > 0 then
@@ -43,7 +43,7 @@ function checkAccountExistsResult(queryResult, hash, data)
     data.username, data.password, data.email, data.ip, data.serial)
 end
 
-function createAccountInternal(data, hash)
+local function createAccountInternal(data, hash)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         sendAccountResponse(hash, {'register', false, 'Brak połączenia z bazą danych'})

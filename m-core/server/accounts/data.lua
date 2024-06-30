@@ -38,11 +38,12 @@ function savePlayerData(player, noLogs)
 end
 
 function saveAllPlayers()
+    local startTime = getTickCount()
     for i, player in ipairs(getElementsByType('player')) do
         savePlayerData(player, true)
     end
 
-    exports['m-logs']:sendLog('accounts', 'info', 'Zapisano dane wszystkich graczy')
+    exports['m-logs']:sendLog('accounts', 'info', 'Zapisano dane wszystkich graczy (' .. getTickCount() - startTime .. 'ms)')
 end
 
 addEventHandler('onPlayerQuit', root, function()

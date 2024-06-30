@@ -158,7 +158,6 @@ function toggleScooterJump(key, state)
 	if state == 'down' then
 		if not jumping then
 			jumping = getTickCount()
-			triggerServerEvent('scooter:jump', localPlayer)
 		end
 	elseif state == 'up' then
 		local x, y, z = getElementPosition(vehicle)

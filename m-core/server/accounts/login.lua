@@ -1,4 +1,4 @@
-function loginResult(queryResult, hash, data)
+local function loginResult(queryResult, hash, data)
     local result = dbPoll(queryResult, 0)
     if not result then
         sendAccountResponse(hash, {'login', false, 'Błąd podczas logowania'})
@@ -24,7 +24,7 @@ function loginResult(queryResult, hash, data)
     sendAccountResponse(hash, {'login', true, 'Zalogowano pomyślnie', accountData})
 end
 
-function loginInternal(data, hash)
+local function loginInternal(data, hash)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         sendAccountResponse(hash, {'login', false, 'Brak połączenia z bazą danych'})

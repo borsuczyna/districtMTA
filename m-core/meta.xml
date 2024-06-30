@@ -14,6 +14,7 @@
     <script src='server/accounts/data.lua' type='server'/>
 
     <!-- vehicles -->
+    <script src='server/vehicles/main.lua' type='server'/>
     <script src='server/vehicles/damage.lua' type='server'/>
 
     <script src='shared/players.lua' type='server'/>
