@@ -1,32 +1,28 @@
 local applicationID = '1256281764041854977'
-local isLoaded = false
 
-function showDiscordPresence()
-    local id = getElementData(localPlayer, 'player:id') or 0
-
+function updateDiscordPresence()
+    local state, color, max = exports['m-status']:getPlayerStatus(localPlayer)
+    
+    setDiscordRichPresenceState('Gra jako '..getPlayerName(localPlayer))
+    setDiscordRichPresenceDetails(state .. ' (1 z '.. max ..')')
     setDiscordRichPresenceAsset('logo', 'districtMTA')
-    setDiscordRichPresenceSmallAsset('user', 'ID: '..id)
-    setDiscordRichPresenceDetails('Loguje się')
-end 
 
-function loadDiscordPresence()
+    if max == #getElementsByType('player') then
+        setDiscordRichPresencePartySize(0, 0)
+    else
+        setDiscordRichPresencePartySize(1, #getElementsByType('player'))
+    end
+end
+
+function initDiscordPresence()
     local isEnabled = isDiscordRichPresenceConnected()
     if not isEnabled then return end
 
-    isLoaded = setDiscordApplicationID(applicationID)
-    showDiscordPresence()
+    setDiscordApplicationID(applicationID)
+    updateDiscordPresence()
+    setTimer(updateDiscordPresence, 10000, 0)
 end
 
-function setDiscordPresenceDetails(details)
-    if not isLoaded then return end
-    setDiscordRichPresenceDetails(details)
-end
-
-function setDiscordPresenceState(state)
-    if not isLoaded then return end
-    setDiscordRichPresenceState(state)
-end
-
-addEventHandler('onClientResourceStart', root, function()
-    loadDiscordPresence()
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    initDiscordPresence()
 end)

@@ -1,4 +1,16 @@
 local scoreboardLoaded, scoreboardVisible, scoreboardTimer = false, false, false
+local statuses = {}
+
+function getPlayerStatus(player)
+    if statuses[player] and statuses[player].time > getTickCount() then
+        return statuses[player].status, statuses[player].statusColor
+    end
+
+    local status, statusColor = exports['m-status']:getPlayerStatus(player)
+    statuses[player] = {status = status, statusColor = statusColor, time = getTickCount() + 5000}
+
+    return status, statusColor
+end
 
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
@@ -18,13 +30,8 @@ function updateScoreboardData()
         local name = getPlayerName(player)
         local ping = getPlayerPing(player)
         local organization = getElementData(player, 'player:organization') or ''
-        local status = 'W grze'
-        local statusColor = '#3AF36D'
-        if uid == 0 then
-            status = 'Loguje się'
-            statusColor = '#cccccc'
-        end
         local level = getElementData(player, 'player:level') or 0
+        local status, statusColor = getPlayerStatus(player)
 
         table.insert(data, {
             uid = uid,
