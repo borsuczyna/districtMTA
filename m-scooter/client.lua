@@ -148,3 +148,31 @@ addEventHandler("onClientWorldSound", root, function()
 		end
     end
 end)
+
+local jumping = false
+
+function toggleScooterJump(key, state)
+	local vehicle = getPedOccupiedVehicle(localPlayer)
+	if not vehicle or getElementModel(vehicle) ~= 448 then return end
+
+	if state == 'down' then
+		if not jumping then
+			jumping = getTickCount()
+			triggerServerEvent('scooter:jump', localPlayer)
+		end
+	elseif state == 'up' then
+		local x, y, z = getElementPosition(vehicle)
+		local groundZ = getGroundPosition(x, y, z)
+		if math.abs(z - groundZ) > 0.8 then return end
+		
+		local timeElapsed = getTickCount() - jumping
+		local jump = timeElapsed / 500
+		jump = math.min(jump, 1)
+
+		local vx, vy, vz = getElementVelocity(vehicle)
+		setElementVelocity(vehicle, vx, vy, vz + jump/8)
+		jumping = false
+	end
+end
+
+bindKey('lctrl', 'both', toggleScooterJump)
