@@ -61,7 +61,11 @@ function loginFailed(client, hash)
 end
 
 addEventHandler('login:login', resourceRoot, function(login, password)
-    if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then return end
+    if getElementData(client, 'player:triggerLocked') return end
+    if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true)
+        return
+    end
 
     local hash, message = exports['m-core']:loginToAccount({usernameOrEmail = login, password = password})
     if not hash then
@@ -74,7 +78,11 @@ addEventHandler('login:login', resourceRoot, function(login, password)
 end)
 
 addEventHandler('login:register', resourceRoot, function(email, login, password)
-    if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then return end
+    if getElementData(client, 'player:triggerLocked') return end
+    if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true)
+        return
+    end
 
     local hash, message = exports['m-core']:createAccount({
         username = login,
@@ -93,7 +101,11 @@ addEventHandler('login:register', resourceRoot, function(email, login, password)
 end)
 
 addEventHandler('login:spawn', resourceRoot, function(data)
-    if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then return end
+    if getElementData(client, 'player:triggerLocked') return end
+    if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true)
+        return
+    end
 
     local x, y, z = data['2'], data['3'], data['4']
     spawnPlayer(client, x, y, z, 0, getElementData(client, 'player:skin'))

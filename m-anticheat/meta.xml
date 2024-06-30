@@ -1,8 +1,8 @@
 <meta>
     <download_priority_group>9998</download_priority_group>
 
-    <!-- <script src='server/anty_vpn.lua' type='server'/> -->
-    <script src='server/trigger_locker.lua' type='server'/>
+    <!-- <script src='server/anty-vpn.lua' type='server'/> -->
+    <script src='server/trigger-locker.lua' type='server'/>
 
     <export function='setPlayerTriggerLocked' type='server'/>
     <export function='isPlayerTriggerLocked' type='server'/>
