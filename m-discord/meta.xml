@@ -1,0 +1,6 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <export function='setDiscordPresenceDetails' type='client'/>
+    <export function='setDiscordPresenceState' type='client'/>
+</meta>
