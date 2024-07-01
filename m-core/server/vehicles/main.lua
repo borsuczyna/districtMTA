@@ -25,17 +25,20 @@ local function loadPrivateVehicle(data)
     
     local x, y, z = unpack(map(split(data.position, ','), tonumber))
     local rx, ry, rz = unpack(map(split(data.rotation, ','), tonumber))
+    local health = data.health
     local color = map(split(data.color, ','), tonumber)
     local plate = data.plate or uidToPlate(data.uid)
     local panels = map(split(data.panels, ','), tonumber)
     local doors = map(split(data.doors, ','), tonumber)
     local lights = map(split(data.lights, ','), tonumber)
     local wheelStates = map(split(data.wheels, ','), tonumber)
+    local tuning = map(split(data.tuning, ','), tonumber)
 
     local vehicle = createVehicle(data.model, x, y, z, rx, ry, rz, plate)
     setElementData(vehicle, 'vehicle:uid', data.uid)
     vehicles[data.uid] = vehicle
 
+    setElementHealth(vehicle, health)
     setVehicleColor(vehicle, unpack(color))
     setVehicleHeadLightColor(vehicle, color[13] or 255, color[14] or 255, color[15] or 255)
     setElementData(vehicle, 'vehicle:owner', data.owner)
@@ -54,6 +57,10 @@ local function loadPrivateVehicle(data)
 
     setVehicleWheelStates(vehicle, unpack(wheelStates))
 
+    for _, tuning in pairs(tuning) do
+        addVehicleUpgrade(vehicle, tuning)
+    end
+
     if data.sharedPlayers then
         setElementData(vehicle, 'vehicle:sharedPlayers', map(split(data.sharedPlayers, ','), tonumber))
     end
@@ -65,10 +72,13 @@ end
 
 function buildSavePrivateVehicleQuery(vehicle)
     local uid = getElementData(vehicle, 'vehicle:uid')
+    local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
+    local tuning = getVehicleUpgrades(vehicle) or {}
     local r, g, b = getVehicleHeadLightColor(vehicle)
     table.insert(color, r); table.insert(color, g); table.insert(color, b)
     local saveData = {
+        health = health,
         position = table.concat({getElementPosition(vehicle)}, ','),
         rotation = table.concat({getElementRotation(vehicle)}, ','),
         color = table.concat(color, ','),
@@ -82,6 +92,7 @@ function buildSavePrivateVehicleQuery(vehicle)
             return getVehicleLightState(vehicle, i)
         end), ','),
         wheels = table.concat({getVehicleWheelStates(vehicle)}, ','),
+        tuning = table.concat(tuning, ','),
     }
 
     local query = 'UPDATE `m-vehicles` SET ' .. table.concat(mapk(saveData, function(value, key)
