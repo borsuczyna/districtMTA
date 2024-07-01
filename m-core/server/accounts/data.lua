@@ -12,6 +12,28 @@ function assignPlayerData(player, data)
     dbExec(connection, 'UPDATE `m-users` SET lastActive = NOW() WHERE uid = ?', data.uid)
 end
 
+function buildSavePlayerQuery(player)
+    local uid = getElementData(player, 'player:uid')
+
+    local skin = getElementData(player, 'player:skin')
+    local money = getPlayerMoney(player)
+
+    local saveData = {
+        skin = skin,
+        money = money,
+    }
+
+    local query = 'UPDATE `m-users` SET ' .. table.concat(mapk(saveData, function(value, key)
+        return '`' .. key .. '` = ?'
+    end), ', ') .. ' WHERE `uid` = ?'
+    local values = mapk(saveData, function(value)
+        return value
+    end)
+    table.insert(values, uid)
+
+    return query, values, uid
+end
+
 function savePlayerData(player, noLogs)
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
@@ -19,22 +41,8 @@ function savePlayerData(player, noLogs)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    local skin = getElementData(player, 'player:skin')
-    local money = getPlayerMoney(player)
-    local playerName = getPlayerName(player)
-
-    dbQuery(function(qh)
-        local result, modifiedRows = dbPoll(qh, 0)
-        if not result then return end
-
-        if not noLogs then
-            if modifiedRows == 0 then
-                exports['m-logs']:sendLog('accounts', 'info', 'Nie było nic do zapisania dla gracza ' .. playerName)
-            else
-                exports['m-logs']:sendLog('accounts', 'success', 'Zapisano dane gracza ' .. playerName)
-            end
-        end
-    end, connection, 'UPDATE `m-users` SET skin = ?, money = ? WHERE uid = ?', skin, money, uid)
+    local query, values, uid = buildSavePlayerQuery(player)
+    dbExec(connection, query, unpack(values))
 end
 
 function saveAllPlayers()
