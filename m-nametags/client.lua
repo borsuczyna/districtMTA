@@ -5,6 +5,10 @@ local fonts = {
 }
 
 function renderNametag(player)
+    if not getElementData(player, 'player:spawn') then return end
+    local playerID = getElementData(player, 'player:id')
+    if not playerID then return end
+
     local x, y, z = getPedBonePosition(player, 8)
     local dist = math.max(getDistanceBetweenPoints3D(Vector3(getCameraMatrix()), Vector3(x, y, z)) - 5, 0)
     local x, y = getScreenFromWorldPosition(x, y, z + 0.4)
@@ -13,8 +17,7 @@ function renderNametag(player)
     local scale = 1 - dist / 20
     if scale < 0.2 then return end
 
-    local playerID = getElementData(player, 'player:id') or "---"
-    local organization = 'borsuczy gaj'
+    local organization = getElementData(player, 'player:organization')
 
     local icons = {}
     if getElementData(player, 'player:premium') then
@@ -25,10 +28,13 @@ function renderNametag(player)
     for i,icon in ipairs(icons) do
         dxDrawImage(x - iconsWidth/2 + (i-1) * (25*scale + 5*scale), y - 48*scale, 25*scale, 25*scale, 'img/'..icon..'.png', 0, 0, 0, tocolor(255, 225, 155, 200))
     end
-    dxDrawText(organization, x + 1, y + 1, nil, nil, tocolor(0,0,0,155), scale, fonts[2], 'center', 'top', false, false, false, false, true)
-    dxDrawText(organization, x, y, nil, nil, tocolor(200,200,200,225), scale, fonts[2], 'center', 'top', false, false, false, true, true)
-    dxDrawText(''..playerID..' '..getPlayerName(player), x + 1, y + 1, nil, nil, tocolor(0,0,0,155), scale, fonts[1], 'center', 'bottom', false, false, false, false, true)
-    dxDrawText(''..playerID..' #ffffff'..getPlayerName(player), x, y, nil, nil, tocolor(255,215,125,225), scale, fonts[1], 'center', 'bottom', false, false, false, true, true)
+    if organization then
+        dxDrawText(organization, x + 1, y + 1, nil, nil, tocolor(0,0,0,155), scale, fonts[2], 'center', 'top', false, false, false, false, true)
+        dxDrawText(organization, x, y, nil, nil, tocolor(200,200,200,225), scale, fonts[2], 'center', 'top', false, false, false, true, true)
+    end
+
+    dxDrawText(playerID..' '..getPlayerName(player), x + 1, y + 1, nil, nil, tocolor(0,0,0,155), scale, fonts[1], 'center', 'bottom', false, false, false, false, true)
+    dxDrawText(playerID..' #ffffff'..getPlayerName(player), x, y, nil, nil, tocolor(255,215,125,225), scale, fonts[1], 'center', 'bottom', false, false, false, true, true)
 end
 
 
