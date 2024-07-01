@@ -1,0 +1,12 @@
+<meta>
+	<include resource='m-ui'/>
+
+	<script src="client.lua" type="client"/>
+
+	<file src='img/1.png'/>
+	<file src='img/2.png'/>
+	<file src='img/3.png'/>
+	<file src='img/4.png'/>
+	<file src='img/premium.png'/>
+	<file src='img/voice.png'/>
+</meta>

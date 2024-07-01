@@ -8,5 +8,6 @@ function isPlayerTriggerLocked(player)
         exports['m-logs']:sendLog('anticheat', 'warning', message)
         return true
     end
+    
     return getElementData(player, 'player:triggerLocked')
 end
