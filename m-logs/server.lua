@@ -2,6 +2,7 @@ local logChannels = {
     general = 'https://discord.com/api/webhooks/1255555992385618023/LQrzBTVevkjhxfCUAwFaugH0fCAgtDuHzym8A9fp7bqNzOqCV4ZKhfbylZt8c_74yX8V',
     accounts = 'https://discord.com/api/webhooks/1255555450796245033/rKZhMAvzFoTrVpl67Jj23WCeB_NxJt6OHkSWRv8JtxbOx5Z_fbezxCuECv5ZwpqAtNwo',
     vehicles = 'https://discord.com/api/webhooks/1257078940200210585/u5Zpvc8rkOjRYNh_KCQdSDEe43p6iuU4CwQVDXN-tPbu6F8L3no3EI7sneJQHA1N8eFw',
+    anticheat = 'https://discord.com/api/webhooks/1257381267490471978/KHKyyMOixmwRz2LawNiAgKhiDN8CuvgcI-ovmHZFwLCSPZVWZvMALOjSd4WrpYgcx2g-',
 }
 
 local icons = {

@@ -69,7 +69,7 @@ end
 
 addEvent('avatars:getPlayerAvatar', true)
 addEventHandler('avatars:getPlayerAvatar', resourceRoot, function(uid)
-    if getElementData(client, 'player:triggerLocked') then return end
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     local player = exports['m-core']:getPlayerByUid(uid)
     if not player then return end

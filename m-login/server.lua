@@ -61,7 +61,7 @@ function loginFailed(client, hash)
 end
 
 addEventHandler('login:login', resourceRoot, function(login, password)
-    if getElementData(client, 'player:triggerLocked') then return end
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true)
         return
@@ -78,7 +78,7 @@ addEventHandler('login:login', resourceRoot, function(login, password)
 end)
 
 addEventHandler('login:register', resourceRoot, function(email, login, password)
-    if getElementData(client, 'player:triggerLocked') then return end
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true)
         return
@@ -101,7 +101,7 @@ addEventHandler('login:register', resourceRoot, function(email, login, password)
 end)
 
 addEventHandler('login:spawn', resourceRoot, function(data)
-    if getElementData(client, 'player:triggerLocked') then return end
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true)
         return
