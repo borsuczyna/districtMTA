@@ -64,7 +64,7 @@ end
 
 addEvent('scooter:rent', true)
 addEventHandler('scooter:rent', resourceRoot, function()
-	if getElementData(client, 'player:triggerLocked') return end
+	if getElementData(client, 'player:triggerLocked') then return end
     if getElementData(client, 'player:job') then
 		exports['m-notis']:addNotification(cleint, 'error', 'Wypożyczalnia', 'Nie możesz wypożyczyć hulajnogi będąc w pracy!')
 		return
@@ -108,7 +108,7 @@ end
 
 addEvent('scooter:fold', true)
 addEventHandler('scooter:fold', resourceRoot, function()
-	if getElementData(client, 'player:triggerLocked') return end
+	if getElementData(client, 'player:triggerLocked') then return end
 	local rented = getElementData(client, 'scooter:rented')
 	if not rented then return end
 

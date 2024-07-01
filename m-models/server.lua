@@ -43,7 +43,7 @@ addCommandHandler('encode', function(player, cmd, name)
 end)
 
 addEventHandler('models:getEncodeHashes', root, function(wanted)
-    if getElementData(client, 'player:triggerLocked') return end
+    if getElementData(client, 'player:triggerLocked') then return end
     local hashes = {}
     for _, file in ipairs(wanted) do
         local hash = getFileHash('data/decoded/' .. file)

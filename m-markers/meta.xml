@@ -1,9 +1,10 @@
 <meta>
+    <min_mta_version client='1.6.0-9.21695'></min_mta_version>
     <include resource='m-ui'/>
-
+    
     <script src='utils.lua' type='client' cache='false'/>
     <script src='client.lua' type='client' cache='false'/>
-
+    
     <file src='data/marker.dff'/>
     <file src='data/square-marker.dff'/>
     <file src='data/marker.txd'/>
