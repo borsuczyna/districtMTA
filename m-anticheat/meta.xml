@@ -11,8 +11,11 @@
     <!-- <script src='server/anty-vpn.lua' type='server'/> -->
     <script src='server/trigger-locker.lua' type='server'/>
     <script src='server/fingerprint.lua' type='server'/>
+    <script src='server/element-datas.lua' type='server'/>
 
     <export function='setPlayerTriggerLocked' type='server'/>
     <export function='isPlayerTriggerLocked' type='server'/>
+    <export function='getPlayerFingerprint' type='server'/>
+    <export function='getPlayerDecodedFingerprint' type='server'/>
     <export function='ban' type='server'/>
 </meta>

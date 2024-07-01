@@ -3,6 +3,7 @@ local loadingQueue = {
     nextModelLoad = getTickCount()
 }
 
+setOcclusionsEnabled(false)
 addEvent('models:receiveEncodeHashes', true)
 
 function decodeFile(path, hash)
@@ -28,7 +29,7 @@ end
 function loadModel(name, data)
     if cancelLoadingModels then return end -- nop addDebugHook detected
 
-    local filePath = 'data/encoded/' .. name
+    local filePath = 'data/decoded/' .. name
     local model = data.model
     if data.custom then
         data.model = engineRequestModel(data.type or 'object', model or 1337)

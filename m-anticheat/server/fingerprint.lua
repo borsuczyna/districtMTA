@@ -50,18 +50,12 @@ addEventHandler('fingerprint:response', root, function(response)
     end
 
     receivedFingerprints[client] = response
-    setElementData(client, 'player:fingerprint', response)
-end)
-
-addEventHandler('onElementDataChange', root, function(dataName, oldValue)
-    if dataName == 'player:fingerprint' and client then
-        ban(client, 'IF04', 'Tried to change fingerprint (`' .. getElementData(client, 'player:fingerprint') .. '`)')
-    end
+    exports['m-core']:checkBan(client, getPlayerSerial(client), response, getPlayerIP(client))
+    setElementData(client, 'player:fingerprint', response, false)
 end)
 
 addEventHandler('onPlayerResourceStart', root, function(resource)
     if getResourceName(resource) == 'm-anticheat' then
         removeElementData(source, 'player:fingerprint')
-        print('Resource started: ' .. getResourceName(resource))
     end
 end)

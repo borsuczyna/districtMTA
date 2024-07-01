@@ -16,7 +16,7 @@ function getFileHash(name)
     local size = fileGetSize(file)
     fileClose(file)
 
-    return teaEncode(name .. size, encodeHash .. size)
+    return 'elo'
 end
 
 function encodeFile(name)

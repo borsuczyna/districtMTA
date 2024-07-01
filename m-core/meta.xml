@@ -13,6 +13,7 @@
     <script src='server/accounts/create.lua' type='server'/>
     <script src='server/accounts/login.lua' type='server'/>
     <script src='server/accounts/data.lua' type='server'/>
+    <script src='server/accounts/ban.lua' type='server'/>
 
     <!-- vehicles -->
     <script src='server/vehicles/main.lua' type='server'/>
@@ -20,6 +21,7 @@
 
     <script src='shared/players.lua' type='server'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
+    <script src='shared/vehicles.lua' type='shared' cache='false'/>
 
     <export function='getPlayerFromPartialName' type='shared'/>
     <export function='getPlayerById' type='shared'/>
@@ -31,4 +33,8 @@
     <export function='getPlayerByUid' type='shared'/>
     <export function='getPlayerById' type='shared'/>
     <export function='getPlayerFromPartialName' type='shared'/>
+    <export function='findVehicle' type='shared'/>
+    <export function='tempBan' type='server'/>
+    <export function='permBan' type='server'/>
+    <export function='checkBan' type='server'/>
 </meta>

@@ -103,11 +103,21 @@ end)
 addEventHandler('login:spawn', resourceRoot, function(data)
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true)
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn without being logged in/while being already spawned')
+        return
+    end
+
+    if type(data) ~= 'table' then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
         return
     end
 
     local x, y, z = data['2'], data['3'], data['4']
+    if type(x) ~= 'number' or type(y) ~= 'number' or type(z) ~= 'number' then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
+        return
+    end
+
     spawnPlayer(client, x, y, z, 0, getElementData(client, 'player:skin'))
     setElementData(client, 'player:spawn', {x, y, z})
     setCameraTarget(client, client)

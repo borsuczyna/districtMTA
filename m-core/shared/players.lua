@@ -1,13 +1,15 @@
-function getPlayerFromPartialName(name)
+function getPlayerFromPartialName(searchName)
+    if #searchName < 1 then return false end
+
     local players = getElementsByType('player')
     for i, player in ipairs(players) do
         local name = removeHex(getPlayerName(player)):lower()
-        if name:find(name) then
+        if name:find(searchName) then
             return player
         end
 
         local id = getElementData(player, 'player:id')
-        if tonumber(name) == id then
+        if id and tonumber(searchName) == id then
             return player
         end
     end

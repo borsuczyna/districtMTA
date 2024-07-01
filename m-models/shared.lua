@@ -52,5 +52,6 @@ function decodeFileIn(path, hash)
     local data = fileRead(file, size)
     fileClose(file)
     
-    return teaDecode(data, hash)
+    return data
+    -- return teaDecode(data, hash)
 end
