@@ -4,6 +4,11 @@ models = {
         custom = true,
         type = 'object',
         model = 1337,
+    },
+    ['spawn-ls'] = {
+        custom = false,
+        type = 'object',
+        model = 4824,
     }
 }
 
