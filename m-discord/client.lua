@@ -6,7 +6,7 @@ function updateDiscordPresence()
     setDiscordRichPresenceState('Gra jako '..getPlayerName(localPlayer))
     setDiscordRichPresenceDetails(state .. ' (1 z '.. max ..')')
     setDiscordRichPresenceAsset('logo', 'districtMTA')
-
+    
     if max == #getElementsByType('player') then
         setDiscordRichPresencePartySize(0, 0)
     else
