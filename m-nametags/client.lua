@@ -4,6 +4,17 @@ local fonts = {
     [3] = exports['m-ui']:getFont('Inter-Black', 12),
 }
 
+function getPlayerColor(player)
+    local color = '#cccccc'
+    local premium = getElementData(player, 'player:premium')
+
+    if premium then
+        color = '#ffcc00'
+    end
+
+    return color
+end
+
 function renderNametag(player)
     if not getElementData(player, 'player:spawn') then return end
     local playerID = getElementData(player, 'player:id')
@@ -18,6 +29,7 @@ function renderNametag(player)
     if scale < 0.2 then return end
 
     local organization = getElementData(player, 'player:organization')
+    local color = getPlayerColor(player)
 
     local icons = {}
     if getElementData(player, 'player:premium') then
@@ -34,7 +46,7 @@ function renderNametag(player)
     end
 
     dxDrawText(playerID..' '..getPlayerName(player), x + 1, y + 1, nil, nil, tocolor(0,0,0,155), scale, fonts[1], 'center', 'bottom', false, false, false, false, true)
-    dxDrawText(playerID..' #ffffff'..getPlayerName(player), x, y, nil, nil, tocolor(255,215,125,225), scale, fonts[1], 'center', 'bottom', false, false, false, true, true)
+    dxDrawText(color .. playerID..' #ffffff'..getPlayerName(player), x, y, nil, nil, tocolor(255,215,125,225), scale, fonts[1], 'center', 'bottom', false, false, false, true, true)
 end
 
 

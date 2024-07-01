@@ -5,6 +5,7 @@
     <script src='client/vehicles/damage.lua' type='client'/>
 
     <script src='server/id.lua' type='server'/>
+    <script src='server/chat.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
 
     <!-- accounts -->
