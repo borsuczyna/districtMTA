@@ -29,7 +29,7 @@ function isPlayerBanned(serial, fingerprint, ip)
         return
     end
 
-    local result = dbPoll(dbQuery(connection, [[SELECT * FROM `m-punishments` WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND (`permanent` = 1 OR `end` > NOW()) AND `type`="ban"]], serial, fingerprint, ip), 10000)
+    local result = dbPoll(dbQuery(connection, [[SELECT * FROM `m-punishments` WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND (`permanent` = 1 OR `end` > NOW()) AND `type`="ban" AND `active`=1]], serial, fingerprint, ip), 10000)
     return #result > 0 and result[1] or false
 end
 

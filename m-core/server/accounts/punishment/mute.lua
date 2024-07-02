@@ -40,6 +40,7 @@ function getPlayerMute(player)
         WHERE (`user` = ? OR `serial` = ? OR `fingerprint` = ? OR `ip` = ?)
         AND `type` = "mute"
         AND `end` > NOW()
+        AND `active` = 1
     ]], uid, serial, fingerprint, ip), 10000)
 
     return #result > 0 and result[1] or false
@@ -53,6 +54,7 @@ function updatePlayerMute(player)
     end
 
     setElementData(player, 'player:mute', isMuted['end_timestamp'])
+    setElementData(player, 'player:muteAdmin', isMuted['admin'])
 end
 
 function isPlayerMuted(player)
@@ -97,5 +99,5 @@ function isPlayerMuted(player)
         table.insert(timeStr, ('%d sekund'):format(time.s))
     end
 
-    return table.concat(timeStr, ', ')
+    return table.concat(timeStr, ', '), getElementData(player, 'player:muteAdmin')
 end

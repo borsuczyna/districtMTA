@@ -25,9 +25,9 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
         return
     end
 
-    local timeLeft = isPlayerMuted(source)
+    local timeLeft, admin = isPlayerMuted(source)
     if timeLeft then
-        exports['m-notis']:addNotification(source, 'error', 'Wyciszenie', ('Jesteś wyciszony na %s z powodu: %s'):format(timeLeft, 'elo'))
+        exports['m-notis']:addNotification(source, 'error', 'Wyciszenie', ('Jesteś wyciszony przez %s na %s z powodu: %s'):format(admin, timeLeft, 'elo'))
         return
     end
 

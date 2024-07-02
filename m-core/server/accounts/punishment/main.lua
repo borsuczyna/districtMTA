@@ -40,6 +40,6 @@ function deletePunishment(player, type_)
     local fingerprint = exports['m-anticheat']:getPlayerDecodedFingerprint(player)
     local ip = getPlayerIP(player)
 
-    dbExec(connection, [[DELETE FROM `m-punishments` WHERE (`user` = ? OR `serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND `type` = ?]],
+    dbExec(connection, [[UPDATE `m-punishments` SET `active` = 0 WHERE (`user` = ? OR `serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND `type` = ?]],
         uid, serial, fingerprint, ip, type_)
 end
