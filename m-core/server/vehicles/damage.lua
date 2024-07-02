@@ -1,5 +1,4 @@
 addEventHandler('onVehicleDamage', root, function(loss)
-    local player = getVehicleOccupant(source)
     local health = getElementHealth(source)
     local matrix = getElementMatrix(source)
     local newHealth = health - loss
@@ -13,14 +12,7 @@ addEventHandler('onVehicleDamage', root, function(loss)
             setVehicleEngineState(source, false)
         end
 
-        if not isVehicleDamageProof(source) then
-            setVehicleDamageProof(source, true)
-        end
-
+        setElementHealth(source, 315)
         cancelEvent()
-    elseif newHealth > 315 then
-        if isVehicleDamageProof(source) then
-            setVehicleDamageProof(source, false)
-        end
     end
 end)

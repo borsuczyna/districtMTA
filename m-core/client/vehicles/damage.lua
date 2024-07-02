@@ -13,14 +13,16 @@ addEventHandler('onClientVehicleDamage', root, function(_, _, loss)
             setVehicleEngineState(source, false)
         end
 
-        if not isVehicleDamageProof(source) then
-            setVehicleDamageProof(source, true)
-        end
-
+        setVehicleDamageProof(source, true)
         cancelEvent()
-    elseif newHealth > 315 then
-        if isVehicleDamageProof(source) then
-            setVehicleDamageProof(source, false)
+    end
+end)
+
+addEventHandler('onClientRender', root, function()
+    for _, vehicle in ipairs(getElementsByType('vehicle', root, true)) do
+        local health = getElementHealth(vehicle)
+        if health > 315 then
+            setVehicleDamageProof(vehicle, false)
         end
     end
 end)
