@@ -1,6 +1,8 @@
 <meta>
     <include resource='m-ui'/>
 
+    <script src='client/noclip.lua' type='client' cache='false'/>
+
     <script src='shared/main.lua' type='shared' cache='false'/>
     <script src='server/main.lua' type='server'/>
     
