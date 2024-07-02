@@ -3,6 +3,7 @@ ranks = {
         name = 'Support',
         color = {52, 152, 219},
         permissions = {
+            'logs',
             'reports',
             'command:teleport',
         }
@@ -11,6 +12,7 @@ ranks = {
         name = 'Moderator',
         color = {46, 205, 112},
         permissions = {
+            'logs',
             'reports',
             'command:teleport',
             'command:kick',
@@ -22,6 +24,7 @@ ranks = {
         name = 'Admin',
         color = {231, 76, 60},
         permissions = {
+            'logs',
             'reports',
             'noclip',
             'command:teleport',
@@ -34,6 +37,7 @@ ranks = {
         name = 'RCON',
         color = {255, 40, 10},
         permissions = {
+            'logs',
             'reports',
             'noclip',
             'command:teleport',
@@ -47,6 +51,7 @@ ranks = {
         name = 'Zarząd',
         color = {231, 126, 35},
         permissions = {
+            'logs',
             'reports',
             'noclip',
             'command:teleport',

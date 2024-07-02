@@ -2,6 +2,7 @@
     <include resource='m-ui'/>
 
     <script src='client/noclip.lua' type='client' cache='false'/>
+    <script src='client/logs.lua' type='client' cache='false'/>
 
     <script src='shared/main.lua' type='shared' cache='false'/>
     <script src='server/main.lua' type='server'/>
@@ -11,6 +12,8 @@
     <script src='commands/ban.lua' type='server'/>
     <script src='commands/mute.lua' type='server'/>
     <script src='commands/jetpack.lua' type='server'/>
+
+    <file src='data/logs.html'/>
 
     <export function='getRankName' type='shared'/>
     <export function='getRankColor' type='shared'/>
