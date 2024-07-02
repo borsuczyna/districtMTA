@@ -22,7 +22,7 @@
     <script src='server/vehicles/main.lua' type='server'/>
     <script src='server/vehicles/damage.lua' type='server'/>
 
-    <script src='shared/players.lua' type='server'/>
+    <script src='shared/players.lua' type='shared' cache='false'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
     <script src='shared/vehicles.lua' type='shared' cache='false'/>
 

@@ -60,11 +60,15 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     if messageType == 0 then -- local
         local message = ('%s(#ffffff%d%s) #ffffff%s: %s'):format(color, playerID, color, playerName, message)
         sendLocalMessage(x, y, z, message, 20, 255, 215, 125)
-        exports['m-admins']:addLog('chat', message)
+        exports['m-admins']:addLog('chat', message, {
+            {'teleport', 'teleport-uid', playerUID}
+        }) 
     elseif messageType == 1 then -- me
-        local message = ('* (%d) %s %s'):format(playerID, playerName, message)
+        local message = ('* %s %s'):format(playerName, message)
         sendLocalMessage(x, y, z, message, 20, 233, 66, 245)
-        exports['m-admins']:addLog('chat', '#ff99cc' .. message)
+        exports['m-admins']:addLog('chat', '#ff99cc' .. message, {
+            {'teleport', 'teleport-uid', playerUID}
+        })  
     end
 
     antySpam[source] = getTickCount()
@@ -83,12 +87,15 @@ addCommandHandler('do', function(player, command, ...)
     local message = removeHex(table.concat({...}, ' '))
     local playerName = getPlayerName(player)
     local playerID = getElementData(player, 'player:id')
+    local playerUID = getElementData(player, 'player:uid')
     local premium = getElementData(player, 'player:premium')
     local color = getPlayerColor(player)
 
     local message = ('** %s (%s)'):format(message, playerName)
     sendLocalMessage(x, y, z, message, 20, 0, 112, 224)
-    exports['m-admins']:addLog('chat', '#70aaff' .. message)
+    exports['m-admins']:addLog('chat', '#70aaff' .. message, {
+        {'teleport', 'teleport-uid', playerUID}
+    })
 end)
 
 local respondTo = {}
