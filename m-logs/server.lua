@@ -4,6 +4,7 @@ local logChannels = {
     vehicles = 'https://discord.com/api/webhooks/1257078940200210585/u5Zpvc8rkOjRYNh_KCQdSDEe43p6iuU4CwQVDXN-tPbu6F8L3no3EI7sneJQHA1N8eFw',
     anticheat = 'https://discord.com/api/webhooks/1257381267490471978/KHKyyMOixmwRz2LawNiAgKhiDN8CuvgcI-ovmHZFwLCSPZVWZvMALOjSd4WrpYgcx2g-',
     bans = 'https://discord.com/api/webhooks/1257432355203711056/qUAR4s2mW1wi8ta7f5JczUoNVgB76N7m4SzkTVjgMKWur_9jgM5oNfFF4_6PZ1Youyb2',
+    admin = 'https://discord.com/api/webhooks/1257714046023630898/7q7mxNBL04RGbPNiv9I7Sq18RMSuSaRdFkhjYpDZeaepzDk0EXRTOvxJWjImxXuo5vGP',
 }
 
 local icons = {

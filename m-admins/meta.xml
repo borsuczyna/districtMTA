@@ -6,6 +6,7 @@
     
     <script src='commands/teleport.lua' type='server'/>
     <script src='commands/kick.lua' type='server'/>
+    <script src='commands/ban.lua' type='server'/>
 
     <export function='getRankName' type='shared'/>
     <export function='getRankColor' type='shared'/>

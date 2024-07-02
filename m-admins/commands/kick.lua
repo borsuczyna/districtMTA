@@ -11,7 +11,10 @@ addCommandHandler('k', function(player, cmd, playerToFind, ...)
         return
     end
 
+    local playerName = getPlayerName(player)
+    local foundPlayerName = getPlayerName(foundPlayer)
+
     kickPlayer(foundPlayer, player, reason)
-    exports['m-logs']:sendLog('admin', 'Kick', ('Gracz %s wyrzucił gracza %s: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), reason))
-    exports['m-notis']:addNotification(player, 'success', 'Kick', ('Wyrzucono gracza %s'):format(getPlayerName(foundPlayer)))
+    exports['m-logs']:sendLog('admin', 'Kick', ('Admin `%s` wyrzucił gracza `%s`: `%s`'):format(playerName, foundPlayerName, reason))
+    exports['m-notis']:addNotification(player, 'success', 'Kick', ('Wyrzucono gracza %s'):format(foundPlayerName))
 end)

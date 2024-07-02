@@ -31,6 +31,10 @@ function createPunishment(player, bannedBy, type_, time, timeUnit, reason, addit
 end
 
 function tempBan(player, bannedBy, time, timeUnit, discordReason, reason)
+    if type(bannedBy) ~= 'string' then
+        bannedBy = getPlayerName(bannedBy)
+    end
+
     local message = ('Zbanowano `%s` na %d%s przez `%s`: `%s`'):format(getPlayerName(player), time, timeUnit, bannedBy, discordReason)
     exports['m-logs']:sendLog('bans', 'error', message)
     
@@ -38,6 +42,10 @@ function tempBan(player, bannedBy, time, timeUnit, discordReason, reason)
 end
 
 function permBan(player, bannedBy, discordReason, reason)
+    if type(bannedBy) ~= 'string' then
+        bannedBy = getPlayerName(bannedBy)
+    end
+    
     local message = ('Zbanowano `%s` na zawsze przez `%s`: `%s`'):format(getPlayerName(player), bannedBy, discordReason)
     exports['m-logs']:sendLog('bans', 'error', message)
 

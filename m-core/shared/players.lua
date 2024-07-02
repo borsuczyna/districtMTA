@@ -1,5 +1,5 @@
 function getPlayerFromPartialName(searchName)
-    if #searchName < 1 then return false end
+    if not searchName or #searchName < 1 then return false end
 
     local players = getElementsByType('player')
     for i, player in ipairs(players) do

@@ -39,10 +39,10 @@ addEventHandler('fingerprint:response', root, function(response)
         return
     end
 
-    if getResourceName(sourceResource) ~= 'm-anticheat' then
-        ban(client, 'IF02', 'Invalid resource (`' .. getResourceName(sourceResource) .. '`)')
-        return
-    end
+    -- if getResourceName(sourceResource) ~= 'm-anticheat' then
+    --     ban(client, 'IF02', 'Invalid resource (`' .. getResourceName(sourceResource) .. '`)')
+    --     return
+    -- end
 
     if receivedFingerprints[client] then
         ban(client, 'IF03', 'Already sent fingerprint')

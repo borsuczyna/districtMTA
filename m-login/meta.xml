@@ -1,5 +1,6 @@
 <meta>
     <include resource='m-ui'/>
+    <include resource='m-updates'/>
 
     <script src='client.lua' type='client' cache='false'/>
     <script src='spawn.lua' type='client' cache='false'/>
