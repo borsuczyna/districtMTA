@@ -17,7 +17,7 @@ function getPlayerStatus(player)
         statusColor = '#cccccc'
     end
 
-    if rank > 0 then
+    if rank and rank > 0 then
         if not ranksData[rank] then
             ranksData[rank] = {
                 name = exports['m-admins']:getRankName(rank),
