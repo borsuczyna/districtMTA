@@ -5,7 +5,7 @@
 
     <file src='data/fingerprint.html'/>
     
-    <script src='client/fingerprint.lua' type='client'/>
+    <script src='client/fingerprint.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
     <!-- <script src='server/anty-vpn.lua' type='server'/> -->
