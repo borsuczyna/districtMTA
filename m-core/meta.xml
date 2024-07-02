@@ -13,7 +13,9 @@
     <script src='server/accounts/create.lua' type='server'/>
     <script src='server/accounts/login.lua' type='server'/>
     <script src='server/accounts/data.lua' type='server'/>
-    <script src='server/accounts/ban.lua' type='server'/>
+    <script src='server/accounts/punishment/main.lua' type='server'/>
+    <script src='server/accounts/punishment/ban.lua' type='server'/>
+    <script src='server/accounts/punishment/mute.lua' type='server'/>
 
     <!-- vehicles -->
     <script src='server/vehicles/main.lua' type='server'/>
@@ -36,5 +38,7 @@
     <export function='findVehicle' type='shared'/>
     <export function='tempBan' type='server'/>
     <export function='permBan' type='server'/>
+    <export function='mutePlayer' type='server'/>
+    <export function='unmutePlayer' type='server'/>
     <export function='checkBan' type='server'/>
 </meta>

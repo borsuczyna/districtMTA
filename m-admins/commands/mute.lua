@@ -1,11 +1,11 @@
-addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
-    if not doesPlayerHavePermission(player, 'command:ban') then
+addCommandHandler('m', function(player, cmd, playerToFind, time, ...)
+    if not doesPlayerHavePermission(player, 'command:mute') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
     end
 
     if not playerToFind or not time then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /b (gracz) (czas np. 1d) (powód)')
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /mute (gracz) (czas np. 1d) (powód)')
         return
     end
 
@@ -37,17 +37,22 @@ addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
     }
 
     local timeUnitName = timeUnits[unit]
-    local discordReason = ('Admin `%s` zbanował gracza `%s` na %d %s: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
-    local notiMessage = ('Zbanowano gracza %s na %d %s'):format(getPlayerName(foundPlayer), timeValue, timeUnitName)
+    local discordReason = ('Admin `%s` wyciszył gracza `%s` na %d %s: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
+    local notiMessage = ('Wyciszono gracza %s na %d %s'):format(getPlayerName(foundPlayer), timeValue, timeUnitName)
     
-    exports['m-core']:tempBan(foundPlayer, player, timeValue, unit, discordReason, reason)
+    exports['m-core']:mutePlayer(foundPlayer, player, timeValue, unit, discordReason, reason)
     exports['m-logs']:sendLog('admin', 'error', discordReason)
-    exports['m-notis']:addNotification(player, 'success', 'Ban', notiMessage)
+    exports['m-notis']:addNotification(player, 'success', 'Mute', notiMessage)
 end)
 
-addCommandHandler('pb', function(player, cmd, playerToFind, ...)
-    if not doesPlayerHavePermission(player, 'command:ban') then
+addCommandHandler('um', function(player, cmd, playerToFind, ...)
+    if not doesPlayerHavePermission(player, 'command:mute') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
+        return
+    end
+
+    if not playerToFind then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /unmute (gracz)')
         return
     end
 
@@ -58,10 +63,10 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
         return
     end
 
-    local discordReason = ('Admin `%s` zbanował gracza `%s` na zawsze: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
-    local notiMessage = ('Zbanowano gracza %s na zawsze'):format(getPlayerName(foundPlayer))
+    local discordReason = ('Admin `%s` odciszył gracza `%s`: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
+    local notiMessage = ('Odciszono gracza %s'):format(getPlayerName(foundPlayer))
 
-    exports['m-core']:permBan(foundPlayer, player, discordReason, reason)
-    exports['m-logs']:sendLog('admin', 'error', discordReason)
-    exports['m-notis']:addNotification(player, 'success', 'Ban', notiMessage)
+    exports['m-core']:unmutePlayer(foundPlayer, player)
+    exports['m-logs']:sendLog('admin', 'success', discordReason)
+    exports['m-notis']:addNotification(player, 'success', 'Unmute', notiMessage)
 end)

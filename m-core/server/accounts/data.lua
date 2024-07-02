@@ -5,6 +5,7 @@ function assignPlayerData(player, data)
     setPlayerName(player, data.username)
     setElementModel(player, data.skin)
     setPlayerMoney(player, data.money)
+    updatePlayerMute(player)
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end

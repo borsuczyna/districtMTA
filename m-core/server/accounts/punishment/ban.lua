@@ -1,35 +1,3 @@
-function createPunishment(player, bannedBy, type_, time, timeUnit, reason, additionalInfo)
-    local connection = exports['m-mysql']:getConnection()
-    if not connection then
-        exports['m-logs']:log('Błąd połączenia z bazą danych', 'error')
-        return
-    end
-
-    if type(bannedBy) ~= 'string' then
-        bannedBy = getPlayerName(bannedBy)
-    end
-
-    local uid = getElementData(player, 'player:uid') or 0
-    local serial = getPlayerSerial(player)
-    local fingerprint = exports['m-anticheat']:getPlayerDecodedFingerprint(player)
-    local ip = getPlayerIP(player)
-
-    local seconds = time
-    if timeUnit == 'm' then
-        seconds = time * 60
-    elseif timeUnit == 'h' then
-        seconds = time * 60 * 60
-    elseif timeUnit == 'd' then
-        seconds = time * 60 * 60 * 24
-    end
-
-    dbExec(connection, [[INSERT INTO `m-punishments` (`user`, `serial`, `fingerprint`, `ip`, `type`, `permanent`, `end`, `admin`, `reason`, `additionalInfo`)
-        VALUES (?, ?, ?, ?, ?, ?, NOW() + INTERVAL ? SECOND, ?, ?, ?)]],
-        uid, serial, fingerprint, ip, type_, seconds == 0, seconds, bannedBy, reason, toJSON(additionalInfo))
-
-    banPlayer(player, true, false, true, bannedBy, 'Połącz się ponownie, aby poznać szczegóły bana', 5)
-end
-
 function tempBan(player, bannedBy, time, timeUnit, discordReason, reason)
     if type(bannedBy) ~= 'string' then
         bannedBy = getPlayerName(bannedBy)
@@ -39,6 +7,7 @@ function tempBan(player, bannedBy, time, timeUnit, discordReason, reason)
     exports['m-logs']:sendLog('bans', 'error', message)
     
     createPunishment(player, bannedBy, 'ban', time, timeUnit, reason or discordReason, {discordReason})
+    banPlayer(player, true, false, true, bannedBy, 'Połącz się ponownie, aby poznać szczegóły bana', 5)
 end
 
 function permBan(player, bannedBy, discordReason, reason)
@@ -50,6 +19,7 @@ function permBan(player, bannedBy, discordReason, reason)
     exports['m-logs']:sendLog('bans', 'error', message)
 
     createPunishment(player, bannedBy, 'ban', 0, nil, reason or discordReason, {discordReason})
+    banPlayer(player, true, false, true, bannedBy, 'Połącz się ponownie, aby poznać szczegóły bana', 5)
 end
 
 function isPlayerBanned(serial, fingerprint, ip)
@@ -59,7 +29,7 @@ function isPlayerBanned(serial, fingerprint, ip)
         return
     end
 
-    local result = dbPoll(dbQuery(connection, [[SELECT * FROM `m-punishments` WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND (`permanent` = 1 OR `end` > NOW())]], serial, fingerprint, ip), 10000)
+    local result = dbPoll(dbQuery(connection, [[SELECT * FROM `m-punishments` WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND (`permanent` = 1 OR `end` > NOW()) AND `type`="ban"]], serial, fingerprint, ip), 10000)
     return #result > 0 and result[1] or false
 end
 

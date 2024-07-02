@@ -3,6 +3,7 @@ local lockedElementDatas = {
     'player:premium', 'player:avatar', 'player:skin',
     'player:spawn', 'player:logged', 'player:organization',
     'player:level', 'player:exp', 'player:rank',
+    'player:mute', 
 }
 
 addEventHandler('onElementDataChange', root, function(dataName, oldValue)

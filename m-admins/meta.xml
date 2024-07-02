@@ -1,12 +1,14 @@
 <meta>
     <include resource='m-ui'/>
 
-    <script src='shared/main.lua' type='server'/>
+    <script src='shared/main.lua' type='shared' cache='false'/>
     <script src='server/main.lua' type='server'/>
     
     <script src='commands/teleport.lua' type='server'/>
     <script src='commands/kick.lua' type='server'/>
     <script src='commands/ban.lua' type='server'/>
+    <script src='commands/mute.lua' type='server'/>
+    <script src='commands/jetpack.lua' type='server'/>
 
     <export function='getRankName' type='shared'/>
     <export function='getRankColor' type='shared'/>
