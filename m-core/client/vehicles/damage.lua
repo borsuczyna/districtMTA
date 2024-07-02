@@ -13,6 +13,14 @@ addEventHandler('onClientVehicleDamage', root, function(_, _, loss)
             setVehicleEngineState(source, false)
         end
 
+        if not isVehicleDamageProof(source) then
+            setVehicleDamageProof(source, true)
+        end
+
         cancelEvent()
+    elseif newHealth > 315 then
+        if isVehicleDamageProof(source) then
+            setVehicleDamageProof(source, false)
+        end
     end
 end)
