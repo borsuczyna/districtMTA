@@ -6,6 +6,7 @@
 
     <script src='shared/main.lua' type='shared' cache='false'/>
     <script src='server/main.lua' type='server'/>
+    <script src='server/logs.lua' type='server'/>
     
     <script src='commands/teleport.lua' type='server'/>
     <script src='commands/kick.lua' type='server'/>
@@ -19,4 +20,5 @@
     <export function='getRankColor' type='shared'/>
     <export function='getRankPermissions' type='shared'/>
     <export function='doesPlayerHavePermission' type='shared'/>
+    <export function='addLog' type='shared'/>
 </meta>

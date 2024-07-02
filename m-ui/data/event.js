@@ -47,4 +47,28 @@ function updateTimers() {
     timers = timers.filter(timer => Date.now() < timer.callTime);
 }
 
+window.addEventListener('mousedown', e => {
+    triggerAllEvents('mousedown', e);
+});
+
+window.addEventListener('mouseup', e => {
+    triggerAllEvents('mouseup', e);
+});
+
+window.addEventListener('mousemove', e => {
+    triggerAllEvents('mousemove', e);
+});
+
+window.addEventListener('keydown', e => {
+    triggerAllEvents('keydown', e);
+});
+
+window.addEventListener('keyup', e => {
+    triggerAllEvents('keyup', e);
+});
+
+window.addEventListener('resize', e => {
+    triggerAllEvents('resize', e);
+});
+
 requestAnimationFrame(updateTimers);

@@ -113,3 +113,33 @@ function isInterfaceVisible(name) {
 function isInterfaceLoaded(name) {
     return loadedInterfaces.includes(name);
 }
+
+function applyHexColor(text) {
+    let result = '';
+    let i = 0;
+    while (i < text.length) {
+        const hashIndex = text.indexOf('#', i);
+        if (hashIndex === -1) {
+            result += text.substring(i);
+            break;
+        }
+
+        result += text.substring(i, hashIndex);
+
+        const color = text.substring(hashIndex, hashIndex + 7);
+        result += `<span style="color: ${color}">`;
+
+        i = hashIndex + 7;
+        const nextHashIndex = text.indexOf('#', i);
+        if (nextHashIndex === -1) {
+            result += text.substring(i);
+            break;
+        }
+
+        result += text.substring(i, nextHashIndex);
+        result += '</span>';
+        i = nextHashIndex;
+    }
+
+    return result;
+}

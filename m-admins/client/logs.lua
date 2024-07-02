@@ -1,29 +1,71 @@
+local adminLogsLoaded = false
+
 addEvent('interface:load', true)
+addEvent('interfaceLoaded', true)
 addEvent('logs:addLog', true)
+addEvent('logs:iconClick', true)
+addEvent('admin:toggleLogs', true)
 
 addEventHandler('interface:load', root, function(name)
     if name == 'admin-logs' then
         exports['m-ui']:setInterfaceVisible(name, true)
-        exports['m-ui']:setInterfaceZIndex('admin-logs', 996)
+        exports['m-ui']:setInterfaceZIndex('admin-logs', 2000)
+        adminLogsLoaded = true
     end
 end)
 
-function showInterface()
+function showAdminlogsInterface()
     exports['m-ui']:loadInterfaceElementFromFile('admin-logs', 'm-admins/data/logs.html')
 end
 
-addEventHandler('onClientResourceStart', resourceRoot, function()
-    addEventHandler('interfaceLoaded', root, showInterface)
-    if exports['m-ui']:isLoaded() then
-        showInterface()
+function isAdminlogsVisible()
+    return adminLogsData.visible
+end
+
+function setAdminlogsVisible(visible)
+    if not adminLogsLoaded and visible then
+        showAdminlogsInterface()
+    else
+        -- if not visible then
+        --     exports['m-ui']:destroyInterfaceElement('admin-logs')
+        --     adminLogsLoaded = false
+        -- else
+        --     exports['m-ui']:setInterfaceVisible('admin-logs', true)
+        -- end
+        
+        exports['m-ui']:setInterfaceVisible('admin-logs', visible)
     end
+end
+
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    if doesPlayerHavePermission(localPlayer, 'logs') then
+        showAdminlogsInterface()
+    end
+
+    addEventHandler('interfaceLoaded', root, function()
+        adminLogsLoaded = false
+        setAdminlogsVisible(adminLogsData.visible, adminLogsData.text, adminLogsData.time)
+    end)
 end)
 
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('admin-logs')
 end)
 
-function addLog()
+function addLog(category, message, icons)
+    exports['m-ui']:setInterfaceData('admin-logs', 'addLog', {
+        category = category,
+        message = message,
+        icons = icons,
+    })
 end
 
+addEventHandler('admin:toggleLogs', resourceRoot, function()
+    local rank = getElementData(localPlayer, 'player:rank')
+    setAdminlogsVisible(rank and rank > 0)
+end)
+
 addEventHandler('logs:addLog', resourceRoot, addLog)
+addEventHandler('logs:iconClick', root, function(icon, ...)
+    print(icon, ...)
+end)

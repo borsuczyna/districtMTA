@@ -44,10 +44,10 @@ addEventHandler('fingerprint:response', root, function(response)
     --     return
     -- end
 
-    if receivedFingerprints[client] then
-        ban(client, 'IF03', 'Already sent fingerprint')
-        return
-    end
+    -- if receivedFingerprints[client] then
+    --     ban(client, 'IF03', 'Already sent fingerprint')
+    --     return
+    -- end
 
     receivedFingerprints[client] = response
     exports['m-core']:checkBan(client, getPlayerSerial(client), response, getPlayerIP(client))
@@ -57,5 +57,6 @@ end)
 addEventHandler('onPlayerResourceStart', root, function(resource)
     if getResourceName(resource) == 'm-anticheat' then
         removeElementData(source, 'player:fingerprint')
+        receivedFingerprints[source] = nil
     end
 end)

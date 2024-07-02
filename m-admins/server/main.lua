@@ -20,6 +20,8 @@ local function dutyResponse(queryResult, player, serial, fingerprint)
         exports['m-notis']:addNotification(player, 'success', 'Służba administracyjna', 'Zalogowano do służby administracyjnej')
         setElementData(player, 'player:rank', result[1].rank)
     end
+
+    triggerClientEvent(player, 'admin:toggleLogs', resourceRoot)
 end
 
 addCommandHandler('duty', function(player)

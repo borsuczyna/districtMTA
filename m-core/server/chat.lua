@@ -5,6 +5,10 @@ local function rgbToHex(r, g, b)
     return ('#%02x%02x%02x'):format(r, g, b)
 end
 
+local function removeHex(text)
+    return text:gsub('#%x%x%x%x%x%x', '')
+end
+
 function sendLocalMessage(x, y, z, message, distance, r, g, b)
     for _, player in ipairs(getElementsWithinRange(x, y, z, distance, 'player')) do
         outputChatBox(message, player, r or 255, g or 255, b or 255, true)
@@ -51,13 +55,16 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     local playerID = getElementData(source, 'player:id')
     local premium = getElementData(source, 'player:premium')
     local color = getPlayerColor(source)
+    message = removeHex(message)
     
     if messageType == 0 then -- local
         local message = ('%s(#ffffff%d%s) #ffffff%s: %s'):format(color, playerID, color, playerName, message)
         sendLocalMessage(x, y, z, message, 20, 255, 215, 125)
+        exports['m-admins']:addLog('chat', message)
     elseif messageType == 1 then -- me
         local message = ('* (%d) %s %s'):format(playerID, playerName, message)
         sendLocalMessage(x, y, z, message, 20, 233, 66, 245)
+        exports['m-admins']:addLog('chat', '#ff99cc' .. message)
     end
 
     antySpam[source] = getTickCount()
@@ -73,14 +80,15 @@ addCommandHandler('do', function(player, command, ...)
     end
 
     local x, y, z = getElementPosition(player)
-    local message = table.concat({...}, ' ')
+    local message = removeHex(table.concat({...}, ' '))
     local playerName = getPlayerName(player)
     local playerID = getElementData(player, 'player:id')
     local premium = getElementData(player, 'player:premium')
     local color = getPlayerColor(player)
 
-    local message = ('* %s (%s)'):format(message, playerName)
+    local message = ('** %s (%s)'):format(message, playerName)
     sendLocalMessage(x, y, z, message, 20, 0, 112, 224)
+    exports['m-admins']:addLog('chat', '#70aaff' .. message)
 end)
 
 local respondTo = {}
@@ -103,9 +111,12 @@ function sendPm(fromPlayer, toPlayer, message)
     local toPlayerID = getElementData(toPlayer, 'player:id')
     local premium = getElementData(fromPlayer, 'player:premium')
     local color = getPlayerColor(fromPlayer)
+    message = removeHex(message)
 
     outputChatBox(('%s» [#ffffff%d%s] #ffffff%s: %s'):format(color, toPlayerID, color, toPlayerName, message), fromPlayer, 255, 255, 255, true)
     outputChatBox(('%s« [#ffffff%d%s] #ffffff%s: %s'):format(color, fromPlayerID, color, fromPlayerName, message), toPlayer, 255, 255, 255, true)
+    -- exports['m-admins']:addLog('pm', ('(%d) %s -> (%d) %s: %s'):format(fromPlayerID, fromPlayerName, toPlayerID, toPlayerName, message))
+    exports['m-admins']:addLog('pm', ('%s(#ffffff%d%s) #ffffff%s -> %s(#ffffff%d%s) #ffffff%s: %s'):format(getPlayerColor(fromPlayer), fromPlayerID, getPlayerColor(fromPlayer), fromPlayerName, getPlayerColor(toPlayer), toPlayerID, getPlayerColor(toPlayer), toPlayerName, message))
 
     respondTo[toPlayer] = fromPlayer
 end
