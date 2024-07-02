@@ -20,6 +20,7 @@ end
 addEventHandler('onPlayerChat', root, function(message, messageType)
     cancelEvent()
 
+    if not getElementData(source, 'player:uid') or not getElementData(source, 'player:spawn') then return end
     if antySpam[source] and getTickCount() - antySpam[source] < 500 then
         exports['m-notis']:addNotification(source, 'error', 'Anty spam', 'Nie możesz wysyłać wiadomości tak szybko!')
         return

@@ -40,5 +40,6 @@
     <export function='permBan' type='server'/>
     <export function='mutePlayer' type='server'/>
     <export function='unmutePlayer' type='server'/>
+    <export function='unbanPlayer' type='server'/>
     <export function='checkBan' type='server'/>
 </meta>

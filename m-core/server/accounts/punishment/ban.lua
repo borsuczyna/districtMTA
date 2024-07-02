@@ -46,6 +46,28 @@ function checkBan(player, serial, fingerprint, ip)
     return true
 end
 
+function unbanPlayer(admin, serial, fingerprint, ip)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then
+        exports['m-logs']:log('Błąd połączenia z bazą danych', 'error')
+        return
+    end
+
+    if type(admin) ~= 'string' then
+        admin = getPlayerName(admin)
+    end
+
+    local result = dbExec(connection, [[UPDATE `m-punishments` SET `active`=0 WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND `type`="ban" AND `active`=1]], serial, fingerprint, ip)
+    if not result then
+        exports['m-logs']:log('Błąd podczas odbanowywania gracza', 'error')
+        return
+    end
+
+    local message = ('Admin `%s` odbanował gracza o serialu `%s`, fingerprincie `%s` oraz IP `%s`'):format(admin, serial or "-", fingerprint or "-", ip or "-")
+    exports['m-logs']:sendLog('bans', 'success', message)
+    return true
+end
+
 addEventHandler('onPlayerConnect', root, function(nick, ip, username, serial, versionNumber, versionString)
     local player = getPlayerFromName(nick)
     local banned = checkBan(player, serial, nil, ip)

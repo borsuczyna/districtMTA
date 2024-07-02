@@ -65,3 +65,22 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
     exports['m-logs']:sendLog('admin', 'error', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Ban', notiMessage)
 end)
+
+addCommandHandler('ub', function(player, cmd, serial)
+    if not doesPlayerHavePermission(player, 'command:ban') then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
+        return
+    end
+
+    if not serial then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /ub (serial)')
+        return
+    end
+
+    local discordReason = ('Admin `%s` odbanował gracza o serialu `%s`'):format(getPlayerName(player), serial)
+    local notiMessage = ('Odbanowano gracza o serialu %s'):format(serial)
+
+    exports['m-core']:unbanPlayer(player, serial)
+    exports['m-logs']:sendLog('admin', 'success', discordReason)
+    exports['m-notis']:addNotification(player, 'success', 'Unban', notiMessage)
+end)
