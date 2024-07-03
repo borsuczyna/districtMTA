@@ -26,14 +26,14 @@ function setAdminlogsVisible(visible)
     if not adminLogsLoaded and visible then
         showAdminlogsInterface()
     else
-        -- if not visible then
-        --     exports['m-ui']:destroyInterfaceElement('admin-logs')
-        --     adminLogsLoaded = false
-        -- else
-        --     exports['m-ui']:setInterfaceVisible('admin-logs', true)
-        -- end
+        if not visible then
+            exports['m-ui']:destroyInterfaceElement('admin-logs')
+            adminLogsLoaded = false
+        else
+            exports['m-ui']:setInterfaceVisible('admin-logs', true)
+        end
         
-        exports['m-ui']:setInterfaceVisible('admin-logs', visible)
+        -- exports['m-ui']:setInterfaceVisible('admin-logs', visible)
     end
 end
 

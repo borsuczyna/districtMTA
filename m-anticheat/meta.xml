@@ -5,6 +5,7 @@
 
     <file src='data/fingerprint.html'/>
     
+    <script src='client/nt.lua' type='client' cache='false'/>
     <script src='client/fingerprint.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
