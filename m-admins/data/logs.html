@@ -179,11 +179,7 @@
         category.classList.add('active');
 
         document.querySelectorAll('#admin-logs .rows div').forEach((el) => {
-            if (category.dataset.category === 'wszystko' || el.dataset.category === category.dataset.category) {
-                el.style.display = 'block';
-            } else {
-                el.style.display = 'none';
-            }
+            el.classList.toggle('d-none', category.dataset.category !== 'wszystko' && el.dataset.category !== category.dataset.category);
         });
 
         document.querySelector('#admin-logs .rows').scrollTop = document.querySelector('#admin-logs .rows').scrollHeight;

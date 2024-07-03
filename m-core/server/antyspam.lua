@@ -1,7 +1,9 @@
 local antySpam = {}
 local antySpamTime = 500
 
-addEventHandler('onPlayerCommand', root, function()
+addEventHandler('onPlayerCommand', root, function(cmd)
+    local playerUID = getElementData(source, 'player:uid')
+    if not playerUID then return end
     if exports['m-anticheat']:isPlayerTriggerLocked(source) then return end
     if not antySpam[source] then
         antySpam[source] = {count = 0, lastCommand = getTickCount()}
@@ -20,6 +22,15 @@ addEventHandler('onPlayerCommand', root, function()
 
     antySpam[source].count = antySpam[source].count + 1
     antySpam[source].lastCommand = getTickCount() + antySpamTime
+    local color = getPlayerColor(source)
+    local id = getElementData(source, 'player:id')
+
+    if cmd ~= 'say' then
+        local message = ('%s(#ffffff%d%s) #cccccc%s użył komendy: %s'):format(color, id, color, getPlayerName(source), cmd)
+        exports['m-admins']:addLog('komendy', '#aaddff' .. message, {
+            {'teleport', 'teleport-uid', playerUID}
+        })
+    end
 end)
 
 setTimer(function()

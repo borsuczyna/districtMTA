@@ -59,7 +59,7 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     message = removeHex(message)
     
     if messageType == 0 then -- local
-        local message = ('%s(#ffffff%d%s) #ffffff%s: %s'):format(color, playerID, color, playerName, message)
+        local message = ('%s(#ffffff%d%s) #cccccc%s: %s'):format(color, playerID, color, playerName, message)
         sendLocalMessage(x, y, z, message, 20, 255, 215, 125)
         exports['m-admins']:addLog('chat', message, {
             {'teleport', 'teleport-uid', playerUID}
@@ -69,7 +69,7 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
         sendLocalMessage(x, y, z, message, 20, 233, 66, 245)
         exports['m-admins']:addLog('chat', '#ff99cc' .. message, {
             {'teleport', 'teleport-uid', playerUID}
-        })  
+        })
     end
 
     antySpam[source] = getTickCount()
