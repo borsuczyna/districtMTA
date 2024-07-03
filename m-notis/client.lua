@@ -28,6 +28,7 @@ function addNotification(type, title, message, time)
     title = title:gsub('`', '\\`')
     message = message:gsub('`', '\\`')  
     exports['m-ui']:executeJavascript('notis_addNotification(`'..type..'`, `'..title..'`, `'..message..'`, '..tostring(time or 5000)..')')
+    outputConsole('['..type..'] '..title..': '..message)
 end
 
 addEventHandler('notis:addNotification', resourceRoot, addNotification)
