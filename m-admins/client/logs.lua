@@ -67,5 +67,20 @@ end)
 
 addEventHandler('logs:addLog', resourceRoot, addLog)
 addEventHandler('logs:iconClick', root, function(icon, ...)
-    print(icon, ...)
+    if icon == 'teleport-uid' then
+        if not doesPlayerHavePermission(localPlayer, 'command:teleport') then
+            exports['m-notis']:addNotification('error', 'Błąd', 'Nie posiadasz uprawnień')
+            return
+        end
+    
+        local foundPlayer = exports['m-core']:getPlayerByUid(...)
+        if not foundPlayer then
+            exports['m-notis']:addNotification('error', 'Błąd', 'Nie znaleziono gracza')
+            return
+        end
+    
+        local x, y, z = getElementPosition(foundPlayer)
+        setElementPosition(localPlayer, x, y + 0.5, z)
+        exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
+    end
 end)

@@ -27,6 +27,7 @@ end
 
 function getPlayerByUid(uid)
     if not uid then return false end
+    uid = tonumber(uid)
     
     local players = getElementsByType('player')
     for i, player in ipairs(players) do
