@@ -3,6 +3,7 @@ local adminLogsLoaded = false
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 addEvent('logs:addLog', true)
+addEvent('logs:addLogs', true)
 addEvent('logs:iconClick', true)
 addEvent('admin:toggleLogs', true)
 
@@ -11,6 +12,7 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:setInterfaceVisible(name, true)
         exports['m-ui']:setInterfaceZIndex('admin-logs', 2000)
         adminLogsLoaded = true
+        triggerServerEvent('logs:requestLogsList', resourceRoot)
     end
 end)
 
@@ -66,6 +68,13 @@ addEventHandler('admin:toggleLogs', resourceRoot, function()
 end)
 
 addEventHandler('logs:addLog', resourceRoot, addLog)
+
+addEventHandler('logs:addLogs', resourceRoot, function(logs)
+    for i, log in ipairs(logs) do
+        addLog(log.category, log.message, log.icons)
+    end
+end)
+
 addEventHandler('logs:iconClick', root, function(icon, ...)
     if icon == 'teleport-uid' then
         if not doesPlayerHavePermission(localPlayer, 'command:teleport') then

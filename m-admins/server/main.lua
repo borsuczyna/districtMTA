@@ -22,6 +22,7 @@ local function dutyResponse(queryResult, player, serial, fingerprint)
     end
 
     triggerClientEvent(player, 'admin:toggleLogs', resourceRoot)
+    triggerClientEvent(player, 'admin:toggleReports', resourceRoot)
 end
 
 addCommandHandler('duty', function(player)

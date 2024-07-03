@@ -1,4 +1,5 @@
 function giveJetPack(player)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:jetpack') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return

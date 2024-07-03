@@ -1,4 +1,5 @@
 addCommandHandler('m', function(player, cmd, playerToFind, time, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:mute') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -46,6 +47,7 @@ addCommandHandler('m', function(player, cmd, playerToFind, time, ...)
 end)
 
 addCommandHandler('um', function(player, cmd, playerToFind, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:mute') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return

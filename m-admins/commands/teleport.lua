@@ -1,4 +1,5 @@
 addCommandHandler('tt', function(player, cmd, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:teleport') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -17,6 +18,7 @@ addCommandHandler('tt', function(player, cmd, ...)
 end)
 
 addCommandHandler('th', function(player, cmd, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:teleport') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -35,6 +37,7 @@ addCommandHandler('th', function(player, cmd, ...)
 end)
 
 addCommandHandler('vtt', function(player, cmd, id)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:teleport') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -52,6 +55,7 @@ addCommandHandler('vtt', function(player, cmd, id)
 end)
 
 addCommandHandler('vth', function(player, cmd, id)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:teleport') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return

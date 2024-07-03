@@ -39,8 +39,6 @@ local function checkFingerprintValidityResponse(query, player, serial, fingerpri
         removeElementData(player, 'player:fingerprint')
         ban(player, 'IF04', 'Fingerprint changed (`' .. fingerprint .. '`, `' .. result.fingerprint .. '`)')
         return
-    else
-        print('Fingerprint is valid')
     end
 end
 

@@ -143,3 +143,7 @@ function applyHexColor(text) {
 
     return result;
 }
+
+function htmlEscape(text) {
+    return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}

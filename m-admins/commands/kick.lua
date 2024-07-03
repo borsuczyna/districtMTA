@@ -1,4 +1,5 @@
 addCommandHandler('k', function(player, cmd, playerToFind, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:kick') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -14,7 +15,7 @@ addCommandHandler('k', function(player, cmd, playerToFind, ...)
     local playerName = getPlayerName(player)
     local foundPlayerName = getPlayerName(foundPlayer)
 
-    kickPlayer(foundPlayer, player, reason)
+    banPlayer(foundPlayer, true, false, true, player, 'Zostałeś wyrzucony: ' .. reason, 5)
     exports['m-logs']:sendLog('admin', 'Kick', ('Admin `%s` wyrzucił gracza `%s`: `%s`'):format(playerName, foundPlayerName, reason))
     exports['m-notis']:addNotification(player, 'success', 'Kick', ('Wyrzucono gracza %s'):format(foundPlayerName))
 end)

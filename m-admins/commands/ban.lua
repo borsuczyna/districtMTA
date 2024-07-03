@@ -1,4 +1,5 @@
 addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:ban') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -46,6 +47,7 @@ addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
 end)
 
 addCommandHandler('pb', function(player, cmd, playerToFind, ...)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:ban') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
@@ -67,6 +69,7 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
 end)
 
 addCommandHandler('ub', function(player, cmd, serial)
+    if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:ban') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
