@@ -7,6 +7,7 @@
 
     <script src='server/id.lua' type='server'/>
     <script src='server/chat.lua' type='server'/>
+    <script src='server/antyspam.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
 
     <!-- accounts -->
