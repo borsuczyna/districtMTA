@@ -299,7 +299,7 @@
                 <div class="nice-input-bar"></div>
             </div>
         
-            <div class="switch-box" onclick="this.classList.toggle('switched');">
+            <div class="switch-box" tabindex="0" onclick="this.classList.toggle('switched');" onkeydown="if (event.key === 'Enter' || event.key === ' ') this.classList.toggle('switched');">
                 <div class="switch">
                     <div class="inner"></div>
                 </div>
@@ -309,7 +309,7 @@
                 </div>
             </div>
         
-            <div class="nice-button" style="width: calc(100% - 3.8rem);" onclick="login_login(this)">Zaloguj się</div>
+            <div class="nice-button" tabindex="0" style="width: calc(100% - 3.8rem);" onclick="login_login(this)" onkeydown="if (event.key === 'Enter' || event.key === ' ') login_login(this)">Zaloguj się</div>
         
             <span class="d-flex flex-column text-center gap-1">
                 <span style="color: rgba(255, 255, 255, 0.65); font-size: 0.875rem;">
@@ -354,7 +354,7 @@
             </div>
         
             <div class="switch-box">
-                <div class="switch" onclick="this.parentElement.classList.toggle('switched');">
+                <div class="switch" onclick="this.parentElement.classList.toggle('switched');" tabindex="0" onkeydown="if (event.key === 'Enter' || event.key === ' ') this.parentElement.classList.toggle('switched');">
                     <div class="inner"></div>
                 </div>
                 <div class="label">
@@ -362,7 +362,7 @@
                 </div>
             </div>
         
-            <div class="nice-button" style="width: calc(100% - 3.8rem);" onclick="login_register(this)">Zarejestruj się</div>
+            <div class="nice-button" style="width: calc(100% - 3.8rem);" onclick="login_register(this)" tabindex="0" onkeydown="if (event.key === 'Enter' || event.key === ' ') login_register(this)">Zarejestruj się</div>
         
             <span class="d-flex flex-column text-center gap-1">
                 <span style="color: rgba(255, 255, 255, 0.65); font-size: 0.875rem;">

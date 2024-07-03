@@ -1,6 +1,8 @@
 addEvent('interface:load', true)
 addEvent('fingerprint:response', true)
 
+local sentFingerprint = false
+
 addEventHandler('interface:load', root, function(name)
     if name == 'fingerprint' then
         exports['m-ui']:setInterfaceVisible(name, true)
@@ -9,6 +11,7 @@ addEventHandler('interface:load', root, function(name)
 end)
 
 function showInterface()
+    if sentFingerprint then return end
     exports['m-ui']:loadInterfaceElementFromFile('fingerprint', 'm-anticheat/data/fingerprint.html')
 end
 
@@ -26,4 +29,5 @@ end)
 addEventHandler('fingerprint:response', root, function(response)
     response = teaEncode(response, 'm-anticheat')
     triggerServerEvent('fingerprint:response', resourceRoot, response)
+    sentFingerprint = true
 end)

@@ -29,6 +29,28 @@ local function verifyFingerprint(fingerprint)
     return true
 end
 
+local function checkFingerprintValidityResponse(query, player, serial, fingerprint)
+    local result = dbPoll(query, 0)
+    if not result then return end
+    result = result[1]
+    if not result then return end
+
+    if result.fingerprint ~= fingerprint then
+        removeElementData(player, 'player:fingerprint')
+        ban(player, 'IF04', 'Fingerprint changed (`' .. fingerprint .. '`, `' .. result.fingerprint .. '`)')
+        return
+    else
+        print('Fingerprint is valid')
+    end
+end
+
+local function checkFingerprintValidity(player, serial, fingerprint)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = dbQuery(checkFingerprintValidityResponse, {player, serial, fingerprint}, connection, 'SELECT `serial`, `fingerprint` FROM `m-users` WHERE `serial` = ? OR `fingerprint` = ?', serial, fingerprint)
+end
+
 addEvent('fingerprint:response', true)
 addEventHandler('fingerprint:response', root, function(response)
     local originalResponse = response
@@ -44,10 +66,12 @@ addEventHandler('fingerprint:response', root, function(response)
     --     return
     -- end
 
-    -- if receivedFingerprints[client] then
-    --     ban(client, 'IF03', 'Already sent fingerprint')
-    --     return
-    -- end
+    if receivedFingerprints[client] then
+        ban(client, 'IF03', 'Already sent fingerprint')
+        return
+    end
+
+    checkFingerprintValidity(client, getPlayerSerial(client), originalResponse)
 
     receivedFingerprints[client] = response
     exports['m-core']:checkBan(client, getPlayerSerial(client), response, getPlayerIP(client))

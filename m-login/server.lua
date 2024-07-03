@@ -89,7 +89,8 @@ addEventHandler('login:register', resourceRoot, function(email, login, password)
         password = password,
         email = email,
         ip = getPlayerIP(client),
-        serial = getPlayerSerial(client)
+        serial = getPlayerSerial(client),
+        fingerprint = exports['m-anticheat']:getPlayerDecodedFingerprint(client)
     })
     if not hash then
         exports['m-notis']:addNotification(client, 'error', 'Błąd rejestracji', message)
