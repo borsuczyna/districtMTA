@@ -12,9 +12,20 @@ addCommandHandler('tt', function(player, cmd, ...)
         return
     end
 
+    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
+
+    local vehicle = getPedOccupiedVehicle(foundPlayer)
+    if vehicle then
+        for i = 0, 3 do
+            if not getVehicleOccupant(vehicle, i) then
+                warpPedIntoVehicle(player, vehicle, i)
+                return
+            end
+        end
+    end
+
     local x, y, z = getElementPosition(foundPlayer)
     setElementPosition(player, x, y + 0.5, z)
-    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
 end)
 
 addCommandHandler('th', function(player, cmd, ...)
@@ -31,9 +42,25 @@ addCommandHandler('th', function(player, cmd, ...)
         return
     end
 
+    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano gracza %s do Ciebie'):format(getPlayerName(foundPlayer)))
+
+    local vehicle = getPedOccupiedVehicle(player)
+    if vehicle then
+        for i = 0, 3 do
+            if not getVehicleOccupant(vehicle, i) then
+                warpPedIntoVehicle(foundPlayer, vehicle, i)
+                return
+            end
+        end
+    end
+
+    local vehicle = getPedOccupiedVehicle(foundPlayer)
+    if vehicle then
+        setElementPosition(vehicle, getElementPosition(player))
+    end
+
     local x, y, z = getElementPosition(player)
     setElementPosition(foundPlayer, x, y + 0.5, z)
-    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano gracza %s do Ciebie'):format(getPlayerName(foundPlayer)))
 end)
 
 addCommandHandler('vtt', function(player, cmd, id)

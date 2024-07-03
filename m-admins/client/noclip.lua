@@ -3,8 +3,14 @@ local font = exports['m-ui']:getFont('Inter-Medium', 12)
 local noclipEnabled = false
 
 function renderNoclip()
-    local x, y, z = getElementPosition(localPlayer)
-    local rX, rY, rZ = getElementRotation(localPlayer)
+    local element = localPlayer
+    local vehicle = getPedOccupiedVehicle(element)
+    if vehicle then
+        element = vehicle
+    end
+
+    local x, y, z = getElementPosition(element)
+    local rX, rY, rZ = getElementRotation(element)
     local text = ('#ff8800Pozycja: #ffffff%.2f, %.2f, %.2f\n#ff8800Rotacja: #ffffff%.2f, %.2f, %.2f'):format(x, y, z, rX, rY, rZ)
     local textNoHex = ('Pozycja: %.2f, %.2f, %.2f\nRotacja: %.2f, %.2f, %.2f'):format(x, y, z, rX, rY, rZ)
 
@@ -14,7 +20,7 @@ function renderNoclip()
     -- update noclip
     local cx, cy, cz, lx, ly, lz = getCameraMatrix()
     local rot = math.atan2(ly - cy, lx - cx)
-    setElementRotation(localPlayer, 0, 0, math.deg(rot) - 90, 'default', true)
+    setElementRotation(element, 0, 0, math.deg(rot) - 90, 'default', true)
 
     local speed = 0.5
     local nx, ny, nz = 0, 0, 0
@@ -52,7 +58,7 @@ function renderNoclip()
         nz = nz - speed
     end
 
-    setElementPosition(localPlayer, x + nx, y + ny, z + nz)
+    setElementPosition(element, x + nx, y + ny, z + nz)
 end
 
 function toggleNoClip()
@@ -60,14 +66,20 @@ function toggleNoClip()
 
     noclipEnabled = not noclipEnabled
 
+    local element = localPlayer
+    local vehicle = getPedOccupiedVehicle(element)
+    if vehicle then
+        element = vehicle
+    end
+
     if noclipEnabled then
         addEventHandler('onClientRender', root, renderNoclip)
-        setElementCollisionsEnabled(localPlayer, false)
-        setElementFrozen(localPlayer, true)
+        setElementCollisionsEnabled(element, false)
+        setElementFrozen(element, true)
     else
         removeEventHandler('onClientRender', root, renderNoclip)
-        setElementCollisionsEnabled(localPlayer, true)
-        setElementFrozen(localPlayer, false)
+        setElementCollisionsEnabled(element, true)
+        setElementFrozen(element, false)
     end
 end
 

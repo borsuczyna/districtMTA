@@ -65,10 +65,11 @@ end)
 addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
     if not doesPlayerHavePermission(client, 'reports') then return end
 
-    local report = nil
+    local report, index = nil
     for i, r in ipairs(reports) do
         if r.hash == hash then
             report = r
+            index = i
             break
         end
     end
@@ -84,8 +85,7 @@ addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
             return
         end
         
-        report.state = REPORT_STATE.ACCEPTED
-
+        table.remove(reports, index)
         exports['m-notis']:addNotification(client, 'success', 'Zgłoszenie', 'Zgłoszenie zostało zaakceptowane')
         exports['m-notis']:addNotification(report.reporter, 'success', 'Zgłoszenie', 'Twoje zgłoszenie zostało zaakceptowane')
         exports['m-logs']:sendLog('reports', 'success', ('Gracz `%s` zaakceptował zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
