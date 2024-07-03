@@ -338,6 +338,7 @@
         } else {
             activeBlip = [blipId, 1];
             let dom = getLegendDOMByIcon(blipId);
+            if (!dom) return;
             dom.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             let blipData = currentBlips.filter(b => b.icon === blipId)[0];
@@ -401,6 +402,7 @@
         let currentIndex = currentBlips.filter(b => b.icon === icon).indexOf(blipData);
         activeBlip = [icon, currentIndex + 1];
         let dom = getLegendDOMByIcon(icon);
+        if (!dom) return;
         dom.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         mapGoToPosition(document.querySelector('#f11 #map'), blipData.x, blipData.y, 500);

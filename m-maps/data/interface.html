@@ -92,41 +92,6 @@
         }
     }
 
-    function scrollMap(event) {
-        let map = maps.find(map => map.element === event.currentTarget);
-        if (!map) return;
-
-        let delta = -event.deltaY / 100;
-
-        let dom = map.element.getBoundingClientRect();
-        let cursorX = event.clientX - dom.left;
-        let cursorY = event.clientY - dom.top;
-        let cursorXPercent = cursorX / dom.width - 0.5;
-        let cursorYPercent = -cursorY / dom.height + 0.5;
-        let cursorXMap = cursorXPercent * 6000;
-        let cursorYMap = cursorYPercent * 6000;
-        let cursorXMapOld = cursorXMap / map.zoom;
-        let cursorYMapOld = cursorYMap / map.zoom;
-        map.zoom = Math.min(Math.max(map.zoom + delta, map.minZoom), map.maxZoom);
-        let cursorXMapNew = cursorXMap / map.zoom;
-        let cursorYMapNew = cursorYMap / map.zoom;
-        map.x += (cursorXMapOld - cursorXMapNew);
-        map.y += (cursorYMapOld - cursorYMapNew);
-
-        updateMap(map);
-    }
-
-    function mousedownMap(event) {
-        let map = maps.find(map => map.element === event.currentTarget);
-        if (!map) return;
-
-        map.holding = true;
-        map.lastX = event.clientX;
-        map.lastY = event.clientY;
-
-        event.currentTarget.addEventListener('mousemove', mousemoveMap);
-    }
-
     function updateMapLimitBounds(map) {
         let dom = map.element.getBoundingClientRect();
         let mapSize = Math.max(dom.width, dom.height) * map.zoom;
@@ -177,14 +142,6 @@
         updateMap(map);
     }
 
-    function mouseupMap(element, event) {
-        let map = maps.find(map => map.element === element);
-        if (!map) return;
-
-        map.holding = false;
-        event.currentTarget.removeEventListener('mousemove', mousemoveMap);
-    }
-
     window.createMap = async (data) => {
         let element = data.element;
 
@@ -214,11 +171,6 @@
         maps.push(map);
 
         requestAnimationFrame(updateMap.bind(null, map));
-
-        element.addEventListener('wheel', scrollMap);
-        element.addEventListener('mousedown', mousedownMap);
-        window.addEventListener('mouseup', mouseupMap.bind(null, element));
-        window.addEventListener('resize', updateMap.bind(null, map));
 
         data.blips?.forEach(blipData => {
             createMapBlip({
@@ -276,11 +228,6 @@
         let map = maps.find(map => map.element === element);
         if (!map) return;
 
-        element.removeEventListener('wheel', scrollMap);
-        element.removeEventListener('mousedown', mousedownMap);
-        window.removeEventListener('mouseup', mouseupMap.bind(null, element));
-        window.removeEventListener('resize', updateMap.bind(null, map));
-
         map.blips.forEach(blip => {
             blip.element.remove();
         });
@@ -306,6 +253,73 @@
         
         updateMap(map);
     }
+
+    addEvent('maps', 'mousedown', (event) => {
+        let map = maps.find(map => map.element === event.target.parentElement);
+        if (!map) return;
+
+        map.holding = true;
+        map.lastX = event.clientX;
+        map.lastY = event.clientY;
+
+        event.preventDefault();
+    });
+
+    addEvent('maps', 'mousemove', (event) => {
+        let map = maps.find(map => map.holding);
+        if (!map) return;
+
+        let dom = map.mapImage.getBoundingClientRect();
+        let deltaX = event.clientX - map.lastX;
+        let deltaY = event.clientY - map.lastY;
+        deltaX *= 6000 / dom.width;
+        deltaY *= 6000 / dom.height;
+
+        map.x -= deltaX;
+        map.y += deltaY;
+
+        map.lastX = event.clientX;
+        map.lastY = event.clientY;
+
+        if (map.limitBounds) {
+            updateMapLimitBounds(map);
+        }
+
+        updateMap(map);
+
+        event.preventDefault();
+    });
+
+    addEvent('maps', 'mouseup', (event) => {
+        let map = maps.find(map => map.holding);
+        if (!map) return;
+
+        map.holding = false;
+    });
+
+    addEvent('maps', 'wheel', (event) => {
+        let map = maps.find(map => map.element === event.target.parentElement);
+        if (!map) return;
+
+        let delta = -event.deltaY / 100;
+
+        let dom = map.element.getBoundingClientRect();
+        let cursorX = event.clientX - dom.left;
+        let cursorY = event.clientY - dom.top;
+        let cursorXPercent = cursorX / dom.width - 0.5;
+        let cursorYPercent = -cursorY / dom.height + 0.5;
+        let cursorXMap = cursorXPercent * 6000;
+        let cursorYMap = cursorYPercent * 6000;
+        let cursorXMapOld = cursorXMap / map.zoom;
+        let cursorYMapOld = cursorYMap / map.zoom;
+        map.zoom = Math.min(Math.max(map.zoom + delta, map.minZoom), map.maxZoom);
+        let cursorXMapNew = cursorXMap / map.zoom;
+        let cursorYMapNew = cursorYMap / map.zoom;
+        map.x += (cursorXMapOld - cursorXMapNew);
+        map.y += (cursorYMapOld - cursorYMapNew);
+
+        updateMap(map);
+    });
 
     // let map = document.querySelector('#maps #map-container-test');
     // createMap({

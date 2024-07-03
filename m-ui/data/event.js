@@ -71,4 +71,12 @@ window.addEventListener('resize', e => {
     triggerAllEvents('resize', e);
 });
 
+window.addEventListener('scroll', e => {
+    triggerAllEvents('scroll', e);
+});
+
+window.addEventListener('wheel', e => {
+    triggerAllEvents('wheel', e);
+});
+
 requestAnimationFrame(updateTimers);
