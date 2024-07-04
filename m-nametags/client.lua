@@ -17,6 +17,8 @@ end
 
 function renderNametag(player)
     if not getElementData(player, 'player:spawn') then return end
+    if getElementAlpha(player) == 0 then return end
+    
     local playerID = getElementData(player, 'player:id')
     if not playerID then return end
 
