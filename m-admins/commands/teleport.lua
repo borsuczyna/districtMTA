@@ -58,7 +58,9 @@ addCommandHandler('th', function(player, cmd, ...)
 
     local vehicle = getPedOccupiedVehicle(player)
     if vehicle then
-        for i = 0, 3 do
+        local maxSeats = getVehicleMaxPassengers(vehicle)
+    
+        for i = 0, maxSeats do
             if not getVehicleOccupant(vehicle, i) then
                 warpPedIntoVehicle(foundPlayer, vehicle, i)
                 return

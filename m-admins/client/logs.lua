@@ -89,9 +89,15 @@ addEventHandler('logs:iconClick', root, function(icon, ...)
             return
         end
     
+        if foundPlayer == localPlayer then
+            exports['m-notis']:addNotification('error', 'Błąd', 'Nie mozesz teleportować samego siebie')
+            return
+        end
+    
+        exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
+        
         local x, y, z = getElementPosition(foundPlayer)
         setElementPosition(localPlayer, x, y + 0.5, z)
-        exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
     end
 end)
 
