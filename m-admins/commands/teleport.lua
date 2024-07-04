@@ -12,11 +12,18 @@ addCommandHandler('tt', function(player, cmd, ...)
         return
     end
 
+    if foundPlayer == player then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie mozesz teleportować samego siebie')
+        return
+    end
+
     exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
 
     local vehicle = getPedOccupiedVehicle(foundPlayer)
     if vehicle then
-        for i = 0, 3 do
+        local maxSeats = getVehicleMaxPassengers(vehicle)
+
+        for i = 0, maxSeats do
             if not getVehicleOccupant(vehicle, i) then
                 warpPedIntoVehicle(player, vehicle, i)
                 return
@@ -39,6 +46,11 @@ addCommandHandler('th', function(player, cmd, ...)
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
+        return
+    end
+
+    if foundPlayer == player then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie mozesz teleportować samego siebie')
         return
     end
 

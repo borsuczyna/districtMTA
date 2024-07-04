@@ -45,15 +45,6 @@ local function getVehicleIdByPartialName(partialName)
     return false
 end
 
-local function isVehicleBlocked(id)
-	for k, v in pairs(blockedVehicleIDs) do
-		if v == id then
-		    return true
-		end
-	end
-	return false
-end
-
 addCommandHandler('cv', function(player, cmd, ...)
     if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:cv') then
@@ -69,7 +60,7 @@ addCommandHandler('cv', function(player, cmd, ...)
         return
     end
 
-    if isVehicleBlocked(model) then
+    if model and table.find(blockedVehicleIDs, model) then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz utworzyć tego pojazdu')
         return
     end
