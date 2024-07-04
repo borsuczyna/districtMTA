@@ -215,23 +215,3 @@ end)
 addEventHandler("onAnimationRestart", root, function(name)
     print(name)
 end)]]
-
-bindKey("1", "down", function()
-    if getElementData(localPlayer, "player:animation") ~= "rece" then
-        setElementData(localPlayer, "player:animation", "rece")
-    elseif getElementData(localPlayer, "player:animation") == "rece" then
-        setElementData(localPlayer, "player:animation", nil)
-    else
-        setElementData(localPlayer, "player:animation", "rece")
-    end
-end)
-
-bindKey("2", "down", function()
-    if getElementData(localPlayer, "player:animation") ~= "rece2" then
-        setElementData(localPlayer, "player:animation", "rece2")
-    elseif getElementData(localPlayer, "player:animation") == "rece2" then
-        setElementData(localPlayer, "player:animation", nil)
-    else
-        setElementData(localPlayer, "player:animation", "rece2")
-    end
-end)
