@@ -8,10 +8,10 @@ function giveJetPack(player)
     if not isPedInVehicle(player) then
         local jetpack = isPedWearingJetpack(player)
         if jetpack then
-            removePedWearingJetPack(player)
+            setPedWearingJetpack(player, false)
             exports['m-notis']:addNotification(player, 'info', 'Jetpack', 'Usunięto jetpacka')
         else
-            givePedWearingJetPack(player)
+            setPedWearingJetpack(player, true)
             exports['m-notis']:addNotification(player, 'info', 'Jetpack', 'Dodano jetpacka')
         end
     else
