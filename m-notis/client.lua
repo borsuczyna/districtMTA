@@ -28,7 +28,8 @@ function addNotification(type, title, message, time)
     title = title:gsub('`', '\\`')
     message = message:gsub('`', '\\`')  
     exports['m-ui']:executeJavascript('notis_addNotification(`'..type..'`, `'..title..'`, `'..message..'`, '..tostring(time or 5000)..')')
-    
+    playSound('data/'..type..'.mp3')
+
     -- remove html from message
     message = message:gsub('<[^>]+>', '')
     outputConsole('['..type..'] '..title..': '..message)

@@ -5,6 +5,10 @@
     <script src='server.lua' type='server'/>
 
     <file src='data/interface.html'/>
+    <file src='data/success.mp3'/>
+    <file src='data/error.mp3'/>
+    <file src='data/warning.mp3'/>
+    <file src='data/info.mp3'/>
 
     <export function='addNotification' type='shared'/>
 </meta>
