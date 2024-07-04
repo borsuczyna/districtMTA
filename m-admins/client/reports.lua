@@ -4,7 +4,7 @@ addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 addEvent('reports:addReport', true)
 addEvent('reports:addReports', true)
-addEvent('reports:removeReport', true)
+addEvent('reports:rejectReport', true)
 addEvent('reports:acceptReport', true)
 addEvent('reports:iconClick', true)
 addEvent('admin:toggleReports', true)
@@ -79,8 +79,9 @@ addEventHandler('reports:addReport', resourceRoot, addReport)
 addEventHandler('reports:iconClick', root, function(action, hash)
     if action == 'acceptReport' then
         triggerServerEvent('reports:doReportAction', resourceRoot, hash, 'accept')
-    elseif action == 'deleteReport' then
-        exports['m-ui']:setInterfaceData('admin-reports', 'removeReport', { hash = hash })
+    elseif action == 'rejectReport' then
+        triggerServerEvent('reports:doReportAction', resourceRoot, hash, 'reject')
+        exports['m-ui']:setInterfaceData('admin-reports', 'rejectReport', { hash = hash })
     elseif action == 'teleportTo' then
         if not doesPlayerHavePermission(localPlayer, 'command:teleport') then
             exports['m-notis']:addNotification('error', 'Błąd', 'Nie posiadasz uprawnień')
@@ -99,8 +100,8 @@ addEventHandler('reports:iconClick', root, function(action, hash)
     end
 end)
 
-addEventHandler('reports:removeReport', resourceRoot, function(hash)
-    exports['m-ui']:setInterfaceData('admin-reports', 'removeReport', { hash = hash })
+addEventHandler('reports:rejectReport', resourceRoot, function(hash)
+    exports['m-ui']:setInterfaceData('admin-reports', 'rejectReport', { hash = hash })
 end)
 
 addEventHandler('reports:acceptReport', resourceRoot, function(hash)
