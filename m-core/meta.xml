@@ -18,6 +18,7 @@
     <script src='server/accounts/punishment/main.lua' type='server'/>
     <script src='server/accounts/punishment/ban.lua' type='server'/>
     <script src='server/accounts/punishment/mute.lua' type='server'/>
+    <script src='server/accounts/punishment/license.lua' type='server'/>
 
     <!-- vehicles -->
     <script src='server/vehicles/main.lua' type='server'/>
@@ -44,4 +45,7 @@
     <export function='unmutePlayer' type='server'/>
     <export function='unbanPlayer' type='server'/>
     <export function='checkBan' type='server'/>
+    <export function='removeLicense' type='server'/>
+    <export function='getPlayerLicense' type='server'/>
+    <export function='isPlayerHaveLicense' type='server'/>
 </meta>

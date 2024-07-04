@@ -11,6 +11,7 @@
     <script src='server/reports.lua' type='server'/>
     
     <script src='commands/teleport.lua' type='server'/>
+    <script src='commands/license.lua' type='server'/>
     <script src='commands/kick.lua' type='server'/>
     <script src='commands/ban.lua' type='server'/>
     <script src='commands/mute.lua' type='server'/>
