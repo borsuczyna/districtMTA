@@ -1,0 +1,9 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/wheelnav.min.js'/>
+    <file src='data/raphael.icons.min.js'/>
+    <file src='data/raphael.min.js'/>
+    <file src='data/test.js'/>
+</meta>

@@ -2,12 +2,12 @@ addEventListener('load', () => {
     mta.triggerEvent('interfaceLoaded');
 });
 
-// addEventListener('keydown', (e) => {
-//     if ((e.key.toLowerCase() === 'q' || e.key.toLowerCase() === 'e')) {
-//         e.preventDefault();
-//         changeRemSize(e.key.toLowerCase() === 'q' ? -1 : 1);
-//     }
-// });
+addEventListener('keydown', (e) => {
+    if ((e.key.toLowerCase() === 'q' || e.key.toLowerCase() === 'e')) {
+        e.preventDefault();
+        changeRemSize(e.key.toLowerCase() === 'q' ? -1 : 1);
+    }
+});
 
 function setRemSize(size) {
     size = Math.max(Math.min(size, 22), 8);
