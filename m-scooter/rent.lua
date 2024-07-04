@@ -25,5 +25,3 @@ addEventHandler('onClientVehicleStartEnter', root, function(player, seat)
     if not rented then return end
     if getElementType(rented) == 'object' and player == localPlayer then return cancelEvent() end
 end)
-
-setElementData(localPlayer, 'scooter:rented', false)
