@@ -16,7 +16,8 @@ addCommandHandler('fingerprint', function(player)
 end)
 
 function getPlayerFingerprint(player)
-    return teaEncode(getElementData(player, 'player:fingerprint'), 'm-anticheat')
+    local fingerprint = getElementData(player, 'player:fingerprint') or ''
+    return teaEncode(fingerprint, 'm-anticheat')
 end
 
 function getPlayerDecodedFingerprint(player)

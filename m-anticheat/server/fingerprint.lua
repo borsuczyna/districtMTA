@@ -53,6 +53,8 @@ addEvent('fingerprint:response', true)
 addEventHandler('fingerprint:response', root, function(response)
     local originalResponse = response
     response = teaDecode(response, 'm-anticheat')
+    -- outputDebugString('Fingerprint: ' .. getPlayerName(client) .. ' - ' .. response)
+
     local verified = verifyFingerprint(response)
     if not verified then
         ban(client, 'IF01', 'Invalid fingerprint (`' .. response .. '`, `' .. originalResponse .. '`)')

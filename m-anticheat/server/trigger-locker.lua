@@ -12,3 +12,7 @@ function isPlayerTriggerLocked(player)
     
     return getElementData(player, 'player:triggerLocked')
 end
+
+addCommandHandler('test11', function()
+    createExplosion(713.52167, -522.02460, 16.32814,1)
+end)
