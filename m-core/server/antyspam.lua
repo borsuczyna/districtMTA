@@ -1,5 +1,8 @@
 local antySpam = {}
 local antySpamTime = 500
+local blockedCommands = {
+    'admin', 'say', 'pm', 're', 'do', 'me'
+}
 
 addEventHandler('onPlayerCommand', root, function(cmd)
     local playerUID = getElementData(source, 'player:uid')
@@ -25,8 +28,8 @@ addEventHandler('onPlayerCommand', root, function(cmd)
     local color = getPlayerColor(source)
     local id = getElementData(source, 'player:id')
 
-    if cmd ~= 'say' then
-        local message = ('%s(#ffffff%d%s) #cccccc%s użył komendy: %s'):format(color, id, color, getPlayerName(source), cmd)
+    if cmd and not table.find(blockedCommands, cmd) then
+        local message = ('%s(#ffffff%d%s) #dddddd%s użył komendy: %s'):format(color, id, color, getPlayerName(source), cmd)
         exports['m-admins']:addLog('komendy', '#aaddff' .. message, {
             {'teleport', 'teleport-uid', playerUID}
         })

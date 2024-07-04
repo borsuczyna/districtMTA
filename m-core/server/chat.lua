@@ -44,9 +44,9 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
         return
     end
 
-    local timeLeft, admin = isPlayerMuted(source)
+    local timeLeft, admin, reason = isPlayerMuted(source)
     if timeLeft then
-        exports['m-notis']:addNotification(source, 'error', 'Wyciszenie', ('Jesteś wyciszony przez %s na %s z powodu: %s'):format(admin, timeLeft, 'elo'))
+        exports['m-notis']:addNotification(source, 'error', 'Wyciszenie', ('Jesteś wyciszony przez %s na %s z powodu: %s'):format(admin, timeLeft, reason))
         return
     end
 
@@ -59,7 +59,7 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     message = removeHex(message)
     
     if messageType == 0 then -- local
-        local message = ('%s(#ffffff%d%s) #cccccc%s: %s'):format(color, playerID, color, playerName, message)
+        local message = ('%s(#ffffff%d%s) #dddddd%s: #eeeeee%s'):format(color, playerID, color, playerName, message)
         sendLocalMessage(x, y, z, message, 20, 255, 215, 125)
         exports['m-admins']:addLog('chat', message, {
             {'teleport', 'teleport-uid', playerUID}
@@ -118,14 +118,17 @@ function sendPm(fromPlayer, toPlayer, message)
     local toPlayerName = getPlayerName(toPlayer)
     local toPlayerID = getElementData(toPlayer, 'player:id')
     local premium = getElementData(fromPlayer, 'player:premium')
-    local color = getPlayerColor(fromPlayer)
+    local fromColor = getPlayerColor(fromPlayer)
+    local toColor = getPlayerColor(toPlayer)
     message = removeHex(message)
 
-    outputChatBox(('%s» [#ffffff%d%s] #ffffff%s: %s'):format(color, toPlayerID, color, toPlayerName, message), fromPlayer, 255, 255, 255, true)
-    outputChatBox(('%s« [#ffffff%d%s] #ffffff%s: %s'):format(color, fromPlayerID, color, fromPlayerName, message), toPlayer, 255, 255, 255, true)
+    outputChatBox(('%s» [#ffffff%d%s] #ffffff%s: %s'):format(toColor, toPlayerID, toColor, toPlayerName, message), fromPlayer, 255, 255, 255, true)
+    outputChatBox(('%s« [#ffffff%d%s] #ffffff%s: %s'):format(fromColor, fromPlayerID, fromColor, fromPlayerName, message), toPlayer, 255, 255, 255, true)
     -- exports['m-admins']:addLog('pm', ('(%d) %s -> (%d) %s: %s'):format(fromPlayerID, fromPlayerName, toPlayerID, toPlayerName, message))
     exports['m-admins']:addLog('pm', ('%s(#ffffff%d%s) #ffffff%s -> %s(#ffffff%d%s) #ffffff%s: %s'):format(getPlayerColor(fromPlayer), fromPlayerID, getPlayerColor(fromPlayer), fromPlayerName, getPlayerColor(toPlayer), toPlayerID, getPlayerColor(toPlayer), toPlayerName, message))
 
+    -- playSFX("genrl", 52, 19, false)
+    triggerClientEvent(toPlayer, 'onClientPlayPrivateMessageSound', resourceRoot)
     respondTo[toPlayer] = fromPlayer
 end
 

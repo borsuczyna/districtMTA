@@ -55,6 +55,7 @@ function updatePlayerMute(player)
 
     setElementData(player, 'player:mute', isMuted['end_timestamp'])
     setElementData(player, 'player:muteAdmin', isMuted['admin'])
+    setElementData(player, 'player:muteReason', isMuted['reason'])
 end
 
 function isPlayerMuted(player)
@@ -99,5 +100,5 @@ function isPlayerMuted(player)
         table.insert(timeStr, ('%d sekund'):format(time.s))
     end
 
-    return table.concat(timeStr, ', '), getElementData(player, 'player:muteAdmin')
+    return table.concat(timeStr, ', '), getElementData(player, 'player:muteAdmin'), getElementData(player, 'player:muteReason')
 end

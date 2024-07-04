@@ -167,14 +167,19 @@ function tryVehicleStartEnter(player, seat)
     local uid = getElementData(player, 'player:uid')
     if not uid then return cancelEvent() end
 
+    local timeLeft, admin, reason = exports['m-core']:isPlayerHaveTakenLicense(player)
+    if timeLeft then
+        if seat == 0 then
+            cancelEvent()
+            exports['m-notis']:addNotification(player, 'error', 'Prawo jazdy', ('Posiadasz zabrane prawo jazdy przez %s na %s z powodu: %s'):format(admin, timeLeft, reason))
+        else
+            local vehicleOccupants = #getVehicleOccupants(source)
+            if vehicleOccupants == 0 then cancelEvent() end
+        end
+    end
+
     local vehicleUid = getElementData(source, 'vehicle:uid')
     if not vehicleUid then return end
-    
-    local timeLeft, admin, reason = exports['m-core']:isPlayerHaveLicense(player)
-    if timeLeft then
-        cancelEvent()
-        exports['m-notis']:addNotification(player, 'error', 'Prawo jazdy', ('Posiadasz zabrane prawo jazdy przez %s na %s z powodu: %s'):format(admin, timeLeft, reason))
-    end
 
     if not canUidEnterVehicle(uid, source) then
         if seat == 0 then

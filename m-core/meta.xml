@@ -1,6 +1,7 @@
 <meta>
     <script src='client/cursor.lua' type='client' cache='false'/>
     <script src='client/network.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
 
     <!-- vehicles -->
     <script src='client/vehicles/damage.lua' type='client' cache='false'/>
@@ -45,7 +46,8 @@
     <export function='unmutePlayer' type='server'/>
     <export function='unbanPlayer' type='server'/>
     <export function='checkBan' type='server'/>
-    <export function='removeLicense' type='server'/>
-    <export function='getPlayerLicense' type='server'/>
-    <export function='isPlayerHaveLicense' type='server'/>
+    <export function='takeLicense' type='server'/>
+    <export function='returnLicense' type='server'/>
+    <export function='getPlayerTakenLicense' type='server'/>
+    <export function='isPlayerHaveTakenLicense' type='server'/>
 </meta>

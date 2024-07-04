@@ -1,4 +1,4 @@
-function removeLicense(player, admin, timeValue, unit, discordReason, reason)
+function takeLicense(player, admin, timeValue, unit, discordReason, reason)
     if type(admin) ~= 'string' then
         admin = getPlayerName(admin)
     end
@@ -12,11 +12,24 @@ function removeLicense(player, admin, timeValue, unit, discordReason, reason)
     
     local messageToPlayer = ('Twoje prawo jazdy zostało zabrane na %d%s przez %s z powodu: %s'):format(timeValue, unit, admin, reason)
     createPunishment(player, admin, 'license', timeValue, unit, reason or discordReason, {discordReason})
+    updatePlayerLicense(player)
 
     exports['m-notis']:addNotification(player, 'error', 'Prawo jazdy', messageToPlayer)
 end
 
-function getPlayerLicense(player)
+function returnLicense(player, admin)
+    if type(admin) ~= 'string' then
+        admin = getPlayerName(admin)
+    end
+
+    local messageToPlayer = ('%s oddał ci prawo jazdy'):format(admin)
+    deletePunishment(player, 'license')
+    updatePlayerLicense(player)
+
+    exports['m-notis']:addNotification(player, 'success', 'Prawo jazdy', messageToPlayer)
+end
+
+function getPlayerTakenLicense(player)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         exports['m-logs']:log('Błąd połączenia z bazą danych', 'error')
@@ -40,17 +53,30 @@ function getPlayerLicense(player)
     return #result > 0 and result[1] or false
 end
 
-function isPlayerHaveLicense(player)
-    local license = getPlayerLicense(player)
-    if not license then
+function updatePlayerLicense(player)
+    local isTakenLicense = getPlayerTakenLicense(player)
+    if not isTakenLicense then
+        removeElementData(player, 'player:takenLicense')
         return
     end
 
-    if getRealTime().timestamp >= license['end_timestamp'] then
-        return true
+    setElementData(player, 'player:takenLicense', isTakenLicense['end_timestamp'])
+    setElementData(player, 'player:takenLicenseAdmin', isTakenLicense['admin'])
+    setElementData(player, 'player:takenLicenseReason', isTakenLicense['reason'])
+end
+
+function isPlayerHaveTakenLicense(player)
+    local mute = getElementData(player, 'player:takenLicense')
+    if not mute then
+        return false
     end
 
-    local timeLeft = license['end_timestamp'] - getRealTime().timestamp
+    if getRealTime().timestamp >= tonumber(mute) then
+        removeElementData(player, 'player:takenLicense')
+        return false
+    end
+
+    local timeLeft = mute - getRealTime().timestamp
     local time = {}
 
     time.d = math.floor(timeLeft / 86400)
@@ -81,5 +107,5 @@ function isPlayerHaveLicense(player)
         table.insert(timeStr, ('%d sekund'):format(time.s))
     end
 
-    return table.concat(timeStr, ', '), license['admin'], license['reason']
+    return table.concat(timeStr, ', '), getElementData(player, 'player:takenLicenseAdmin'), getElementData(player, 'player:takenLicenseReason')
 end
