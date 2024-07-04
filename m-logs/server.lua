@@ -2,7 +2,7 @@ local logChannels = {
     general = 'https://discord.com/api/webhooks/1255555992385618023/LQrzBTVevkjhxfCUAwFaugH0fCAgtDuHzym8A9fp7bqNzOqCV4ZKhfbylZt8c_74yX8V',
     accounts = 'https://discord.com/api/webhooks/1255555450796245033/rKZhMAvzFoTrVpl67Jj23WCeB_NxJt6OHkSWRv8JtxbOx5Z_fbezxCuECv5ZwpqAtNwo',
     vehicles = 'https://discord.com/api/webhooks/1257078940200210585/u5Zpvc8rkOjRYNh_KCQdSDEe43p6iuU4CwQVDXN-tPbu6F8L3no3EI7sneJQHA1N8eFw',
-    anticheat = 'https://discord.com/api/webhooks/1257381267490471978/KHKyyMOixmwRz2LawNiAgKhiDN8CuvgcI-ovmHZFwLCSPZVWZvMALOjSd4WrpYgcx2g-',
+    anticheat = 'https://discord.com/api/webhooks/1258419787957141605/HNzaRcnEWG4vVvbfBBn1jdA5zmEPRZ2B5L7bWqKO5u0Diij1CffY9-YGoqMxgmAEclss',
     bans = 'https://discord.com/api/webhooks/1257432355203711056/qUAR4s2mW1wi8ta7f5JczUoNVgB76N7m4SzkTVjgMKWur_9jgM5oNfFF4_6PZ1Youyb2',
     admin = 'https://discord.com/api/webhooks/1257714046023630898/7q7mxNBL04RGbPNiv9I7Sq18RMSuSaRdFkhjYpDZeaepzDk0EXRTOvxJWjImxXuo5vGP',
     reports = 'https://discord.com/api/webhooks/1258091355050082439/ChhbMnteB9NmP_CPIrqCq-INIzrOogw7NEVpdNUwWe-RMubPjVS6cosK7qGueAp0kkSF',
@@ -38,3 +38,5 @@ function sendLog(channel, type, originalMessage)
     sendDiscordWebhook(logChannels[channel], message)
     outputServerLog(string.format('[%s] %s', channel, originalMessage))
 end
+
+sendLog('general', 'info', 'Server has started')
