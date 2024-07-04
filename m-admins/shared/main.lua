@@ -7,6 +7,7 @@ ranks = {
             'reports',
             'command:teleport',
             'command:license',
+            'command:spec',
         }
     },
     [2] = {
@@ -20,6 +21,8 @@ ranks = {
             'command:kick',
             'command:jetpack',
             'command:mute',
+            'command:inv',
+            'command:spec',
         }
     },
     [3] = {
@@ -34,6 +37,9 @@ ranks = {
             'command:kick',
             'command:jetpack',
             'command:mute',
+            'command:inv',
+            'command:spec',
+            'command:cv',
         }
     },
     [4] = {
@@ -49,6 +55,9 @@ ranks = {
             'command:jetpack',
             'command:mute',
             'command:ban',
+            'command:inv',
+            'command:spec',
+            'command:cv',
         }
     },
     [5] = {
@@ -58,6 +67,7 @@ ranks = {
             'logs',
             'reports',
             'noclip',
+            'command:dev',
             'command:teleport',
             'command:license',
             'command:kick',
@@ -65,6 +75,9 @@ ranks = {
             'command:mute',
             'command:ban',
             'command:unban',
+            'command:inv',
+            'command:spec',
+            'command:cv',
         }
     }
 }

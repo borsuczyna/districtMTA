@@ -20,10 +20,11 @@ end)
 
 function showAdminReportsInterface()
     exports['m-ui']:loadInterfaceElementFromFile('admin-reports', 'm-admins/data/reports.html')
+    adminReportsLoaded = true
 end
 
 function isAdminReportsVisible()
-    return adminReportsData.visible
+    return adminReportsLoaded
 end
 
 function setAdminReportsVisible(visible)
@@ -110,4 +111,9 @@ addEventHandler('reports:addReports', resourceRoot, function(reports)
     for i, report in ipairs(reports) do
         addReport(report)
     end
+end)
+
+addCommandHandler('reports', function()
+    if not getElementData(localPlayer, 'player:rank') then return end
+    setAdminReportsVisible(not isAdminReportsVisible())
 end)

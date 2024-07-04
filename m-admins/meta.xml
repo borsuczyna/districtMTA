@@ -4,18 +4,23 @@
     <script src='client/noclip.lua' type='client' cache='false'/>
     <script src='client/logs.lua' type='client' cache='false'/>
     <script src='client/reports.lua' type='client' cache='false'/>
+    <script src='client/inv.lua' type='client' cache='false'/>
 
     <script src='shared/main.lua' type='shared' cache='false'/>
     <script src='server/main.lua' type='server'/>
     <script src='server/logs.lua' type='server'/>
     <script src='server/reports.lua' type='server'/>
     
+    <script src='commands/dev.lua' type='server'/>
     <script src='commands/teleport.lua' type='server'/>
     <script src='commands/license.lua' type='server'/>
     <script src='commands/kick.lua' type='server'/>
     <script src='commands/ban.lua' type='server'/>
     <script src='commands/mute.lua' type='server'/>
     <script src='commands/jetpack.lua' type='server'/>
+    <script src='commands/inv.lua' type='server'/>
+    <script src='commands/spec.lua' type='server'/>
+    <script src='commands/cv.lua' type='server'/>
 
     <file src='data/logs.html'/>
     <file src='data/reports.html'/>

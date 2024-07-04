@@ -18,10 +18,11 @@ end)
 
 function showAdminlogsInterface()
     exports['m-ui']:loadInterfaceElementFromFile('admin-logs', 'm-admins/data/logs.html')
+    adminLogsLoaded = true
 end
 
 function isAdminlogsVisible()
-    return adminLogsData.visible
+    return adminLogsLoaded
 end
 
 function setAdminlogsVisible(visible)
@@ -92,4 +93,9 @@ addEventHandler('logs:iconClick', root, function(icon, ...)
         setElementPosition(localPlayer, x, y + 0.5, z)
         exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
     end
+end)
+
+addCommandHandler('logs', function()
+    if not getElementData(localPlayer, 'player:rank') then return end
+    setAdminlogsVisible(not isAdminlogsVisible())
 end)

@@ -2,7 +2,7 @@ local sx, sy = guiGetScreenSize()
 local font = exports['m-ui']:getFont('Inter-Medium', 12)
 local noclipEnabled = false
 
-function renderNoclip()
+function renderNoclip()    
     local element = localPlayer
     local vehicle = getPedOccupiedVehicle(element)
     if vehicle then
@@ -24,41 +24,44 @@ function renderNoclip()
 
     local speed = 0.5
     local nx, ny, nz = 0, 0, 0
-    if getKeyState('lctrl') then
-        speed = 5
-    elseif getKeyState('lalt') then
-        speed = 0.1
-    end
 
-    if getKeyState('w') then
-        nx = nx + math.cos(rot) * speed
-        ny = ny + math.sin(rot) * speed
-    end
+    if not isChatBoxInputActive() then
+        if getKeyState('lctrl') then
+            speed = 5
+        elseif getKeyState('lalt') then
+            speed = 0.1
+        end
 
-    if getKeyState('s') then
-        nx = nx - math.cos(rot) * speed
-        ny = ny - math.sin(rot) * speed
-    end
+        if getKeyState('w') then
+            nx = nx + math.cos(rot) * speed
+            ny = ny + math.sin(rot) * speed
+        end
 
-    if getKeyState('a') then
-        nx = nx + math.cos(rot + math.rad(90)) * speed
-        ny = ny + math.sin(rot + math.rad(90)) * speed
-    end
+        if getKeyState('s') then
+            nx = nx - math.cos(rot) * speed
+            ny = ny - math.sin(rot) * speed
+        end
 
-    if getKeyState('d') then
-        nx = nx + math.cos(rot - math.rad(90)) * speed
-        ny = ny + math.sin(rot - math.rad(90)) * speed
-    end
+        if getKeyState('a') then
+            nx = nx + math.cos(rot + math.rad(90)) * speed
+            ny = ny + math.sin(rot + math.rad(90)) * speed
+        end
 
-    if getKeyState('space') then
-        nz = nz + speed
-    end
+        if getKeyState('d') then
+            nx = nx + math.cos(rot - math.rad(90)) * speed
+            ny = ny + math.sin(rot - math.rad(90)) * speed
+        end
 
-    if getKeyState('lshift') then
-        nz = nz - speed
-    end
+        if getKeyState('space') then
+            nz = nz + speed
+        end
 
-    setElementPosition(element, x + nx, y + ny, z + nz)
+        if getKeyState('lshift') then
+            nz = nz - speed
+        end
+
+        setElementPosition(element, x + nx, y + ny, z + nz)
+    end
 end
 
 function toggleNoClip()
