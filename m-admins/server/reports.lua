@@ -87,12 +87,28 @@ addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
         
         table.remove(reports, index)
         exports['m-notis']:addNotification(client, 'success', 'Zgłoszenie', 'Zgłoszenie zostało zaakceptowane')
-        exports['m-notis']:addNotification(report.reporter, 'success', 'Zgłoszenie', 'Twoje zgłoszenie zostało zaakceptowane')
+        exports['m-notis']:addNotification(report.reporter, 'success', 'Zgłoszenie', ('Twoje zgłoszenie zostało zaakceptowane przez %s'):format(getPlayerName(client)))
         exports['m-logs']:sendLog('reports', 'success', ('Gracz `%s` zaakceptował zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
 
         for i, player in ipairs(getElementsByType('player')) do
             if doesPlayerHavePermission(player, 'reports') then
-                triggerClientEvent(player, client == player and 'reports:acceptReport' or 'reports:removeReport', resourceRoot, hash)
+                triggerClientEvent(player, client == player and 'reports:acceptReport' or 'reports:rejectReport', resourceRoot, hash)
+            end
+        end
+    elseif action == 'reject' then
+        if report.state ~= REPORT_STATE.PENDING then
+            exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Zgłoszenie zostało już zaakceptowane')
+            return
+        end
+        
+        table.remove(reports, index)
+        exports['m-notis']:addNotification(client, 'success', 'Zgłoszenie', 'Zgłoszenie zostało odrzucone')
+        exports['m-notis']:addNotification(report.reporter, 'error', 'Zgłoszenie', ('Twoje zgłoszenie zostało odrzucone przez %s'):format(getPlayerName(client)))
+        exports['m-logs']:sendLog('reports', 'error', ('Gracz `%s` odrzucił zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
+
+        for i, player in ipairs(getElementsByType('player')) do
+            if doesPlayerHavePermission(player, 'reports') then
+                triggerClientEvent(player, client == player and 'reports:acceptReport' or 'reports:rejectReport', resourceRoot, hash)
             end
         end
     end

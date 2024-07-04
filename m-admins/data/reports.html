@@ -183,7 +183,7 @@
         }
     }
 
-    window.adminReports_removeReport = (hash) => {
+    window.adminReports_rejectReport = (hash) => {
         let rows = document.querySelector('#admin-reports .rows');
         const atBottom = rows.scrollHeight - rows.scrollTop >= rows.clientHeight - 1;
 
@@ -208,7 +208,7 @@
                 setIcons(el.querySelector('.icons'), [
                     ['teleport', 'teleportTo', el.dataset.reporter],
                     ['teleport', 'teleportTo', el.dataset.target],
-                    ['trash', 'deleteReport', hash],
+                    ['trash', 'rejectReport', hash],
                 ]);
             }
         });
@@ -263,9 +263,9 @@
         adminReports_addReport(data.hash, data);
     });
 
-    addEvent('admin-reports', 'interface:data:removeReport', async (data) => {
+    addEvent('admin-reports', 'interface:data:rejectReport', async (data) => {
         data = data[0];
-        adminReports_removeReport(data.hash);
+        adminReports_rejectReport(data.hash);
     });
 
     addEvent('admin-reports', 'interface:data:acceptReport', async (data) => {
