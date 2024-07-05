@@ -22,19 +22,19 @@ function permBan(player, bannedBy, discordReason, reason)
     banPlayer(player, true, false, true, bannedBy, 'Połącz się ponownie, aby poznać szczegóły bana', 5)
 end
 
-function isPlayerBanned(serial, fingerprint, ip)
+function isPlayerBanned(serial, ip)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         exports['m-logs']:log('Błąd połączenia z bazą danych', 'error')
         return
     end
 
-    local result = dbPoll(dbQuery(connection, [[SELECT * FROM `m-punishments` WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND (`permanent` = 1 OR `end` > NOW()) AND `type`="ban" AND `active`=1]], serial, fingerprint, ip), 10000)
+    local result = dbPoll(dbQuery(connection, [[SELECT * FROM `m-punishments` WHERE (`serial` = ? OR `ip` = ?) AND (`permanent` = 1 OR `end` > NOW()) AND `type`="ban" AND `active`=1]], serial, ip), 10000)
     return #result > 0 and result[1] or false
 end
 
-function checkBan(player, serial, fingerprint, ip)
-    local banned = isPlayerBanned(serial, fingerprint, ip)
+function checkBan(player, serial, ip)
+    local banned = isPlayerBanned(serial, ip)
     if not banned then return end
 
     if player then
@@ -46,7 +46,7 @@ function checkBan(player, serial, fingerprint, ip)
     return true
 end
 
-function unbanPlayer(admin, serial, fingerprint, ip)
+function unbanPlayer(admin, serial, ip)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         exports['m-logs']:log('Błąd połączenia z bazą danych', 'error')
@@ -57,13 +57,13 @@ function unbanPlayer(admin, serial, fingerprint, ip)
         admin = getPlayerName(admin)
     end
 
-    local result = dbExec(connection, [[UPDATE `m-punishments` SET `active`=0 WHERE (`serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND `type`="ban" AND `active`=1]], serial, fingerprint, ip)
+    local result = dbExec(connection, [[UPDATE `m-punishments` SET `active`=0 WHERE (`serial` = ? OR `ip` = ?) AND `type`="ban" AND `active`=1]], serial, ip)
     if not result then
         exports['m-logs']:log('Błąd podczas odbanowywania gracza', 'error')
         return
     end
 
-    local message = ('Admin `%s` odbanował gracza o serialu `%s`, fingerprincie `%s` oraz IP `%s`'):format(admin, serial or "-", fingerprint or "-", ip or "-")
+    local message = ('Admin `%s` odbanował gracza o serialu `%s`, fingerprincie `%s` oraz IP `%s`'):format(admin, serial or "-", ip or "-")
     exports['m-logs']:sendLog('bans', 'success', message)
     return true
 end

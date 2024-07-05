@@ -38,17 +38,16 @@ function getPlayerTakenLicense(player)
 
     local uid = getElementData(player, 'player:uid') or 0
     local serial = getPlayerSerial(player)
-    local fingerprint = exports['m-anticheat']:getPlayerDecodedFingerprint(player)
     local ip = getPlayerIP(player)
 
     local result = dbPoll(dbQuery(connection, [[
         SELECT *, UNIX_TIMESTAMP(`end`) AS `end_timestamp`
         FROM `m-punishments`
-        WHERE (`user` = ? OR `serial` = ? OR `fingerprint` = ? OR `ip` = ?)
+        WHERE (`user` = ? OR `serial` = ? OR `ip` = ?)
         AND `type` = "license"
         AND `end` > NOW()
         AND `active` = 1
-    ]], uid, serial, fingerprint, ip), 10000)
+    ]], uid, serial, ip), 10000)
 
     return #result > 0 and result[1] or false
 end

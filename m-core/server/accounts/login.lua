@@ -31,7 +31,7 @@ local function loginInternal(data, hash)
         return
     end
 
-    dbQuery(loginResult, {hash, data}, connection, 'SELECT *, UNIX_TIMESTAMP(`premium_date`) AS `premium_end` FROM `m-users` WHERE username = ? OR email = ?', data.usernameOrEmail, data.usernameOrEmail)
+    dbQuery(loginResult, {hash, data}, connection, 'SELECT *, UNIX_TIMESTAMP(`premiumDate`) AS `premiumEnd` FROM `m-users` WHERE username = ? OR email = ?', data.usernameOrEmail, data.usernameOrEmail)
 end
 
 function loginToAccount(data)

@@ -4,12 +4,6 @@ function setPlayerTriggerLocked(player, state, reason)
 end
 
 function isPlayerTriggerLocked(player)
-    if not getPlayerFingerprint(player) then
-        local message = ('%s tried to use trigger without fingerprint'):format(getPlayerName(player))
-        exports['m-logs']:sendLog('anticheat', 'warning', message)
-        return true
-    end
-    
     return getElementData(player, 'player:triggerLocked')
 end
 

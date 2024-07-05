@@ -11,7 +11,6 @@ function createPunishment(player, bannedBy, type_, time, timeUnit, reason, addit
 
     local uid = getElementData(player, 'player:uid') or 0
     local serial = getPlayerSerial(player)
-    local fingerprint = exports['m-anticheat']:getPlayerDecodedFingerprint(player)
     local ip = getPlayerIP(player)
 
     local seconds = time
@@ -23,9 +22,9 @@ function createPunishment(player, bannedBy, type_, time, timeUnit, reason, addit
         seconds = time * 60 * 60 * 24
     end
 
-    dbExec(connection, [[INSERT INTO `m-punishments` (`user`, `serial`, `fingerprint`, `ip`, `type`, `permanent`, `end`, `admin`, `reason`, `additionalInfo`)
+    dbExec(connection, [[INSERT INTO `m-punishments` (`user`, `serial`, `ip`, `type`, `permanent`, `end`, `admin`, `reason`, `additionalInfo`)
         VALUES (?, ?, ?, ?, ?, ?, NOW() + INTERVAL ? SECOND, ?, ?, ?)]],
-        uid, serial, fingerprint, ip, type_, seconds == 0, seconds, bannedBy, reason, toJSON(additionalInfo))
+        uid, serial, ip, type_, seconds == 0, seconds, bannedBy, reason, toJSON(additionalInfo))
 end
 
 function deletePunishment(player, type_)
@@ -37,9 +36,8 @@ function deletePunishment(player, type_)
 
     local uid = getElementData(player, 'player:uid') or 0
     local serial = getPlayerSerial(player)
-    local fingerprint = exports['m-anticheat']:getPlayerDecodedFingerprint(player)
     local ip = getPlayerIP(player)
 
-    dbExec(connection, [[UPDATE `m-punishments` SET `active` = 0 WHERE (`user` = ? OR `serial` = ? OR `fingerprint` = ? OR `ip` = ?) AND `type` = ? AND `active` = 1]],
-        uid, serial, fingerprint, ip, type_)
+    dbExec(connection, [[UPDATE `m-punishments` SET `active` = 0 WHERE (`user` = ? OR `serial` = ? OR `ip` = ?) AND `type` = ? AND `active` = 1]],
+        uid, serial, ip, type_)
 end

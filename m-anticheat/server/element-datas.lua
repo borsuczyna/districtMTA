@@ -1,5 +1,5 @@
 local lockedElementDatas = {
-    'player:fingerprint', 'player:uid', 'player:id',
+    'player:uid', 'player:id',
     'player:premium', 'player:avatar', 'player:skin',
     'player:spawn', 'player:logged', 'player:organization',
     'player:level', 'player:exp', 'player:rank',

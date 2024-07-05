@@ -3,21 +3,15 @@
 
 	<include resource='m-ui'/>
 
-    <file src='data/fingerprint.html'/>
-    
     <script src='client/nt.lua' type='client' cache='false'/>
-    <script src='client/fingerprint.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
     <!-- <script src='server/vpn.lua' type='server'/> -->
     <script src='server/trigger-locker.lua' type='server'/>
-    <script src='server/fingerprint.lua' type='server'/>
     <script src='server/element-datas.lua' type='server'/>
     <script src='server/explosions.lua' type='server'/>
 
     <export function='setPlayerTriggerLocked' type='server'/>
     <export function='isPlayerTriggerLocked' type='server'/>
-    <export function='getPlayerFingerprint' type='server'/>
-    <export function='getPlayerDecodedFingerprint' type='server'/>
     <export function='ban' type='server'/>
 </meta>
