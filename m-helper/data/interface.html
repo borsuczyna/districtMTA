@@ -1,0 +1,341 @@
+<style>
+    #helper #helper-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        transform: translate(-50%, -50%) scale(0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 51rem;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #helper .top {
+        background: rgba(34, 34, 34, 0.5);
+        padding: 0.6rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 0.625rem 0.625rem 0 0;
+    }
+
+    #helper .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+    }
+
+    #helper .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #helper .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #helper .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+    
+    #helper .level-box {
+        background: linear-gradient(270deg, #333 50%, #2d2d2d 50%);
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #eef2ef;
+        width: 2.2rem;
+        height: 2.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #helper .level {
+        color: #eef2efde;
+        font-size: 1rem;
+    }
+
+    #helper .next-level-xp {
+        font-size: 1rem;
+        color: #eef2ef;
+    }
+
+    #helper .next-level {
+        font-size: 0.8rem;
+        color: #eef2efd4;
+    }
+
+    #helper .progress-bar {
+        background: rgba(255, 255, 255, 0.1);
+        height: 0.5rem;
+        width: 100%;
+        position: relative;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        height: 0.375rem;
+        background: rgba(58, 58, 58, 0.7);
+    }
+
+    #helper .progress {
+        border-radius: 0.5rem;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(252, 166, 74, 0.8) 0%, rgba(233, 125, 76, 0.8) 57.81%, rgba(221, 100, 77, 0.8) 100%);
+        box-shadow: 0px 0px 1.325rem #ffab4a6b;
+    }
+
+    #helper .bottom {
+        border-radius: 0 0 0.625rem 0.625rem;
+        display: flex;
+        height: 25rem;
+        overflow: hidden;
+    }
+
+    #helper .list {
+        background: rgba(34, 34, 34, 0.5);
+        border-radius: 0 0 0 0.625rem;
+        width: 15rem;
+        min-width: 15rem;
+        max-width: 15rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    #helper .item {
+        padding: 0.9rem;
+        background: rgba(34, 34, 34, 0.5);
+        border-bottom: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        color: #ffffffb1;
+    }
+
+    #helper .item:last-child {
+        border-bottom: none;
+    }
+
+    #helper .item:hover {
+        background: rgba(36, 36, 36, 0.8);
+    }
+
+    #helper .item.active {
+        background: rgba(44, 44, 44, 0.8);
+        color: #fff;
+    }
+
+    #helper #view {
+        padding: 1rem;
+        flex-grow: 1;
+    }
+
+    #helper .tab {
+        display: none;
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        color: #ffffffcc;
+        font-size: 0.95rem;
+    }
+
+    #helper .tab h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+        margin-top: 0;
+        color: #fff;
+    }
+
+    #helper .tab p {
+        margin-top: 0rem;
+        margin-bottom: 1rem;
+    }
+
+    #helper .tab a {
+        color: #ffab48;
+        text-decoration: none;
+        text-shadow: 0px 0px 1rem #ffab4aaa;
+    }
+
+    #helper .tab a:hover {
+        text-decoration: underline;
+    }
+
+    #helper .tab.active {
+        display: block;
+    }
+
+    #helper ::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    #helper ::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 0.25rem;
+    }
+
+    #helper ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    #helper ::-webkit-scrollbar-track {
+        background-color: rgba(40, 40, 40, 0.6);
+    }
+
+    #helper ::-webkit-scrollbar-corner {
+        background-color: rgba(27, 27, 27, 0.4);
+    }
+
+    #helper #map-1 {
+        height: 10rem;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+<div id="helper-wrapper">
+    <div class="top gap-2">
+        <div class="d-flex gap-1 logo">
+            <img src="../../m-login/data/logo.png" style="width: 3rem;"/>
+            <span>
+                <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+                <span class="gradient-text text-glow">MTA</span>
+            </span>
+        </div>
+        <div class="d-flex flex-column flex-grow-1">
+            <div class="d-flex justify-between align-items-center w-100">
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="level-box">25</div>
+                    <div class="level">Poziom</div>
+                </div>
+                <div class="d-flex flex-column text-end">
+                    <span class="next-level-xp">305 xp</span>
+                    <span class="next-level">Następny poziom</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" style="width: 67%;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom d-flex">
+        <div class="list d-flex flex-column">
+            <div class="item active" data-tab="server" onclick="helper_changeTab()">Serwer</div>
+            <div class="item" data-tab="start" onclick="helper_changeTab()">Jak zacząć?</div>
+            <div class="item" data-tab="test" onclick="helper_changeTab()">Zarobki</div>
+            <div class="item" data-tab="premium" onclick="helper_changeTab()">Premium</div>
+        </div>
+        <div id="view">
+            <div class="tab active" data-tab="server">
+                <h2>Serwer</h2>
+                <p>districtMTA to serwer stworzony przez graczy dla graczy. Naszym celem jest stworzenie miejsca, w którym każdy znajdzie coś dla siebie. Nasza społeczność składa się z graczy, którzy chcą spędzić czas w miłym towarzystwie, a także z administracji, która dba o to, aby każdy mógł cieszyć się grą.</p>
+                <p>Na serwerze znajdziesz wiele ciekawych systemów, które sprawią, że rozgrywka będzie jeszcze bardziej interesująca. Wszystkie systemy zostały stworzone z myślą o graczach, dlatego też zawsze możesz liczyć na pomoc w razie problemów.</p>
+                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
+                <p>districtMTA to serwer stworzony przez graczy dla graczy. Naszym celem jest stworzenie miejsca, w którym każdy znajdzie coś dla siebie. Nasza społeczność składa się z graczy, którzy chcą spędzić czas w miłym towarzystwie, a także z administracji, która dba o to, aby każdy mógł cieszyć się grą.</p>
+                <p>Na serwerze znajdziesz wiele ciekawych systemów, które sprawią, że rozgrywka będzie jeszcze bardziej interesująca. Wszystkie systemy zostały stworzone z myślą o graczach, dlatego też zawsze możesz liczyć na pomoc w razie problemów.</p>
+                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
+            </div>
+            <div class="tab" data-tab="start">
+                <h2>Jak zacząć?</h2>
+                <p>Aby zacząć grę na serwerze districtMTA, musisz zainstalować klienta MTA:SA. Możesz pobrać go ze strony <a href="https://mtasa.com" target="_blank">mtasa.com</a>. Po zainstalowaniu klienta, wystarczy, że wpiszesz w wyszukiwarce "districtMTA" i dołączysz do serwera.</p>
+                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
+                <div id="map-1" class="mb-2"></div>
+                <p>Aby zacząć grę na serwerze districtMTA, musisz zainstalować klienta MTA:SA. Możesz pobrać go ze strony <a href="https://mtasa.com" target="_blank">mtasa.com</a>. Po zainstalowaniu klienta, wystarczy, że wpiszesz w wyszukiwarce "districtMTA" i dołączysz do serwera.</p>
+                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
+                <p>Aby zacząć grę na serwerze districtMTA, musisz zainstalować klienta MTA:SA. Możesz pobrać go ze strony <a href="https://mtasa.com" target="_blank">mtasa.com</a>. Po zainstalowaniu klienta, wystarczy, że wpiszesz w wyszukiwarce "districtMTA" i dołączysz do serwera.</p>
+                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
+            </div>
+            <div class="tab" data-tab="test">
+                <h2>Coś tam kurwa</h2>
+                <p>Kurwa coś tam</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.helper_changeTab = () => {
+        for (const item of document.querySelectorAll('#helper .item')) {
+            item.classList.toggle('active', item === event.target);
+        }
+
+        for (const tab of document.querySelectorAll('#helper .tab')) {
+            tab.classList.toggle('active', tab.dataset.tab === event.target.dataset.tab);
+        }
+    }
+
+    window.helper_setExpToNext = (exp) => {
+        document.querySelector('#helper .next-level-xp').innerText = exp + ' xp';
+    }
+
+    window.helper_setLevel = (level) => {
+        document.querySelector('#helper .level-box').innerText = level;
+    }
+
+    window.helper_setProgress = (progress) => {
+        document.querySelector('#helper .progress').style.width = progress + '%';
+    }
+
+    window.helper_setExp = (exp) => {
+        let next = document.querySelector('#helper .next-level-xp').innerText.split(' ')[0];
+        let progress = Math.round((exp / next) * 100);
+        document.querySelector('#helper .progress').style.width = progress + '%';
+    }
+
+    createMap({
+        element: document.querySelector('#helper #map-1'),
+        minZoom: 1.5,
+        zoom: 2.5,
+        maxZoom: 4,
+        x: 1500,
+        y: 1500,
+        limitBounds: true,
+        bounds: { x: 1400, y: 1400 },
+        texture: 'map-transparent.png?v1.01'
+    });
+
+    addEvent('helper', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#helper #helper-wrapper').style.opacity = appear ? '1' : '0';
+        document.querySelector('#helper #helper-wrapper').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+
+    addEvent('helper', 'interface:data:player', (data) => {
+        data = data[0];
+        helper_setExpToNext(data.expToNext);
+        helper_setLevel(data.level);
+        helper_setExp(data.exp);
+    });
+</script>

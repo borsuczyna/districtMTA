@@ -318,6 +318,8 @@
         map.x += (cursorXMapOld - cursorXMapNew);
         map.y += (cursorYMapOld - cursorYMapNew);
 
+        event.preventDefault();
+
         updateMap(map);
     });
 
