@@ -29,42 +29,44 @@ end)
 
 function setInterfaceVisible(name, visible)
     if not uiLoaded or not browser then return end
-    executeBrowserJavascript(browser, 'setInterfaceVisible("'..name..'", '..tostring(visible)..')')
+    -- executeBrowserJavascript(browser, 'setInterfaceVisible("'..name..'", '..tostring(visible)..')')
+    executeBrowserJavascript(browser, ('setInterfaceVisible(%q, %s)'):format(name, tostring(visible)))
     triggerEvent('interface:visibilityChange', resourceRoot, name, visible)
 end
 
 function loadInterfaceElement(name)
     if not uiLoaded or not browser then return end
-    executeBrowserJavascript(browser, 'loadInterfaceElement("'..name..'")')
+    -- executeBrowserJavascript(browser, 'loadInterfaceElement("'..name..'")')
+    executeBrowserJavascript(browser, ('loadInterfaceElement(%q)'):format(name))
 end
 
 function loadInterfaceElementFromCode(name, code)
     if not uiLoaded or not browser then return end
     code = code:gsub('`', '\\`')
     code = code:gsub('%${', '\\${')
-    executeBrowserJavascript(browser, 'loadInterfaceElementFromCode("'..name..'", `'..code..'`)')
+    executeBrowserJavascript(browser, ('loadInterfaceElementFromCode(%q, `%s`)'):format(name, code))
 end
 
 function loadInterfaceElementFromFile(name, path)
     if not uiLoaded or not browser then return end
-    executeBrowserJavascript(browser, 'loadInterfaceElementFromFile("'..name..'", "'..path..'")')
+    executeBrowserJavascript(browser, ('loadInterfaceElementFromFile(%q, %q)'):format(name, path))
 end
 
 function addEventHandlerToInterfaceElement(name, event, handlerCode)
     if not uiLoaded or not browser then return end
     handlerCode = handlerCode:gsub('`', '\\`')
     handlerCode = handlerCode:gsub('%${', '\\${')
-    executeBrowserJavascript(browser, 'addEventHandlerToInterfaceElement("'..name..'", "'..event..'", `'..handlerCode..'`)')
+    executeBrowserJavascript(browser, ('addEventHandlerToInterfaceElement(%q, %q, `%s`)'):format(name, event, handlerCode))
 end
 
 function setInterfaceZIndex(name, zIndex)
     if not uiLoaded or not browser then return end
-    executeBrowserJavascript(browser, 'setInterfaceZIndex("'..name..'", '..tostring(zIndex)..')')
+    executeBrowserJavascript(browser, ('setInterfaceZIndex(%q, %d)'):format(name, zIndex))
 end
 
 function destroyInterfaceElement(name)
     if not uiLoaded or not browser then return end
-    executeBrowserJavascript(browser, 'destroyInterfaceElement("'..name..'")')
+    executeBrowserJavascript(browser, ('destroyInterfaceElement(%q)'):format(name))
     triggerEvent('interface:visibilityChange', resourceRoot, name, false)
 end
 
@@ -83,7 +85,7 @@ function setInterfaceData(interfaceName, key, value)
         return
     end
 
-    executeBrowserJavascript(browser, 'setInterfaceData("'..interfaceName..'", "'..key..'", '..value..')')
+    executeBrowserJavascript(browser, ('setInterfaceData(%q, %q, %s)'):format(interfaceName, key, value))
 end
 
 function triggerInterfaceEvent(interfaceName, name, ...)
@@ -106,7 +108,7 @@ function triggerInterfaceEvent(interfaceName, name, ...)
         end
     end
 
-    executeBrowserJavascript(browser, 'triggerEvent("'..interfaceName..'", "'..name..'", '..argsString..')')
+    executeBrowserJavascript(browser, ('triggerEvent(%q, %q, %s)'):format(interfaceName, name, argsString))
 end
 
 function executeJavascript(code)
