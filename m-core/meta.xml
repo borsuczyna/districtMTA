@@ -1,4 +1,5 @@
 <meta>
+    <script src='client/afk.lua' type='client' cache='false'/>
     <script src='client/cursor.lua' type='client' cache='false'/>
     <script src='client/network.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
@@ -6,11 +7,11 @@
     <!-- vehicles -->
     <script src='client/vehicles/damage.lua' type='client' cache='false'/>
 
+    <script src='server/main.lua' type='server'/>
     <script src='server/id.lua' type='server'/>
     <script src='server/chat.lua' type='server'/>
     <script src='server/antyspam.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
-    <script src='server/time.lua' type='server'/>
     <script src='server/premium.lua' type='server'/>
 
     <!-- accounts -->
