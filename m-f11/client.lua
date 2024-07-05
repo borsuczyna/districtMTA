@@ -42,17 +42,6 @@ function showF11Interface()
     exports['m-ui']:loadInterfaceElementFromFile('f11', 'm-f11/data/interface.html')
 end
 
-function setF11Text(text)
-    f11Data.text = text
-    updateF11Data()
-end
-
-function setF11Progress(progress, time)
-    f11Data.progress = progress
-    f11Data.time = time or 0
-    updateF11Data()
-end
-
 function setF11Visible(visible)
     if f11HideTimer and isTimer(f11HideTimer) then
         killTimer(f11HideTimer)
