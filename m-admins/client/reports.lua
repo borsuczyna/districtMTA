@@ -49,7 +49,7 @@ addEventHandler('onClientResourceStart', resourceRoot, function()
 
     addEventHandler('interfaceLoaded', root, function()
         adminReportsLoaded = false
-        setAdminReportsVisible(adminReportsData.visible, adminReportsData.text, adminReportsData.time)
+        setAdminReportsVisible(adminReportsLoaded)
     end)
 end)
 

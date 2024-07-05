@@ -47,7 +47,7 @@ addEventHandler('onClientResourceStart', resourceRoot, function()
 
     addEventHandler('interfaceLoaded', root, function()
         adminLogsLoaded = false
-        setAdminlogsVisible(adminLogsData.visible, adminLogsData.text, adminLogsData.time)
+        setAdminlogsVisible(adminLogsLoaded)
     end)
 end)
 

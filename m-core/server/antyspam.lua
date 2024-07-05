@@ -27,6 +27,7 @@ addEventHandler('onPlayerCommand', root, function(cmd)
     antySpam[source].lastCommand = getTickCount() + antySpamTime
     local color = getPlayerColor(source)
     local id = getElementData(source, 'player:id')
+    if not id then return end
 
     if cmd and not table.find(blockedCommands, cmd) then
         local message = ('%s(#ffffff%d%s) #dddddd%s użył komendy: %s'):format(color, id, color, getPlayerName(source), cmd)

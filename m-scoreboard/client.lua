@@ -89,17 +89,6 @@ function showScoreboardInterface()
     exports['m-ui']:loadInterfaceElementFromFile('scoreboard', 'm-scoreboard/data/interface.html')
 end
 
-function setScoreboardText(text)
-    scoreboardData.text = text
-    updateScoreboardData()
-end
-
-function setScoreboardProgress(progress, time)
-    scoreboardData.progress = progress
-    scoreboardData.time = time or 0
-    updateScoreboardData()
-end
-
 function setScoreboardVisible(visible)
     if scoreboardHideTimer and isTimer(scoreboardHideTimer) then
         killTimer(scoreboardHideTimer)

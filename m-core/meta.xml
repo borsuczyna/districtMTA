@@ -10,6 +10,8 @@
     <script src='server/chat.lua' type='server'/>
     <script src='server/antyspam.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
+    <script src='server/time.lua' type='server'/>
+    <script src='server/premium.lua' type='server'/>
 
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>

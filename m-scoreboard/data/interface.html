@@ -154,13 +154,13 @@
         position: relative;
         border-radius: 50%;
         border: 0.125rem solid #727272;
-        width: 3rem;
-        height: 3rem;
+        width: 2.5rem;
+        height: 2.5rem;
     }
     
     #scoreboard #player-list .item .avatar img {
-        width: 3rem;
-        height: 3rem;
+        width: 2.5rem;
+        height: 2.5rem;
         border-radius: 50%;
         border: none;
         background: #424242;
@@ -192,7 +192,7 @@
 
     #scoreboard #player-list .item .nickname {
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #ffffffdd;
         width: 8rem;
         max-width: 8rem;
@@ -232,7 +232,7 @@
 
     #scoreboard #player-list .item .level {
         font-weight: 900;
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         color: rgba(255, 255, 255, 0.9);
     }
 
@@ -257,7 +257,8 @@
         padding-bottom: 2rem;
     }
 
-    #scoreboard .info {
+    #scoreboard #player-list-tip {
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -326,6 +327,10 @@
     <div id="player-list-no-results" class="d-none">
         Brak wyników
     </div>
+
+    <div id="player-list-tip">
+        Naciśnij prawy przycisk myszy, aby pokazać kursor
+    </div>
 </div>
 
 <script>
@@ -362,7 +367,7 @@
 
         item.innerHTML = `
             <div class="d-flex gap-4 align-items-center">
-                <div class="d-flex gap-3 align-items-center">
+                <div class="d-flex gap-2 align-items-center">
                     <div class="avatar">
                         <img src="${avatar}" alt="">
                     </div>
@@ -385,7 +390,7 @@
                     <span>LEVEL</span>
                 </div>
                 <div class="d-flex flex-column align-items-center gap-1">
-                    <svg viewBox="0 0 26 20" fill="none" style="width: 1.3rem; height: 1.3rem;">
+                    <svg viewBox="0 0 26 20" fill="none" style="width: 1.1rem; height: 1.1rem;">
                         <path d="M1.74227 6.77752C3.39243 5.00862 5.00107 3.81287 6.77172 3.05131C8.54236 2.28974 10.5375 1.93548 13 1.93548C15.4625 1.93548 17.4576 2.28974 19.2283 3.05131C20.9989 3.81287 22.6076 5.00862 24.2577 6.77752C24.6278 7.17424 25.2602 7.2055 25.6701 6.84735C26.08 6.48921 26.1123 5.87726 25.7423 5.48054C23.9559 3.56567 22.1287 2.18077 20.0406 1.28264C17.9524 0.384504 15.6658 0 13 0C10.3342 0 8.0476 0.384504 5.95944 1.28264C3.87128 2.18077 2.04407 3.56567 0.25774 5.48054C-0.112348 5.87726 -0.0800383 6.48921 0.329905 6.84735C0.739848 7.2055 1.37219 7.17424 1.74227 6.77752Z" fill="${ping > 150 ? '#FFFFFF88' : 'white'}" />
                         <path d="M13 6.45161C11.1357 6.45161 9.49907 6.76378 8.02885 7.47518C6.55863 8.18658 5.31861 9.26631 4.20001 10.7097C3.86864 11.1373 3.95818 11.7438 4.40001 12.0645C4.84183 12.3852 5.46863 12.2985 5.8 11.871C6.77717 10.6101 7.79068 9.75436 8.92327 9.20633C10.0559 8.6583 11.3714 8.3871 13 8.3871C14.6286 8.3871 15.9441 8.6583 17.0767 9.20633C18.2093 9.75436 19.2228 10.6101 20.2 11.871C20.5314 12.2985 21.1582 12.3852 21.6 12.0645C22.0418 11.7438 22.1314 11.1373 21.8 10.7097C20.6814 9.26631 19.4414 8.18658 17.9712 7.47518C16.5009 6.76378 14.8643 6.45161 13 6.45161Z" fill="${ping > 300 ? '#FFFFFF88' : 'white'}" />
                         <rect x="10" y="14" width="6" height="6" rx="3" fill="white" />
@@ -425,17 +430,9 @@
         }
 
         document.querySelector('#scoreboard #player-list-no-results').classList.toggle('d-none', results > 0);
-        document.querySelector('#scoreboard .info').classList.toggle('d-none', results == 0);
+        document.querySelector('#scoreboard #player-list-tip').classList.toggle('d-none', results === 0);
     }
 
-    window.scoreboard_addCursorInfo = function() {
-        let table = document.querySelector('#scoreboard #player-list');
-        let item = document.createElement('div');
-        item.classList.add('info');
-        item.innerHTML = `Naciśnij prawy przycisk myszy, aby pokazać kursor`;
-        table.appendChild(item);
-    }
-    
     addEvent('scoreboard', 'interface:data:players', (data) => {
         data = data[0];
         
@@ -447,7 +444,6 @@
             window.scoreboard_addPlayer(uid, id, name, ping, organization, status, statusColor, level, me, category);
         }
 
-        scoreboard_addCursorInfo();
         document.querySelector('#scoreboard .online span').innerText = data.length;
         scoreboard_updateFilter();
     });
@@ -455,6 +451,6 @@
     addEvent('scoreboard', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#scoreboard').classList.add('perspective');
-        document.querySelector('#scoreboard-inner').style.transform = appear ? 'rotateX(0)' : 'rotateX(90deg)';
+        document.querySelector('#scoreboard #scoreboard-inner').style.transform = appear ? 'rotateX(0)' : 'rotateX(90deg)';
     });
 </script>
