@@ -10,6 +10,20 @@ local lockedElementDatas = {
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
 }
 
+local selfElementDatas = {
+    'player:afk',
+}
+
+function table.find(t, value)
+    for i, v in ipairs(t) do
+        if v == value then
+            return i
+        end
+    end
+
+    return false
+end
+
 addEventHandler('onElementDataChange', root, function(dataName, oldValue)
     if client and getElementData(client, 'player:triggerLocked') then
         setElementData(source, dataName, oldValue)
@@ -19,6 +33,12 @@ addEventHandler('onElementDataChange', root, function(dataName, oldValue)
     if client and table.find(lockedElementDatas, dataName) then
         local newValue = getElementData(source, dataName)
         local message = ('Tried to change locked element data (`%s`, `%s`, `%s`)'):format(dataName, tostring(oldValue), tostring(newValue))
+        
+        setPlayerTriggerLocked(client, true, message)
+        setElementData(source, dataName, oldValue)
+    elseif client and client ~= source and table.find(selfElementDatas, dataName) then
+        local newValue = getElementData(source, dataName)
+        local message = ('Tried to change not self element data (`%s`, `%s`, `%s`)'):format(dataName, tostring(oldValue), tostring(newValue))
         
         setPlayerTriggerLocked(client, true, message)
         setElementData(source, dataName, oldValue)
