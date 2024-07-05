@@ -78,6 +78,7 @@ ranks = {
             'command:inv',
             'command:spec',
             'command:cv',
+            'command:rank'
         }
     }
 }

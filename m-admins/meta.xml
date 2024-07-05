@@ -21,6 +21,7 @@
     <script src='commands/inv.lua' type='server'/>
     <script src='commands/spec.lua' type='server'/>
     <script src='commands/cv.lua' type='server'/>
+    <script src='commands/rank.lua' type='server'/>
 
     <file src='data/logs.html'/>
     <file src='data/reports.html'/>
