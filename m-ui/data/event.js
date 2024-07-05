@@ -77,6 +77,6 @@ window.addEventListener('scroll', e => {
 
 window.addEventListener('wheel', e => {
     triggerAllEvents('wheel', e);
-});
+}, { passive: false });
 
 requestAnimationFrame(updateTimers);

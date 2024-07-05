@@ -80,6 +80,14 @@ body {
     justify-content: flex-end;
 }
 
+.justify-between {
+    justify-content: space-between;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
 .text-center {
     text-align: center;
 }
