@@ -11,5 +11,3 @@ function doesPlayerHavePremium(player)
 
     return true
 end
-
-print(doesPlayerHavePremium(source))

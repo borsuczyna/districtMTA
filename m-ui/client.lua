@@ -5,6 +5,7 @@ local spinner = dxCreateTexture('data/images/spinner.png', 'argb', true, 'clamp'
 local font = dxCreateFont('data/fonts/Inter-Medium.ttf', 23/zoom, false, 'proof')
 local textWidth = dxGetTextWidth('Trwa ładowanie interfejsu...', 1, font)
 local totalWidth = textWidth + 50/zoom + 20/zoom
+local visibleInterfaces = {}
 
 addEvent('interfaceLoaded', true)
 addEvent('interfaceElement:load', true)
@@ -12,15 +13,7 @@ addEvent('interface:load', true)
 addEvent('interface:visibilityChange', true)
 addEventHandler('interfaceLoaded', resourceRoot, function()
     uiLoaded = true
-    
-    -- setDevelopmentMode(true, true) toggleBrowserDevTools(browser, true)
-    -- loadInterfaceElement('login')
-    -- loadInterfaceElement('test')
 end)
-
--- addEventHandler('interface:load', resourceRoot, function(name)
---     setInterfaceVisible(name, true)
--- end)
 
 addCommandHandler('browserdebug', function()
     setDevelopmentMode(true, true)
@@ -29,14 +22,22 @@ end)
 
 function setInterfaceVisible(name, visible)
     if not uiLoaded or not browser then return end
-    -- executeBrowserJavascript(browser, 'setInterfaceVisible("'..name..'", '..tostring(visible)..')')
     executeBrowserJavascript(browser, ('setInterfaceVisible(%q, %s)'):format(name, tostring(visible)))
     triggerEvent('interface:visibilityChange', resourceRoot, name, visible)
+    
+    if visible then
+        visibleInterfaces[name] = true
+    else
+        visibleInterfaces[name] = nil
+    end
+end
+
+function isInterfaceVisible(name)
+    return visibleInterfaces[name] or false
 end
 
 function loadInterfaceElement(name)
     if not uiLoaded or not browser then return end
-    -- executeBrowserJavascript(browser, 'loadInterfaceElement("'..name..'")')
     executeBrowserJavascript(browser, ('loadInterfaceElement(%q)'):format(name))
 end
 

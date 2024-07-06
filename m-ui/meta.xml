@@ -29,6 +29,7 @@
 
     <export function='isLoaded' type='client'/>
     <export function='setInterfaceVisible' type='client'/>
+    <export function='isInterfaceVisible' type='client'/>
     <export function='loadInterfaceElement' type='client'/>
     <export function='loadInterfaceElementFromCode' type='client'/>
     <export function='loadInterfaceElementFromFile' type='client'/>

@@ -5,7 +5,7 @@ addEvent('interaction:action-feedback', true)
 addEvent('interaction:window', true)
 
 local interactionLoaded, interactionVisible, interactionTimer = false, false, false
-local openDoors = {trunks = {}, hoods = {}}
+local openDoors = {trunks = {}, hoods = {}, doors = {}}
 local options = {
     {
         text = function(vehicle)
@@ -53,6 +53,15 @@ local options = {
     },
     {
         text = function(vehicle)
+            local frozen = isElementFrozen(vehicle)
+            return frozen and 'Spuść ręczny' or 'Zaciągnij ręczny'
+        end,
+        icon = 'handbrake',
+        key = 'handbrake',
+        serverAction = 'handbrake',
+    },
+    {
+        text = function(vehicle)
             local seat = getPedOccupiedVehicleSeat(localPlayer)
             local state = isVehicleWindowOpen(vehicle, seatsWindows[seat])
             return state and 'Zamknij szybę' or 'Otwórz szybę'
@@ -64,6 +73,25 @@ local options = {
             local open = isVehicleWindowOpen(vehicle, seatsWindows[seat])
             triggerServerEvent('interaction:action', resourceRoot, 'window', open)
         end,
+        passenger = true,
+    },
+    {
+        text = function(vehicle)
+            local seat = getPedOccupiedVehicleSeat(localPlayer)
+            local door = seatsDoors[seat]
+            local state = openDoors.doors[vehicle] and openDoors.doors[vehicle][door]
+            if state == nil then
+                state = getVehicleDoorOpenRatio(vehicle, door) > 0
+            end
+            if not openDoors.doors[vehicle] then
+                openDoors.doors[vehicle] = {}
+            end
+            openDoors.doors[vehicle][door] = state
+            return state and 'Zamknij drzwi' or 'Otwórz drzwi'
+        end,
+        icon = 'window',
+        key = 'door',
+        serverAction = 'door',
         passenger = true,
     },
 }
@@ -149,11 +177,19 @@ addEventHandler('interaction:useOption', root, function(key)
     end
 end)
 
-addEventHandler('interaction:action-feedback', root, function(action)
+addEventHandler('interaction:action-feedback', root, function(action, data)
     if action == 'hood' then
-        openDoors.hoods[getPedOccupiedVehicle(localPlayer)] = not openDoors.hoods[getPedOccupiedVehicle(localPlayer)]
+        openDoors.hoods[getPedOccupiedVehicle(localPlayer)] = data
     elseif action == 'trunk' then
-        openDoors.trunks[getPedOccupiedVehicle(localPlayer)] = not openDoors.trunks[getPedOccupiedVehicle(localPlayer)]
+        openDoors.trunks[getPedOccupiedVehicle(localPlayer)] = data
+    elseif action == 'door' then
+        local vehicle = getPedOccupiedVehicle(localPlayer)
+        local seat = getPedOccupiedVehicleSeat(localPlayer)
+        local door = seatsDoors[seat]
+        if not openDoors.doors[vehicle] then
+            openDoors.doors[vehicle] = {}
+        end
+        openDoors.doors[vehicle][door] = data
     end
 
     updateInteractionData()
@@ -183,6 +219,7 @@ function setInteractionVisible(visible)
     end
 
     interactionVisible = visible
+    openDoors = {trunks = {}, hoods = {}, doors = {}}
 
     if not visible and isTimer(interactionTimer) then
         killTimer(interactionTimer)

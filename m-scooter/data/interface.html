@@ -60,7 +60,7 @@ Hulajnoga automatycznie zniknie po minucie nieaktywności.</span>
 </div>
 
 <div class="d-flex justify-center w-100 mt-2">
-    <div class="nice-button button-sm" id="rent-button" onclick="scooter_rentScooter()">Wynajmij</div>
+    <div class="nice-button button-sm" id="rent-button" onclick="scooter_rentScooter()">Wypożycz</div>
 </div>
 
 <script>
@@ -74,6 +74,6 @@ Hulajnoga automatycznie zniknie po minucie nieaktywności.</span>
     });
 
     addEvent('scooter', 'interface:data:renting', async (renting) => {
-        document.querySelector('#scooter #rent-button').innerText = renting ? 'Zwróć' : 'Wynajmij';
+        document.querySelector('#scooter #rent-button').innerText = renting ? 'Zwróć' : 'Wypożycz';
     });
 </script>
