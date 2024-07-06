@@ -15,11 +15,14 @@ function addLog(category, message, icons)
         table.remove(logs, 1)
     end
 
+    local admins = {}
     for i, player in ipairs(getElementsByType('player')) do
         if doesPlayerHavePermission(player, 'logs') then
-            triggerClientEvent(player, 'logs:addLog', resourceRoot, category, message, icons)
+            table.insert(admins, player)
         end
     end
+
+    triggerClientEvent(admins, 'logs:addLog', resourceRoot, category, message, icons)
 end
 
 addEventHandler('logs:requestLogsList', resourceRoot, function()

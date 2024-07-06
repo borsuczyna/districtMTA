@@ -56,8 +56,7 @@ addCommandHandler('ranga', function(player, cmd, playerToFind, rank)
     local foundPlayerName = getPlayerName(foundPlayer)
 
     local rank = tonumber(rank)
-    local message = rank == 0 and 'Usunięto' or 'Dodano'
-    exports['m-notis']:addNotification(player, 'success', 'Ranga', ('%s rangę %s dla gracza %s'):format(message, ranks[rank],foundPlayerName))
+    exports['m-notis']:addNotification(player, 'success', 'Ranga', ('Zmieniono rangę %s na %s'):format(foundPlayerName, ranks[rank]))
     exports['m-notis']:addNotification(foundPlayer, 'success', 'Ranga', ('Twoja ranga została zmieniona na %s'):format(ranks[rank]))
 
     addPlayerRank(foundPlayer, rank)

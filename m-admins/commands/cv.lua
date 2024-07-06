@@ -57,9 +57,9 @@ addCommandHandler('cv', function(player, cmd, model)
         return
     end
     
-    model = getVehicleIdByPartialName(model) or math.floor(tonumber(model) or 0)
+    model = not tonumber(model) and getVehicleIdByPartialName(model) or math.floor(tonumber(model) or 0)
 
-    if model and table.find(blockedVehicleIDs, model) then
+    if model and table.find(blockedVehicleIDs, model) and not doesPlayerHavePermission(player, 'command:cv.bypass') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz utworzyć tego pojazdu')
         return
     end

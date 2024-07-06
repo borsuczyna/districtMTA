@@ -118,7 +118,8 @@
     <div class="rows"></div>
     <div class="categories">
         <div class="category active" onclick="adminLogs_setCategory(this)" data-category="wszystko">Wszystko</div>
-        <div class="category" onclick="adminLogs_setCategory(this)" data-category="chat">Chat</div>
+        <div class="category" onclick="adminLogs_setCategory(this)" data-category="chat">Czat</div>
+        <div class="category" onclick="adminLogs_setCategory(this)" data-category="premium">Premium</div>
         <div class="category" onclick="adminLogs_setCategory(this)" data-category="przelewy">Przelewy</div>
         <div class="category" onclick="adminLogs_setCategory(this)" data-category="pm">PM</div>
         <div class="category" onclick="adminLogs_setCategory(this)" data-category="komendy">Komendy</div>
@@ -164,6 +165,10 @@
         row.appendChild(span);
         row.appendChild(iconsDom);
         row.dataset.category = category;
+        let currentCategory = document.querySelector('#admin-logs .category.active').dataset.category;
+        if (currentCategory !== 'wszystko' && category !== currentCategory) {
+            row.classList.add('d-none');
+        }
 
         rows.appendChild(row);
 

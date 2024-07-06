@@ -82,6 +82,7 @@ ranks = {
             'command:inv',
             'command:spec',
             'command:cv',
+            'command:cv.bypass',
             'command:rank',
             'command:fix',
         }

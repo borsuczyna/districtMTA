@@ -30,11 +30,14 @@ local function createReport(player, target, reason)
 
     table.insert(reports, reportData)
 
+    local admins = {}
     for i, player in ipairs(getElementsByType('player')) do
         if doesPlayerHavePermission(player, 'reports') then
-            triggerClientEvent(player, 'reports:addReport', resourceRoot, reportData)
+            table.insert(admins, player)
         end
     end
+
+    triggerClientEvent(admins, 'reports:addReport', resourceRoot, reportData)
 end
 
 addCommandHandler('report', function(player, cmd, playerToFind, ...)
@@ -90,11 +93,16 @@ addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
         exports['m-notis']:addNotification(report.reporter, 'success', 'Zgłoszenie', ('Twoje zgłoszenie zostało zaakceptowane przez %s'):format(getPlayerName(client)))
         exports['m-logs']:sendLog('reports', 'success', ('Gracz `%s` zaakceptował zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
 
+        local admins = {}
+
         for i, player in ipairs(getElementsByType('player')) do
-            if doesPlayerHavePermission(player, 'reports') then
-                triggerClientEvent(player, client == player and 'reports:acceptReport' or 'reports:rejectReport', resourceRoot, hash)
+            if doesPlayerHavePermission(player, 'reports') and player ~= client then
+                table.insert(admins, player)
             end
         end
+
+        triggerClientEvent(admins, 'reports:rejectReport', resourceRoot, hash)
+        triggerClientEvent(client, 'reports:acceptReport', resourceRoot, hash)
     elseif action == 'reject' then
         if report.state ~= REPORT_STATE.PENDING then
             exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Zgłoszenie zostało już zaakceptowane')
@@ -106,11 +114,16 @@ addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
         exports['m-notis']:addNotification(report.reporter, 'error', 'Zgłoszenie', ('Twoje zgłoszenie zostało odrzucone przez %s'):format(getPlayerName(client)))
         exports['m-logs']:sendLog('reports', 'error', ('Gracz `%s` odrzucił zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
 
+        local admins = {}
+
         for i, player in ipairs(getElementsByType('player')) do
-            if doesPlayerHavePermission(player, 'reports') then
-                triggerClientEvent(player, client == player and 'reports:acceptReport' or 'reports:rejectReport', resourceRoot, hash)
+            if doesPlayerHavePermission(player, 'reports') and player ~= client then
+                table.insert(admins, player)
             end
         end
+
+        triggerClientEvent(admins, 'reports:rejectReport', resourceRoot, hash)
+        triggerClientEvent(client, 'reports:rejectReport', resourceRoot, hash)
     end
 end)
 
