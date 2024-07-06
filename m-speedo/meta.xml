@@ -1,0 +1,15 @@
+<meta>
+    <script src='useful.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/icons/lights.png'/>
+    <file src='data/icons/engine.png'/>
+    <file src='data/icons/door.png'/>
+    <file src='data/icons/handbrake.png'/>
+
+    <file src='data/modern/background.png'/>
+    <file src='data/modern/stripes.png'/>
+    <file src='data/modern/arrow.png'/>
+    <file src='data/modern/fuel.png'/>
+    <file src='data/modern/fuel-2.png'/>
+</meta>
