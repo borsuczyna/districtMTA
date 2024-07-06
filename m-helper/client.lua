@@ -62,7 +62,7 @@ function toggleHelper()
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    bindKey('f2', 'down', toggleHelper)
+    bindKey('f1', 'down', toggleHelper)
 
     addEventHandler('interfaceLoaded', root, function()
         helperLoaded = false

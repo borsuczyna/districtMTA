@@ -1,23 +1,47 @@
 local sx, sy = guiGetScreenSize()
 local zoom = sx < 2048 and math.min(2.2, 2048/sx) or 1
 local lastArrowAngle = 0
-local defaultSpeedo = 'modern'
-local customSpeedos = {
-    [411] = 'modern',
+local defaultSpeedo = 'compact'
+local noSpeedos = {481}
+local speedos = {
+    old = {401, 403, 404, 410, 418, 419, 436, 439, 467, 475, 478, 479, 491, 492, 496, 605, 604, 600, 585, 572, 571, 568, 566, 550, 549, 546, 543, 542, 540, 531, 530, 529, 526, 518},
+    modern = {411, 415, 429, 451, 477, 587, 562, 559, 558, 541, 506},
+    muscle = {412, 466, 474, 576, 575, 567, 555, 536, 535, 534},
 }
+
 local fonts = {
     [1] = exports['m-ui']:getFont('Inter-Medium', 16/zoom),
     [2] = exports['m-ui']:getFont('DigitalNumbers-Regular', 40/zoom),
     [3] = exports['m-ui']:getFont('DigitalNumbers-Regular', 14/zoom),
+    [4] = exports['m-ui']:getFont('DigitalNumbers-Regular', 11/zoom),
+    [5] = exports['m-ui']:getFont('DigitalNumbers-Regular', 16/zoom),
 }
 local textsWidths = {
     ['000'] = dxGetTextWidth('000', 1, fonts[2]),
     ['000-h'] = dxGetFontHeight(1, fonts[2]),
+    ['0'] = dxGetTextWidth('0', 1, fonts[5]),
+    ['0-h'] = dxGetFontHeight(1, fonts[5]),
 }
+
+function table.find(t, value)
+    for i, v in ipairs(t) do
+        if v == value then
+            return i
+        end
+    end
+    return false
+end
 
 local function getVehicleSpeedo(vehicle)
     local model = getElementModel(vehicle)
-    return customSpeedos[model] or defaultSpeedo
+
+    for speedo, models in pairs(speedos) do
+        if table.find(models, model) then
+            return speedo
+        end
+    end
+
+    return defaultSpeedo
 end
 
 local function renderSpeedo()
@@ -28,7 +52,7 @@ local function renderSpeedo()
     local speed = getVehicleSpeed(vehicle)
     local rpm = getVehicleRPM(vehicle)
     local mileage = getElementData(vehicle, 'vehicle:mileage') or 3213
-    local fuel = getElementData(vehicle, 'vehicle:fuel') or 50
+    local fuel = getElementData(vehicle, 'vehicle:fuel') or 37
     local r, g, b = getVehicleHeadLightColor(vehicle)
 
     local icons = {
@@ -55,7 +79,7 @@ local function renderSpeedo()
         dxDrawText('000', sx - 6/zoom - textsWidths['000'], sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 35), 1, fonts[2], 'right', 'center')
         dxDrawText(math.floor(speed), sx - 6/zoom - textsWidths['000'], sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 255), 1, fonts[2], 'right', 'center')
         dxDrawText(('%07d'):format(mileage), sx - 194/zoom, sy - 190/zoom + textsWidths['000-h']/2, nil, nil, tocolor(255, 255, 255, 255), 1, fonts[3], 'center', 'top')
-
+        
         local iconSize = 25/zoom
         local gap = 10/zoom
         local iconsWidth = #onIcons * iconSize + (#onIcons - 1) * gap
@@ -69,6 +93,72 @@ local function renderSpeedo()
 
         local nextArrowAngle = rpm / 9900 * 160
         lastArrowAngle = lastArrowAngle + (nextArrowAngle - lastArrowAngle) * 0.1
+    elseif speedo == 'old' then
+        dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/background.png')
+        dxDrawImage(sx - 255/zoom, sy - 230/zoom, 48/zoom, 214/zoom, 'data/old/gauge.png', math.min(-92 + speed/200 * 184, 92), 0, 90/zoom)
+        dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/overlay.png')
+        dxDrawImage(sx - 500/zoom, sy - 140/zoom, 33/zoom, 190/zoom, 'data/old/fuel-gauge.png', -100 + fuel * 1.3)
+        dxDrawText(('%07d'):format(mileage), sx - 230/zoom, sy - 44/zoom, nil, nil, tocolor(0, 0, 0, 255), 1, fonts[4], 'center', 'center')
+    
+        local iconSize = 25/zoom
+        local gap = 10/zoom
+        local iconsWidth = #onIcons * iconSize + (#onIcons - 1) * gap
+        for i, icon in ipairs(onIcons) do
+            if icon[2] then
+                local x = sx - 235/zoom - iconsWidth/2 + (i - 1) * (iconSize + gap)
+                local y = sy - 120/zoom
+                dxDrawImage(x, y, iconSize, iconSize, 'data/icons/' .. icon[1] .. '.png')
+            end
+        end
+    elseif speedo == 'compact' then
+        dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/background.png')
+        dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
+        dxDrawImage(sx - 400/zoom, sy - 190/zoom, 26/zoom, 153/zoom, 'data/compact/fuel-gauge.png', -227 + fuel * 2.3)
+
+        dxDrawText('km/h', sx - 190/zoom, sy - 250/zoom, nil, nil, tocolor(255, 255, 255, 155), 1, fonts[1], 'center', 'center')
+
+        local mileageText = ('%07d'):format(mileage)
+        local w, h = textsWidths['0'], textsWidths['0-h']
+        local gap = 9/zoom
+
+        for i = 1, #mileageText do
+            local x = (sx - 185/zoom) - (#mileageText * (w + gap))/2 + (i - 1) * (w + gap)
+            dxDrawRectangle(x - w/2 - 2/zoom, sy - 112/zoom - h/2, w + 4/zoom, h + 4/zoom, tocolor(70, 70, 70, 140))
+            dxDrawText(mileageText:sub(i, i), x, sy - 110/zoom, nil, nil, tocolor(255, 255, 255, 200), 1, fonts[5], 'center', 'center')
+        end
+
+        local iconSize = 25/zoom
+        local gap = 10/zoom
+        local iconsWidth = #onIcons * iconSize + (#onIcons - 1) * gap
+        for i, icon in ipairs(onIcons) do
+            if icon[2] then
+                local x = sx - 188/zoom - iconsWidth/2 + (i - 1) * (iconSize + gap)
+                local y = sy - 85/zoom
+                dxDrawImage(x, y, iconSize, iconSize, 'data/icons/' .. icon[1] .. '.png')
+            end
+        end
+
+        dxDrawImage(sx - 214/zoom, sy - 350/zoom, 40/zoom, 318/zoom, 'data/compact/gauge.png', -113 + speed/200 * 226, 0, 0)
+    elseif speedo == 'muscle' then
+        local mphSpeed = speed * 0.621371
+        dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/background.png')
+        dxDrawImage(sx - 466.5/zoom, sy - 145/zoom, 41/zoom, 111/zoom, 'data/muscle/fuel-gauge.png', 55 - fuel * 1.1, 0, -30/zoom)
+        dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/overlay.png')
+        dxDrawImage(sx - 214/zoom, sy - 290/zoom, 42/zoom, 191/zoom, 'data/muscle/gauge.png', -135 + mphSpeed/120 * 270, 0, 0)
+        dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
+
+        dxDrawText(('%07d'):format(mileage), sx - 193/zoom, sy - 107/zoom, nil, nil, tocolor(0, 0, 0, 255), 1, fonts[4], 'center', 'center')
+
+        local iconSize = 22/zoom
+        local gap = 10/zoom
+        local iconsWidth = #onIcons * iconSize + (#onIcons - 1) * gap
+        for i, icon in ipairs(onIcons) do
+            if icon[2] then
+                local x = sx - 193/zoom - iconsWidth/2 + (i - 1) * (iconSize + gap)
+                local y = sy - 85/zoom
+                dxDrawImage(x, y, iconSize, iconSize, 'data/icons/' .. icon[1] .. '.png')
+            end
+        end
     end
 end
 
