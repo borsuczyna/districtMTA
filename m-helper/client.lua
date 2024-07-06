@@ -4,7 +4,12 @@ addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 
 function updateHelperData()
-    
+    local level = getElementData(localPlayer, 'player:level') or 1
+    exports['m-ui']:setInterfaceData('helper', 'player', {
+        level = level,
+        exp = getElementData(localPlayer, 'player:exp'),
+        expToNext = exports['m-core']:getNextLevelExp(level),
+    })
 end
 
 addEventHandler('interface:load', root, function(name)
@@ -12,11 +17,6 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:setInterfaceVisible(name, true)
         exports['m-ui']:setInterfaceZIndex('helper', 995)
         exports['m-ui']:triggerInterfaceEvent('helper', 'play-animation', true)
-        exports['m-ui']:setInterfaceData('helper', 'player', {
-            level = getElementData(localPlayer, 'player:level') or 1,
-            exp = getElementData(localPlayer, 'player:exp'),
-            expToNext = 1000,
-        })
         helperLoaded = true
         updateHelperData()
     end
