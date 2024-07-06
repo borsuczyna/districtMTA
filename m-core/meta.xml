@@ -57,4 +57,6 @@
     <export function='isPlayerHaveTakenLicense' type='server'/>
     <export function='getNextLevelExp' type='shared'/>
     <export function='givePlayerExp' type='server'/>
+
+    <export function='premiumChatDiscord' http='true'/>
 </meta>

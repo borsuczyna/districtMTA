@@ -7,11 +7,6 @@ addEventHandler('onClientVehicleDamage', root, function(_, _, loss)
         if matrix[3][3] < 0 then
             setElementHealth(source, 315)
         end
-        
-        if loss >= 100 and getVehicleOccupant(source) == localPlayer then
-            exports['m-notis']:addNotification('error', 'Silnik zniszczony', 'Udaj się do najbliższego mechanika, aby naprawić swój silnik')
-            setVehicleEngineState(source, false)
-        end
 
         setVehicleDamageProof(source, true)
         cancelEvent()
