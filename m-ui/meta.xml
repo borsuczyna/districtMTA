@@ -26,6 +26,7 @@
     <file src='data/fonts/Inter-Thin.ttf'/>
     <file src='data/fonts/Inter.ttf'/>
     <file src='data/fonts/Exo2.ttf'/>
+    <file src='data/fonts/DigitalNumbers-Regular.ttf'/>
 
     <export function='isLoaded' type='client'/>
     <export function='setInterfaceVisible' type='client'/>
