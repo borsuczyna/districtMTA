@@ -9,32 +9,6 @@ local openDoors = {trunks = {}, hoods = {}, doors = {}}
 local options = {
     {
         text = function(vehicle)
-            local state = openDoors.trunks[vehicle]
-            if state == nil then
-                state = getVehicleDoorOpenRatio(vehicle, 1) > 0
-            end
-            openDoors.trunks[vehicle] = state
-            return state and 'Zamknij bagażnik' or 'Otwórz bagażnik'
-        end,
-        icon = 'trunk',
-        key = 'trunk',
-        serverAction = 'trunk',
-    },
-    {
-        text = function(vehicle)
-            local state = openDoors.hoods[vehicle]
-            if state == nil then
-                state = getVehicleDoorOpenRatio(vehicle, 0) > 0
-            end
-            openDoors.hoods[vehicle] = state
-            return state and 'Zamknij maskę' or 'Otwórz maskę'
-        end,
-        icon = 'hood',
-        key = 'hood',
-        serverAction = 'hood',
-    },
-    {
-        text = function(vehicle)
             local state = getVehicleEngineState(vehicle)
             return state and 'Zgaś silnik' or 'Odpal silnik'
         end,
@@ -93,6 +67,32 @@ local options = {
         key = 'door',
         serverAction = 'door',
         passenger = true,
+    },
+    {
+        text = function(vehicle)
+            local state = openDoors.trunks[vehicle]
+            if state == nil then
+                state = getVehicleDoorOpenRatio(vehicle, 1) > 0
+            end
+            openDoors.trunks[vehicle] = state
+            return state and 'Zamknij bagażnik' or 'Otwórz bagażnik'
+        end,
+        icon = 'trunk',
+        key = 'trunk',
+        serverAction = 'trunk',
+    },
+    {
+        text = function(vehicle)
+            local state = openDoors.hoods[vehicle]
+            if state == nil then
+                state = getVehicleDoorOpenRatio(vehicle, 0) > 0
+            end
+            openDoors.hoods[vehicle] = state
+            return state and 'Zamknij maskę' or 'Otwórz maskę'
+        end,
+        icon = 'hood',
+        key = 'hood',
+        serverAction = 'hood',
     },
 }
 

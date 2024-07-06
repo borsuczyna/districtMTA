@@ -88,11 +88,11 @@
             <path d="M110 59.8252L126.5 43.3252C127.333 42.3252 129.6 40.9252 132 43.3252L136.175 47.5" stroke="currentColor" stroke-width="15" />
         </svg>`,
         'handbrake': `<svg viewBox="0 0 140 140" fill="none">
-            <path d="M70 93V81.5V70" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M70 52V49.5V47" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M70 115C94.8528 115 115 94.8528 115 70C115 45.1472 94.8528 25 70 25C45.1472 25 25 45.1472 25 70C25 94.8528 45.1472 115 70 115Z" stroke="currentColor" stroke-width="8" />
-            <path d="M25 28C13.8329 39.0033 7 53.7685 7 70C7 86.2316 13.8329 100.997 25 112" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M115 28C126.167 39.0033 133 53.7685 133 70C133 86.2316 126.167 100.997 115 112" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M70 93V81.5V70" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M70 52V49.5V47" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M70 115C94.8528 115 115 94.8528 115 70C115 45.1472 94.8528 25 70 25C45.1472 25 25 45.1472 25 70C25 94.8528 45.1472 115 70 115Z" stroke="currentColor" stroke-width="10" />
+            <path d="M25 28C13.8329 39.0033 7 53.7685 7 70C7 86.2316 13.8329 100.997 25 112" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M115 28C126.167 39.0033 133 53.7685 133 70C133 86.2316 126.167 100.997 115 112" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
         </svg>`,
     };
 
@@ -103,15 +103,15 @@
         const angle = 360 / options.length;
         const radius = 10;
 
-        let halfOptions = Math.floor(options.length / 2);
+        // let halfOptions = Math.floor(options.length / 2);
         options.forEach((option, index) => {
             const item = document.createElement('div');
             item.classList.add('item');
             item.setAttribute('data-id', index);
 
-            if (index == halfOptions) {
+            if (index == 0) {
                 item.classList.add('active');
-            } else if (index > halfOptions) {
+            } else {
                 item.classList.add('right');
             }
 
