@@ -15,3 +15,12 @@ addEventHandler('onPlayerProjectileCreation', root, function()
 
     cancelEvent()
 end)
+
+addEventHandler('onPlayerDetonateSatchels', root, function()
+    if source and getElementType(source) == 'player' then
+        local message = ('%s tried to detonate satchels'):format(getPlayerName(source))
+        exports['m-logs']:sendLog('anticheat', 'warning', message)
+    end
+
+    cancelEvent()
+end)
