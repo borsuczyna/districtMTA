@@ -45,20 +45,19 @@ local function getVehicleIdByPartialName(partialName)
     return false
 end
 
-addCommandHandler('cv', function(player, cmd, ...)
+addCommandHandler('cv', function(player, cmd, model)
     if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:cv') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
         return
     end
-    
-    local args = {...}
-    model = getVehicleIdByPartialName(table.concat(args, ' ')) or math.floor(tonumber(args[1]) or 0)
 
     if not model then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /cv (model lub ID)')
         return
     end
+    
+    model = getVehicleIdByPartialName(model) or math.floor(tonumber(model) or 0)
 
     if model and table.find(blockedVehicleIDs, model) then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz utworzyć tego pojazdu')
