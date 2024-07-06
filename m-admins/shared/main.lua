@@ -8,6 +8,7 @@ ranks = {
             'command:teleport',
             'command:license',
             'command:spec',
+            'command:fix',
         }
     },
     [2] = {
@@ -23,6 +24,7 @@ ranks = {
             'command:mute',
             'command:inv',
             'command:spec',
+            'command:fix',
         }
     },
     [3] = {
@@ -40,6 +42,7 @@ ranks = {
             'command:inv',
             'command:spec',
             'command:cv',
+            'command:fix',
         }
     },
     [4] = {
@@ -58,6 +61,7 @@ ranks = {
             'command:inv',
             'command:spec',
             'command:cv',
+            'command:fix',
         }
     },
     [5] = {
@@ -78,7 +82,8 @@ ranks = {
             'command:inv',
             'command:spec',
             'command:cv',
-            'command:rank'
+            'command:rank',
+            'command:fix',
         }
     }
 }
