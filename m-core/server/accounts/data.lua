@@ -12,6 +12,9 @@ function assignPlayerData(player, data)
     updatePlayerMute(player)
     updatePlayerLicense(player)
 
+    toggleControl(player, 'fire', false)
+    toggleControl(player, 'aim_weapon', false)
+
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
@@ -27,6 +30,8 @@ function buildSavePlayerQuery(player)
     local saveData = {
         skin = skin,
         money = money,
+        level = getElementData(player, 'player:level'),
+        exp = getElementData(player, 'player:exp'),
     }
 
     local query = 'UPDATE `m-users` SET ' .. table.concat(mapk(saveData, function(value, key)

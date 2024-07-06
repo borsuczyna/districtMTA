@@ -13,6 +13,7 @@
     <script src='server/antyspam.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
     <script src='server/premium.lua' type='server'/>
+    <script src='server/exp.lua' type='server'/>
 
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>
@@ -31,6 +32,7 @@
     <script src='shared/players.lua' type='shared' cache='false'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
     <script src='shared/vehicles.lua' type='shared' cache='false'/>
+    <script src='shared/exp.lua' type='shared' cache='false'/>
 
     <export function='getPlayerFromPartialName' type='shared'/>
     <export function='getPlayerById' type='shared'/>
@@ -53,4 +55,6 @@
     <export function='returnLicense' type='server'/>
     <export function='getPlayerTakenLicense' type='server'/>
     <export function='isPlayerHaveTakenLicense' type='server'/>
+    <export function='getNextLevelExp' type='shared'/>
+    <export function='givePlayerExp' type='server'/>
 </meta>

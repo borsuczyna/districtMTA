@@ -1,11 +1,17 @@
 local gameMode = 'RPG + Prace'
 local fpsLimit = 75
 
+function updateRealTime()
+    local time = getRealTime()
+    setTime(time.hour, time.minute)
+end
+
 addEventHandler('onResourceStart', resourceRoot, function()
     setGameType(gameMode)
 
     setMinuteDuration(60000)
-    setTime(getRealTime().hour, getRealTime().minute)
+    setTimer(updateRealTime, 60000, 0)
+    updateRealTime()
 
     setFPSLimit(fpsLimit)
     setOcclusionsEnabled(false)
