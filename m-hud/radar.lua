@@ -43,7 +43,6 @@ end
 
 function renderRadar()
     if not getElementData(localPlayer, 'player:spawn') then return end
-    -- if getElementData(localPlayer, 'player:hud-hidden') then return end
     if not radarVisible then return end
 
     local px, py, pz = getElementPosition(localPlayer)
@@ -78,17 +77,18 @@ function renderRadar()
         local blipIcon = getBlipIcon(v)
         local size = 36/zoom
         local visible = getBlipVisibleDistance(v)
-        
-        -- draw blip
-        if fileExists('data/images/blips/'..blipIcon..'.png') then
-            local distance = getDistanceBetweenPoints2D(x, y, bx, by)
-            if distance <= visible then
-                local dist = math.min(distance/zoom/1.44, radarW/2)
-                if (visible == 9999 and dist < radarW/2) or visible ~= 9999 then
-                    local angle = findRotation(x, y, bx, by)
-                    angle = angle - cz + 180
-                    local x, y = getPointFromDistanceRotation(radarX + radarW/2, radarY + radarH/2, dist, angle)
-                    dxDrawImage(x - size/2, y - (size*1.15)/2, size, size*1.15, 'data/images/blips/'..blipIcon..'.png')
+
+        if not (bx == 0 and by == 0 and blipIcon == 0) then
+            if fileExists('data/images/blips/'..blipIcon..'.png') then
+                local distance = getDistanceBetweenPoints2D(x, y, bx, by)
+                if distance <= visible then
+                    local dist = math.min(distance/zoom/1.44, radarW/2)
+                    if (visible == 9999 and dist < radarW/2) or visible ~= 9999 then
+                        local angle = findRotation(x, y, bx, by)
+                        angle = angle - cz + 180
+                        local x, y = getPointFromDistanceRotation(radarX + radarW/2, radarY + radarH/2, dist, angle)
+                        dxDrawImage(x - size/2, y - (size*1.15)/2, size, size*1.15, 'data/images/blips/'..blipIcon..'.png')
+                    end
                 end
             end
         end

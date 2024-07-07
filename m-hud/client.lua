@@ -47,8 +47,8 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:setInterfaceVisible(name, true)
         exports['m-ui']:setInterfaceZIndex('hud', 997)
         lastSentData = {}
-        updateHud()
         addEventHandler('onClientRender', root, updateHud)
+        updateHud()
         hudLoaded = true
 
         local avatar = exports['m-avatars']:getPlayerAvatar(localPlayer)
@@ -69,12 +69,19 @@ function setHudVisible(visible)
     else
         if not visible then
             exports['m-ui']:destroyInterfaceElement('hud')
+            removeEventHandler('onClientRender', root, updateHud)
             hudLoaded = false
         else
             exports['m-ui']:setInterfaceVisible('hud', true)
         end
     end
 end
+
+addEventHandler('onClientElementDataChange', root, function(key)
+    if key == 'player:hiddenHUD' then
+        setHudVisible(not getElementData(localPlayer, 'player:hiddenHUD'))
+    end 
+end)
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
     if getElementData(localPlayer, 'player:spawn') then
