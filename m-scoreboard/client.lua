@@ -90,6 +90,9 @@ function showScoreboardInterface()
 end
 
 function setScoreboardVisible(visible)
+    if visible and exports['m-ui']:isAnySingleInterfaceVisible() then return end
+    exports['m-ui']:addSingleInterface('scoreboard')
+
     if scoreboardHideTimer and isTimer(scoreboardHideTimer) then
         killTimer(scoreboardHideTimer)
     end
