@@ -7,6 +7,7 @@ end
 function getPlayerStatus(player)
     local uid = getElementData(player, 'player:uid') or 0
     local rank = getElementData(player, 'player:rank') or 0
+    local afk = getElementData(player, 'player:afk')
 
     local status = 'W grze'
     local statusColor = '#3AF36D'
@@ -15,6 +16,11 @@ function getPlayerStatus(player)
     if uid == 0 then
         status = 'Loguje się'
         statusColor = '#cccccc'
+    end
+
+    if afk then
+        status = 'AFK'
+        statusColor = '#ff0000'
     end
 
     if rank and rank > 0 then
