@@ -31,6 +31,11 @@ addCommandHandler('tt', function(player, cmd, ...)
         end
     end
 
+    local vehicle = getPedOccupiedVehicle(player)
+    if vehicle then
+        setElementPosition(vehicle, getElementPosition(foundPlayer))
+    end
+
     local x, y, z = getElementPosition(foundPlayer)
     setElementPosition(player, x, y + 0.5, z)
 end)

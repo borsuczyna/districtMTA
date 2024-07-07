@@ -7,6 +7,6 @@ addCommandHandler('alldata', function(player)
 
     local data = getAllElementData(player)
     for k, v in pairs(data) do
-        outputConsole(k..': '..tostring(v))
+        outputConsole(k..': '..tostring(v), player)
     end
 end)

@@ -10,4 +10,4 @@ function sendMessageToClient(message,messagetype)
 		end
 	end
 end
-addEventHandler("onPlayerChat",getRootElement(),sendMessageToClient)
+addEventHandler("onPlayerChat", getRootElement(), sendMessageToClient)

@@ -9,6 +9,7 @@ ranks = {
             'command:license',
             'command:spec',
             'command:fix',
+            'command:admin',
         }
     },
     [2] = {
@@ -25,6 +26,7 @@ ranks = {
             'command:inv',
             'command:spec',
             'command:fix',
+            'command:admin',
         }
     },
     [3] = {
@@ -43,6 +45,7 @@ ranks = {
             'command:spec',
             'command:cv',
             'command:fix',
+            'command:admin',
         }
     },
     [4] = {
@@ -62,6 +65,7 @@ ranks = {
             'command:spec',
             'command:cv',
             'command:fix',
+            'command:admin',
         }
     },
     [5] = {
@@ -85,6 +89,7 @@ ranks = {
             'command:cv.bypass',
             'command:rank',
             'command:fix',
+            'command:admin',
         }
     }
 }

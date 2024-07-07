@@ -12,6 +12,7 @@
     <script src='server/logs.lua' type='server'/>
     <script src='server/reports.lua' type='server'/>
     
+    <script src='commands/admin.lua' type='server'/>
     <script src='commands/dev.lua' type='server'/>
     <script src='commands/teleport.lua' type='server'/>
     <script src='commands/license.lua' type='server'/>
