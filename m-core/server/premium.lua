@@ -5,8 +5,10 @@ function premiumChatDiscord(name, message)
 
     local premiumPlayers = {}
     for i, player in ipairs(getElementsByType('player')) do
-        if doesPlayerHavePremium(player) then
-            table.insert(premiumPlayers, player)
+        if not getElementData(player, 'player:blockedPremiumChat') then
+            if doesPlayerHavePremium(player) then
+                table.insert(premiumPlayers, player)
+            end
         end
     end
 
@@ -17,6 +19,11 @@ end
 function premiumChat(player, cmd, ...)
     if not doesPlayerHavePremium(player) then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz premium')
+        return
+    end
+
+    if getElementData(player, 'player:blockedPremiumChat') then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Posiadasz wyłączone wiadomości premium')
         return
     end
 
@@ -35,8 +42,10 @@ function premiumChat(player, cmd, ...)
 
     local premiumPlayers = {}
     for i, player in ipairs(getElementsByType('player')) do
-        if doesPlayerHavePremium(player) then
-            table.insert(premiumPlayers, player)
+        if not getElementData(player, 'player:blockedPremiumChat') then
+            if doesPlayerHavePremium(player) then
+                table.insert(premiumPlayers, player)
+            end
         end
     end
 

@@ -1,10 +1,20 @@
 function assignPlayerData(player, data)
+    local settings = fromJSON(data.settings)
+    
     setElementData(player, 'player:logged', true)
     setElementData(player, 'player:uid', data.uid)
     setElementData(player, 'player:skin', data.skin)
     setElementData(player, 'player:level', data.level)
     setElementData(player, 'player:exp', data.exp)
     setElementData(player, 'player:premium-end', data.premiumEnd)
+    setElementData(player, 'player:time', data.time)
+    setElementData(player, 'player:afkTime', data.afkTime)    
+
+    -- settings
+    local settings = fromJSON(data.settings)
+    setElementData(player, 'player:interfaceSize', settings.interfaceSize)
+    triggerClientEvent(player, 'interface:setRemSize', root, settings.interfaceSize)
+
     setPlayerName(player, data.username)
     setElementModel(player, data.skin)
     setPlayerMoney(player, data.money)
@@ -26,12 +36,20 @@ function buildSavePlayerQuery(player)
 
     local skin = getElementData(player, 'player:skin')
     local money = getPlayerMoney(player)
+    local time = getElementData(player, 'player:time')
+    local afkTime = getElementData(player, 'player:afkTime')
+    local settings = {
+        interfaceSize = getElementData(player, 'player:interfaceSize') or 8
+    }
 
     local saveData = {
         skin = skin,
         money = money,
         level = getElementData(player, 'player:level'),
         exp = getElementData(player, 'player:exp'),
+        time = time,
+        afkTime = afkTime,
+        settings = toJSON(settings)
     }
 
     local query = 'UPDATE `m-users` SET ' .. table.concat(mapk(saveData, function(value, key)

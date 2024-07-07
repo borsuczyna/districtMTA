@@ -140,6 +140,19 @@ addCommandHandler('pm', function(player, command, playerToFind, ...)
         return
     end
 
+    if not getElementData(foundPlayer, 'player:uid') or not getElementData(foundPlayer, 'player:spawn') then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Gracz nie jest zalogowany')
+        return
+    end
+
+    local blockedDMs = getElementData(foundPlayer, 'player:blockedDMs')
+    local blockedDMsReason = getElementData(foundPlayer, 'player:blockedDMsReason')
+    
+    if blockedDMs then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', ('Gracz posiada zablokowane wiadomości prywatne z powodu: %s'):format(blockedDMsReason or 'Nie podano'))
+        return 
+    end
+
     local message = table.concat({...}, ' ')
     sendPm(player, foundPlayer, message)
 end)

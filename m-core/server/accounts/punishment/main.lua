@@ -23,7 +23,7 @@ function createPunishment(player, bannedBy, type_, time, timeUnit, reason, addit
     end
 
     dbExec(connection, [[INSERT INTO `m-punishments` (`user`, `serial`, `ip`, `type`, `permanent`, `end`, `admin`, `reason`, `additionalInfo`)
-        VALUES (?, ?, ?, ?, ?, ?, NOW() + INTERVAL ? SECOND, ?, ?, ?)]],
+        VALUES (?, ?, ?, ?, ?, NOW() + INTERVAL ? SECOND, ?, ?, ?)]],
         uid, serial, ip, type_, seconds == 0, seconds, bannedBy, reason, toJSON(additionalInfo))
 end
 

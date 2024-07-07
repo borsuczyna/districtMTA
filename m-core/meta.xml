@@ -14,6 +14,8 @@
     <script src='server/whitelist.lua' type='server'/>
     <script src='server/premium.lua' type='server'/>
     <script src='server/exp.lua' type='server'/>
+    <script src='server/blips.lua' type='server'/>
+    <script src='server/online.lua' type='server'/>
 
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>
@@ -28,11 +30,15 @@
     <!-- vehicles -->
     <script src='server/vehicles/main.lua' type='server'/>
     <script src='server/vehicles/damage.lua' type='server'/>
+    <script src='server/vehicles/engine.lua' type='server'/>
+    <script src='server/vehicles/fuel-mileage.lua' type='server'/>
 
     <script src='shared/players.lua' type='shared' cache='false'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
     <script src='shared/vehicles.lua' type='shared' cache='false'/>
     <script src='shared/exp.lua' type='shared' cache='false'/>
+
+    <export function='removeHex' type='shared'/>
 
     <export function='getPlayerFromPartialName' type='shared'/>
     <export function='getPlayerById' type='shared'/>
@@ -57,6 +63,8 @@
     <export function='isPlayerHaveTakenLicense' type='server'/>
     <export function='getNextLevelExp' type='shared'/>
     <export function='givePlayerExp' type='server'/>
+    <export function='getVehicleByUid' type='server'/>
+    <export function='getPlayerNameByUid' type='server'/>
 
     <export function='premiumChatDiscord' http='true'/>
 </meta>
