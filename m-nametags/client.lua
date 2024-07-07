@@ -78,6 +78,8 @@ end
 
 
 function renderNametags()
+    if getElementData(localPlayer, 'player:hiddenNametags') then return end
+
     local x, y, z = getElementPosition(getCamera())
     for _,player in pairs(getElementsWithinRange(x, y, z, 20, 'player')) do
         if player ~= localPlayer then
