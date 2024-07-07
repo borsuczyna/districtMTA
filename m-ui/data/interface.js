@@ -147,3 +147,18 @@ function applyHexColor(text) {
 function htmlEscape(text) {
     return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+async function include(jsFile) {
+    try {
+        let code = await fetch(jsFile);
+        let js = await code.text();
+        let func = new Function(js);
+        func();
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function finishIncludes(interface) {
+    mta.triggerEvent('interface:includes-finish', interface);
+}

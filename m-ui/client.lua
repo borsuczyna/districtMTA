@@ -6,6 +6,7 @@ local font = dxCreateFont('data/fonts/Inter-Medium.ttf', 23/zoom, false, 'proof'
 local textWidth = dxGetTextWidth('Trwa ładowanie interfejsu...', 1, font)
 local totalWidth = textWidth + 50/zoom + 20/zoom
 local visibleInterfaces = {}
+local singleInterfaces = {}
 
 addEvent('interfaceLoaded', true)
 addEvent('interfaceElement:load', true)
@@ -35,6 +36,38 @@ end
 function isInterfaceVisible(name)
     return visibleInterfaces[name] or false
 end
+
+function isAnySingleInterfaceVisible()
+    for i, interface in ipairs(singleInterfaces) do
+        if isInterfaceVisible(interface) then
+            return true
+        end
+    end
+
+    return false
+end
+
+function addSingleInterface(name)
+    local found = false
+    for i, interface in ipairs(singleInterfaces) do
+        if interface == name then
+            found = true
+            break
+        end
+    end
+
+    if not found then
+        table.insert(singleInterfaces, name)
+    end
+end
+
+function setRemSize(size)
+    if not uiLoaded or not browser then return end
+    executeBrowserJavascript(browser, ('setRemSize(%d)'):format(size))
+end
+
+addEvent('interface:setRemSize', true)
+addEventHandler('interface:setRemSize', root, setRemSize)
 
 function loadInterfaceElement(name)
     if not uiLoaded or not browser then return end
@@ -69,6 +102,7 @@ function destroyInterfaceElement(name)
     if not uiLoaded or not browser then return end
     executeBrowserJavascript(browser, ('destroyInterfaceElement(%q)'):format(name))
     triggerEvent('interface:visibilityChange', resourceRoot, name, false)
+    visibleInterfaces[name] = nil
 end
 
 function setInterfaceData(interfaceName, key, value)

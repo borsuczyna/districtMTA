@@ -1,6 +1,9 @@
 @import url('switch.css');
 @import url('input.css');
 @import url('button.css');
+@import url('range.css');
+@import url('tables.css');
+@import url('nice-table.css');
 
 @font-face {
     font-family: 'Inter';
@@ -26,6 +29,11 @@ body {
 
 .hidden {
     display: none !important;
+}
+
+.label {
+    font-size: 0.9rem;
+    color: #ffffffcc;
 }
 
 .d-flex {
@@ -97,7 +105,7 @@ body {
 }
 
 .text-end {
-    text-align: end;
+    text-align: end !important;
 }
 
 .bg-primary {
