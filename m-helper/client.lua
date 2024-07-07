@@ -27,6 +27,9 @@ function showHelperInterface()
 end
 
 function setHelperVisible(visible)
+    if visible and exports['m-ui']:isAnySingleInterfaceVisible() then return end
+    exports['m-ui']:addSingleInterface('helper')
+
     if helperHideTimer and isTimer(helperHideTimer) then
         killTimer(helperHideTimer)
     end
@@ -72,8 +75,4 @@ end)
 
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('helper')
-end)
-
-addEventHandler('onClientRender', root, function()
-    toggleControl('radar', false) 
 end)
