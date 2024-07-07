@@ -43,6 +43,9 @@ function showF11Interface()
 end
 
 function setF11Visible(visible)
+    if visible and exports['m-ui']:isAnySingleInterfaceVisible() then return end
+    exports['m-ui']:addSingleInterface('f11')
+
     if f11HideTimer and isTimer(f11HideTimer) then
         killTimer(f11HideTimer)
     end
