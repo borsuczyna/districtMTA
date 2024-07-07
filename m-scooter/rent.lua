@@ -10,7 +10,7 @@ end)
 
 bindKey('H', 'down', function()
     local rented = getElementData(localPlayer, 'scooter:rented')
-    if not rented then return end
+    if not rented or not isElement(rented) then return end
     if not isPedOnGround(localPlayer) then return end
 
     if getElementType(rented) == 'object' then
@@ -22,6 +22,6 @@ end)
 
 addEventHandler('onClientVehicleStartEnter', root, function(player, seat)
 	local rented = getElementData(localPlayer, 'scooter:rented')
-    if not rented then return end
+    if not rented or not isElement(rented) then return end
     if getElementType(rented) == 'object' and player == localPlayer then return cancelEvent() end
 end)
