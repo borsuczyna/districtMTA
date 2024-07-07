@@ -1,30 +1,32 @@
 function getVehicleRPM(vehicle)
-    local vehicleRPM = 0
-    if (vehicle) then
-        if (getVehicleEngineState(vehicle) == true) then
-            if getVehicleCurrentGear(vehicle) > 0 then
-                vehicleRPM = math.floor(((getVehicleSpeed(vehicle) / getVehicleCurrentGear(vehicle)) * 160) + 0.5)
-                if (vehicleRPM < 650) then
-                    vehicleRPM = math.random(650, 750)
-                elseif (vehicleRPM >= 9000) then
-                    vehicleRPM = math.random(9000, 9900)
-                end
-            else
-                vehicleRPM = math.floor((getVehicleSpeed(vehicle) * 160) + 0.5)
-                if (vehicleRPM < 650) then
-                    vehicleRPM = math.random(650, 750)
-                elseif (vehicleRPM >= 9000) then
-                    vehicleRPM = math.random(9000, 9900)
-                end
-            end
-        else
-            vehicleRPM = 0
-        end
+    if not vehicle then return 0 end
+    if not getVehicleEngineState(vehicle) then return 0 end
 
-        return tonumber(vehicleRPM)
-    else
-        return 0
+    local speed = getVehicleSpeed(vehicle)
+    local gear = getVehicleCurrentGear(vehicle)
+    local driver = getVehicleOccupant(vehicle, 0)
+
+    if speed < 2 and getPedControlState(driver, 'accelerate') and getPedControlState(driver, 'brake_reverse') then
+        return math.random(8000, 9500)
     end
+
+    if gear == 0 then
+        local rpm = math.floor(speed * 160 + 0.5)
+        if rpm < 650 then
+            return math.random(650, 750)
+        elseif rpm >= 9000 then
+            return math.random(9000, 9900)
+        end
+    end
+
+    local rpm = math.floor((speed / gear) * 160 + 0.5)
+    if rpm < 650 then
+        return math.random(650, 750)
+    elseif rpm >= 9000 then
+        return math.random(9000, 9900)
+    end
+
+    return rpm
 end
 
 function getVehicleSpeed(vehicle)

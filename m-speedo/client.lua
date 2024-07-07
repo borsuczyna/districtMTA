@@ -45,6 +45,8 @@ local function getVehicleSpeedo(vehicle)
 end
 
 local function renderSpeedo()
+    if getElementData(localPlayer, 'player:hiddenHUD') then return end
+    
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if not vehicle then return end
 
@@ -163,7 +165,7 @@ local function renderSpeedo()
 end
 
 function setSpeedoVisible(visible)
-    _G[visible and 'addEventHandler' or 'removeEventHandler']('onClientRender', root, renderSpeedo)
+    _G[visible and 'addEventHandler' or 'removeEventHandler']('onClientRender', root, renderSpeedo, true, 'high+9999')
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
