@@ -1,0 +1,10 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/settings.js'/>
+    <file src='data/main.js'/>
+    <file src='data/vehicles.js'/>
+    <file src='data/punishment.js'/>
+</meta>

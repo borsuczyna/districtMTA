@@ -25,6 +25,8 @@ local function loadPrivateVehicle(data)
     
     local x, y, z = unpack(map(split(data.position, ','), tonumber))
     local rx, ry, rz = unpack(map(split(data.rotation, ','), tonumber))
+    local fuel = data.fuel
+    local mileage = data.mileage
     local health = data.health
     local color = map(split(data.color, ','), tonumber)
     local plate = data.plate or uidToPlate(data.uid)
@@ -38,6 +40,8 @@ local function loadPrivateVehicle(data)
     setElementData(vehicle, 'vehicle:uid', data.uid)
     vehicles[data.uid] = vehicle
 
+    setElementData(vehicle, 'vehicle:fuel', tonumber(data.fuel))
+    setElementData(vehicle, 'vehicle:mileage', tonumber(data.mileage))
     setElementHealth(vehicle, health)
     setVehicleColor(vehicle, unpack(color))
     setVehicleHeadLightColor(vehicle, color[13] or 255, color[14] or 255, color[15] or 255)
@@ -61,6 +65,10 @@ local function loadPrivateVehicle(data)
         addVehicleUpgrade(vehicle, tuning)
     end
 
+    if data.lastDriver then
+        setElementData(vehicle, 'vehicle:lastDriver', data.lastDriver)
+    end
+
     if data.sharedPlayers then
         setElementData(vehicle, 'vehicle:sharedPlayers', map(split(data.sharedPlayers, ','), tonumber))
     end
@@ -72,12 +80,18 @@ end
 
 function buildSavePrivateVehicleQuery(vehicle)
     local uid = getElementData(vehicle, 'vehicle:uid')
+    local lastDriver = getElementData(vehicle, 'vehicle:lastDriver')
+    local fuel = getElementData(vehicle, 'vehicle:fuel')
+    local mileage = getElementData(vehicle, 'vehicle:mileage')
     local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
     local tuning = getVehicleUpgrades(vehicle) or {}
     local r, g, b = getVehicleHeadLightColor(vehicle)
     table.insert(color, r); table.insert(color, g); table.insert(color, b)
     local saveData = {
+        lastDriver = lastDriver,
+        fuel = fuel,
+        mileage = mileage,
         health = health,
         position = table.concat({getElementPosition(vehicle)}, ','),
         rotation = table.concat({getElementRotation(vehicle)}, ','),
@@ -190,6 +204,8 @@ function tryVehicleStartEnter(player, seat)
             if vehicleOccupants == 0 then cancelEvent() end
         end
     end
+
+    setElementData(source, 'vehicle:lastDriver', uid)
 end
 
 addEventHandler('onResourceStart', resourceRoot, loadPrivateVehicles)

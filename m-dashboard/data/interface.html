@@ -1,0 +1,347 @@
+<style>
+    #dashboard {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(23, 23, 23, 0.97);
+        display: flex;
+        flex-direction: column;
+        color: #ffffff;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    #dashboard .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.6rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+    }
+
+    #dashboard .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #dashboard .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #dashboard .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+
+    #dashboard #top {
+        background: rgba(35, 35, 35, 0.5);
+        padding: 0.4rem;
+        position: relative;
+        border-bottom: 2px solid rgba(54, 54, 54, 0.4);
+    }
+
+    #dashboard #bottom {
+        height: 100%;
+        max-height: 100%;
+    }
+
+    #dashboard .progress-wrapper {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 30rem;
+        max-width: 50%;
+    }
+
+    #dashboard .progress-bar {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        height: 0.475rem;
+        background: rgba(58, 58, 58, 0.7);
+        transform: translateY(-50%);
+    }
+
+    #dashboard .progress {
+        border-radius: 0.5rem;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(252, 166, 74, 0.8) 0%, rgba(233, 125, 76, 0.8) 57.81%, rgba(221, 100, 77, 0.8) 100%);
+        box-shadow: 0px 0px 1.325rem #ffab4a6b;
+    }
+
+    #dashboard .level-box {
+        background: linear-gradient(270deg, #333 50%, #2d2d2d 50%);
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #eef2ef;
+        width: 2.8rem;
+        min-width: 2.4rem;
+        max-width: 2.4rem;
+        height: 2.4rem;
+        min-height: 2.4rem;
+        max-height: 2.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #dashboard .avatar {
+        background-image: url('../../m-hud/data/images/user.png?v2');
+        background-size: cover;
+        width: 3rem;
+        height: 3rem;
+        margin: 0.5rem;
+        border-radius: 50%;
+    }
+
+    #dashboard .rank {
+        font-size: 0.8rem;
+        color: #ffab48;
+    }
+
+    #dashboard #list-wrapper {
+        width: 20rem;
+        position: relative;
+        overflow-y: auto;
+    }
+
+    #dashboard #list {
+        width: calc(100% - 0rem);
+        background: rgba(35, 35, 35, 0.3);
+        height: 100%;
+        max-height: 100%;
+        position: absolute;
+    }
+
+    #dashboard .item {
+        position: relative;
+        padding: 1rem 0.9rem;
+        cursor: pointer;
+        color: #ffffffaa;
+        border-bottom: 1px solid rgba(54, 54, 54, 0.6);
+        background: rgba(42, 42, 42, 0.4);
+        transition: background 0.2s, padding-left 0.2s, color 0.2s;
+    }
+
+    #dashboard .item:hover {
+        background: rgba(137, 137, 137, 0.1);
+    }
+
+    #dashboard .item.active {
+        background: rgba(255, 180, 98, 0.1);
+        padding-left: 1.1rem;
+        color: #ffffff;
+    }
+
+    #dashboard .item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0.3rem;
+        height: 100%;
+        box-shadow: 0 0 0.3125rem 0 rgba(255, 180, 98, 1);
+        background: #ffb462;
+        transform: translateX(-200%) scaleY(0.8);
+        border-radius: 0 0.3rem 0.3rem 0;
+        transition: transform 0.2s;
+    }
+
+    #dashboard .item.active::before {
+        transform: translateX(0) scaleY(0.8);
+    }
+
+    #dashboard #tabs {
+        position: relative;
+        flex-grow: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        margin-right: 0.5rem;
+    }
+
+    #dashboard .tab {
+        position: absolute;
+        width: calc(100% - 2rem);
+        padding-bottom: 1rem;
+        display: none;
+    }
+
+    #dashboard .tab.active {
+        display: block;
+    }
+
+    #dashboard ::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    #dashboard ::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 0.25rem;
+    }
+
+    #dashboard ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    #dashboard ::-webkit-scrollbar-track {
+        background-color: rgba(40, 40, 40, 0.8);
+    }
+
+    #dashboard ::-webkit-scrollbar-corner {
+        background-color: rgba(27, 27, 27, 0.4);
+    }
+
+    #dashboard h2 {
+        margin-top: 0;
+        color: #ffffffee;
+    }
+
+    #dashboard .input {
+        background: rgba(42, 42, 42, 0.7);
+        border: 1px solid rgba(54, 54, 54, 0.6);
+        padding: 0.8rem;
+        color: #ffffffcc;
+        border-radius: 0.5rem;
+        width: 20rem;
+        font-size: 0.9rem;
+    }
+
+    #dashboard .range-container {
+        width: 20rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    #dashboard .vehicle-details {
+        background: rgba(42, 42, 42, 0.4);
+        border: 1px solid rgba(54, 54, 54, 0.3);
+        border-radius: 0.5rem;
+        padding: 0.8rem;
+    }
+
+    #dashboard #vehicle-map {
+        height: max(20rem, 35vh);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    #dashboard .vehicle-blip {
+        width: 3rem !important;
+        height: 3rem !important;
+    }
+
+    #dashboard .player-blip {
+        width: 2rem !important;
+        height: 2rem !important;
+        filter: invert(1);
+    }
+
+    #dashboard .icon {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+<div id="top" class="d-flex justify-between align-items-center">
+    <div class="d-flex gap-1 logo">
+        <img src="../../m-login/data/logo.png" style="width: 3.5rem;"/>
+        <span>
+            <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+            <span class="gradient-text text-glow">MTA</span>
+        </span>
+    </div>
+    <div class="d-flex gap-3 align-items-center progress-wrapper">
+        <div class="level-box" id="level-current">0</div>
+        <div class="progress-bar">
+            <div class="progress" style="width: 0%;" id="level-progress"></div>
+        </div>
+        <div class="level-box" id="level-next">1</div>
+    </div>
+    <div class="d-flex align-items-center gap-1">
+        <div class="d-flex flex-column text-end">
+            <span>borsuczyna</span>
+            <span class="rank">Gracz</span>
+        </div>
+        <div class="avatar"></div>
+    </div>
+</div>
+
+<div id="bottom" class="d-flex">
+    <div id="list-wrapper">
+        <div id="list">
+            <div class="item active" tab="main" onclick="dashboard_changeTab(this)">Strona główna</div>
+            <div class="item" tab="daily-tasks" onclick="dashboard_changeTab(this)">Zadania dzienne</div>
+            <div class="item" tab="daily-reward" onclick="dashboard_changeTab(this)">Nagroda dzienna</div>
+            <div class="item" tab="vehicles" onclick="dashboard_fetchData('vehicles'); dashboard_changeTab(this)">Pojazdy</div>
+            <div class="item" tab="punishments" onclick="dashboard_fetchData('punishments'); dashboard_changeTab(this)">Kary</div>
+            <div class="item" tab="settings" onclick="dashboard_changeTab(this)">Ustawienia</div>
+        </div>
+    </div>
+    <div id="tabs">
+        <div class="tab active" tab="main"></div>
+        <div class="tab" tab="vehicles">
+            <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
+                <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                <span class="mt-3">Ładowanie...</span>
+            </div>
+        </div>
+        <div class="tab" tab="punishments">
+            <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
+                <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                <span class="mt-3">Ładowanie...</span>
+            </div>
+        </div>
+        <div class="tab" tab="settings" id="settings">
+            <h2>Ustawienia</h2>
+            
+            <div class="d-flex flex-column gap-2" id="settings-rows"></div>
+        </div>
+    </div>
+</div>
+
+<script defer>
+    async function loadIncludes() {
+        await include('../../m-dashboard/data/main.js');
+        await include('../../m-dashboard/data/settings.js');
+        await include('../../m-dashboard/data/vehicles.js');
+        await include('../../m-dashboard/data/punishment.js');
+        finishIncludes('dashboard');
+    }
+
+    loadIncludes();
+</script>
