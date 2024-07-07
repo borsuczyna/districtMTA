@@ -51,7 +51,7 @@ end
 for k,v in pairs(rentals) do
 	createObject(1874, v[1], v[2], v[3]-1, 0, 0, v[4])
 	local colShape = createColSphere(v[1], v[2], v[3], 2)
-	local blip = createBlipAttachedTo(colShape, 29, 2, 255, 255, 255, 255, 0, 100)
+	local blip = createBlipAttachedTo(colShape, 29, 2, 255, 255, 255, 255, 0, 9999)
 	setElementData(colShape, 'scooter:rental', true)
 end
 

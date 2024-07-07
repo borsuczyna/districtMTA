@@ -29,6 +29,18 @@ local fonts = {
 	dxCreateFont(':m-ui/data/fonts/Inter-Medium.ttf', 18/zoom, false, 'proof'),
 }
 
+function findRotation( x1, y1, x2, y2 ) 
+    local t = -math.deg( math.atan2( x2 - x1, y2 - y1 ) )
+    return t < 0 and t + 360 or t
+end
+
+function getPointFromDistanceRotation(x, y, dist, angle)
+    local a = math.rad(90 - angle);
+    local dx = math.cos(a) * dist;
+    local dy = math.sin(a) * dist;
+    return x+dx, y+dy;
+end
+
 function renderRadar()
     if not getElementData(localPlayer, 'player:spawn') then return end
     -- if getElementData(localPlayer, 'player:hud-hidden') then return end
@@ -68,7 +80,7 @@ function renderRadar()
         local visible = getBlipVisibleDistance(v)
         
         -- draw blip
-        if fileExists('radar/blips/'..blipIcon..'.png') then
+        if fileExists('data/images/blips/'..blipIcon..'.png') then
             local distance = getDistanceBetweenPoints2D(x, y, bx, by)
             if distance <= visible then
                 local dist = math.min(distance/zoom/1.44, radarW/2)
