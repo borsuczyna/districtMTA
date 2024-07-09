@@ -1,4 +1,5 @@
 let dataCache = {};
+let lastRequest = 0;
 
 window.dashboard_renderVehicles = (data) => {
     dataCache.vehicles = data;
@@ -31,7 +32,7 @@ window.dashboard_renderVehicles = (data) => {
             { data: 'ownerName' },
             { data: 'uid', render: (data) => {
                 return `<div class="d-flex gap-1">
-                    <div class="nice-button button-sm" onclick="mta.triggerEvent('dashboard:vehicleDetails', ${data})">Szczegóły</div>
+                    <div class="flat-button flat-button-small" onclick="dashboard_getVehicleDetails(${data})">Szczegóły</div>
                 </div>`;
             } },
         ],
@@ -42,15 +43,27 @@ window.dashboard_renderVehicles = (data) => {
     });
 }
 
+window.dashboard_getVehicleDetails = (id) => {
+    if (Date.now() - lastRequest < 1000) {
+        notis_addNotification('error', 'Błąd', 'Poczekaj chwilę przed kolejnym zapytaniem.');
+        return;
+    }
+
+    lastRequest = Date.now();
+    mta.triggerEvent('dashboard:vehicleDetails', id);
+}
+
 window.dashboard_vehicleDetails = function(id, data) {
     let vehicle = dataCache.vehicles.find(v => v.uid == id);
     let vehicleName = window.vehicleNames[parseInt(vehicle.model) - 400];
 
     let details = document.querySelector('#dashboard #tabs #vehicle-details');
     let position = data?.position || vehicle.position.split(',').map(v => parseFloat(v));
+    let fuel = parseFloat(data?.fuel || vehicle.fuel);
+    let mileage = parseFloat(data?.mileage || vehicle.mileage);
 
     details.innerHTML = `
-        <div class="d-flex flex-column vehicle-details gap-1 mt-3">
+        <div class="d-flex flex-column vehicle-details gap-1 mt-3" style="animation: fadeIn 0.3s ease-in-out;">
             <div class="d-flex gap-1">
                 <div class="label">Model:</div>
                 <div>${vehicleName}</div>
@@ -65,11 +78,11 @@ window.dashboard_vehicleDetails = function(id, data) {
             </div>
             <div class="d-flex gap-1">
                 <div class="label">Paliwo:</div>
-                <div>${(data?.fuel || vehicle.fuel).toFixed(2)}%</div>
+                <div>${fuel.toFixed(2)}%</div>
             </div>
             <div class="d-flex gap-1">
                 <div class="label">Przebieg:</div>
-                <div>${(data?.mileage || vehicle.mileage).toFixed(2)} km</div>
+                <div>${mileage.toFixed(2)} km</div>
             </div>
 
             <div id="vehicle-map"></div>

@@ -6,7 +6,7 @@ function getVehicleRPM(vehicle)
     local gear = getVehicleCurrentGear(vehicle)
     local driver = getVehicleOccupant(vehicle, 0)
 
-    if speed < 2 and getPedControlState(driver, 'accelerate') and getPedControlState(driver, 'brake_reverse') then
+    if driver and speed < 2 and getPedControlState(driver, 'accelerate') and getPedControlState(driver, 'brake_reverse') then
         return math.random(8000, 9500)
     end
 

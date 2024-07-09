@@ -7,6 +7,9 @@ addEvent('dashboard:fetchData', true)
 addEvent('dashboard:fetchDataResult', true)
 addEvent('dashboard:vehicleDetails', true)
 addEvent('dashboard:vehicleDetailsResult', true)
+addEvent('dashboard:redeemDailyReward', true)
+addEvent('dashboard:redeemDailyRewardResult', true)
+addEvent('dashboard:fetchDailyRewardResult', true)
 
 function updateDashboardData()
     local settings = {
@@ -32,12 +35,18 @@ function updateDashboardData()
     local exp = getElementData(localPlayer, 'player:exp')
     local expToNext = exports['m-core']:getNextLevelExp(level)
     local x, y, z = getElementPosition(localPlayer)
+    local dailyRewardDay = exports['m-core']:getPlayerDailyRewardDay()
+    local dailyRewardRedeem, dailyRewardTimeLeft = exports['m-core']:canPlayerRedeemDailyReward()
+
+    triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
 
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'update-data', {
         settings = settings,
         level = level,
         levelProgress = exp / expToNext * 100,
-        playerPosition = {x, y, z}
+        playerPosition = {x, y, z},
+        dailyRewardDay = dailyRewardDay,
+        dailyRewardRedeem = dailyRewardRedeem,
     })
 end
 
@@ -143,5 +152,23 @@ addEventHandler('dashboard:vehicleDetailsResult', root, function(id, result)
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'vehicle-details-result', {
         id = id,
         result = result
+    })
+end)
+
+addEventHandler('dashboard:redeemDailyReward', root, function()
+    triggerServerEvent('dashboard:redeemDailyReward', resourceRoot)
+end)
+
+addEventHandler('dashboard:redeemDailyRewardResult', root, function(success)
+    if not success then return end
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'redeem-daily-reward-result', success)
+    triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
+end)
+
+addEventHandler('dashboard:fetchDailyRewardResult', root, function(yesterday, today, last10Days)
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'fetch-daily-reward-result', {
+        yesterday = yesterday,
+        today = today,
+        last10Days = last10Days
     })
 end)

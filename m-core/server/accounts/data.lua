@@ -9,6 +9,15 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:premium-end', data.premiumEnd)
     setElementData(player, 'player:time', data.time)
     setElementData(player, 'player:afkTime', data.afkTime)    
+    setElementData(player, 'player:dailyRewardDay', data.dailyRewardDay)
+    setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
+
+    -- check if difference between now and dailyRewardRedeem is less than 24 hours, if so show notification that streak is lost
+    local diff = getRealTime().timestamp - data.dailyRewardRedeemDate
+    if diff > 86400 then
+        setElementData(player, 'player:dailyRewardDay', 1)
+        exports['m-notis']:addNotification(player, 'error', 'Dzienne nagrody', 'Straciłeś swoją serię dziennych nagród')
+    end
 
     -- settings
     local settings = fromJSON(data.settings)

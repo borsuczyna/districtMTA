@@ -57,6 +57,9 @@ addEvent('dashboard', 'update-data', (data) => {
     // level
     dashboard_setLevelData(data.level, data.level + 1, data.levelProgress);
 
+    // daily reward
+    dashboard_setDailyRewardData(data.dailyRewardDay, data.dailyRewardRedeem);
+
     // position
     window.dashboard_playerPosition = data.playerPosition;
 });

@@ -1,5 +1,7 @@
 addEvent('dashboard:fetchData', true)
 addEvent('dashboard:vehicleDetails', true)
+addEvent('dashboard:redeemDailyReward', true)
+addEvent('dashboard:fetchDailyReward', true)
 
 local requests = {}
 
@@ -74,7 +76,7 @@ addEventHandler('dashboard:vehicleDetails', resourceRoot, function(id)
 
     local vehicle = exports['m-core']:getVehicleByUid(tonumber(id))
     if not vehicle then
-        triggerClientEvent(client, 'dashboard:vehicleDetailsResult', resourceRoot, false)
+        triggerClientEvent(client, 'dashboard:vehicleDetailsResult', resourceRoot, id, false)
         return
     end
 
@@ -89,4 +91,25 @@ addEventHandler('dashboard:vehicleDetails', resourceRoot, function(id)
         position = {x, y, z},
         lastDriver = exports['m-core']:getPlayerNameByUid(tonumber(lastDriver)) or 'Brak'
     })
+end)
+
+addEventHandler('dashboard:redeemDailyReward', resourceRoot, function()
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+    local uid = getElementData(client, 'player:uid')
+    if not uid then return end
+
+    exports['m-core']:redeemDailyReward(client)
+end)
+
+addEventHandler('dashboard:fetchDailyReward', resourceRoot, function()
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+    local uid = getElementData(client, 'player:uid')
+    if not uid then return end
+
+    local dailyRewardDay = exports['m-core']:getPlayerDailyRewardDay(client)
+    local yestarday = exports['m-core']:getDailyRewardAtDay(dailyRewardDay - 1)
+    local today = exports['m-core']:getDailyRewardAtDay(dailyRewardDay)
+    local last10Days = exports['m-core']:getPlayerLast10DailyRewards(client)
+
+    triggerClientEvent(client, 'dashboard:fetchDailyRewardResult', resourceRoot, yestarday, today, last10Days)
 end)

@@ -16,6 +16,7 @@
     <script src='server/exp.lua' type='server'/>
     <script src='server/blips.lua' type='server'/>
     <script src='server/online.lua' type='server'/>
+    <script src='server/daily-reward.lua' type='server'/>
 
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>
@@ -37,6 +38,7 @@
     <script src='shared/useful.lua' type='shared' cache='false'/>
     <script src='shared/vehicles.lua' type='shared' cache='false'/>
     <script src='shared/exp.lua' type='shared' cache='false'/>
+    <script src='shared/daily-reward.lua' type='shared' cache='false'/>
 
     <export function='removeHex' type='shared'/>
 
@@ -65,6 +67,11 @@
     <export function='givePlayerExp' type='server'/>
     <export function='getVehicleByUid' type='server'/>
     <export function='getPlayerNameByUid' type='server'/>
+    <export function='getPlayerDailyRewardDay' type='shared'/>
+    <export function='canPlayerRedeemDailyReward' type='shared'/>
+    <export function='redeemDailyReward' type='server'/>
+    <export function='getDailyRewardAtDay' type='server'/>
+    <export function='getPlayerLast10DailyRewards' type='server'/>
 
     <export function='premiumChatDiscord' http='true'/>
 </meta>

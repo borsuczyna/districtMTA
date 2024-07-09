@@ -103,3 +103,6 @@ function loadModels()
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, loadModels)
+
+removeWorldModel(4825, 9999, 0, 0, 0)
+removeWorldModel(4823, 9999, 0, 0, 0)

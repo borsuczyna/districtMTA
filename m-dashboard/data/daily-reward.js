@@ -1,0 +1,117 @@
+let dailyRewardData = {
+    day: 1,
+    date: 0
+}
+
+function canRedeemDailyReward() {
+    return dailyRewardData.date <= new Date().getTime() / 1000;
+}
+
+function updateTimeLeft(card, date) {
+    let timeLeft = date - new Date();
+    let button = card.querySelector('.flat-button');
+
+    if (timeLeft <= 1) {
+        button.classList.remove('grayed');
+        button.innerText = 'Odbierz';
+        button.onclick = dashboard_redeemDailyReward;
+        return;
+    } else {
+        let hours = Math.floor(timeLeft / 1000 / 60 / 60);
+        let minutes = Math.floor(timeLeft / 1000 / 60 % 60);
+        let seconds = Math.floor(timeLeft / 1000 % 60);
+        let timeLeftString = [];
+
+        if (hours > 0) timeLeftString.push(hours + 'h');
+        if (minutes > 0) timeLeftString.push(minutes + 'm');
+        if (seconds > 0) timeLeftString.push(seconds + 's');
+        if (timeLeftString.length == 0) timeLeftString.push('0s');
+
+        button.innerText = timeLeftString.join(' ');
+        button.classList.add('grayed');
+
+        setTimer('dashboard', updateTimeLeft, 1000, card, date);
+    }
+}
+
+function showNextDailyReward() {
+    dailyRewardData.day++;
+    dailyRewardData.date = new Date().getTime() / 1000 + 86400;
+    dashboard_setDailyRewardData(dailyRewardData.day, dailyRewardData.date);
+
+    // set yesterday reward as today reward and today reward as Ładowanie...
+    let dailyCards = document.querySelectorAll('#dashboard .daily-reward-card');
+    let yesterdayReward = dailyCards[0].querySelector('.reward');
+    let todayReward = dailyCards[1].querySelector('.reward');
+
+    yesterdayReward.innerText = todayReward.innerText;
+    todayReward.innerText = 'Ładowanie...';
+}
+
+window.dashboard_redeemDailyReward = () => {
+    if (!canRedeemDailyReward()) return;
+
+    mta.triggerEvent('dashboard:redeemDailyReward');
+}
+
+window.dashboard_setDailyRewardData = (day, date) => {
+    dailyRewardData.day = parseInt(day);
+    dailyRewardData.date = date;
+
+    let dailyCards = document.querySelectorAll('#dashboard .daily-reward-card');
+    let redeemCard = dailyCards[1];
+
+    dailyCards[0].classList.toggle('d-none', day <= 1);
+    
+    let drawDay = day - 1;
+    for (let card of dailyCards) {
+        let dayBox = card.querySelector('.day');
+        dayBox.innerText = drawDay++;
+        card.querySelector('.flat-button').onclick = null;
+    }
+
+    if (date == true) {
+        updateTimeLeft(redeemCard, new Date() - 1);
+    } else {
+        let dateObj = new Date(parseInt(date) * 1000);
+        updateTimeLeft(redeemCard, dateObj);
+    }
+}
+
+window.dashboard_setDailyReward = (yesterday, today, last10Days) => {
+    let dailyCards = document.querySelectorAll('#dashboard .daily-reward-card');
+    let yesterdayReward = dailyCards[0].querySelector('.reward');
+    let todayReward = dailyCards[1].querySelector('.reward');
+
+    if (yesterday != false) {
+        yesterdayReward.innerText = yesterday;
+    }
+
+    if (today != false) {
+        todayReward.innerText = today;
+    }
+
+    let dailyHistory = document.querySelector('#dashboard #daily-reward-history');
+    dailyHistory.innerHTML = '';
+
+    last10Days.sort((a, b) => new Date(a.date * 1000) - new Date(b.date * 1000));
+
+    for (let day of last10Days) {
+        let dateObj = new Date(day.date * 1000);
+        let dayBox = document.createElement('div');
+        dayBox.classList.add('d-flex', 'justify-between');
+        dayBox.innerHTML = `<span>${day.text}</span><span>${dateObj.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>`;
+
+        dailyHistory.appendChild(dayBox);
+    }
+}
+
+addEvent('dashboard', 'redeem-daily-reward-result', (data) => {
+    showNextDailyReward();
+});
+
+addEvent('dashboard', 'fetch-daily-reward-result', (data) => {
+    data = data[0];
+
+    dashboard_setDailyReward(data.yesterday, data.today, data.last10Days);
+});

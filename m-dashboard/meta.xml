@@ -7,4 +7,5 @@
     <file src='data/main.js'/>
     <file src='data/vehicles.js'/>
     <file src='data/punishment.js'/>
+    <file src='data/daily-reward.js'/>
 </meta>

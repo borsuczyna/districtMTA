@@ -5,7 +5,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background: rgba(23, 23, 23, 0.97);
+        background: rgba(23, 23, 23, 0.94);
         display: flex;
         flex-direction: column;
         color: #ffffff;
@@ -132,7 +132,7 @@
         position: absolute;
     }
 
-    #dashboard .item {
+    #dashboard #list .item {
         position: relative;
         padding: 1rem 0.9rem;
         cursor: pointer;
@@ -142,17 +142,17 @@
         transition: background 0.2s, padding-left 0.2s, color 0.2s;
     }
 
-    #dashboard .item:hover {
+    #dashboard #list .item:hover {
         background: rgba(137, 137, 137, 0.1);
     }
 
-    #dashboard .item.active {
+    #dashboard #list .item.active {
         background: rgba(255, 180, 98, 0.1);
         padding-left: 1.1rem;
         color: #ffffff;
     }
 
-    #dashboard .item::before {
+    #dashboard #list .item::before {
         content: '';
         position: absolute;
         left: 0;
@@ -166,7 +166,7 @@
         transition: transform 0.2s;
     }
 
-    #dashboard .item.active::before {
+    #dashboard #list .item.active::before {
         transform: translateX(0) scaleY(0.8);
     }
 
@@ -216,6 +216,11 @@
         color: #ffffffee;
     }
 
+    #dashboard p {
+        color: #ffffffaa;
+        margin-block: 0.1rem;
+    }
+
     #dashboard .input {
         background: rgba(42, 42, 42, 0.7);
         border: 1px solid rgba(54, 54, 54, 0.6);
@@ -262,6 +267,136 @@
         height: 1.5rem !important;
     }
 
+    #dashboard .daily-reward-card {
+        background: rgba(54, 54, 54, 0.8);
+        border: 1px solid rgba(54, 54, 54, 0.4);
+        padding: 1rem;
+        width: 14rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 0 1.325rem #00000000;
+        transition: all 0.3s;
+    }
+
+    #dashboard .daily-reward-card:not(.small):hover {
+        box-shadow: 0 0 1.325rem #0000006b;
+        border: 1px solid rgba(99, 99, 99, 0.4);
+    }
+
+    #dashboard .daily-reward-card.small {
+        scale: 0.9;
+        background: rgba(47, 47, 47, 0.6);
+    }
+
+    #dashboard .daily-reward-card .day {
+        font-size: 7rem;
+        color: #ffffffdd;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-shadow: 0 0 3.5rem #ffffff33;
+        z-index: 1;
+        transition: all 0.3s;
+    }
+
+    #dashboard .daily-reward-card:not(.small):hover .day {
+        color: #ffffff;
+        font-size: 8rem;
+        text-shadow: 0 0 4.5rem #ffffff88;
+    }
+
+    #dashboard .daily-reward-card .title {
+        font-size: 1.5rem;
+        color: #ffffffcc;
+        z-index: 1;
+    }
+
+    #dashboard .daily-reward-card .reward {
+        font-size: 1.1rem;
+        color: #ffffffaa;
+        z-index: 1;
+    }
+
+    #dashboard .daily-reward-card .box {
+        position: absolute;
+        background-color: rgba(60, 60, 60, 0.4);
+        width: 0rem;
+        height: 0rem;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.3;
+        transition: all 0.3s;
+    }
+
+    #dashboard .daily-reward-card:not(.small):hover .box {
+        width: 30rem;
+        height: 30rem;
+        opacity: 1;
+    }
+
+    #dashboard .flat-button {
+        background: rgba(91, 91, 91, 0.7);
+        border: 1px solid rgba(54, 54, 54, 0.7);
+        padding: 0.8rem;
+        color: #ffffffcc;
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        width: calc(100% - 2rem);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        transition: background 0.2s, border 0.2s;
+    }
+
+    #dashboard .flat-button:hover {
+        background: rgba(116, 116, 116, 0.8);
+        border: 1px solid rgba(97, 97, 97, 0.7);
+        animation: button-hover 0.8s infinite;
+    }
+
+    #dashboard .flat-button-small {
+        width: auto;
+        font-size: 0.8rem;
+        height: auto;
+        padding: 0.5rem 0.8rem;
+    }
+
+    #dashboard .flat-button.grayed {
+        background: rgba(91, 91, 91, 0.3);
+        border: 1px solid rgba(54, 54, 54, 0.3);
+        cursor: not-allowed;
+    }
+
+    #dashboard .flat-button.grayed:hover {
+        background: rgba(91, 91, 91, 0.3);
+        border: 1px solid rgba(54, 54, 54, 0.3);
+    }
+
+    #dashboard #daily-reward-history {
+        background: rgba(42, 42, 42, 0.5);
+        border: 1px solid rgba(54, 54, 54, 0.4);
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        color: #ffffffcc;
+    }
+
+    #dashboard .nice-table-wrapper {
+        background: rgba(42, 42, 42, 0.5);
+        border: 1px solid rgba(54, 54, 54, 0.4);
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+        color: #ffffffcc;
+    }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;
@@ -273,6 +408,16 @@
 
         100% {
             background-position: 0% 50%;
+        }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
         }
     }
 </style>
@@ -314,6 +459,78 @@
     </div>
     <div id="tabs">
         <div class="tab active" tab="main"></div>
+        <div class="tab" tab="daily-reward">
+            <h2 style="margin-bottom: 0.2rem;">Nagroda dzienna</h2>
+            <p style="margin-top: 0;">Odbierz swoją nagrodę za codzienne logowanie!</p>
+
+            <div class="d-flex w-100 gap-3 align-items-start justify-center mt-4">
+                <div class="daily-reward-card small">
+                    <div class="box"></div>
+                    <div class="day">1</div>
+                    <div class="title">Wczoraj</div>
+                    <div class="reward">Ładowanie...</div>
+                    <div class="flat-button mt-4 grayed">Odebrano</div>
+                </div>
+                <div class="daily-reward-card">
+                    <div class="box"></div>
+                    <div class="day">2</div>
+                    <div class="title">Dzisiaj</div>
+                    <div class="reward">Ładowanie...</div>
+                    <div class="flat-button mt-4">Odbierz</div>
+                </div>
+                <div class="daily-reward-card small">
+                    <div class="box"></div>
+                    <div class="day">3</div>
+                    <div class="title">Jutro</div>
+                    <div class="reward" style="filter: blur(0.5rem);">tajemnica</div>
+                    <div class="flat-button mt-4 grayed">Odbierz</div>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 2rem;">Ostatnie 10 nagród</h2>
+            <div class="d-flex flex-column gap-1 mt-2" id="daily-reward-history">
+                <!-- <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div>
+                <div class="d-flex justify-between">
+                    <span>10 exp</span>
+                    <span>10 lipca 2024</span>
+                </div> -->
+            </div>
+        </div>
         <div class="tab" tab="vehicles">
             <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
                 <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
@@ -340,6 +557,7 @@
         await include('../../m-dashboard/data/settings.js');
         await include('../../m-dashboard/data/vehicles.js');
         await include('../../m-dashboard/data/punishment.js');
+        await include('../../m-dashboard/data/daily-reward.js');
         finishIncludes('dashboard');
     }
 
