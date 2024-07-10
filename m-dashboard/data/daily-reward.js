@@ -78,7 +78,7 @@ window.dashboard_setDailyRewardData = (day, date) => {
     }
 }
 
-window.dashboard_setDailyReward = (yesterday, today, last10Days) => {
+window.dashboard_setDailyReward = (yesterday, today) => {
     let dailyCards = document.querySelectorAll('#dashboard .daily-reward-card');
     let yesterdayReward = dailyCards[0].querySelector('.reward');
     let todayReward = dailyCards[1].querySelector('.reward');
@@ -94,16 +94,37 @@ window.dashboard_setDailyReward = (yesterday, today, last10Days) => {
     let dailyHistory = document.querySelector('#dashboard #daily-reward-history');
     dailyHistory.innerHTML = '';
 
-    last10Days.sort((a, b) => new Date(a.date * 1000) - new Date(b.date * 1000));
+    // last10Days.sort((a, b) => new Date(b.date * 1000) - new Date(a.date * 1000));
+
+    // for (let day of last10Days) {
+    //     let dateObj = new Date(day.date * 1000);
+    //     let dayBox = document.createElement('div');
+    //     dayBox.classList.add('d-flex', 'justify-between');
+    //     dayBox.innerHTML = `<span>${day.text}</span><span>${dateObj.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>`;
+
+    //     dailyHistory.appendChild(dayBox);
+    // }
+}
+
+window.dashboard_setLast10DaysRewards = (last10Days) => {
+    let dailyHistory = document.querySelector('#dashboard #daily-reward-history');
+    dailyHistory.innerHTML = '';
+
+    last10Days.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     for (let day of last10Days) {
-        let dateObj = new Date(day.date * 1000);
+        let dateObj = new Date(day.date);
         let dayBox = document.createElement('div');
         dayBox.classList.add('d-flex', 'justify-between');
-        dayBox.innerHTML = `<span>${day.text}</span><span>${dateObj.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>`;
+        dayBox.innerHTML = `<span>${day.reward}</span><span>${dateObj.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>`;
 
         dailyHistory.appendChild(dayBox);
     }
+
+    let dailyCards = document.querySelectorAll('#dashboard .daily-reward-card');
+    let yesterdayReward = dailyCards[0].querySelector('.reward');
+
+    yesterdayReward.innerText = last10Days[0].reward;
 }
 
 addEvent('dashboard', 'redeem-daily-reward-result', (data) => {
@@ -113,5 +134,9 @@ addEvent('dashboard', 'redeem-daily-reward-result', (data) => {
 addEvent('dashboard', 'fetch-daily-reward-result', (data) => {
     data = data[0];
 
-    dashboard_setDailyReward(data.yesterday, data.today, data.last10Days);
+    dashboard_setDailyReward(data.yesterday, data.today);
+});
+
+addEvent('dashboard', 'get-player-last-10-daily-rewards-result', (data) => {
+    dashboard_setLast10DaysRewards(data[0]);
 });

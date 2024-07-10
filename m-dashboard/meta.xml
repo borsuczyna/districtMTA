@@ -8,4 +8,5 @@
     <file src='data/vehicles.js'/>
     <file src='data/punishment.js'/>
     <file src='data/daily-reward.js'/>
+    <file src='data/daily-tasks.js'/>
 </meta>

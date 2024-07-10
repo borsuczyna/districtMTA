@@ -8,6 +8,7 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:exp', data.exp)
     setElementData(player, 'player:premium-end', data.premiumEnd)
     setElementData(player, 'player:time', data.time)
+    setElementData(player, 'player:session', 0)
     setElementData(player, 'player:afkTime', data.afkTime)    
     setElementData(player, 'player:dailyRewardDay', data.dailyRewardDay)
     setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
@@ -94,6 +95,7 @@ end
 
 addEventHandler('onPlayerQuit', root, function()
     savePlayerData(source)
+    updatePlayerDailyTaskProgress(source)
 end)
 
 setTimer(saveAllPlayers, 300000, 0) -- 5 minutes

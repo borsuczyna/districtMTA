@@ -2,6 +2,7 @@ addEvent('dashboard:fetchData', true)
 addEvent('dashboard:vehicleDetails', true)
 addEvent('dashboard:redeemDailyReward', true)
 addEvent('dashboard:fetchDailyReward', true)
+addEvent('dashboard:claimDailyTask', true)
 
 local requests = {}
 
@@ -109,7 +110,16 @@ addEventHandler('dashboard:fetchDailyReward', resourceRoot, function()
     local dailyRewardDay = exports['m-core']:getPlayerDailyRewardDay(client)
     local yestarday = exports['m-core']:getDailyRewardAtDay(dailyRewardDay - 1)
     local today = exports['m-core']:getDailyRewardAtDay(dailyRewardDay)
-    local last10Days = exports['m-core']:getPlayerLast10DailyRewards(client)
+    exports['m-core']:getPlayerLast10DailyRewards(client)
+    exports['m-core']:getPlayerLast10DaysDailyTasks(client)
 
-    triggerClientEvent(client, 'dashboard:fetchDailyRewardResult', resourceRoot, yestarday, today, last10Days)
+    triggerClientEvent(client, 'dashboard:fetchDailyRewardResult', resourceRoot, yestarday, today)
+end)
+
+addEventHandler('dashboard:claimDailyTask', resourceRoot, function(date)
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+    local uid = getElementData(client, 'player:uid')
+    if not uid then return end
+
+    exports['m-core']:claimDailyTask(client, date)
 end)

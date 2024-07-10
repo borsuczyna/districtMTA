@@ -55,10 +55,18 @@ function givePlayerReward(player, reward)
 end
 
 function redeemDailyRewardResult(queryResult, player)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
+        return false
+    end
+
+    local uid = getElementData(player, 'player:uid')
     local result, rows, lastId = dbPoll(queryResult, 0)
 
     local day = getPlayerDailyRewardDay(player)
     local reward = getDailyRewardAtDayData(day)
+    local rewardText = getDailyRewardAtDay(day)
     if reward then
         givePlayerReward(player, reward)
     end
@@ -66,7 +74,7 @@ function redeemDailyRewardResult(queryResult, player)
     setElementData(player, 'player:dailyRewardRedeem', getRealTime().timestamp + 86400)
     setElementData(player, 'player:dailyRewardDay', day + 1)
 
-    -- exports['m-notis']:addNotification(player, 'success', 'Sukces', 'Odebrano dzienną nagrodę')
+    dbExec(connection, 'INSERT INTO `m-daily-rewards-history` (`user`, `reward`, `date`) VALUES (?, ?, NOW());', uid, rewardText)
     triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, player)
 end
 
@@ -92,6 +100,16 @@ function redeemDailyReward(player)
     dbQuery(redeemDailyRewardResult, {player}, connection, 'UPDATE `m-users` SET `dailyRewardRedeem` = NOW() + INTERVAL 1 DAY, `dailyRewardDay` = `dailyRewardDay` + 1 WHERE `uid` = ?', uid)
 end
 
+function getPlayerLast10DailyRewardsResult(queryResult, player)
+    local result, rows, lastId = dbPoll(queryResult, 0)
+    if not result then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać historii nagród')
+        return false
+    end
+
+    triggerClientEvent(player, 'dashboard:getPlayerLast10DailyRewardsResult', root, result)
+end
+
 function getPlayerLast10DailyRewards(player)
     local uid = getElementData(player, 'player:uid')
     if not uid then
@@ -100,19 +118,11 @@ function getPlayerLast10DailyRewards(player)
     end
 
     local day = getPlayerDailyRewardDay(player)
-    local redeemDay = getElementData(player, 'player:dailyRewardRedeem')
-    local rewards = {}
-    for i = 1, 10 do
-        local rewardType = getDailyRewardAtDay(day - i)
-        if rewardType then
-            table.insert(rewards, {
-                text = rewardType,
-                date = redeemDay - (i * 86400)
-            })
-        else
-            break
-        end
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać historii nagród')
+        return false
     end
 
-    return rewards
+    dbQuery(getPlayerLast10DailyRewardsResult, {player}, connection, 'SELECT * FROM `m-daily-rewards-history` WHERE `user` = ? ORDER BY `date` DESC LIMIT 10;', uid)
 end

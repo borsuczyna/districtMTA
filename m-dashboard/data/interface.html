@@ -69,7 +69,7 @@
         max-width: 50%;
     }
 
-    #dashboard .progress-bar {
+    #dashboard .progress-wrapper .progress-bar {
         width: 100%;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 0.5rem;
@@ -80,7 +80,7 @@
         transform: translateY(-50%);
     }
 
-    #dashboard .progress {
+    #dashboard .progress-wrapper .progress {
         border-radius: 0.5rem;
         height: 100%;
         background: linear-gradient(90deg, rgba(252, 166, 74, 0.8) 0%, rgba(233, 125, 76, 0.8) 57.81%, rgba(221, 100, 77, 0.8) 100%);
@@ -397,6 +397,75 @@
         color: #ffffffcc;
     }
 
+    #dashboard .task {
+        background: rgba(42, 42, 42, 0.5);
+        border: 1px solid rgba(54, 54, 54, 0.4);
+        border-radius: 0.5rem;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        color: #ffffffcc;
+    }
+
+    #dashboard .task-header {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ffffffdd;
+    }
+
+    #dashboard .task-details {
+        color: #ffffffaa;
+    }
+
+    #dashboard .task-progress {
+        text-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    #dashboard .task-progress .progress {
+        width: 100%;
+        background: rgba(58, 58, 58, 0.7);
+        border-radius: 0.5rem;
+        height: 0.5rem;
+        overflow: hidden;
+    }
+
+    #dashboard .task-progress .progress-bar {
+        height: 100%;
+    }
+
+    #dashboard .bg-inprogress {
+        background: linear-gradient(90deg, #ffab48 0%, #ffb762 100%);
+    }
+
+    #dashboard .bg-success {
+        background: linear-gradient(90deg, #1cac2d 0%, #29d543 100%);
+    }
+
+    #dashboard .bg-danger {
+        background: linear-gradient(90deg, #ff4848 0%, #ff544e 100%);
+    }
+
+    #dashboard .task:has(.bg-success) {
+        background: linear-gradient(90deg, #6d9f7311 0%, #76c48211 100%);
+        border: 1px solid rgba(15, 55, 15, 0.4);
+    }
+
+    #dashboard .task:has(.bg-danger) {
+        background: linear-gradient(90deg, #9f6d6d11 0%, #c4767611 100%);
+        border: 1px solid rgba(70, 15, 15, 0.4);
+    }
+
+    #dashboard .task:has(.bg-inprogress) {
+        background: linear-gradient(90deg, #9f9f6d11 0%, #c4c47611 100%);
+        border: 1px solid rgba(55, 55, 15, 0.4);
+    }
+
+    #dashboard #daily-tasks {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;
@@ -459,6 +528,17 @@
     </div>
     <div id="tabs">
         <div class="tab active" tab="main"></div>
+        <div class="tab active" tab="daily-tasks">
+            <h2 style="margin-bottom: 0.2rem;">Zadania dzienne</h2>
+            <p style="margin-top: 0; margin-bottom: 1rem;">Odbierz nagrody za wykonane zadania!</p>
+
+            <div id="daily-tasks">
+                <div class="d-flex p-5 flex-grow-1 flex-column justify-center align-items-center mt-5 label">
+                    <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                    <span class="mt-3">Ładowanie...</span>
+                </div>
+            </div>
+        </div>
         <div class="tab" tab="daily-reward">
             <h2 style="margin-bottom: 0.2rem;">Nagroda dzienna</h2>
             <p style="margin-top: 0;">Odbierz swoją nagrodę za codzienne logowanie!</p>
@@ -488,48 +568,7 @@
             </div>
 
             <h2 style="margin-top: 2rem;">Ostatnie 10 nagród</h2>
-            <div class="d-flex flex-column gap-1 mt-2" id="daily-reward-history">
-                <!-- <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div>
-                <div class="d-flex justify-between">
-                    <span>10 exp</span>
-                    <span>10 lipca 2024</span>
-                </div> -->
-            </div>
+            <div class="d-flex flex-column gap-1 mt-2" id="daily-reward-history"></div>
         </div>
         <div class="tab" tab="vehicles">
             <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
@@ -558,6 +597,7 @@
         await include('../../m-dashboard/data/vehicles.js');
         await include('../../m-dashboard/data/punishment.js');
         await include('../../m-dashboard/data/daily-reward.js');
+        await include('../../m-dashboard/data/daily-tasks.js');
         finishIncludes('dashboard');
     }
 

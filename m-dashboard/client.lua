@@ -10,6 +10,10 @@ addEvent('dashboard:vehicleDetailsResult', true)
 addEvent('dashboard:redeemDailyReward', true)
 addEvent('dashboard:redeemDailyRewardResult', true)
 addEvent('dashboard:fetchDailyRewardResult', true)
+addEvent('dashboard:getPlayerLast10DailyRewardsResult', true)
+addEvent('dashboard:getPlayerLast10DaysDailyTasksResult', true)
+addEvent('dashboard:claimDailyTask', true)
+addEvent('dashboard:redeemDailyRewardResult', true)
 
 function updateDashboardData()
     local settings = {
@@ -165,10 +169,25 @@ addEventHandler('dashboard:redeemDailyRewardResult', root, function(success)
     triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
 end)
 
-addEventHandler('dashboard:fetchDailyRewardResult', root, function(yesterday, today, last10Days)
+addEventHandler('dashboard:fetchDailyRewardResult', root, function(yesterday, today)
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'fetch-daily-reward-result', {
         yesterday = yesterday,
         today = today,
-        last10Days = last10Days
     })
+end)
+
+addEventHandler('dashboard:getPlayerLast10DailyRewardsResult', root, function(rewards)
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'get-player-last-10-daily-rewards-result', rewards)
+end)
+
+addEventHandler('dashboard:getPlayerLast10DaysDailyTasksResult', root, function(tasks)
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'get-player-last-10-daily-tasks-result', tasks)
+end)
+
+addEventHandler('dashboard:claimDailyTask', root, function(date)
+    triggerServerEvent('dashboard:claimDailyTask', resourceRoot, date)
+end)
+
+addEventHandler('dashboard:redeemDailyRewardResult', root, function(success)
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'redeem-daily-reward-result', success)
 end)
