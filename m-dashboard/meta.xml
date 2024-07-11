@@ -9,4 +9,5 @@
     <file src='data/punishment.js'/>
     <file src='data/daily-reward.js'/>
     <file src='data/daily-tasks.js'/>
+    <file src='data/info.js'/>
 </meta>

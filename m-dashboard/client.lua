@@ -42,6 +42,7 @@ function updateDashboardData()
     local dailyRewardDay = exports['m-core']:getPlayerDailyRewardDay()
     local dailyRewardRedeem, dailyRewardTimeLeft = exports['m-core']:canPlayerRedeemDailyReward()
 
+    triggerServerEvent('dashboard:fetchData', resourceRoot, 'account')
     triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
 
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'update-data', {

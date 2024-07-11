@@ -29,6 +29,27 @@ function fetchDataResult(queryHandle, data, client, requestId)
         return
     end
 
+    if data == 'account' then
+        local rank = getElementData(client, 'player:rank') or 0
+        if rank > 0 then
+            result[1].rank = exports['m-admins']:getRankName(rank)
+            result[1].rankColor = {exports['m-admins']:getRankColor(rank)}
+        else
+            result[1].rank = 'Gracz'
+            result[1].rankColor = {180, 180, 180}
+        end
+
+        local level = getElementData(client, 'player:level') or 1
+        result[1].timePlayed = getElementData(client, 'player:time')
+        result[1].timeAfk = getElementData(client, 'player:afkTime')
+        result[1].organization = getElementData(client, 'player:organization') or 'Brak'
+        result[1].level = level
+        result[1].exp = getElementData(client, 'player:exp') or 0
+        result[1].nextLevelExp = exports['m-core']:getNextLevelExp(level)
+        result[1].money = getPlayerMoney(client)
+        result[1].bankMoney = getElementData(client, 'player:bankMoney') or 0
+    end
+
     triggerClientEvent(client, 'dashboard:fetchDataResult', resourceRoot, data, result)
 
     table.removeValue(requests, requestId)
@@ -62,6 +83,15 @@ addEventHandler('dashboard:fetchData', resourceRoot, function(data)
         ]]
 
         queryArgs = {uid, uid}
+    elseif data == 'account' then
+        query = [[
+            SELECT u.`username`, u.`registerDate`, u.`lastActive`, COUNT(v.`uid`) AS vehiclesCount
+            FROM `m-users` u
+            LEFT JOIN `m-vehicles` v ON v.`owner` = u.`uid`
+            WHERE u.`uid` = ?
+        ]]
+
+        queryArgs = {uid}
     end
 
     if not query then return end

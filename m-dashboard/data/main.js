@@ -38,6 +38,8 @@ addEvent('dashboard', 'fetch-data-result', (data) => {
         dashboard_renderPunishments(result);
     } else if (type === 'vehicles') {
         dashboard_renderVehicles(result);
+    } else if (type == 'account') {
+        dashboard_renderAccount(result);
     }
 });
 
