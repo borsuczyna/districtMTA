@@ -95,46 +95,46 @@ function claimDailyTaskResult(queryResult, player)
     local result, rows, lastId = dbPoll(queryResult, 0)
     if not result then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać historii zadań')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 
     if not result[1] then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać historii zadań')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 
     if result[1].claimed == 1 then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nagroda za te zadanie dzienne została już odebrana')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 
     local taskData = dailyTasks[result[1].task]
     if not taskData then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać tego zadania')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 
     if result[1].progress < taskData.max then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz odebrać nagrody za to zadanie, ponieważ nie zostało ono ukończone')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 
     dbExec(connection, 'UPDATE `m-daily-tasks-history` SET `claimed` = 1 WHERE `uid` = ?', result[1].uid)
     exports['m-notis']:addNotification(player, 'success', 'Sukces', 'Nagroda za zadanie dzienne została odebrana')
     taskData.reward(player)
-    triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, true)
+    triggerClientEvent(player, 'dashboard:redeemTaskResult', root, true)
 end
 
 function claimDailyTask(player, date)
@@ -146,7 +146,7 @@ function claimDailyTask(player, date)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
-        triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, false)
+        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
         return false
     end
 

@@ -76,7 +76,7 @@ addEvent('dashboard', 'get-player-last-10-daily-tasks-result', (data) => {
     dashboard_setDailyTasks(data);
 });
 
-addEvent('dashboard', 'redeem-daily-reward-result', (success) => {
+addEvent('dashboard', 'redeem-daily-task-result', (success) => {
     if (!success) {
         waitingButton.innerHTML = preHTML;
     } else {

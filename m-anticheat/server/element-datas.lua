@@ -6,7 +6,7 @@ local lockedElementDatas = {
     'player:mute', 'player:muteAdmin', 'player:muteReason',
     'player:takenLicense', 'player:takenLicenseAdmin', 'player:takenLicenseReason',
     'player:triggerLocked', 'player:dailyRewardDay', 'player:dailyRewardRedeem',
-    'player:time', 'player:session',
+    'player:time', 'player:session', 'player:achievements',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
 }

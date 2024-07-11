@@ -39,7 +39,7 @@ local function checkAccountExistsResult(queryResult, hash, data)
     end
 
     dbQuery(createAccountResult, {hash}, connection,
-    'INSERT INTO `m-users` (username, password, email, ip, serial) VALUES (?, ?, ?, ?, ?, ?)',
+    'INSERT INTO `m-users` (username, password, email, ip, serial) VALUES (?, ?, ?, ?, ?)',
     data.username, data.password, data.email, data.ip, data.serial)
 end
 

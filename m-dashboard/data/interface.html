@@ -584,6 +584,99 @@
         gap: 0.8rem;
     }
 
+    #dashboard #achievements {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        gap: 0.8rem;
+    }
+
+    #dashboard .achievement-card {
+        background-color: rgba(42, 42, 42, 0.7);
+        border: 1px solid rgba(54, 54, 54, 0.4);
+        border-radius: 0.5rem;
+        padding: 1.3rem;
+        font-size: 0.9rem;
+        color: #ffffffcc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1rem;
+        transition: all 0.2s;
+        text-align: center;
+    }
+
+    #dashboard .achievement-card.achieved {
+        background-color: #ffaa4811;
+        border: 1px solid rgba(70, 57, 45, 0.4);
+        transition: all 0.2s;
+    }
+
+    #dashboard .achievement-card:hover {
+        box-shadow: 0 0 2.325rem #00000022;
+        background-color: rgba(42, 42, 42, 0.8);
+        border: 1px solid rgba(99, 99, 99, 0.3);
+    }
+
+    #dashboard .achievement-card.achieved:hover {
+        background-color: #ffaa4816;
+        border: 1px solid rgba(70, 57, 45, 0.7);
+        box-shadow: 0 0 2.325rem #ffaa4815;
+    }
+
+    #dashboard .achievement-card .title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #ffffffdd;
+    }
+
+    #dashboard .achievement-card.achieved .title {
+        color: transparent;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+        font-weight: 900;
+    }
+
+    #dashboard .achievement-card .description {
+        font-size: 0.9rem;
+        color: #ffffffaa;
+    }
+
+    #dashboard .achievement-card.achieved .description {
+        color: #ffffffdd;
+    }
+
+    #dashboard .achievement-card .progress {
+        margin-top: 0.6rem;
+        width: 100%;
+        background: rgba(58, 58, 58, 0.7);
+        border-radius: 0.5rem;
+        height: 0.5rem;
+        overflow: hidden;
+    }
+
+    #dashboard .achievement-card .progress-bar {
+        height: 100%;
+        background: rgba(168, 168, 168, 0.8);
+    }
+
+    #dashboard .achievement-card.achieved .progress-bar {
+        background: linear-gradient(90deg, #ffab48 0%, #ffb762 100%);
+    }
+
+    #dashboard .achievement-card .percent {
+        font-size: 0.75rem;
+        color: #ffffff88;
+        margin-top: 0.2rem;
+    }
+
+    #dashboard .achievement-card.achieved .percent {
+        color: #ffffffcc;
+    }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;
@@ -639,6 +732,7 @@
             <div class="item active" tab="main" onclick="dashboard_changeTab(this)">Strona główna</div>
             <div class="item" tab="daily-tasks" onclick="dashboard_changeTab(this)">Zadania dzienne</div>
             <div class="item" tab="daily-reward" onclick="dashboard_changeTab(this)">Nagroda dzienna</div>
+            <div class="item" tab="achievements" onclick="dashboard_fetchData('achievements'); dashboard_changeTab(this)">Osiągnięcia</div>
             <div class="item" tab="vehicles" onclick="dashboard_fetchData('vehicles'); dashboard_changeTab(this)">Pojazdy</div>
             <div class="item" tab="punishments" onclick="dashboard_fetchData('punishments'); dashboard_changeTab(this)">Kary</div>
             <div class="item" tab="settings" onclick="dashboard_changeTab(this)">Ustawienia</div>
@@ -649,39 +743,11 @@
             <div class="info-card">
                 <div class="info-header">Konto</div>
                 <div class="info-body">
+                    <div class="d-flex flex-grow-1 flex-column justify-center align-items-center mt-3 mb-3 label loading">
+                        <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                        <span class="mt-3">Ładowanie...</span>
+                    </div>
                     <div class="list">
-                        <div class="item">
-                            <span>Nazwa użytkownika</span>
-                            <span data-item="username"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Ranga</span>
-                            <span data-item="rank"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Czas gry</span>
-                            <span data-item="timePlayed"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Czas AFK</span>
-                            <span data-item="timeAfk"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Data rejestracji</span>
-                            <span data-item="registerDate"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Ostatnie logowanie</span>
-                            <span data-item="lastLogin"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Ilość pojazdów</span>
-                            <span data-item="vehiclesCount"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
-                        <div class="item">
-                            <span>Organizacja</span>
-                            <span data-item="organization"><svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg></span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -754,6 +820,9 @@
             <h2 style="margin-top: 2rem;">Ostatnie 10 nagród</h2>
             <div class="d-flex flex-column gap-1 mt-2" id="daily-reward-history"></div>
         </div>
+        <div class="tab" tab="achievements">
+            <div id="achievements"></div>
+        </div>
         <div class="tab" tab="vehicles">
             <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
                 <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
@@ -783,6 +852,7 @@
         await include('../../m-dashboard/data/daily-reward.js');
         await include('../../m-dashboard/data/daily-tasks.js');
         await include('../../m-dashboard/data/info.js');
+        await include('../../m-dashboard/data/achievements.js');
         finishIncludes('dashboard');
     }
 

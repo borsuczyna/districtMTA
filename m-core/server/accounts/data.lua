@@ -35,6 +35,8 @@ function assignPlayerData(player, data)
     toggleControl(player, 'fire', false)
     toggleControl(player, 'aim_weapon', false)
 
+    updatePlayerAchievements(player)
+
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 

@@ -13,7 +13,8 @@ addEvent('dashboard:fetchDailyRewardResult', true)
 addEvent('dashboard:getPlayerLast10DailyRewardsResult', true)
 addEvent('dashboard:getPlayerLast10DaysDailyTasksResult', true)
 addEvent('dashboard:claimDailyTask', true)
-addEvent('dashboard:redeemDailyRewardResult', true)
+addEvent('dashboard:redeemTaskResult', true)
+addEvent('dashboard:updateAchievements', true)
 
 function updateDashboardData()
     local settings = {
@@ -189,6 +190,10 @@ addEventHandler('dashboard:claimDailyTask', root, function(date)
     triggerServerEvent('dashboard:claimDailyTask', resourceRoot, date)
 end)
 
-addEventHandler('dashboard:redeemDailyRewardResult', root, function(success)
-    exports['m-ui']:triggerInterfaceEvent('dashboard', 'redeem-daily-reward-result', success)
+addEventHandler('dashboard:redeemTaskResult', root, function(success)
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'redeem-daily-task-result', success)
+end)
+
+addEventHandler('dashboard:updateAchievements', root, function(data)
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'update-achievements', data)
 end)

@@ -18,6 +18,7 @@
     <script src='server/time.lua' type='server'/>
     <script src='server/daily-reward.lua' type='server'/>
     <script src='server/daily-tasks.lua' type='server'/>
+    <script src='server/achievements.lua' type='server'/>
 
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>
@@ -76,6 +77,9 @@
     <export function='getPlayerLast10DailyRewards' type='server'/>
     <export function='getPlayerLast10DaysDailyTasks' type='server'/>
     <export function='claimDailyTask' type='server'/>
+    <export function='getPlayerAchievements' type='server'/>
+    <export function='updatePlayerAchievements' type='server'/>
+    <export function='updatePlayerAchievement' type='server'/>
 
     <export function='premiumChatDiscord' http='true'/>
 </meta>

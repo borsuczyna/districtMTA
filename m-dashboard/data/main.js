@@ -1,3 +1,4 @@
+let dataCache = {};
 window.dashboard_playerPosition = [0, 0, 0];
 
 window.dashboard_changeTab = function(item) {
@@ -23,16 +24,23 @@ window.dashboard_setLevelData = function(current, next, progress) {
 }
 
 window.dashboard_fetchData = function(tab) {
+    if (dataCache[tab]) {
+        fetchDataResult([{ data: tab, result: dataCache[tab] }]);
+        return;
+    }
+
     let currentTab = document.querySelector('#dashboard #list .item.active').getAttribute('tab');
     if (currentTab == tab) return;
 
     mta.triggerEvent('dashboard:fetchData', tab);
 }
 
-addEvent('dashboard', 'fetch-data-result', (data) => {
+function fetchDataResult(data) {
     data = data[0];
     let type = data.data;
     let result = data.result;
+
+    dataCache[type] = result;
 
     if (type === 'punishments') {
         dashboard_renderPunishments(result);
@@ -40,8 +48,12 @@ addEvent('dashboard', 'fetch-data-result', (data) => {
         dashboard_renderVehicles(result);
     } else if (type == 'account') {
         dashboard_renderAccount(result);
+    } else if (type == 'achievements') {
+        dashboard_renderAchievements(result);
     }
-});
+}
+
+addEvent('dashboard', 'fetch-data-result', fetchDataResult);
 
 addEvent('dashboard', 'play-animation', async (appear) => {
     await new Promise(resolve => setTimeout(resolve, 100));

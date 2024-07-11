@@ -60,6 +60,12 @@ addEventHandler('dashboard:fetchData', resourceRoot, function(data)
     local uid = getElementData(client, 'player:uid')
     if not uid then return end
 
+    if data == 'achievements' then
+        local achievements = exports['m-core']:getPlayerAchievements(client)
+        triggerClientEvent(client, 'dashboard:fetchDataResult', resourceRoot, data, achievements)
+        return
+    end
+
     local requestId = data .. '-' .. uid
     if table.find(requests, requestId) then return end
 

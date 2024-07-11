@@ -10,4 +10,5 @@
     <file src='data/daily-reward.js'/>
     <file src='data/daily-tasks.js'/>
     <file src='data/info.js'/>
+    <file src='data/achievements.js'/>
 </meta>
