@@ -61,49 +61,6 @@
         max-height: 100%;
     }
 
-    #dashboard .progress-wrapper {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0);
-        width: 30rem;
-        max-width: 50%;
-    }
-
-    #dashboard .progress-wrapper .progress-bar {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        margin-top: 0.5rem;
-        border-radius: 0.5rem;
-        height: 0.475rem;
-        background: rgba(58, 58, 58, 0.7);
-        transform: translateY(-50%);
-    }
-
-    #dashboard .progress-wrapper .progress {
-        border-radius: 0.5rem;
-        height: 100%;
-        background: linear-gradient(90deg, rgba(252, 166, 74, 0.8) 0%, rgba(233, 125, 76, 0.8) 57.81%, rgba(221, 100, 77, 0.8) 100%);
-        box-shadow: 0px 0px 1.325rem #ffab4a6b;
-    }
-
-    #dashboard .level-box {
-        background: linear-gradient(270deg, #333 50%, #2d2d2d 50%);
-        border-radius: 50%;
-        font-weight: 700;
-        font-size: 1rem;
-        color: #c6c6c6;
-        width: 2.8rem;
-        min-width: 2.4rem;
-        max-width: 2.4rem;
-        height: 2.4rem;
-        min-height: 2.4rem;
-        max-height: 2.4rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
     #dashboard .avatar {
         background-image: url('../../m-hud/data/images/user.png?v2');
         background-size: cover;
@@ -275,7 +232,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-radius: 0.5rem;
+        border-radius: 0.85rem;
         overflow: hidden;
         position: relative;
         box-shadow: 0 0 1.325rem #00000000;
@@ -322,7 +279,7 @@
 
     #dashboard .daily-reward-card .box {
         position: absolute;
-        background-color: rgba(60, 60, 60, 0.4);
+        background-color: rgba(241, 145, 60, 0.05);
         width: 0rem;
         height: 0rem;
         border-radius: 50%;
@@ -331,12 +288,37 @@
         transform: translate(-50%, -50%);
         opacity: 0.3;
         transition: all 0.3s;
+        z-index: -1;
     }
 
     #dashboard .daily-reward-card:not(.small):hover .box {
         width: 30rem;
         height: 30rem;
         opacity: 1;
+    }
+
+    #dashboard .daily-reward-card.yesterday {
+        background: linear-gradient(0deg, rgba(56, 175, 89, 0.1) 0%, rgba(99, 161, 117, 0.063) 100%) !important;
+    }
+
+    #dashboard .daily-reward-card.yesterday .button {
+        color: #38af59;
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+
+    #dashboard .daily-reward-card.today {
+        background: linear-gradient(0deg, rgba(255, 166, 65, 0.1) 0%, rgba(161, 141, 99, 0.063) 100%) !important;
+    }
+
+    #dashboard .daily-reward-card.tommorow {
+        background: linear-gradient(0deg, rgba(255, 65, 65, 0.1) 0%, rgba(161, 99, 99, 0.063) 100%) !important;
+    }
+    
+    #dashboard .daily-reward-card.tommorow .button {
+        color: #c82929;
+        font-weight: 600;
+        font-size: 1.2rem;
     }
 
     #dashboard .flat-button {
@@ -710,13 +692,6 @@
             <span class="gradient-text text-glow">MTA</span>
         </span>
     </div>
-    <div class="d-flex gap-3 align-items-center progress-wrapper">
-        <div class="level-box" id="level-current">0</div>
-        <div class="progress-bar">
-            <div class="progress" style="width: 0%;" id="level-progress"></div>
-        </div>
-        <div class="level-box" id="level-next">1</div>
-    </div>
     <div class="d-flex align-items-center gap-1">
         <div class="d-flex flex-column text-end">
             <span id="username">-</span>
@@ -794,31 +769,33 @@
             <p style="margin-top: 0;">Odbierz swoją nagrodę za codzienne logowanie!</p>
 
             <div class="d-flex w-100 gap-3 align-items-start justify-center mt-4">
-                <div class="daily-reward-card small">
+                <div class="daily-reward-card small yesterday">
                     <div class="box"></div>
                     <div class="day">1</div>
                     <div class="title">Wczoraj</div>
                     <div class="reward">Ładowanie...</div>
-                    <div class="flat-button mt-4 grayed">Odebrano</div>
+                    <div class="button mt-3 mb-2">Odebrano</div>
                 </div>
-                <div class="daily-reward-card">
+                <div class="daily-reward-card today">
                     <div class="box"></div>
                     <div class="day">2</div>
                     <div class="title">Dzisiaj</div>
                     <div class="reward">Ładowanie...</div>
-                    <div class="flat-button mt-4">Odbierz</div>
+                    <div class="nice-button mt-4 button" style="width: calc(100% - 3rem);">Odbierz</div>
                 </div>
-                <div class="daily-reward-card small">
+                <div class="daily-reward-card small tommorow">
                     <div class="box"></div>
                     <div class="day">3</div>
                     <div class="title">Jutro</div>
                     <div class="reward" style="filter: blur(0.5rem);">tajemnica</div>
-                    <div class="flat-button mt-4 grayed">Odbierz</div>
+                    <div class="button mt-3 mb-2">Zaloguj się jutro</div>
                 </div>
             </div>
 
-            <h2 style="margin-top: 2rem;">Ostatnie 10 nagród</h2>
-            <div class="d-flex flex-column gap-1 mt-2" id="daily-reward-history"></div>
+            <div class="info-card mt-4">
+                <div class="info-header">Ostatnie 10 nagród</div>
+                <div class="info-body d-flex flex-column gap-1" id="daily-reward-history"></div>
+            </div>
         </div>
         <div class="tab" tab="achievements">
             <div id="achievements"></div>

@@ -17,12 +17,6 @@ window.dashboard_changeTab = function(item) {
     dashboard_hideVehicleDetails();
 }
 
-window.dashboard_setLevelData = function(current, next, progress) {
-    document.querySelector('#dashboard #level-current').innerText = current;
-    document.querySelector('#dashboard #level-next').innerText = next;
-    document.querySelector('#dashboard #level-progress').style.width = progress + '%';
-}
-
 window.dashboard_fetchData = function(tab) {
     if (dataCache[tab]) {
         fetchDataResult([{ data: tab, result: dataCache[tab] }]);
@@ -67,9 +61,6 @@ addEvent('dashboard', 'update-data', (data) => {
     Object.keys(data.settings).forEach(key => {
         dashboard_setSetting(key, data.settings[key]);
     });
-
-    // level
-    dashboard_setLevelData(data.level, data.level + 1, data.levelProgress);
 
     // daily reward
     dashboard_setDailyRewardData(data.dailyRewardDay, data.dailyRewardRedeem);

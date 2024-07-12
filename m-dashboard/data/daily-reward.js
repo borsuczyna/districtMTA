@@ -9,10 +9,10 @@ function canRedeemDailyReward() {
 
 function updateTimeLeft(card, date) {
     let timeLeft = date - new Date();
-    let button = card.querySelector('.flat-button');
+    let button = card.querySelector('.button');
 
     if (timeLeft <= 1) {
-        button.classList.remove('grayed');
+        // button.classList.remove('grayed');
         button.innerText = 'Odbierz';
         button.onclick = dashboard_redeemDailyReward;
         return;
@@ -28,7 +28,7 @@ function updateTimeLeft(card, date) {
         if (timeLeftString.length == 0) timeLeftString.push('0s');
 
         button.innerText = timeLeftString.join(' ');
-        button.classList.add('grayed');
+        // button.classList.add('grayed');
 
         setTimer('dashboard', updateTimeLeft, 1000, card, date);
     }
@@ -66,8 +66,9 @@ window.dashboard_setDailyRewardData = (day, date) => {
     let drawDay = day - 1;
     for (let card of dailyCards) {
         let dayBox = card.querySelector('.day');
+        let button = card.querySelector('.button');
         dayBox.innerText = drawDay++;
-        card.querySelector('.flat-button').onclick = null;
+        if (button) button.onclick = null;
     }
 
     if (date == true) {
