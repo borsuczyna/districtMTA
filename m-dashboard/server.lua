@@ -40,6 +40,7 @@ function fetchDataResult(queryHandle, data, client, requestId)
         end
 
         local level = getElementData(client, 'player:level') or 1
+        result[1].uid = getElementData(client, 'player:uid')
         result[1].timePlayed = getElementData(client, 'player:time')
         result[1].timeAfk = getElementData(client, 'player:afkTime')
         result[1].organization = getElementData(client, 'player:organization') or 'Brak'
