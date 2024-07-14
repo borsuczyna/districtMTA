@@ -18,13 +18,13 @@
     <file src="data/decoded/spawn-ls.dff"/>
     <file src="data/decoded/spawn-ls.col"/>
     <file src="data/decoded/spawn-ls.txd"/>
-    <file src="data/decoded/railcar-door.col"/>
-    <file src="data/decoded/railcar-door.dff"/>
-    <file src="data/decoded/railcar-door.txd"/>
-    <file src="data/decoded/railcar-rail.col"/>
-    <file src="data/decoded/railcar-rail.dff"/>
-    <file src="data/decoded/railcar-rail.txd"/>
-    <file src="data/decoded/railcar.col"/>
-    <file src="data/decoded/railcar.dff"/>
-    <file src="data/decoded/railcar.txd"/>
+    <file src="data/decoded/cablecar-door.col"/>
+    <file src="data/decoded/cablecar-door.dff"/>
+    <file src="data/decoded/cablecar-door.txd"/>
+    <file src="data/decoded/cablecar-rail.col"/>
+    <file src="data/decoded/cablecar-rail.dff"/>
+    <file src="data/decoded/cablecar-rail.txd"/>
+    <file src="data/decoded/cablecar.col"/>
+    <file src="data/decoded/cablecar.dff"/>
+    <file src="data/decoded/cablecar.txd"/>
 </meta>
