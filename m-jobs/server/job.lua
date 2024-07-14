@@ -57,8 +57,6 @@ function destroyJobLobby(lobby)
             break
         end
     end
-
-    print('Destroyed lobby')
 end
 
 function leaveJob(player)
@@ -101,7 +99,10 @@ end
 
 addEventHandler('jobs:endJobI', resourceRoot, function()
     local job = getElementData(client, 'player:job')
-    if not job then return end
+    if not job then
+        triggerClientEvent(client, 'jobs:endJob', resourceRoot)
+        return
+    end
 
     leaveJob(client)
 end)
