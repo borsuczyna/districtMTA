@@ -11,12 +11,14 @@ function updateHud(avatar)
     
     setPlayerHudComponentVisible('all', false)
 
+    local level = getElementData(localPlayer, 'player:level') or 1
+    local nextLevelExp = exports['m-core']:getNextLevelExp(level)
     local data = {
         nickname = getPlayerName(localPlayer),
         health = getElementHealth(localPlayer),
         money = getPlayerMoney(localPlayer),
-        level = 0,
-        exp = 0,
+        level = level,
+        exp = (getElementData(localPlayer, 'player:exp') or 0) / nextLevelExp * 100,
     }
 
     local anythingChanged = false
@@ -38,7 +40,7 @@ function updateAvatar(avatar)
 end
 
 addEventHandler('avatars:onPlayerAvatarChange', root, function(player, avatar)
-    if player ~= localPlayer then return end
+    if player ~= localPlayer or not hudLoaded or not hudVisible then return end
     updateAvatar(avatar)
 end)
 

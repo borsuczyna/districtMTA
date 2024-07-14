@@ -146,28 +146,6 @@
         display: block;
     }
 
-    #dashboard ::-webkit-scrollbar {
-        width: 0.5rem;
-        height: 0.5rem;
-    }
-
-    #dashboard ::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 0.25rem;
-    }
-
-    #dashboard ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    #dashboard ::-webkit-scrollbar-track {
-        background-color: rgba(40, 40, 40, 0.8);
-    }
-
-    #dashboard ::-webkit-scrollbar-corner {
-        background-color: rgba(27, 27, 27, 0.4);
-    }
-
     #dashboard h2 {
         margin-top: 0;
         color: #ffffffee;
@@ -701,7 +679,7 @@
     </div>
 </div>
 
-<div id="bottom" class="d-flex">
+<div id="bottom" class="d-flex nice-scroll">
     <div id="list-wrapper">
         <div id="list">
             <div class="item active" tab="main" onclick="dashboard_changeTab(this)">Strona główna</div>
@@ -820,16 +798,20 @@
     </div>
 </div>
 
-<script defer>
+<script>
     async function loadIncludes() {
-        await include('../../m-dashboard/data/main.js');
-        await include('../../m-dashboard/data/settings.js');
-        await include('../../m-dashboard/data/vehicles.js');
-        await include('../../m-dashboard/data/punishment.js');
-        await include('../../m-dashboard/data/daily-reward.js');
-        await include('../../m-dashboard/data/daily-tasks.js');
-        await include('../../m-dashboard/data/info.js');
-        await include('../../m-dashboard/data/achievements.js');
+        let tasks = [];
+
+        tasks.push(include('../../m-dashboard/data/main.js'));
+        tasks.push(include('../../m-dashboard/data/settings.js'));
+        tasks.push(include('../../m-dashboard/data/vehicles.js'));
+        tasks.push(include('../../m-dashboard/data/punishment.js'));
+        tasks.push(include('../../m-dashboard/data/daily-reward.js'));
+        tasks.push(include('../../m-dashboard/data/daily-tasks.js'));
+        tasks.push(include('../../m-dashboard/data/info.js'));
+        tasks.push(include('../../m-dashboard/data/achievements.js'));
+
+        await Promise.all(tasks);
         finishIncludes('dashboard');
     }
 

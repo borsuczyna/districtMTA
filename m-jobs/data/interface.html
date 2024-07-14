@@ -1,0 +1,493 @@
+<style>
+    #jobs #jobs-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        background: rgba(29, 29, 29, 0.96);
+        border: 1px solid rgb(57, 57, 57);
+        padding: 1.25rem;
+        border-radius: 0.8rem;
+        display: flex;
+        gap: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #jobs .bg-gray {
+        background: #292929cc;
+        border: 1px solid #2f2f2f;
+    }
+
+    #jobs .header {
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    #jobs .small-text {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        color: rgba(255, 255, 255, 0.8);
+        transform: translateY(-0.5rem);
+    }
+
+    #jobs .avatar {
+        background-image: url('../../m-hud/data/images/user.png?v2');
+        background-size: cover;
+        width: 5rem;
+        height: 5rem;
+        margin: 0.5rem;
+        border-radius: 50%;
+    }
+
+    #jobs .top-list .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #jobs .top-list .item.small {
+        scale: 0.85;
+    }
+
+    #jobs .top-list .item .points {
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    #jobs .top-list .item.first .avatar {
+        border: 0.17rem solid #FFD12F;
+        box-shadow: 0 0 1.5rem #FFD12F55;
+    }
+
+    #jobs .top-list .item.first .points {
+        color: #FFD12F;
+        text-shadow: 0 0 1.5rem #FFD12Fcc;
+    }
+
+    #jobs .top-list .item.second .avatar {
+        border: 0.17rem solid #FFA944;
+        box-shadow: 0 0 1.5rem #FFA94455;
+    }
+
+    #jobs .top-list .item.second .points {
+        color: #FFA944;
+        text-shadow: 0 0 1.5rem #FFA944cc;
+    }
+
+    #jobs .top-list .item.third .avatar {
+        border: 0.17rem solid #ff5050;
+        box-shadow: 0 0 1.5rem #ff505055;
+    }
+
+    #jobs .top-list .item.third .points {
+        color: #ff5050;
+        text-shadow: 0 0 1.5rem #ff5050cc;
+    }
+
+    #jobs .upgrades-wrapper {
+        margin-top: 0.3rem;
+        height: 100%;
+        max-height: 100%;
+        position: relative;
+    }
+
+    #jobs .upgrades {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        width: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+        position: absolute;
+    }
+
+    #jobs .upgrades .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        background: #2f2f2f;
+        border: 1px solid #363636;
+        transition: background 0.2s;
+    }
+
+    #jobs .upgrades .item .title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.2s;
+    }
+
+    #jobs .upgrades .item .title small {
+        color: #ffffffa8;
+        font-weight: 400;
+    }
+
+    #jobs .upgrades .item .description {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.6);
+        transition: color 0.2s;
+    }
+
+    #jobs .upgrades .item .button {
+        background: #464646;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background 0.2s;
+    }
+
+    #jobs .upgrades .item .button svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: #ffffffcc;
+        transition: color 0.2s;
+    }
+
+    #jobs .upgrades .item:hover {
+        background: #373737;
+    }
+
+    #jobs .upgrades .item:hover .button {
+        background: #505050;
+    }
+
+    #jobs .upgrades .item:hover .title {
+        color: #e7e7e7;
+    }
+
+    #jobs .upgrades .item:hover .description {
+        color: #e7e7e7;
+    }
+
+    #jobs .upgrades .item:hover .button svg {
+        color: #ffffff;
+    }
+
+    #jobs .upgrades .item .button:hover {
+        background: #5d5d5d;
+    }
+
+    #jobs .upgrades .item.bought {
+        background: linear-gradient(to top, #ffa84422 0%, #ed9e3513 100%);
+        background-size: 100% 200%;
+        background-position: 0 0%;
+        border: 1px solid #FFA94422;
+        transition: background-position 0.2s;
+    }
+
+    #jobs .upgrades .item.bought .title {
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+
+    #jobs .upgrades .item.bought .title small {
+        font-weight: 700;
+    }
+
+    #jobs .upgrades .item.bought .description {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    #jobs .upgrades .item.bought .button {
+        display: none;
+    }
+
+    #jobs .upgrades .item.bought:hover {
+        background-position: 0 100%;
+    }
+
+    #jobs .background {
+        background-image: url('../../m-jobs/data/forest.png');
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.8rem;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0.1) 90%);
+    }
+
+    #jobs .inner {
+        z-index: 1;
+        position: relative;
+    }
+
+    #jobs .job-name {
+        font-weight: 900;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    #jobs .job-title {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    #jobs .job-description {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    #jobs .apexcharts-tooltip {
+        background: #292929cc !important;
+        border: 1px solid #363636 !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        box-shadow: none !important;
+    }
+
+    #jobs .apexcharts-tooltip-title {
+        display: none;
+    }
+
+    #jobs .apexcharts-tooltip-series-group {
+        padding: 0.1rem 0.4rem !important;
+    }
+
+    #jobs .apexcharts-tooltip-text {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-direction: column !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #jobs .apexcharts-tooltip-text-y-label, .apexcharts-tooltip-text-y-value {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #jobs .apexcharts-tooltip-goals-group, .apexcharts-tooltip-z-group {
+        display: none !important;
+    }
+
+    #jobs .level {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #jobs .level svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    #jobs .level-text {
+        fill: #ffffffcc;
+        font-size: 54px;
+        font-weight: 700;
+        dominant-baseline: middle;
+        text-anchor: middle;
+        transform: translateY(4.5px);
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+<div id="jobs-wrapper">
+    <div class="d-flex flex-column gap-3">
+        <div class="bg-gray p-3 pb-2 rounded-2 h-100 position-relative">
+            <div class="background"></div>
+            <div class="inner" style="height: 12rem; width: 32rem;">
+                <div class="d-flex flex-column justify-between h-100">
+                    <div class="d-flex justify-between gap-5">
+                        <div class="d-flex flex-column align-items-start" style="text-wrap: nowrap;">
+                            <div class="job-name">PRACA DORYWCZA</div>
+                            <div class="job-title" id="job-name">-</div>
+                            <div class="nice-button mt-2" onclick="jobs_startOrEndJob(this)" id="start-job-main">Rozpocznij pracę</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-end">
+                            <div class="job-name">OPIS PRACY</div>
+                            <div class="job-description text-end" id="job-description">-</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between">
+                        <div class="d-flex justify-between align-items-center w-100">
+                            <div class="d-flex gap-1 align-items-center">
+                                <div class="level">
+                                    <svg viewBox="0 0 110 110">
+                                        <defs>
+                                            <mask id="circleMask">
+                                                <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                                                <circle cx="50%" cy="50%" r="35%" fill="black" transform="translate(-5, -5)"/>
+                                            </mask>
+                                            <linearGradient id="gradientColor" x1="79" y1="1.92046e-06" x2="25" y2="100" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#fca64a" />
+                                                <stop offset="0.5" stop-color="#e97d4c" />
+                                                <stop offset="1" stop-color="#dd644d" />
+                                            </linearGradient>
+                                        </defs>
+                                        <circle cx="50" cy="50" r="50" fill="url(#gradientColor)" mask="url(#circleMask)"/>
+                                        <text x="50" y="50" class="level-text" id="level-required">-</text>
+                                    </svg>
+                                </div>
+                                Wymagany poziom
+                            </div>
+                            <span id="coop" class="d-none">Praca kooperacyjna</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray rounded-2">
+            <div class="header mt-3 mb-1">Historia zarobku</div>
+            <div id="chart" class="mt-2 rounded-2" style="overflow: hidden; height: 140px;">
+                <div class="d-flex flex-column justify-center align-items-center justify-center h-100">
+                    <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column gap-3">
+        <div class="bg-gray p-3 rounded-2 d-flex flex-column align-items-center">
+            <div class="d-flex gap-3 top-list justify-center" id="top-players" style="width: 21rem; height: 9rem;">
+                <div class="d-flex flex-column justify-center align-items-center justify-center w-100 h-100">
+                    <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray p-3 rounded-2 h-100 d-flex flex-column align-items-center">
+            <div class="header">Ulepszenia</div>
+            <span class="small-text">Punkty ulepszeń: <span id="upgrade-points">-</span></span>
+            <div class="upgrades-wrapper w-100 nice-scroll" style="width: 21rem;">
+                <div class="upgrades pr-2 h-100">
+                    <div class="d-flex flex-column justify-center align-items-center justify-center h-100">
+                        <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #lobby-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        background: rgba(29, 29, 29, 0.96);
+        border: 1px solid rgb(57, 57, 57);
+        padding: 1.25rem;
+        border-radius: 0.8rem;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+    
+    #lobby-wrapper .nice-button {
+        background: #494949;
+        transition: background 0.2s;
+    }
+
+    #lobby-wrapper .nice-button:hover {
+        background: #5d5d5d;
+    }
+</style>
+
+<div id="lobby-wrapper" class="d-none">
+    <div class="nice-table-wrapper" style="width: 35rem;">
+        <table id="lobbies-table">
+            <thead>
+                <tr>
+                    <th>Właściciel</th>
+                    <th>Gracze</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-center mt-3 gap-2">
+        <div class="nice-button button-sm" onclick="jobs_createLobby(this)">Stwórz lobby</div>
+        <div class="nice-button button-sm" onclick="jobs_refreshLobbies(this)">Odśwież</div>
+        <div class="nice-button button-sm" onclick="jobs_goBackLobbyScreen()">Powrót</div>
+    </div>
+</div>
+
+<style>
+    #my-lobby-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        background: rgba(29, 29, 29, 0.96);
+        border: 1px solid rgb(57, 57, 57);
+        padding: 1.25rem;
+        border-radius: 0.8rem;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #my-lobby-wrapper .nice-button {
+        background: #494949;
+        transition: background 0.2s;
+    }
+
+    #my-lobby-wrapper .nice-button:hover {
+        background: #5d5d5d;
+    }
+</style>
+
+<div id="my-lobby-wrapper" class="d-none">
+    <div class="nice-table-wrapper" style="width: 35rem;">
+        <table id="my-lobby-table">
+            <thead>
+                <tr>
+                    <th>Gracz</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-center mt-3 gap-2">
+        <div class="nice-button button-sm" id="start-job" onclick="jobs_startJobLobby(this)">Rozpocznij pracę</div>
+        <div class="nice-button button-sm" id="leave-lobby" onclick="jobs_closeLobby(this)">Zamknij lobby</div>
+    </div>
+</div>
+
+<script>
+    async function loadIncludes() {
+        let tasks = [];
+
+        tasks.push(include('../../m-jobs/data/main.js'));
+        tasks.push(include('../../m-jobs/data/top.js'));
+        tasks.push(include('../../m-jobs/data/upgrades.js'));
+        tasks.push(include('../../m-jobs/data/history.js'));
+        tasks.push(include('../../m-jobs/data/lobby.js'));
+
+        await Promise.all(tasks);
+        finishIncludes('jobs');
+    }
+
+    loadIncludes();
+</script>

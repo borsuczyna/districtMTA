@@ -29,6 +29,15 @@ window.dashboard_fetchData = function(tab) {
     mta.triggerEvent('dashboard:fetchData', tab);
 }
 
+window.dashboard_setAvatar = (avatar) => {
+    if (avatar.length > 100) {
+        document.querySelector('#dashboard .avatar').style.backgroundImage = `url('data:image/png;base64,${avatar}')`;
+    } else {
+        avatar = `../../${avatar.slice(1)}`;
+        document.querySelector('#dashboard .avatar').style.backgroundImage = `url('${avatar}')`;
+    }
+}
+
 function fetchDataResult(data) {
     data = data[0];
     let type = data.data;

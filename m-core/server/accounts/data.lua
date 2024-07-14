@@ -12,6 +12,7 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:afkTime', data.afkTime)    
     setElementData(player, 'player:dailyRewardDay', data.dailyRewardDay)
     setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
+    setElementData(player, 'player:avatar', data.avatar)
 
     -- check if difference between now and dailyRewardRedeem is less than 24 hours, if so show notification that streak is lost
     local diff = getRealTime().timestamp - data.dailyRewardRedeemDate

@@ -48,28 +48,6 @@
         text-wrap: nowrap;
     }
 
-    #admin-reports .rows::-webkit-scrollbar {
-        width: 0.5rem;
-        height: 0.5rem;
-    }
-
-    #admin-reports .rows::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 0.25rem;
-    }
-
-    #admin-reports .rows::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    #admin-reports .rows::-webkit-scrollbar-track {
-        background-color: rgba(27, 27, 27, 0.4);
-    }
-
-    #admin-reports .rows::-webkit-scrollbar-corner {
-        background-color: rgba(27, 27, 27, 0.4);
-    }
-
     #admin-reports .categories {
         display: flex;
         justify-content: space-around;
@@ -117,7 +95,7 @@
     }
 </style>
 
-<div class="window" id="admin-reports">
+<div class="window nice-scroll" id="admin-reports">
     <div class="top">Reporty (/reports)</div>
     <div class="rows"></div>
 </div>
@@ -273,9 +251,13 @@
         adminReports_acceptReport(data.hash);
     });
 
-    // adminReports_addReport({
-    //     username: 'borsuczyna',
-    //     id: 1,
-    //     uid: 5,
-    // }, 'jebać ten serwer');
+    // adminReports_addReport('hash', {
+    //     reporterId: 1,
+    //     reporterName: 'Reporter',
+    //     reporterUid: 1,
+    //     targetId: 2,
+    //     targetName: 'Target',
+    //     targetUid: 2,
+    //     reason: 'Powód',
+    // });
 </script>

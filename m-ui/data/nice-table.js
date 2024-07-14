@@ -10,10 +10,10 @@ let defaultTableData = {
         bottomEnd: null
     },
     language: {
-        lengthMenu: 'Pokaż _MENU_ rekordów',
+        lengthMenu: 'Pokaż _MENU_ danych',
         zeroRecords: 'Brak wyników',
         info: 'Strona _PAGE_ z _PAGES_',
-        infoEmpty: 'Brak rekordów',
+        infoEmpty: 'Brak danych',
         infoFiltered: '',
         search: 'Szukaj: ',
         emptyTable: 'Brak danych',

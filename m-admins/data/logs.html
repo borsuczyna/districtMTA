@@ -48,28 +48,6 @@
         text-wrap: nowrap;
     }
 
-    #admin-logs .rows::-webkit-scrollbar {
-        width: 0.5rem;
-        height: 0.5rem;
-    }
-
-    #admin-logs .rows::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 0.25rem;
-    }
-
-    #admin-logs .rows::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    #admin-logs .rows::-webkit-scrollbar-track {
-        background-color: rgba(27, 27, 27, 0.4);
-    }
-
-    #admin-logs .rows::-webkit-scrollbar-corner {
-        background-color: rgba(27, 27, 27, 0.4);
-    }
-
     #admin-logs .categories {
         display: flex;
         justify-content: space-around;
@@ -113,7 +91,7 @@
     }
 </style>
 
-<div class="window" id="admin-logs">
+<div class="window nice-scroll" id="admin-logs">
     <div class="top">Logi serwerowe (/logs)</div>
     <div class="rows"></div>
     <div class="categories">

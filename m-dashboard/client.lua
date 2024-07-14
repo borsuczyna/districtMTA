@@ -15,6 +15,7 @@ addEvent('dashboard:getPlayerLast10DaysDailyTasksResult', true)
 addEvent('dashboard:claimDailyTask', true)
 addEvent('dashboard:redeemTaskResult', true)
 addEvent('dashboard:updateAchievements', true)
+addEvent('avatars:onPlayerAvatarChange', true)
 
 function updateDashboardData()
     local settings = {
@@ -42,6 +43,8 @@ function updateDashboardData()
     local x, y, z = getElementPosition(localPlayer)
     local dailyRewardDay = exports['m-core']:getPlayerDailyRewardDay()
     local dailyRewardRedeem, dailyRewardTimeLeft = exports['m-core']:canPlayerRedeemDailyReward()
+    local avatar = exports['m-avatars']:getPlayerAvatar(localPlayer)
+    updateAvatar(avatar)
 
     triggerServerEvent('dashboard:fetchData', resourceRoot, 'account')
     triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
@@ -55,6 +58,15 @@ function updateDashboardData()
         dailyRewardRedeem = dailyRewardRedeem,
     })
 end
+
+function updateAvatar(avatar)
+    exports['m-ui']:executeJavascript(string.format('dashboard_setAvatar(%q)', avatar or ''))
+end
+
+addEventHandler('avatars:onPlayerAvatarChange', root, function(player, avatar)
+    if player ~= localPlayer or not dashboardLoaded or not dashboardVisible then return end
+    updateAvatar(avatar)
+end)
 
 addEventHandler('interface:includes-finish', root, function(name)
     if name == 'dashboard' then
@@ -73,6 +85,8 @@ end
 function setDashboardVisible(visible)
     if visible and exports['m-ui']:isAnySingleInterfaceVisible() then return end
     exports['m-ui']:addSingleInterface('dashboard')
+
+    if not visible and not dashboardLoaded then return end
 
     if dashboardHideTimer and isTimer(dashboardHideTimer) then
         killTimer(dashboardHideTimer)

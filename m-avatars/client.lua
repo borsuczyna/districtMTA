@@ -18,11 +18,23 @@ function getPlayerAvatar(player)
     return avatars[uid] or defaultAvatar
 end
 
+function getPlayerAvatarByUid(uid)
+    if not avatars[uid] then
+        triggerServerEvent('avatars:getPlayerAvatar', resourceRoot, uid)
+    end
+
+    return avatars[uid] or defaultAvatar
+end
+
 addEventHandler('avatars:receivePlayerAvatar', resourceRoot, function(uid, avatar)
     local player = playerUids[uid]
-    if not player then return end
-
     avatars[uid] = base64Encode(avatar)
+
+    if not player then
+        triggerEvent('avatars:onPlayerAvatarChange', resourceRoot, uid, avatars[uid])
+        return
+    end
+
     triggerEvent('avatars:onPlayerAvatarChange', root, player, avatars[uid])
 end)
 

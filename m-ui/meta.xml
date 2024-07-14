@@ -17,6 +17,9 @@
     <file src='data/tables.css'/>
     <file src='data/tables.js'/>
     <file src='data/jquery.js'/>
+    <file src='data/charts.js'/>
+    <file src='data/charts.css'/>
+    <file src='data/scroll.css'/>
     <file src='data/nice-table.js'/>
     <file src='data/nice-table.css'/>
     

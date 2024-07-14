@@ -51,6 +51,7 @@ function updateScoreboardData()
 end
 
 function updateAvatar(player, avatar)
+    if not scoreboardLoaded or not scoreboardVisible then return end
     local uid = getElementData(player, 'player:uid') or 0
     exports['m-ui']:executeJavascript(string.format('scoreboard_setAvatar(%d, %q)', uid, avatar or ''))
 end
@@ -69,8 +70,16 @@ function updateAllAvatars()
     end
 end
 
-addEventHandler('avatars:onPlayerAvatarChange', root, function(player, avatar)
-    updateAvatar(player, avatar)
+addEventHandler('avatars:onPlayerAvatarChange', root, function(uid, avatar)
+    if not scoreboardLoaded or not scoreboardVisible then return end
+
+    if type(uid) == 'number' then
+        local player = exports['m-core']:getPlayerByUid(uid)
+        if not player then return end
+        updateAvatar(player, avatar)
+    else
+        updateAvatar(uid, avatar)
+    end
 end)
 
 addEventHandler('interface:load', root, function(name)

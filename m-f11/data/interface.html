@@ -85,6 +85,10 @@
         color: #ffffff;
     }
 
+    #f11 .item {
+        color: #d8d8d8;
+    }
+
     #f11 .item:hover {
         background: #343434;
     }
@@ -96,20 +100,6 @@
     #f11 .item .icon {
         width: 1.875rem;
         height: 1.875rem;
-    }
-
-    #f11 .list::-webkit-scrollbar {
-        width: 0.4rem;
-    }
-
-    #f11 .list::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #f39f3f 0%, #ffaf52 100%);
-        border-radius: 0.25rem;
-    }
-
-    #f11 .list::-webkit-scrollbar-track {
-        background: #363636;
-        border-radius: 0.25rem;
     }
 
     #f11 #map {
@@ -141,7 +131,7 @@
     }
 </style>
 
-<div id="legend">
+<div id="legend" class="nice-scroll">
     <div class="top d-flex flex-column align-items-center">
         <span>MAPA SERWERA</span>
         <span class="small">Legenda mapy</span>
