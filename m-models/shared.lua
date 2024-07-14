@@ -9,7 +9,22 @@ models = {
         custom = false,
         type = 'object',
         model = 4824,
-    }
+    },
+    ['railcar'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['railcar-door'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['railcar-rail'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
 }
 
 function getModelsCount()
@@ -18,12 +33,6 @@ function getModelsCount()
         count = count + 1
     end
     return count
-end
-
-local isActionAuthorized = false
-
-local function authorizeAction()
-    isActionAuthorized = true
 end
 
 function encodeFileIn(path, pathOut, hash)
@@ -54,4 +63,14 @@ function decodeFileIn(path, hash)
     
     return data
     -- return teaDecode(data, hash)
+end
+
+function createCustomObject(model, x, y, z, rx, ry, rz)
+    local original = models[model]
+    if not original then return end
+
+    local object = createObject(original.model, x, y, z, rx, ry, rz)
+    setElementData(object, 'element:model', model)
+
+    return object
 end

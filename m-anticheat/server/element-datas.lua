@@ -7,6 +7,7 @@ local lockedElementDatas = {
     'player:takenLicense', 'player:takenLicenseAdmin', 'player:takenLicenseReason',
     'player:triggerLocked', 'player:dailyRewardDay', 'player:dailyRewardRedeem',
     'player:time', 'player:session', 'player:achievements',
+    'element:model',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
 }

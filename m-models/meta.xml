@@ -2,14 +2,29 @@
     <script src="client.lua" type="client" cache="false" />
     <script src="shared.lua" type="shared" cache="false" />
     <script src="server.lua" type="server" />
+
+    <export function='createCustomObject' type='shared'/>
     
     <!-- automatically added -->
-    
-    
-    <file src="data/decoded/int-1.dff"></file>
-    <file src="data/decoded/int-1.col"></file>
-    <file src="data/decoded/int-1.txd"></file>
-    <file src="data/decoded/spawn-ls.dff"></file>
-    <file src="data/decoded/spawn-ls.col"></file>
-    <file src="data/decoded/spawn-ls.txd"></file>
+    <file src="data/decoded/int-1.dff"/>
+    <file src="data/decoded/int-1.col"/>
+    <file src="data/decoded/int-1.txd"/>
+    <file src="data/decoded/spawn-ls.dff"/>
+    <file src="data/decoded/spawn-ls.col"/>
+    <file src="data/decoded/spawn-ls.txd"/>
+    <file src="data/decoded/int-1.dff"/>
+    <file src="data/decoded/int-1.col"/>
+    <file src="data/decoded/int-1.txd"/>
+    <file src="data/decoded/spawn-ls.dff"/>
+    <file src="data/decoded/spawn-ls.col"/>
+    <file src="data/decoded/spawn-ls.txd"/>
+    <file src="data/decoded/railcar-door.col"/>
+    <file src="data/decoded/railcar-door.dff"/>
+    <file src="data/decoded/railcar-door.txd"/>
+    <file src="data/decoded/railcar-rail.col"/>
+    <file src="data/decoded/railcar-rail.dff"/>
+    <file src="data/decoded/railcar-rail.txd"/>
+    <file src="data/decoded/railcar.col"/>
+    <file src="data/decoded/railcar.dff"/>
+    <file src="data/decoded/railcar.txd"/>
 </meta>

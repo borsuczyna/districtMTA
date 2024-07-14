@@ -32,7 +32,8 @@ function loadModel(name, data)
     local filePath = 'data/decoded/' .. name
     local model = data.model
     if data.custom then
-        data.model = engineRequestModel(data.type or 'object', model or 1337)
+        data.newModel = engineRequestModel(data.type or 'object', model or 1337)
+        model = data.newModel
     end
 
     if fileExists(filePath .. '.txd') then
@@ -60,9 +61,14 @@ function loadModel(name, data)
 
     if total == loaded then
         outputConsole('Załadowano wszystkie modele')
+        updateAllCustomModels()
     else
         setTimer(updateQueue, 50, 1)
     end
+end
+
+function getCustomModel(name)
+    return models[name].newModel
 end
 
 function updateQueue()
@@ -100,6 +106,54 @@ function loadModels()
     setElementData(localPlayer, 'models:loading:progress', 0)
     setElementData(localPlayer, 'models:loading:total', getModelsCount())
     getEncodeHashes()
+end
+
+addEventHandler('onClientElementDataChange', root, function(dataName)
+    if dataName == 'element:model' then
+        local model = getElementData(source, 'element:model')
+        if model then
+            local customModel = getCustomModel(model)
+            if customModel then
+                setElementModel(source, customModel)
+            else
+                outputConsole('Nie znaleziono modelu ' .. model)
+            end
+        end
+    end
+end)
+
+addEventHandler('onClientElementStreamIn', root, function()
+    local model = getElementData(source, 'element:model')
+    if model then
+        local customModel = getCustomModel(model)
+        if customModel then
+            setElementModel(source, customModel)
+        else
+            outputConsole('Nie znaleziono modelu ' .. model)
+        end
+    end
+end)
+
+function updateAllCustomModels()
+    updateCustomModels(getElementsByType('object'))
+    updateCustomModels(getElementsByType('vehicle'))
+    updateCustomModels(getElementsByType('ped'))
+    updateCustomModels(getElementsByType('player'))
+    updateCustomModels(getElementsByType('pickup'))
+end
+
+function updateCustomModels(elements)
+    for i, element in ipairs(elements) do
+        local model = getElementData(element, 'element:model')
+        if model then
+            local customModel = getCustomModel(model)
+            if customModel then
+                setElementModel(element, customModel)
+            else
+                outputConsole('Nie znaleziono modelu ' .. model)
+            end
+        end
+    end
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, loadModels)
