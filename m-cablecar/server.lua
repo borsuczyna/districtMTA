@@ -2,6 +2,7 @@ function createCableCar(data)
     local newPos = data.start + cableCarOffset
     local cableCar = createObject(1337, newPos)
     setElementData(cableCar, 'element:model', 'cablecar')
+    setElementData(cableCar, 'ride:volume', 0)
     assignLOD(cableCar)
     
     local railway = createObject(1337, newPos)
@@ -57,7 +58,12 @@ function playDoorAnimation(cableCar, door, positionId, currentPosition, time)
     local x, y, z = getPositionFromElementOffset(cableCar.objects.car, position.x, position.y, position.z)
     setTimer(moveObject, 0, 1, door.object, time or 1000, x, y, z)
     
-    setTimer(attachElements, time or 1000, 1, door.object, cableCar.objects.car, door.data[positionId], door.data.rotation)
+    if position then
+        local rotation = door.data.rotation
+        setTimer(attachElements, time or 1000, 1, door.object, cableCar.objects.car, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z)
+    else
+        print('Error: door position not found for id ' .. positionId)
+    end
 end
 
 function moveCableCar(cableCar)
@@ -68,6 +74,8 @@ function moveCableCar(cableCar)
 
     nextPosition = nextPosition + cableCarOffset
     moveObject(cableCar.objects.car, time, nextPosition.x, nextPosition.y, nextPosition.z)
+    setElementData(cableCar.objects.car, 'ride:volume', 2)
+    setTimer(setElementData, time, 1, cableCar.objects.car, 'ride:volume', 0)
 
     cableCar.state = 'moving'
     cableCar.time = getTickCount() + time
@@ -80,6 +88,10 @@ function updateCableCar(cableCar)
             cableCar.state = 'closing-doors'
             cableCar.time = getTickCount()
             
+            local x, y, z = getElementPosition(cableCar.objects.car)
+            local closePlayers = getElementsWithinRange(x, y, z, 30, 'player')
+            triggerClientEvent(closePlayers, 'cablecar:playDoorSound', resourceRoot, x, y, z)
+
             for i, door in ipairs(cableCar.objects.doors) do
                 playDoorAnimation(cableCar, door, 2, 1)
                 setTimer(playDoorAnimation, 1000, 1, cableCar, door, 3, 2, 500)
@@ -97,6 +109,10 @@ function updateCableCar(cableCar)
         if getTickCount() - cableCar.time > 0 then
             cableCar.state = 'opening-doors'
             cableCar.time = getTickCount()
+
+            local x, y, z = getElementPosition(cableCar.objects.car)
+            local openPlayers = getElementsWithinRange(x, y, z, 30, 'player')
+            triggerClientEvent(openPlayers, 'cablecar:playDoorSound', resourceRoot, x, y, z)
             
             for i, door in ipairs(cableCar.objects.doors) do
                 playDoorAnimation(cableCar, door, 2, 3)

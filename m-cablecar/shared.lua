@@ -2,11 +2,15 @@ cableCars = {
     {
         start = Vector3(1180.7, -1987.379, 72.75),
         finish = Vector3(1180.7, -1697.253, 20.393),
+        lineStart = Vector3(1180.698, -1991.684, 73.5),
+        lineFinish = Vector3(1180.7, -1697.253, 20.393),
         drawDistance = 400
     },
     {
         start = Vector3(1174.1, -1697.253, 20.393),
         finish = Vector3(1174.1, -1987.379, 72.75),
+        lineStart = Vector3(1174.1, -1697.253, 20.393),
+        lineFinish = Vector3(1174.1, -1987.379, 72.75),
         drawDistance = 400
     }
 }
