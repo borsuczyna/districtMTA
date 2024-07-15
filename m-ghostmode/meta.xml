@@ -1,0 +1,6 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <export function='setGhostMode' type='server'/>
+</meta>
