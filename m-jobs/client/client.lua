@@ -61,6 +61,10 @@ function setJobsVisible(visible)
         showJobsInterface()
     else
         if not visible then
+            if isInLobby() then
+                closeLobby()
+            end
+
             exports['m-ui']:triggerInterfaceEvent('jobs', 'play-animation', false)
             jobsHideTimer = setTimer(function()
                 exports['m-ui']:destroyInterfaceElement('jobs')
@@ -75,6 +79,11 @@ function setJobsVisible(visible)
 end
 
 function showJobGui(jobName)
+    if getElementData(localPlayer, 'scooter:rented') then 
+        exports['m-notis']:addNotification('error', 'Praca', 'Nie możesz rozpocząć pracy mając wypożyczoną hulajnogę')
+        return
+    end
+    
     if not jobs[jobName] then return end
     if jobsVisible then return end
 
@@ -82,19 +91,11 @@ function showJobGui(jobName)
     jobGui = jobName
 end
 
-function toggleJobs()
-    if not getElementData(localPlayer, 'player:spawn') then return end
-
-    if not jobsVisible then
-        showJobGui('burger')
-    else
-        setJobsVisible(false)
-    end
+function hideJobGui()
+    setJobsVisible(false)
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    bindKey('f2', 'down', toggleJobs)
-
     addEventHandler('interfaceLoaded', root, function()
         jobsLoaded = false
         setJobsVisible(jobsVisible)
@@ -169,7 +170,6 @@ addEventHandler('jobs:jobStarted', resourceRoot, function(success, players)
 
     if success then
         setJobsVisible(false)
-        triggerEvent('jobs:startJob', root, jobGui, players)
     end
 end)
 

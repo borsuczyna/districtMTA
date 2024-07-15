@@ -14,6 +14,12 @@ addEvent('jobs:kickFromLobby', true)
 addEvent('jobs:kickFromLobbyResult', true)
 addEvent('jobs:startJobI', true)
 
+local inLobby = false
+
+function isInLobby()
+    return inLobby
+end
+
 addEventHandler('jobs:fetchLobbies', root, function()
     if not jobGui then return end
 
@@ -36,6 +42,7 @@ addEventHandler('jobs:lobbyCreated', resourceRoot, function(success)
     if not jobGui then return end
 
     exports['m-ui']:triggerInterfaceEvent('jobs', 'lobby-created', success)
+    inLobby = success
 end)
 
 addEventHandler('jobs:quitLobby', root, function()
@@ -48,12 +55,14 @@ addEventHandler('jobs:lobbyLeft', resourceRoot, function(success)
     if not jobGui then return end
 
     exports['m-ui']:triggerInterfaceEvent('jobs', 'lobby-left', success)
+    inLobby = not success
 end)
 
 addEventHandler('jobs:lobbyClosed', resourceRoot, function()
     if not jobGui then return end
 
     exports['m-ui']:triggerInterfaceEvent('jobs', 'lobby-closed')
+    inLobby = false
 end)
 
 addEventHandler('jobs:lobbyUpdated', resourceRoot, function(lobby)
@@ -78,6 +87,7 @@ addEventHandler('jobs:lobbyJoinResult', resourceRoot, function(success)
     if not jobGui then return end
 
     exports['m-ui']:triggerInterfaceEvent('jobs', 'lobby-join-result', success)
+    inLobby = success
 end)
 
 addEventHandler('jobs:playerJoined', resourceRoot, function(player)
@@ -103,3 +113,9 @@ addEventHandler('jobs:startJobI', root, function()
 
     triggerServerEvent('jobs:startJobI', resourceRoot, jobGui)
 end)
+
+function closeLobby()
+    if not jobGui then return end
+
+    triggerServerEvent('jobs:quitLobby', resourceRoot)
+end

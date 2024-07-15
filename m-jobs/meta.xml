@@ -3,6 +3,7 @@
     
     <script src='client/client.lua' type='client' cache='false'/>
     <script src='client/lobby.lua' type='client' cache='false'/>
+    <script src='client/jobs.lua' type='client' cache='false'/>
     <script src='server/server.lua' type='server'/>
     <script src='server/lobby.lua' type='server'/>
     <script src='server/job.lua' type='server'/>
@@ -14,7 +15,14 @@
     <file src='data/history.js'/>
     <file src='data/lobby.js'/>
 
-    <file src='data/forest.png'/>
+    <file src='data/images/forest.png'/>
+    <file src='data/images/trash.png'/>
+
+    <export function='showJobGui' type='client'/>
+    <export function='hideJobGui' type='client'/>
+    <export function='createLobbyObject' type='server'/>
+    <export function='createLobbyBlip' type='server'/>
+    <export function='leaveJob' type='server'/>
 
     <min_mta_version server='1.5.8' client='1.5.8'/>
 </meta>

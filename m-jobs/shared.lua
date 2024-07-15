@@ -1,6 +1,7 @@
 jobs = {
     burger = {
         name = 'Burgerownia',
+        background = 'forest',
         description = 'Praca burgerowni polega na przygotowywaniu i sprzedawaniu burgerów dla klientów.',
         coop = true,
         minLobbySize = 1,
@@ -20,6 +21,32 @@ jobs = {
             {
                 name = 'Natłok',
                 description = 'Zwiększa ilość klientów o 10%',
+                points = 25
+            },
+        }
+    },
+    trash = {
+        name = 'Wywóz śmieci',
+        background = 'trash',
+        description = 'Praca wywożenia śmieci polega na zbieraniu i wywożeniu śmieci z miasta.',
+        coop = true,
+        minLobbySize = 1,
+        lobbySize = 4,
+        minLevel = 1,
+        upgrades = {
+            {
+                name = 'Sprinter',
+                description = 'Zwiększa prędkość poruszania się o 10%',
+                points = 15
+            },
+            {
+                name = 'Kierowca',
+                description = 'Zwiększa pojemność samochodu o 10%',
+                points = 20
+            },
+            {
+                name = 'Recykling',
+                description = 'Zwiększa ilość punktów za wywóz śmieci o 10%',
                 points = 25
             },
         }
