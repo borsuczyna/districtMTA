@@ -1,6 +1,7 @@
 local hudLoaded = false
 local hudVisible = false
 local lastSentData = {}
+local nextLevelExpCache = {}
 
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
@@ -12,7 +13,12 @@ function updateHud(avatar)
     setPlayerHudComponentVisible('all', false)
 
     local level = getElementData(localPlayer, 'player:level') or 1
-    local nextLevelExp = exports['m-core']:getNextLevelExp(level)
+    local nextLevelExp = nextLevelExpCache[level]
+    if not nextLevelExp then
+        nextLevelExp = exports['m-core']:getNextLevelExp(level)
+        nextLevelExpCache[level] = nextLevelExp
+    end
+
     local data = {
         nickname = getPlayerName(localPlayer),
         health = getElementHealth(localPlayer),

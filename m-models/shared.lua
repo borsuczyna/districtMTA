@@ -10,17 +10,22 @@ models = {
         type = 'object',
         model = 4824,
     },
-    ['railcar'] = {
+    ['cablecar'] = {
         custom = true,
         type = 'object',
         model = 1337,
     },
-    ['railcar-door'] = {
+    ['cablecar-door'] = {
         custom = true,
         type = 'object',
         model = 1337,
     },
-    ['railcar-rail'] = {
+    ['cablecar-rail'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['railway-station'] = {
         custom = true,
         type = 'object',
         model = 1337,
@@ -74,3 +79,5 @@ function createCustomObject(model, x, y, z, rx, ry, rz)
 
     return object
 end
+
+createCustomObject('railway-station', 1177.474, -1993.162, 67.508)

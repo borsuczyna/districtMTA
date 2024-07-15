@@ -27,4 +27,7 @@
     <file src="data/decoded/cablecar.col"/>
     <file src="data/decoded/cablecar.dff"/>
     <file src="data/decoded/cablecar.txd"/>
+    <file src="data/decoded/railway-station.col"/>
+    <file src="data/decoded/railway-station.dff"/>
+    <file src="data/decoded/railway-station.txd"/>
 </meta>
