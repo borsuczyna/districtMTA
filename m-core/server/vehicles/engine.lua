@@ -9,5 +9,7 @@ addEventHandler('onVehicleEnter', root, function(player, seat)
 
     if engines[source] ~= nil then
         setVehicleEngineState(source, engines[source])
+    else
+        setVehicleEngineState(source, false)
     end
 end)

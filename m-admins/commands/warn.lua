@@ -17,5 +17,5 @@ addCommandHandler('warn', function(player, cmd, playerToFind, ...)
 
     triggerClientEvent(foundPlayer, 'onClientShowWarn', resourceRoot, getPlayerName(player), reason)
     exports['m-logs']:sendLog('admin', 'warning', ('Admin `%s` ostrzegł gracza `%s`: `%s`'):format(playerName, foundPlayerName, reason))
-    exports['m-notis']:addNotification(player, 'success', 'Warn', ('Ostrzegłeś gracza %s'):format(foundPlayerName))
+    exports['m-notis']:addNotification(player, 'success', 'Ostrzeżenie', ('Ostrzegłeś gracza %s'):format(foundPlayerName))
 end)

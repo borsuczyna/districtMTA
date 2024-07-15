@@ -212,3 +212,13 @@ addEventHandler('onResourceStart', resourceRoot, loadPrivateVehicles)
 addEventHandler('onResourceStop', resourceRoot, saveAllPrivateVehicles)
 addEventHandler('onVehicleStartEnter', root, tryVehicleStartEnter)
 setTimer(saveAllPrivateVehicles, 300000, 0) -- 5 minutes
+
+-- entering vehicles beacuse mta is stupid
+
+addEventHandler('onVehicleEnter', root, function(player, seat)
+    setElementData(player, 'player:occupiedVehicle', source)
+end)
+
+addEventHandler('onVehicleExit', root, function(player, seat)
+    setElementData(player, 'player:occupiedVehicle', false)
+end)

@@ -6,6 +6,7 @@
 
     <!-- vehicles -->
     <script src='client/vehicles/damage.lua' type='client' cache='false'/>
+    <script src='client/vehicles/attach.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
     <script src='server/id.lua' type='server'/>
@@ -35,6 +36,7 @@
     <script src='server/vehicles/damage.lua' type='server'/>
     <script src='server/vehicles/engine.lua' type='server'/>
     <script src='server/vehicles/fuel-mileage.lua' type='server'/>
+    <script src='server/vehicles/attach.lua' type='server'/>
 
     <script src='shared/players.lua' type='shared' cache='false'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
@@ -80,6 +82,9 @@
     <export function='getPlayerAchievements' type='server'/>
     <export function='updatePlayerAchievements' type='server'/>
     <export function='updatePlayerAchievement' type='server'/>
+    <export function='enterAdditionalSeat' type='server'/>
+    <export function='allowVehicleAttach' type='server'/>
+    <export function='disAllowVehicleAttach' type='server'/>
 
     <export function='premiumChatDiscord' http='true'/>
 </meta>
