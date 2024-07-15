@@ -14,7 +14,7 @@ window.dashboard_renderAchievements = (data) => {
             <div class="progress">
                 <div class="progress-bar" style="width: ${achievement.achieved}%"></div>
             </div>
-            <div class="percent">${achievement.achieved}% graczy zdobyło to osiągnięcie</div>
+            <div class="percent">${Math.floor(achievement.achieved)}% graczy zdobyło to osiągnięcie</div>
         `;
 
         list.appendChild(card);

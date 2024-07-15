@@ -70,6 +70,7 @@ function updateMarker(marker)
         dxSetShaderValue(markersData[marker].shader, 'isSquare', not not squareSize)
         setElementCollisionsEnabled(markersData[marker].object, false)
         engineApplyShaderToWorldTexture(markersData[marker].shader, '*', markersData[marker].object)
+
     end
 
     setMarkerColor(marker, r, g, b, 0)

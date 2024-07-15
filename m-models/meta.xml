@@ -15,9 +15,6 @@
     <file src="data/decoded/int-1.dff"/>
     <file src="data/decoded/int-1.col"/>
     <file src="data/decoded/int-1.txd"/>
-    <file src="data/decoded/spawn-ls.dff"/>
-    <file src="data/decoded/spawn-ls.col"/>
-    <file src="data/decoded/spawn-ls.txd"/>
     <file src="data/decoded/cablecar-door.col"/>
     <file src="data/decoded/cablecar-door.dff"/>
     <file src="data/decoded/cablecar-door.txd"/>

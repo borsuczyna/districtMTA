@@ -143,8 +143,3 @@ function giveMoney(player, amount)
     dbExec(connection, 'INSERT INTO `m-jobs-money-history` (user, job, money) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE money = money + ?', uid, job, amount, amount)
     givePlayerMoney(player, amount)
 end
-
--- add 50$ on test command
-addCommandHandler('teste', function(player)
-    giveMoney(player, 50)
-end)

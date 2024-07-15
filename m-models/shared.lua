@@ -8,7 +8,7 @@ models = {
     ['spawn-ls'] = {
         custom = false,
         type = 'object',
-        model = 4824,
+        model = 4825,
     },
     ['cablecar'] = {
         custom = true,

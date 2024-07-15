@@ -55,18 +55,11 @@ for k,v in pairs(rentals) do
 	setElementData(colShape, 'scooter:rental', true)
 end
 
-function remindAboutScooter(player)
-	local rented = getElementData(player, 'scooter:rented')
-	if getElementType(rented) == 'vehicle' and getPedOccupiedVehicle(player) ~= rented then
-		exports['m-notis']:addNotification(player, 'warning', 'Wypożyczalnia', 'Nie zwrócono hulanogi elektrycznej, pieniądze są cały czas pobierane')
-	end
-end
-
 addEvent('scooter:rent', true)
 addEventHandler('scooter:rent', resourceRoot, function()
 	if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if getElementData(client, 'player:job') then
-		exports['m-notis']:addNotification(cleint, 'error', 'Wypożyczalnia', 'Nie możesz wypożyczyć hulajnogi będąc w pracy!')
+		exports['m-notis']:addNotification(client, 'error', 'Wypożyczalnia', 'Nie możesz wypożyczyć hulajnogi będąc w pracy')
 		return
 	end
 

@@ -256,7 +256,10 @@ addEventHandler('jobs:startJobI', resourceRoot, function(job)
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     local jobData = jobs[job]
-    if not jobData then return end
+    if not jobData then
+        triggerClientEvent(client, 'jobs:jobStarted', resourceRoot, false)
+        return
+    end
 
     if not jobData.coop then
         startJob(job, {client})
@@ -282,8 +285,6 @@ addEventHandler('jobs:startJobI', resourceRoot, function(job)
 
         startJob(job, lobby.players, jobData.minLobbySize)
         closeLobby(client, true, lobby.players)
-        exports['m-notis']:addNotification(lobby.players, 'info', 'Lobby', 'Praca została rozpoczęta')
-        triggerEvent('jobs:startJob', root, job, lobby.players)
     end
 end)
 

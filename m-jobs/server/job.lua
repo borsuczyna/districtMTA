@@ -1,19 +1,28 @@
 addEvent('jobs:endJobI', true)
 addEvent('jobs:endJob', true)
+addEvent('jobs:finishJob', true)
+addEvent('jobs:startJob', true)
+addEvent('jobs:finishJobLobby', true)
 
 local lobbies = {}
 
 function startJob(job, players, minPlayers)
+    local hash = generateHash()
     table.insert(lobbies, {
         job = job,
         players = players,
         minPlayers = minPlayers,
-        objects = {}
+        objects = {},
+        blips = {},
+        hash = hash
     })
 
     for i, player in ipairs(players) do
         setElementData(player, 'player:job', job)
     end
+
+    exports['m-notis']:addNotification(players, 'info', 'Informacja', 'Praca została rozpoczęta')
+    triggerEvent('jobs:startJob', root, job, hash, players)
 end
 
 function getPlayerJobLobby(player)
@@ -26,16 +35,23 @@ function getPlayerJobLobby(player)
     end
 end
 
-function createLobbyObject(player, model, x, y, z, rx, ry, rz)
-    local lobby = getPlayerJobLobby(player)
-    if not lobby then return end
+function getLobbyByHash(hash)
+    for i, lobby in ipairs(lobbies) do
+        if lobby.hash == hash then
+            return lobby
+        end
+    end
+end
+
+function createLobbyObject(playerOrHash, model, x, y, z, rx, ry, rz)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
 
     local hash = generateHash()
     local object = {
         hash = hash,
-        model = model,
-        position = Vector3(x, y, z),
-        rotation = Vector3(rx, ry, rz)
+        model = model or 1337,
+        position = {x or 0, y or 0, z or 0},
+        rotation = {rx or 0, ry or 0, rz or 0}
     }
 
     table.insert(lobby.objects, object)
@@ -44,8 +60,25 @@ function createLobbyObject(player, model, x, y, z, rx, ry, rz)
     return hash
 end
 
+function createLobbyBlip(playerOrHash, x, y, z, icon, visibleDistance)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+
+    local hash = generateHash()
+    local blip = {
+        hash = hash,
+        position = {x or 0, y or 0, z or 0},
+        visibleDistance = visibleDistance or 9999,
+        icon = icon or 41
+    }
+
+    table.insert(lobby.blips, blip)
+    triggerClientEvent(lobby.players, 'jobs:updateBlip', resourceRoot, blip)
+
+    return hash
+end
+
 function destroyJobLobby(lobby)
-    triggerClientEvent(lobby.players, 'jobs:destroyObjects', resourceRoot)
+    triggerEvent('jobs:finishJobLobby', root, lobby.job, lobby.hash)
 
     for i, player in ipairs(lobby.players) do
         setElementData(player, 'player:job', false)
@@ -81,9 +114,15 @@ function leaveJob(player)
 end
 
 function finishPlayerJob(player)
+    local lobby = getPlayerJobLobby(player)
+    local job = getElementData(player, 'player:job')
     setElementData(player, 'player:job', false)
-    triggerEvent('jobs:finishJob', player)
+    if lobby then
+        triggerEvent('jobs:finishJob', root, job, lobby.hash, player)
+    end
     triggerClientEvent(player, 'jobs:endJob', resourceRoot)
+    triggerClientEvent(player, 'jobs:destroyObjects', resourceRoot)
+    triggerClientEvent(player, 'jobs:destroyBlips', resourceRoot)
     exports['m-notis']:addNotification(player, 'info', 'Praca', 'Zakończono pracę')
 
     local lobby = getPlayerJobLobby(player)
