@@ -10,6 +10,10 @@ function removeEvent(interfaceElement, name) {
     events = events.filter(event => event.interfaceElement !== interfaceElement || event.name !== name);
 }
 
+function removeEventHandler(interfaceElement, name, callback) {
+    events = events.filter(event => event.interfaceElement !== interfaceElement || event.name !== name || event.callback !== callback);
+}
+
 function removeElementEvents(interfaceElement) {
     events = events.filter(event => event.interfaceElement !== interfaceElement);
     timers = timers.filter(timer => timer.interfaceElement !== interfaceElement);

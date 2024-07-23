@@ -55,35 +55,35 @@ for k,v in pairs(rentals) do
 	setElementData(colShape, 'scooter:rental', true)
 end
 
-addEvent('scooter:rent', true)
-addEventHandler('scooter:rent', resourceRoot, function()
-	if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-    if getElementData(client, 'player:job') then
-		exports['m-notis']:addNotification(client, 'error', 'Wypożyczalnia', 'Nie możesz wypożyczyć hulajnogi będąc w pracy')
+addEvent('scooter:rent')
+addEventHandler('scooter:rent', resourceRoot, function(hash, player)
+    if getElementData(player, 'player:job') then
+		exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie możesz wypożyczyć hulajnogi będąc w pracy', renting = false})
 		return
 	end
 
-	local rented = getElementData(client, 'scooter:rented')
+	local rented = getElementData(player, 'scooter:rented')
 
 	if rented then
-		if getElementType(rented) ~= 'object' then
-			exports['m-notis']:addNotification(client, 'error', 'Wypożyczalnia', 'Hulajnoga musi być złożona aby ją zwrócić')
+		if isElement(rented) and getElementType(rented) ~= 'object' then
+			exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Hulajnoga musi być złożona aby ją zwrócić', renting = true})
 			return
 		end
 
 		destroyElement(rented)
-		setElementData(client, 'scooter:rented', false)
-		exports['m-notis']:addNotification(client, 'success', 'Wypożyczalnia', 'Zwrócono hulajnogę elektryczną')
-		setElementData(client, 'player:animation', false)
-		if timers[client] and isTimer(timers[client]) then
-			killTimer(timers[client])
+		setElementData(player, 'scooter:rented', false)
+		exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zwrócono hulajnogę elektryczną', renting = false})
+
+		setElementData(player, 'player:animation', false)
+		if timers[player] and isTimer(timers[player]) then
+			killTimer(timers[player])
 		end
 	else
 		local vehicle = createObject(1867, 0, 0, 0)
-		exports['m-pattach']:attach(vehicle, client, 23, 0, 0, 0, 20, 0, 50)
-		setElementData(client, 'scooter:rented', vehicle)
-		setElementData(client, 'player:animation', 'scooter-carry')
-		exports['m-notis']:addNotification(client, 'success', 'Wypożyczalnia', 'Wypożyczono hulajnogę elektryczną, naciśnij <kbd class="keycap keycap-sm">H</kbd> aby ją rozłożyć')
+		exports['m-pattach']:attach(vehicle, player, 23, 0, 0, 0, 20, 0, 50)
+		setElementData(player, 'scooter:rented', vehicle)
+		setElementData(player, 'player:animation', 'scooter-carry')
+		exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wypożyczono hulajnogę elektryczną, naciśnij <kbd class="keycap keycap-sm">H</kbd> aby ją rozłożyć', renting = true})
 	end
 end)
 

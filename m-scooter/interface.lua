@@ -64,8 +64,3 @@ end)
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('scooter')
 end)
-
-addEventHandler('scooter:interface:rent', root, function()
-    triggerServerEvent('scooter:rent', resourceRoot)
-    toggleScooterUI()
-end)

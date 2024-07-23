@@ -2,12 +2,14 @@
     <download_priority_group>9999</download_priority_group>
     <script src='client.lua' type='client' cache='false'/>
     <script src='fonts.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
 
     <file src='data/main.html'/>
     <file src='data/main.js'/>
     <file src='data/event.js'/>
     <file src='data/interface.js'/>
     <file src='data/variables.js'/>
+    <file src='data/fetch.js'/>
     <file src='data/style.css'/>
     <file src='data/switch.css'/>
     <file src='data/input.css'/>
@@ -55,4 +57,5 @@
     <export function='triggerInterfaceEvent' type='client'/>
     <export function='setInterfaceZIndex' type='client'/>
     <export function='getFont' type='client'/>
+    <export function='respondToRequest' type='server'/>
 </meta>

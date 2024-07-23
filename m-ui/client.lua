@@ -203,4 +203,14 @@ function initializeInterface()
     end)
 end
 
+addEvent('ui:fetchData', true)
+addEventHandler('ui:fetchData', root, function(data)
+    triggerServerEvent('ui:fetchData', resourceRoot, fromJSON(data))
+end)
+
+addEvent('ui:fetchDataResponse', true)
+addEventHandler('ui:fetchDataResponse', resourceRoot, function(hash, response)
+    triggerInterfaceEvent('main', 'ui:fetchDataResponse', hash, response)
+end)
+
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)
