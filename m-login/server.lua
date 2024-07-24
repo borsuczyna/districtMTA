@@ -66,7 +66,6 @@ end)
 
 addEvent("login:register")
 addEventHandler('login:register', resourceRoot, function(hash, player, email, login, password)
-    print(email, login, password)
     if getElementData(player, 'player:logged') or getElementData(player, 'player:uid') then
         exports['m-anticheat']:setPlayerTriggerLocked(player, true)
         return
