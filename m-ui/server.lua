@@ -3,7 +3,7 @@ local lastHashes = {}
 
 addEvent('ui:fetchData', true)
 addEventHandler('ui:fetchData', resourceRoot, function(data)
-    data = teaDecode(data, 'keep yourself and play district mta')
+    data = teaDecode(data, 'keep calm and play district mta')
     data = fromJSON(data)
 
     if not client then return end
