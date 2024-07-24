@@ -72,7 +72,7 @@ local function renderSpeedo()
     end
 
     local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
-    local zoom = zoomOriginal * ( 20 / interfaceSize )
+    local zoom = zoomOriginal * ( 17 / interfaceSize )
 
     if speedo == 'modern' then
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/background.png')
