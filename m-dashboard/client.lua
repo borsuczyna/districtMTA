@@ -7,14 +7,13 @@ addEvent('dashboard:fetchData', true)
 addEvent('dashboard:fetchDataResult', true)
 addEvent('dashboard:vehicleDetails', true)
 addEvent('dashboard:vehicleDetailsResult', true)
-addEvent('dashboard:redeemDailyReward', true)
-addEvent('dashboard:redeemDailyRewardResult', true)
 addEvent('dashboard:fetchDailyRewardResult', true)
 addEvent('dashboard:getPlayerLast10DailyRewardsResult', true)
 addEvent('dashboard:getPlayerLast10DaysDailyTasksResult', true)
-addEvent('dashboard:claimDailyTask', true)
-addEvent('dashboard:redeemTaskResult', true)
+-- addEvent('dashboard:claimDailyTask', true)
+-- addEvent('dashboard:redeemTaskResult', true)
 addEvent('dashboard:updateAchievements', true)
+addEvent('dashboard:fetchDailyReward', true)
 addEvent('avatars:onPlayerAvatarChange', true)
 
 function updateDashboardData()
@@ -46,7 +45,7 @@ function updateDashboardData()
     local avatar = exports['m-avatars']:getPlayerAvatar(localPlayer)
     updateAvatar(avatar)
 
-    triggerServerEvent('dashboard:fetchData', resourceRoot, 'account')
+    -- triggerServerEvent('dashboard:fetchData', resourceRoot, 'account')
     triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
 
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'update-data', {
@@ -175,13 +174,7 @@ addEventHandler('dashboard:vehicleDetailsResult', root, function(id, result)
     })
 end)
 
-addEventHandler('dashboard:redeemDailyReward', root, function()
-    triggerServerEvent('dashboard:redeemDailyReward', resourceRoot)
-end)
-
-addEventHandler('dashboard:redeemDailyRewardResult', root, function(success)
-    if not success then return end
-    exports['m-ui']:triggerInterfaceEvent('dashboard', 'redeem-daily-reward-result', success)
+addEventHandler('dashboard:fetchDailyReward', root, function()
     triggerServerEvent('dashboard:fetchDailyReward', resourceRoot)
 end)
 
@@ -198,14 +191,6 @@ end)
 
 addEventHandler('dashboard:getPlayerLast10DaysDailyTasksResult', root, function(tasks)
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'get-player-last-10-daily-tasks-result', tasks)
-end)
-
-addEventHandler('dashboard:claimDailyTask', root, function(date)
-    triggerServerEvent('dashboard:claimDailyTask', resourceRoot, date)
-end)
-
-addEventHandler('dashboard:redeemTaskResult', root, function(success)
-    exports['m-ui']:triggerInterfaceEvent('dashboard', 'redeem-daily-task-result', success)
 end)
 
 addEventHandler('dashboard:updateAchievements', root, function(data)

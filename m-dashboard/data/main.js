@@ -17,7 +17,7 @@ window.dashboard_changeTab = function(item) {
     dashboard_hideVehicleDetails();
 }
 
-window.dashboard_fetchData = function(tab) {
+window.dashboard_fetchData = async (tab) => {
     if (dataCache[tab]) {
         fetchDataResult([{ data: tab, result: dataCache[tab] }]);
         return;
@@ -26,7 +26,26 @@ window.dashboard_fetchData = function(tab) {
     let currentTab = document.querySelector('#dashboard #list .item.active').getAttribute('tab');
     if (currentTab == tab) return;
 
-    mta.triggerEvent('dashboard:fetchData', tab);
+    let data = await mta.fetch('dashboard', 'fetchData', tab);
+
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    } else {
+        switch (tab) {
+            case 'punishments':
+                dashboard_renderPunishments(data.data);
+                break;
+            case 'vehicles':
+                dashboard_renderVehicles(data.data);
+                break;
+            case 'account':
+                dashboard_renderAccount(data.data);
+                break;
+            case 'achievements':
+                dashboard_renderAchievements(data.data);
+                break;
+        }
+    }
 }
 
 window.dashboard_setAvatar = (avatar) => {
@@ -37,26 +56,6 @@ window.dashboard_setAvatar = (avatar) => {
         document.querySelector('#dashboard .avatar').style.backgroundImage = `url('${avatar}')`;
     }
 }
-
-function fetchDataResult(data) {
-    data = data[0];
-    let type = data.data;
-    let result = data.result;
-
-    dataCache[type] = result;
-
-    if (type === 'punishments') {
-        dashboard_renderPunishments(result);
-    } else if (type === 'vehicles') {
-        dashboard_renderVehicles(result);
-    } else if (type == 'account') {
-        dashboard_renderAccount(result);
-    } else if (type == 'achievements') {
-        dashboard_renderAchievements(result);
-    }
-}
-
-addEvent('dashboard', 'fetch-data-result', fetchDataResult);
 
 addEvent('dashboard', 'play-animation', async (appear) => {
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -77,3 +76,5 @@ addEvent('dashboard', 'update-data', (data) => {
     // position
     window.dashboard_playerPosition = data.playerPosition;
 });
+
+dashboard_fetchData('account');

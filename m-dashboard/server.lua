@@ -1,8 +1,8 @@
-addEvent('dashboard:fetchData', true)
+addEvent('dashboard:fetchData')
 addEvent('dashboard:vehicleDetails', true)
-addEvent('dashboard:redeemDailyReward', true)
+addEvent('dashboard:redeemDailyReward')
 addEvent('dashboard:fetchDailyReward', true)
-addEvent('dashboard:claimDailyTask', true)
+addEvent('dashboard:claimDailyTask')
 
 local requests = {}
 
@@ -22,10 +22,11 @@ function table.removeValue(tab, val)
     end
 end
 
-function fetchDataResult(queryHandle, data, client, requestId)
+function fetchDataResult(queryHandle, data, client, hash, requestId)
     local result = dbPoll(queryHandle, 0)
     if not result then
-        exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Nie udało się pobrać danych')
+        -- exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Nie udało się pobrać danych')
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się pobrać danych'})
         return
     end
 
@@ -51,19 +52,20 @@ function fetchDataResult(queryHandle, data, client, requestId)
         result[1].bankMoney = getElementData(client, 'player:bankMoney') or 0
     end
 
-    triggerClientEvent(client, 'dashboard:fetchDataResult', resourceRoot, data, result)
+    -- triggerClientEvent(client, 'dashboard:fetchDataResult', resourceRoot, data, result)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', data = result})
 
     table.removeValue(requests, requestId)
 end
 
-addEventHandler('dashboard:fetchData', resourceRoot, function(data)
-	if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-    local uid = getElementData(client, 'player:uid')
+addEventHandler('dashboard:fetchData', resourceRoot, function(hash, player, data)
+    local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
     if data == 'achievements' then
-        local achievements = exports['m-core']:getPlayerAchievements(client)
-        triggerClientEvent(client, 'dashboard:fetchDataResult', resourceRoot, data, achievements)
+        local achievements = exports['m-core']:getPlayerAchievements(player)
+        -- triggerClientEvent(player, 'dashboard:fetchDataResult', resourceRoot, data, achievements)
+        exports['m-ui']:respondToRequest(hash, {status = 'success', data = achievements})
         return
     end
 
@@ -72,7 +74,7 @@ addEventHandler('dashboard:fetchData', resourceRoot, function(data)
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then
-        exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Nie udało się pobrać danych')
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać danych')
         return
     end
     
@@ -104,7 +106,7 @@ addEventHandler('dashboard:fetchData', resourceRoot, function(data)
     if not query then return end
 
     table.insert(requests, requestId)
-    dbQuery(fetchDataResult, {data, client, requestId}, connection, query, unpack(queryArgs or {}))
+    dbQuery(fetchDataResult, {data, player, hash, requestId}, connection, query, unpack(queryArgs or {}))
 end)
 
 addEventHandler('dashboard:vehicleDetails', resourceRoot, function(id)
@@ -131,12 +133,11 @@ addEventHandler('dashboard:vehicleDetails', resourceRoot, function(id)
     })
 end)
 
-addEventHandler('dashboard:redeemDailyReward', resourceRoot, function()
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-    local uid = getElementData(client, 'player:uid')
+addEventHandler('dashboard:redeemDailyReward', resourceRoot, function(hash, player)
+    local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
-    exports['m-core']:redeemDailyReward(client)
+    exports['m-core']:redeemDailyReward(player, hash)
 end)
 
 addEventHandler('dashboard:fetchDailyReward', resourceRoot, function()
@@ -153,10 +154,9 @@ addEventHandler('dashboard:fetchDailyReward', resourceRoot, function()
     triggerClientEvent(client, 'dashboard:fetchDailyRewardResult', resourceRoot, yestarday, today)
 end)
 
-addEventHandler('dashboard:claimDailyTask', resourceRoot, function(date)
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-    local uid = getElementData(client, 'player:uid')
+addEventHandler('dashboard:claimDailyTask', resourceRoot, function(hash, player, date)
+    local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
-    exports['m-core']:claimDailyTask(client, date)
+    exports['m-core']:claimDailyTask(hash, player, date)
 end)

@@ -12,9 +12,8 @@ function updateTimeLeft(card, date) {
     let button = card.querySelector('.button');
 
     if (timeLeft <= 1) {
-        // button.classList.remove('grayed');
         button.innerText = 'Odbierz';
-        button.onclick = dashboard_redeemDailyReward;
+        button.onclick = () => dashboard_redeemDailyReward(button);
         return;
     } else {
         let hours = Math.floor(timeLeft / 1000 / 60 / 60);
@@ -48,10 +47,25 @@ function showNextDailyReward() {
     todayReward.innerText = 'Ładowanie...';
 }
 
-window.dashboard_redeemDailyReward = () => {
+window.dashboard_redeemDailyReward = async (button) => {
+    if (isButtonSpinner(button)) return;
     if (!canRedeemDailyReward()) return;
+    
+    makeButtonSpinner(button);
+    let data = await mta.fetch('dashboard', 'redeemDailyReward');
 
-    mta.triggerEvent('dashboard:redeemDailyReward');
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    } else {
+        notis_addNotification(data.status == 'success' ? 'success' : 'error', data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+    
+        if (data.status == 'success') {
+            showNextDailyReward();
+            mta.triggerEvent('dashboard:fetchDailyReward');
+        }
+    }
+    
+    makeButtonSpinner(button, false);
 }
 
 window.dashboard_setDailyRewardData = (day, date) => {
@@ -94,17 +108,6 @@ window.dashboard_setDailyReward = (yesterday, today) => {
 
     let dailyHistory = document.querySelector('#dashboard #daily-reward-history');
     dailyHistory.innerHTML = '';
-
-    // last10Days.sort((a, b) => new Date(b.date * 1000) - new Date(a.date * 1000));
-
-    // for (let day of last10Days) {
-    //     let dateObj = new Date(day.date * 1000);
-    //     let dayBox = document.createElement('div');
-    //     dayBox.classList.add('d-flex', 'justify-between');
-    //     dayBox.innerHTML = `<span>${day.text}</span><span>${dateObj.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>`;
-
-    //     dailyHistory.appendChild(dayBox);
-    // }
 }
 
 window.dashboard_setLast10DaysRewards = (last10Days) => {
@@ -127,10 +130,6 @@ window.dashboard_setLast10DaysRewards = (last10Days) => {
 
     yesterdayReward.innerText = last10Days[0].reward;
 }
-
-addEvent('dashboard', 'redeem-daily-reward-result', (data) => {
-    showNextDailyReward();
-});
 
 addEvent('dashboard', 'fetch-daily-reward-result', (data) => {
     data = data[0];
