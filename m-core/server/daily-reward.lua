@@ -49,15 +49,13 @@ function givePlayerReward(player, reward)
         elseif reward.type == 'exp' then
             givePlayerExp(player, count)
         end
-
-        exports['m-notis']:addNotification(player, 'success', 'Sukces', 'Odebrano nagrodę dzienną: ' .. string.format(reward.text, count))
     end
 end
 
-function redeemDailyRewardResult(queryResult, player)
+function redeemDailyRewardResult(queryResult, player, hash)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się odebrać nagrody, spróbuj ponownie'})
         return false
     end
 
@@ -75,10 +73,10 @@ function redeemDailyRewardResult(queryResult, player)
     setElementData(player, 'player:dailyRewardDay', day + 1)
 
     dbExec(connection, 'INSERT INTO `m-daily-rewards-history` (`user`, `reward`, `date`) VALUES (?, ?, NOW());', uid, rewardText)
-    triggerClientEvent(player, 'dashboard:redeemDailyRewardResult', root, player)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Odebrano nagrodę dzienną: ' .. rewardText})
 end
 
-function redeemDailyReward(player)
+function redeemDailyReward(player, hash)
     local uid = getElementData(player, 'player:uid')
     if not uid then
         exports['m-anticheat']:setPlayerTriggerLocked(player, true, 'Próba odebrania nagrody przed zalogowaniem')
@@ -87,17 +85,17 @@ function redeemDailyReward(player)
 
     local canRedeem, time = canPlayerRedeemDailyReward(player)
     if canRedeem ~= true then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Możesz odebrać dzienną nagrodę za ' .. time)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Możesz odebrać dzienną nagrodę za ' .. time})
         return false
     end
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się odebrać nagrody, spróbuj ponownie'})
         return false
     end
 
-    dbQuery(redeemDailyRewardResult, {player}, connection, 'UPDATE `m-users` SET `dailyRewardRedeem` = NOW() + INTERVAL 1 DAY, `dailyRewardDay` = `dailyRewardDay` + 1 WHERE `uid` = ?', uid)
+    dbQuery(redeemDailyRewardResult, {player, hash}, connection, 'UPDATE `m-users` SET `dailyRewardRedeem` = NOW() + INTERVAL 1 DAY, `dailyRewardDay` = `dailyRewardDay` + 1 WHERE `uid` = ?', uid)
 end
 
 function getPlayerLast10DailyRewardsResult(queryResult, player)

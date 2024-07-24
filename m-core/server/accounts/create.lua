@@ -53,7 +53,7 @@ local function createAccountInternal(data, hash)
     dbQuery(checkAccountExistsResult, {hash, data}, connection, 'SELECT * FROM `m-users` WHERE username = ? OR email = ? OR serial = ?', data.username, data.email, data.serial)
 end
 
-function createAccount(data)
+function createAccount(hash, data)
     assert(type(data) == 'table', 'createAccount: data is not a table')
     assert(type(data.username) == 'string', 'createAccount: data.username is not a string')
     assert(type(data.password) == 'string', 'createAccount: data.password is not a string')
@@ -61,21 +61,18 @@ function createAccount(data)
     assert(type(data.ip) == 'string', 'createAccount: data.ip is not a string')
     assert(type(data.serial) == 'string', 'createAccount: data.serial is not a string')
 
-    if #data.username < 3 then return false, 'Login jest za krótka' end
-    if #data.username > 18 then return false, 'Login jest za długa' end
-    if string.match(data.username, '[ąćęłńóśźż]') then return false, 'Login nie może zawierać polskich znaków' end
-    if string.match(data.username, '[^%w_]') then return false, 'Login może zawierać tylko litery, cyfry i znak _' end
-    if string.match(data.username, '%s') then return false, 'Login nie może zawierać spacji' end
-    if #data.password < 3 then return false, 'Hasło jest za krótkie' end
-    if #data.password > 18 then return false, 'Hasło jest za długie' end
-    if #data.email < 3 then return false, 'Email jest za krótki' end
-    if #data.email > 50 then return false, 'Email jest za długi' end
+    if #data.username < 3 then return 'Login jest za krótki' end
+    if #data.username > 18 then return 'Login jest za długi' end
+    if string.match(data.username, '[ąćęłńóśźż]') then return 'Login nie może zawierać polskich znaków' end
+    if string.match(data.username, '[^%w_]') then return 'Login może zawierać tylko litery, cyfry i znak _' end
+    if string.match(data.username, '%s') then return 'Login nie może zawierać spacji' end
+    if #data.password < 3 then return 'Hasło jest za krótkie' end
+    if #data.password > 18 then return 'Hasło jest za długie' end
+    if #data.email < 3 then return 'Email jest za krótki' end
+    if #data.email > 50 then return 'Email jest za długi' end
 
     data.password = encodePassword(data.password)
-    local hash = createHash()
     createAccountInternal(data, hash)
-
-    return hash
 end
 
 -- TEST - create account

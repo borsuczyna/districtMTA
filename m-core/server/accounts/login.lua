@@ -34,21 +34,18 @@ local function loginInternal(data, hash)
     dbQuery(loginResult, {hash, data}, connection, 'SELECT *, UNIX_TIMESTAMP(`premiumDate`) AS `premiumEnd`, UNIX_TIMESTAMP(`dailyRewardRedeem`) AS `dailyRewardRedeemDate` FROM `m-users` WHERE username = ? OR email = ?', data.usernameOrEmail, data.usernameOrEmail)
 end
 
-function loginToAccount(data)
+function loginToAccount(hash, data)
     assert(type(data) == 'table', 'createAccount: data is not a table')
     assert(type(data.usernameOrEmail) == 'string', 'createAccount: data.usernameOrEmail is not a string')
     assert(type(data.password) == 'string', 'createAccount: data.password is not a string')
 
-    if #data.usernameOrEmail < 3 then return false, 'Nieprawidłowa Login lub email' end
-    if #data.usernameOrEmail > 18 then return false, 'Nieprawidłowa Login lub email' end
-    if #data.password < 3 then return false, 'Nieprawidłowe hasło' end
-    if #data.password > 18 then return false, 'Nieprawidłowe hasło' end
+    if #data.usernameOrEmail < 3 then return 'Nieprawidłowa Login lub email' end
+    if #data.usernameOrEmail > 18 then return 'Nieprawidłowa Login lub email' end
+    if #data.password < 3 then return 'Nieprawidłowe hasło' end
+    if #data.password > 18 then return 'Nieprawidłowe hasło' end
 
     data.password = encodePassword(data.password)
-    local hash = createHash()
     loginInternal(data, hash)
-
-    return hash
 end
 
 -- TEST - login

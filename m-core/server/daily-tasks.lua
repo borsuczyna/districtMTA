@@ -91,53 +91,46 @@ function getPlayerLast10DaysDailyTasks(player)
     dbQuery(getPlayerLast10DaysDailyTasksResult, {player}, connection, 'SELECT * FROM `m-daily-tasks-history` WHERE `user` = ? ORDER BY `date` DESC LIMIT 10', uid)
 end
 
-function claimDailyTaskResult(queryResult, player)
+function claimDailyTaskResult(queryResult, hash, player)
     local result, rows, lastId = dbPoll(queryResult, 0)
     if not result then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać historii zadań')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się pobrać historii zadań'})
         return false
     end
 
     if not result[1] then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać historii zadań')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się pobrać historii zadań'})
         return false
     end
 
     if result[1].claimed == 1 then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nagroda za te zadanie dzienne została już odebrana')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nagroda za te zadanie dzienne została już odebrana'})
         return false
     end
 
     local taskData = dailyTasks[result[1].task]
     if not taskData then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się pobrać tego zadania')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się pobrać tego zadania'})
         return false
     end
 
     if result[1].progress < taskData.max then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz odebrać nagrody za to zadanie, ponieważ nie zostało ono ukończone')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie możesz odebrać nagrody za to zadanie, ponieważ nie zostało ono ukończone'})
         return false
     end
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się odebrać nagrody'})
         return false
     end
 
     dbExec(connection, 'UPDATE `m-daily-tasks-history` SET `claimed` = 1 WHERE `uid` = ?', result[1].uid)
-    exports['m-notis']:addNotification(player, 'success', 'Sukces', 'Nagroda za zadanie dzienne została odebrana')
+    exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Nagroda za zadanie dzienne została odebrana'})
     taskData.reward(player)
-    triggerClientEvent(player, 'dashboard:redeemTaskResult', root, true)
 end
 
-function claimDailyTask(player, date)
+function claimDailyTask(hash, player, date)
     local uid = getElementData(player, 'player:uid')
     if not uid then return false end
 
@@ -145,15 +138,9 @@ function claimDailyTask(player, date)
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie udało się odebrać nagrody')
-        triggerClientEvent(player, 'dashboard:redeemTaskResult', root, false)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie udało się odebrać nagrody'})
         return false
     end
 
-    dbQuery(claimDailyTaskResult, {player}, connection, 'SELECT `uid`, `claimed`, `progress`, `task` FROM `m-daily-tasks-history` WHERE `user` = ? AND `date` = DATE(?)', uid, date)
+    dbQuery(claimDailyTaskResult, {hash, player}, connection, 'SELECT `uid`, `claimed`, `progress`, `task` FROM `m-daily-tasks-history` WHERE `user` = ? AND `date` = DATE(?)', uid, date)
 end
-
--- for i, player in ipairs(getElementsByType('player')) do
---     updatePlayerDailyTaskProgress(player)
---     print(canPlayerClaimDailyTaskReward(player))
--- end
