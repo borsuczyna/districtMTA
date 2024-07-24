@@ -155,7 +155,6 @@ else
         assert(isElement(ped), "Expected element at argument 1, got "..type(ped))
 
         for element, data in pairs(cache) do
-            iprint(data)
             if data[2] == ped then
                 setVisible(element, bool)
             end
