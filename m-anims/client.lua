@@ -56,21 +56,29 @@ function playPedAnimation(ped, name, start, start_frame)
     playing[ped] = {name=name, start=(start or getTickCount()), frame=(start_frame or 1), update=getTickCount()}
 end
 
+function map(array, callback)
+    local new_array = {}
+    for k,v in pairs(array) do
+        new_array[k] = callback(v)
+    end
+    return new_array
+end
+
 function processPosition(position, ped, bone)
     if position:sub(1, 1) == "+" then
         local bx, by, bz = getPedBonePosition(ped, bone)
         local px, py, pz = getElementPosition(ped)
-        local x, y, z = loadstring("return " .. position:sub(2, #position))()
+        local x, y, z = unpack(map(split(position:sub(2, #position), ","), tonumber))
         x, y, z = getPositionFromElementOffset(ped, x, y, z)
         x, y, z = x - px, y - py, z - pz
         x, y, z = x + bx, y + by, z + bz
         return x, y, z
     elseif position:sub(1, 1) == "o" then
-        local x, y, z = loadstring("return " .. position:sub(2, #position))()
+        local x, y, z = unpack(map(split(position:sub(2, #position), ","), tonumber))
         x, y, z = getPositionFromElementOffset(ped, x, y, z)
         return x, y, z
     else
-        local x, y, z = loadstring("return " .. position)()
+        local x, y, z = unpack(map(split(position, ","), tonumber))
         return x, y, z
     end
 end
@@ -78,11 +86,11 @@ end
 function processRotation(rotation, ped, bone)
     if rotation:sub(1, 1) == "+" then
         local bx, by, bz = getElementBoneRotation(ped, bone)
-        local x, y, z = loadstring("return " .. rotation:sub(2, #rotation))()
+        local x, y, z = map(split(rotation:sub(2, #rotation), ","), tonumber)
         x, y, z = x + bx, y + by, z + bz
         return x, y, z
     else
-        local x, y, z = loadstring("return " .. rotation)()
+        local x, y, z = unpack(map(split(rotation, ","), tonumber))
         return x, y, z
     end
 end
