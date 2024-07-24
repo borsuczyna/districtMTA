@@ -6,12 +6,9 @@ addEvent('interface:includes-finish', true)
 addEvent('interfaceLoaded', true)
 addEvent('jobs:getPlayerJobDataResult', true)
 addEvent('avatars:onPlayerAvatarChange', true)
-addEvent('jobs:buyUpgrade', true)
-addEvent('jobs:buyUpgradeResult', true)
 addEvent('jobs:getPlayerIncomeHistoryResult', true)
 addEvent('jobs:jobStarted', true)
 addEvent('jobs:startJob', true)
-addEvent('jobs:endJobI', true)
 addEvent('jobs:endJob', true)
 
 function updateJobsData()
@@ -61,9 +58,7 @@ function setJobsVisible(visible)
         showJobsInterface()
     else
         if not visible then
-            if isInLobby() then
-                closeLobby()
-            end
+            closeLobby()
 
             exports['m-ui']:triggerInterfaceEvent('jobs', 'play-animation', false)
             jobsHideTimer = setTimer(function()
@@ -141,21 +136,6 @@ addEventHandler('jobs:getPlayerJobDataResult', resourceRoot, function(data)
     updateAvatars(topPlayersIds)
 end)
 
-addEventHandler('jobs:buyUpgrade', root, function(id)
-    if not jobGui then return end
-
-    triggerServerEvent('jobs:buyUpgrade', resourceRoot, jobGui, id)
-end)
-
-addEventHandler('jobs:buyUpgradeResult', resourceRoot, function(job, upgrade, cost)
-    if job ~= jobGui then return end
-
-    exports['m-ui']:triggerInterfaceEvent('jobs', 'upgrade-bought', {
-        upgrade = upgrade,
-        cost = cost
-    })
-end)
-
 addEventHandler('jobs:getPlayerIncomeHistoryResult', resourceRoot, function(data)
     if not data then return end
     if data.job ~= jobGui then return end
@@ -171,16 +151,4 @@ addEventHandler('jobs:jobStarted', resourceRoot, function(success, players)
     if success then
         setJobsVisible(false)
     end
-end)
-
-addEventHandler('jobs:endJobI', root, function()
-    if not jobGui then return end
-
-    triggerServerEvent('jobs:endJobI', resourceRoot)
-end)
-
-addEventHandler('jobs:endJob', root, function()
-    if not jobGui then return end
-
-    exports['m-ui']:triggerInterfaceEvent('jobs', 'job-ended')
 end)

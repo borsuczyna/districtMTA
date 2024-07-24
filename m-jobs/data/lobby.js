@@ -51,17 +51,12 @@ window.jobs_showLobbyScreen = async () => {
     jobs_refreshLobbies();
 }
 
-window.jobs_refreshLobbies = (button) => {
-    if (waiting) return;
-
-    waiting = true;
-    if (button) {
-        waitingButton = button;
-        preHTML = button.innerHTML;
-        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
-    }
-
-    mta.triggerEvent('jobs:fetchLobbies');
+window.jobs_refreshLobbies = async (button) => {
+    if (isButtonSpinner(button)) return;
+    
+    makeButtonSpinner(button);
+    await jobs_fetchLobbies();
+    makeButtonSpinner(button, false);
 }
 
 window.jobs_goBackLobbyScreen = () => {
@@ -112,19 +107,37 @@ window.jobs_closeLobby = (button) => {
     mta.triggerEvent('jobs:quitLobby');
 }
 
-window.jobs_createLobby = (button) => {
-    if (waiting) return;
+window.jobs_createLobby = async (button) => {
+    if (isButtonSpinner(button)) return;
 
-    waiting = true;
-    waitingButton = button;
-    preHTML = button.innerHTML;
+    makeButtonSpinner(button);
+    let data = await mta.fetch('jobs', 'createLobby', jobs_getCurrentJob().job);
 
-    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
-    mta.triggerEvent('jobs:createLobby');
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    } else {
+        notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+
+        if (data.status == 'success') {
+            jobs_goToMyLobbyScreen();
+        }
+    }
 }
 
-window.jobs_fetchLobbies = () => {
-    mta.triggerEvent('jobs:fetchLobbies');
+window.jobs_fetchLobbies = async () => {
+    // mta.triggerEvent('jobs:fetchLobbies');
+
+    let data = await mta.fetch('jobs', 'fetchLobbies', jobs_getCurrentJob().job);
+
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    } else {    
+        if (data.status == 'success') {
+            jobs_loadLobbies(data.lobbies);
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        }
+    }
 }
 
 window.jobs_updateLobbyScreen = (data) => {
@@ -224,12 +237,6 @@ window.jobs_startJobRequest = (button) => {
     button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
     mta.triggerEvent('jobs:startJobI');
 }
-
-addEvent('jobs', 'lobby-created', (success) => {
-    waiting = false;
-    waitingButton.innerHTML = preHTML;
-    if (success) jobs_goToMyLobbyScreen();
-});
 
 addEvent('jobs', 'lobby-left', (success) => {
     waiting = false;

@@ -390,79 +390,61 @@
     let updatesData = [];
     window.login_waiting = false;
 
-    async function login_loginInternal() {
+    window.login_login = async (button) => {
+        if (isButtonSpinner(button)) return;
+        
+        makeButtonSpinner(button);
+
         let login = document.querySelector('#login-view #login-i').value;
         let password = document.querySelector('#login-view #password').value;
 
-        mta.triggerEvent('login:login', login, password);
+        let data = await mta.fetch('login', 'login', [login, password]);
 
-        return new Promise((resolve) => {
-            addEvent('login', 'login-response', (response) => {
-                removeEvent('login', 'login-response');
-                setTimeout(resolve, 300, response);
-            });
-        });
-    }
-
-    window.login_login = async (button) => {
-        if (window.login_waiting) return;
-        window.login_waiting = true;
-
-        let preHTML = button.innerHTML;
-        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
-
-        let success = await login_loginInternal();
-
-        if (success) {
-            login_hideLoginPanel();
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
         } else {
-            button.innerHTML = preHTML;
-            window.login_waiting = false;
+            notis_addNotification(data.status, data.title, data.message);
+
+            if (data.status == 'success') {
+                login_hideLoginPanel();
+            }
         }
-    }
 
-    async function registerInternal() {
-        let email = document.querySelector('#register-view #email').value;
-        let login = document.querySelector('#register-view #login-i-r').value;
-        let password = document.querySelector('#register-view #password-r').value;
-
-        mta.triggerEvent('login:register', email, login, password);
-
-        return new Promise((resolve) => {
-            addEvent('login', 'register-response', (response) => {
-                removeEvent('login', 'register-response');
-                setTimeout(resolve, 300, response);
-            });
-        });
+        makeButtonSpinner(button, false);
     }
 
     window.login_register = async (button) => {
+        if (isButtonSpinner(button)) return;
+        
+        makeButtonSpinner(button);
+
         let accept = document.querySelector('#register-view .switch-box').classList.contains('switched');
         if (!accept) {
+            makeButtonSpinner(button, false);
             notis_addNotification('error', 'Rejestracja', 'Musisz zaakceptować regulamin serwera!')
             return;
         }
 
-        if (window.login_waiting) return;
-        window.login_waiting = true;
+        let email = document.querySelector('#register-view #email').value;
+        let login = document.querySelector('#register-view #login-i-r').value;
+        let password = document.querySelector('#register-view #password-r').value;
 
-        let preHTML = button.innerHTML;
-        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
+        let data = await mta.fetch('login', 'register', [email, login, password]);
+        
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.title, data.message);
+            
+            if (data.status == 'success') {
+                login_toggleLoginView('login-view');
 
-        let success = await registerInternal();
-
-        button.innerHTML = preHTML;
-        window.login_waiting = false;
-
-        if (success) {
-            login_toggleLoginView('login-view');
-
-            let login = document.querySelector('#register-view #login-i-r');
-            let password = document.querySelector('#register-view #password-r');
-
-            document.querySelector('#login-view #login-i').value = login.value;
-            document.querySelector('#login-view #password').value = password.value;
+                document.querySelector('#login-view #login-i').value = login;
+                document.querySelector('#login-view #password').value = password;
+            }
         }
+
+        makeButtonSpinner(button, false);
     }
 
     window.login_togglePassword = (view) => {
@@ -510,7 +492,6 @@
 
     function login_setProgress(progress) {
         let updateScreen = document.querySelector('#login #update');
-        // updateScreen.querySelector('.progress').style.width = progress + '%';
         updateScreen.querySelectorAll('.progress').forEach((progressBar) => {
             progressBar.style.width = progress + '%';
         });
@@ -556,8 +537,7 @@
             ${renderUpdate(nextUpdate)}
             ${renderUpdate(update)}
         `;
-        // updateScreen.style.backgroundImage = `url(${image})`;
-        // updateScreen.style.backgroundImage = `url(${image})`;
+
         setTimer('login', login_setProgress, 100, 100);
         setTimer('login', login_changeUpdateImages, 10000 - 1000);
         setTimer('login', login_changeUpdate, 10000, nextUpdate);

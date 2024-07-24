@@ -1,5 +1,5 @@
 local sx, sy = guiGetScreenSize()
-local zoom = sx < 2048 and math.min(2.2, 2048/sx) or 1
+local zoomOriginal = sx < 2048 and math.min(2.2, 2048/sx) or 1
 local lastArrowAngle = 0
 local defaultSpeedo = 'compact'
 local noSpeedos = {481}
@@ -10,11 +10,11 @@ local speedos = {
 }
 
 local fonts = {
-    [1] = exports['m-ui']:getFont('Inter-Medium', 16/zoom),
-    [2] = exports['m-ui']:getFont('DigitalNumbers-Regular', 40/zoom),
-    [3] = exports['m-ui']:getFont('DigitalNumbers-Regular', 14/zoom),
-    [4] = exports['m-ui']:getFont('DigitalNumbers-Regular', 11/zoom),
-    [5] = exports['m-ui']:getFont('DigitalNumbers-Regular', 16/zoom),
+    [1] = exports['m-ui']:getFont('Inter-Medium', 16),
+    [2] = exports['m-ui']:getFont('DigitalNumbers-Regular', 40),
+    [3] = exports['m-ui']:getFont('DigitalNumbers-Regular', 14),
+    [4] = exports['m-ui']:getFont('DigitalNumbers-Regular', 11),
+    [5] = exports['m-ui']:getFont('DigitalNumbers-Regular', 16),
 }
 local textsWidths = {
     ['000'] = dxGetTextWidth('000', 1, fonts[2]),
@@ -71,6 +71,9 @@ local function renderSpeedo()
         end
     end
 
+    local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
+    local zoom = zoomOriginal * ( 20 / interfaceSize )
+
     if speedo == 'modern' then
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/background.png')
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
@@ -78,9 +81,9 @@ local function renderSpeedo()
         dxDrawImageSection(sx - 245/zoom, sy - 370/zoom, 98/zoom * (fuel / 100), 350/zoom, 242, 0, 190 * (fuel / 100), 680, 'data/modern/fuel-2.png', 0, 0, 0, tocolor(0, 255, 0))
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/arrow.png', -143 + lastArrowAngle, 0, 0, tocolor(255, 255, 255, 255))
         
-        dxDrawText('000', sx - 6/zoom - textsWidths['000'], sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 35), 1, fonts[2], 'right', 'center')
-        dxDrawText(math.floor(speed), sx - 6/zoom - textsWidths['000'], sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 255), 1, fonts[2], 'right', 'center')
-        dxDrawText(('%07d'):format(mileage), sx - 194/zoom, sy - 190/zoom + textsWidths['000-h']/2, nil, nil, tocolor(255, 255, 255, 255), 1, fonts[3], 'center', 'top')
+        dxDrawText('000', sx - 15/zoom - textsWidths['000']/zoom, sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 35), 0.8/zoom, fonts[2], 'right', 'center')
+        dxDrawText(math.floor(speed), sx - 15/zoom - textsWidths['000']/zoom, sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 255), 0.8/zoom, fonts[2], 'right', 'center')
+        dxDrawText(('%07d'):format(mileage), sx - 194/zoom, sy - 195/zoom + textsWidths['000-h']/2/zoom, nil, nil, tocolor(255, 255, 255, 255), 0.8/zoom, fonts[3], 'center', 'top')
         
         local iconSize = 25/zoom
         local gap = 10/zoom
@@ -100,7 +103,7 @@ local function renderSpeedo()
         dxDrawImage(sx - 255/zoom, sy - 230/zoom, 48/zoom, 214/zoom, 'data/old/gauge.png', math.min(-92 + speed/200 * 184, 92), 0, 90/zoom)
         dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/overlay.png')
         dxDrawImage(sx - 500/zoom, sy - 140/zoom, 33/zoom, 190/zoom, 'data/old/fuel-gauge.png', -100 + fuel * 1.3)
-        dxDrawText(('%07d'):format(mileage), sx - 230/zoom, sy - 44/zoom, nil, nil, tocolor(0, 0, 0, 255), 1, fonts[4], 'center', 'center')
+        dxDrawText(('%07d'):format(mileage), sx - 230/zoom, sy - 44/zoom, nil, nil, tocolor(0, 0, 0, 255), 1/zoom, fonts[4], 'center', 'center')
     
         local iconSize = 25/zoom
         local gap = 10/zoom
@@ -117,16 +120,16 @@ local function renderSpeedo()
         dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
         dxDrawImage(sx - 400/zoom, sy - 190/zoom, 26/zoom, 153/zoom, 'data/compact/fuel-gauge.png', -227 + fuel * 2.3)
 
-        dxDrawText('km/h', sx - 190/zoom, sy - 250/zoom, nil, nil, tocolor(255, 255, 255, 155), 1, fonts[1], 'center', 'center')
+        dxDrawText('km/h', sx - 190/zoom, sy - 250/zoom, nil, nil, tocolor(255, 255, 255, 155), 1/zoom, fonts[1], 'center', 'center')
 
         local mileageText = ('%07d'):format(mileage)
-        local w, h = textsWidths['0'], textsWidths['0-h']
+        local w, h = textsWidths['0']/zoom, textsWidths['0-h']/zoom
         local gap = 9/zoom
 
         for i = 1, #mileageText do
             local x = (sx - 185/zoom) - (#mileageText * (w + gap))/2 + (i - 1) * (w + gap)
             dxDrawRectangle(x - w/2 - 2/zoom, sy - 112/zoom - h/2, w + 4/zoom, h + 4/zoom, tocolor(70, 70, 70, 140))
-            dxDrawText(mileageText:sub(i, i), x, sy - 110/zoom, nil, nil, tocolor(255, 255, 255, 200), 1, fonts[5], 'center', 'center')
+            dxDrawText(mileageText:sub(i, i), x, sy - 110/zoom, nil, nil, tocolor(255, 255, 255, 200), 1/zoom, fonts[5], 'center', 'center')
         end
 
         local iconSize = 25/zoom
@@ -149,7 +152,7 @@ local function renderSpeedo()
         dxDrawImage(sx - 214/zoom, sy - 290/zoom, 42/zoom, 191/zoom, 'data/muscle/gauge.png', -135 + mphSpeed/120 * 270, 0, 0)
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
 
-        dxDrawText(('%07d'):format(mileage), sx - 193/zoom, sy - 107/zoom, nil, nil, tocolor(0, 0, 0, 255), 1, fonts[4], 'center', 'center')
+        dxDrawText(('%07d'):format(mileage), sx - 193/zoom, sy - 107/zoom, nil, nil, tocolor(0, 0, 0, 255), 1/zoom, fonts[4], 'center', 'center')
 
         local iconSize = 22/zoom
         local gap = 10/zoom

@@ -87,4 +87,6 @@
     <export function='disAllowVehicleAttach' type='server'/>
 
     <export function='premiumChatDiscord' http='true'/>
+
+    <min_mta_version server='1.6.0' client='1.6.0'/>
 </meta>

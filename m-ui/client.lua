@@ -31,6 +31,7 @@ function setInterfaceVisible(name, visible)
     else
         visibleInterfaces[name] = nil
     end
+
 end
 
 function isInterfaceVisible(name)
@@ -62,8 +63,9 @@ function addSingleInterface(name)
 end
 
 function setRemSize(size)
-    if not uiLoaded or not browser then return end
+    if not uiLoaded or not browser or not size then return end
     executeBrowserJavascript(browser, ('setRemSize(%d)'):format(size))
+    setElementData(localPlayer, "interface:size", size)
 end
 
 addEvent('interface:setRemSize', true)
@@ -205,7 +207,7 @@ end
 
 addEvent('ui:fetchData', true)
 addEventHandler('ui:fetchData', root, function(data)
-    triggerServerEvent('ui:fetchData', resourceRoot, fromJSON(data))
+    triggerServerEvent('ui:fetchData', resourceRoot, teaEncode(data, 'keep calm and play district mta'))
 end)
 
 addEvent('ui:fetchDataResponse', true)

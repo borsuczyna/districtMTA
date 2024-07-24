@@ -8,6 +8,8 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
     if job ~= 'trash' then return end
 
     local vehicle = createVehicle(408, settings.vehicleSpawn, settings.vehicleSpawnRot)
+    setElementData(vehicle, 'vehicle:job', {players = players, hash = hash})
+
     for i, player in ipairs(players) do
         if i <= 2 then
             warpPedIntoVehicle(player, vehicle, i - 1)

@@ -73,7 +73,7 @@ Hulajnoga automatycznie zniknie po minucie nieaktywności.</span>
         if (data == null) {
             notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
         } else {
-            notis_addNotification(data.status == 'success' ? 'success' : 'error', data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
         }
         
         makeButtonSpinner(button, false);

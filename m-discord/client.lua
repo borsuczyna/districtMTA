@@ -6,6 +6,7 @@ function updateDiscordPresence()
     setDiscordRichPresenceState('Gra jako '..getPlayerName(localPlayer))
     setDiscordRichPresenceDetails(state .. ' (1 z '.. max ..')')
     setDiscordRichPresenceAsset('logo', 'districtMTA')
+    setDiscordRichPresenceButton(1, 'Dołącz do serwera', 'https://discord.gg/85Jjz2CZpT')
     
     if max == #getElementsByType('player') then
         setDiscordRichPresencePartySize(0, 0)

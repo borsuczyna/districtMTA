@@ -4,42 +4,6 @@ window.jobs_setTopPlayers = (topPlayers) => {
         topPlayers[0],
         topPlayers[2]
     ];
-    // [
-    //     {
-    //         "id": "12",
-    //         "name": "ssdas",
-    //         "avatar": "null",
-    //         "points": "32"
-    //     },
-    //     {
-    //         "id": "13",
-    //         "name": "novers",
-    //         "avatar": "null",
-    //         "points": "15"
-    //     },
-    //     {
-    //         "id": "11",
-    //         "name": "borsuczyna",
-    //         "avatar": "null",
-    //         "points": "5"
-    //     }
-    // ]
-
-    // <div class="item small second">
-    //     <div class="avatar"></div>
-    //     <span>borsuczyna</span>
-    //     <span class="points">386</span>
-    // </div>
-    // <div class="item first">
-    //     <div class="avatar"></div>
-    //     <span>borsuczyna</span>
-    //     <span class="points">386</span>
-    // </div>
-    // <div class="item small third">
-    //     <div class="avatar"></div>
-    //     <span>borsuczyna</span>
-    //     <span class="points">386</span>
-    // </div>
 
     let classNames = ['first', 'second', 'third'];
     let list = document.querySelector('#jobs #top-players');

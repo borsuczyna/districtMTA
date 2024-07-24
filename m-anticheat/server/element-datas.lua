@@ -18,7 +18,7 @@ local lockedElementDatas = {
 local selfElementDatas = {
     'player:afk', 'player:blockedDMs', 'player:blockedDMsReason',
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
-    'player:blockedPremiumChat',
+    'player:blockedPremiumChat', 'player:interfaceSize'
 }
 
 function table.find(t, value)

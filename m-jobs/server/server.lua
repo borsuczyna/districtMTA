@@ -1,5 +1,5 @@
 addEvent('jobs:getPlayerJobData', true)
-addEvent('jobs:buyUpgrade', true)
+addEvent('jobs:buyUpgrade')
 
 function getPlayerJobDataResult(dbResult, player, job)
     if not dbResult then return end
@@ -77,7 +77,7 @@ end
 
 addEventHandler('jobs:getPlayerJobData', resourceRoot, getPlayerJobData)
 
-function buyUpgradeResult(dbResult, player, job, upgrade)
+function buyUpgradeResult(dbResult, hash, player, job, upgrade)
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
@@ -85,29 +85,29 @@ function buyUpgradeResult(dbResult, player, job, upgrade)
     local result = dbPoll(dbResult, 0)
     if not result then return end
 
-    local data = result[1]
+    local data = result[1] or {upgradePoints = 0}
     if not data then return end
 
     local cost = jobs[job].upgrades[upgrade].points
 
     if data.upgradePoints < cost then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie masz wystarczająco punktów do zakupu tego ulepszenia')
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Nie masz wystarczająco punktów do zakupu tego ulepszenia'})
         return
     end
 
     dbExec(exports['m-mysql']:getConnection(), 'UPDATE `m-jobs-data` SET upgradePoints = ? WHERE user = ? AND job = ?', data.upgradePoints - cost, uid, job)
     dbExec(exports['m-mysql']:getConnection(), 'INSERT INTO `m-jobs-upgrades` (user, job, upgrade) VALUES (?, ?, ?)', uid, job, upgrade)
 
-    triggerClientEvent(player, 'jobs:buyUpgradeResult', resourceRoot, job, upgrade, cost)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Ulepszenie zakupione', upgrade = upgrade, cost = cost})
 end
 
-addEventHandler('jobs:buyUpgrade', resourceRoot, function(job, upgrade)
+addEventHandler('jobs:buyUpgrade', resourceRoot, function(hash, client, job, upgrade)
     upgrade = tonumber(upgrade)
 
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     local uid = getElementData(client, 'player:uid')
     if not uid then return end
 
+    print(job, upgrade)
     if not jobs[job] then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Invalid job')
         return
@@ -122,7 +122,7 @@ addEventHandler('jobs:buyUpgrade', resourceRoot, function(job, upgrade)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    dbQuery(buyUpgradeResult, {client, job, upgrade}, connection, [[
+    dbQuery(buyUpgradeResult, {hash, client, job, upgrade}, connection, [[
         SELECT points, upgradePoints 
         FROM `m-jobs-data` 
         WHERE user = ? AND job = ?

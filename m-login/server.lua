@@ -2,8 +2,6 @@ local waitingHashes = {}
 local enbClients = {}
 local loadedResources = {}
 
-addEvent('login:login', true)
-addEvent('login:register', true)
 addEvent('login:spawn', true)
 addEvent('onAccountResponse', true)
 
@@ -32,72 +30,60 @@ addEventHandler('onAccountResponse', root, function(hash, response)
     if not data then return end
     local client = data[1]
     local time = data[2]
-    local timer = data[3]
 
     if not client then return end
     if time < getTickCount() then return end
 
-    killTimer(timer)
     waitingHashes[hash] = nil
 
     if not response[2] then
         local title = response[1] == 'login' and 'Błąd logowania' or 'Błąd rejestracji'
-        exports['m-notis']:addNotification(client, 'error', title, response[3])
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = title, message = response[3]})
     else
-        exports['m-notis']:addNotification(client, 'success', 'Sukces', response[3])
+        exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = response[3]})
 
         if response[1] == 'login' then
             exports['m-core']:assignPlayerData(client, response[4])
         end
     end
-
-    triggerClientEvent(client, 'login:' .. response[1] .. '-response', resourceRoot, response[2])
 end)
 
-function loginFailed(client, hash)
-    exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania')
-    triggerClientEvent(client, 'login:login-response', resourceRoot, false)
-    waitingHashes[hash] = nil
-end
-
-addEventHandler('login:login', resourceRoot, function(login, password)
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-    if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true)
+addEvent('login:login')
+addEventHandler('login:login', resourceRoot, function(hash, player, login, password)
+    if getElementData(player, 'player:logged') or getElementData(player, 'player:uid') then
+        exports['m-anticheat']:setPlayerTriggerLocked(player, true)
         return
     end
 
-    local hash, message = exports['m-core']:loginToAccount({usernameOrEmail = login, password = password})
-    if not hash then
-        exports['m-notis']:addNotification(client, 'error', 'Błąd logowania', message)
-        triggerClientEvent(client, 'login:login-response', resourceRoot, false)
+    local message = exports['m-core']:loginToAccount(hash, {usernameOrEmail = login, password = password})
+    if message then
+
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd logowania', message = message})
     end
 
-    local timer = setTimer(loginFailed, 5000, 1, client, hash)
-    waitingHashes[hash] = {client, getTickCount() + 5000, timer}
+    waitingHashes[hash] = {player, getTickCount() + 5000}
 end)
 
-addEventHandler('login:register', resourceRoot, function(email, login, password)
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-    if getElementData(client, 'player:logged') or getElementData(client, 'player:uid') then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true)
+addEvent("login:register")
+addEventHandler('login:register', resourceRoot, function(hash, player, email, login, password)
+    print(email, login, password)
+    if getElementData(player, 'player:logged') or getElementData(player, 'player:uid') then
+        exports['m-anticheat']:setPlayerTriggerLocked(player, true)
         return
     end
 
-    local hash, message = exports['m-core']:createAccount({
+    local message = exports['m-core']:createAccount(hash, {
         username = login,
         password = password,
         email = email,
-        ip = getPlayerIP(client),
-        serial = getPlayerSerial(client),
+        ip = getPlayerIP(player),
+        serial = getPlayerSerial(player),
     })
-    if not hash then
-        exports['m-notis']:addNotification(client, 'error', 'Błąd rejestracji', message)
-        triggerClientEvent(client, 'login:register-response', resourceRoot, false)
+    if message then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd rejestracji', message = message})
     end
 
-    local timer = setTimer(loginFailed, 5000, 1, client, hash)
-    waitingHashes[hash] = {client, getTickCount() + 5000, timer}
+    waitingHashes[hash] = {player, getTickCount() + 5000}
 end)
 
 addEventHandler('login:spawn', resourceRoot, function(data)

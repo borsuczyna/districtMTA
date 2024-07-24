@@ -1,4 +1,4 @@
-addEvent('jobs:endJobI', true)
+addEvent('jobs:endJobI')
 addEvent('jobs:endJob', true)
 addEvent('jobs:finishJob', true)
 addEvent('jobs:startJob', true)
@@ -136,14 +136,15 @@ function finishPlayerJob(player)
     end
 end
 
-addEventHandler('jobs:endJobI', resourceRoot, function()
-    local job = getElementData(client, 'player:job')
+addEventHandler('jobs:endJobI', resourceRoot, function(hash, player)
+    local job = getElementData(player, 'player:job')
     if not job then
-        triggerClientEvent(client, 'jobs:endJob', resourceRoot)
+        triggerClientEvent(player, 'jobs:endJob', resourceRoot)
         return
     end
 
-    leaveJob(client)
+    leaveJob(player)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Zakończono pracę'})
 end)
 
 addEventHandler('jobs:endJob', resourceRoot, function()

@@ -2,10 +2,6 @@ local sx, sy = guiGetScreenSize()
 local shader, screenSource, cameraObject, cameraTimer, dontDrawBlackWhite;
 
 addEvent('interface:load', true)
-addEvent('login:login', true)
-addEvent('login:register', true)
-addEvent('login:login-response', true)
-addEvent('login:register-response', true)
 addEvent('login:hideLoginPanel', true)
 addEvent('core:enbDetected', true)
 
@@ -32,22 +28,6 @@ addEventHandler('interface:load', root, function(name)
         setRememberedData()
         exports['m-ui']:setInterfaceZIndex('scoreboard', 999)
     end
-end)
-
-addEventHandler('login:login', root, function(login, password)
-    triggerServerEvent('login:login', resourceRoot, login, password)
-end)
-
-addEventHandler('login:register', root, function(email, login, password)
-    triggerServerEvent('login:register', resourceRoot, email, login, password)
-end)
-
-addEventHandler('login:login-response', root, function(success)
-    exports['m-ui']:triggerInterfaceEvent('login', 'login-response', success)
-end)
-
-addEventHandler('login:register-response', root, function(success)
-    exports['m-ui']:triggerInterfaceEvent('login', 'register-response', success)
 end)
 
 addEventHandler('login:hideLoginPanel', root, function(remember, login, password)

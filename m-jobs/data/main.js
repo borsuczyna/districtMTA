@@ -9,15 +9,22 @@ window.jobs_startJob = (button) => {
     }
 }
 
-window.jobs_endJob = (button) => {
-    if (waiting) return;
+window.jobs_getCurrentJob = () => currentJob;
 
-    waiting = true;
-    waitingButton = button;
-    preHTML = button.innerHTML;
+window.jobs_endJob = async (button) => {
+    if (isButtonSpinner(button)) return;
+    
+    makeButtonSpinner(button);
+    let data = await mta.fetch('jobs', 'endJobI');
 
-    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
-    mta.triggerEvent('jobs:endJobI');
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        makeButtonSpinner(button, false);
+    } else if (data.status == 'success') {
+        makeButtonSpinner(button, false);
+        button.innerHTML = 'Rozpocznij pracę';
+        currentJob.current = false;
+    }
 }
 
 window.jobs_startOrEndJob = (button) => {
@@ -68,10 +75,4 @@ addEvent('jobs', 'play-animation', async (appear) => {
         document.querySelector('#jobs #my-lobby-wrapper').style.opacity = appear ? '1' : '0';
         document.querySelector('#jobs #my-lobby-wrapper').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
     }
-});
-
-addEvent('jobs', 'job-ended', () => {
-    waiting = false;
-    waitingButton.innerHTML = 'Rozpocznij pracę';
-    currentJob.current = false;
 });

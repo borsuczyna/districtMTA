@@ -1,5 +1,5 @@
-addEvent('jobs:createLobby', true)
-addEvent('jobs:fetchLobbies', true)
+addEvent('jobs:createLobby')
+addEvent('jobs:fetchLobbies')
 addEvent('jobs:quitLobby', true)
 addEvent('jobs:joinLobby', true)
 addEvent('jobs:kickFromLobby', true)
@@ -131,8 +131,7 @@ function updateLobby(player)
     return true
 end
 
-addEventHandler('jobs:fetchLobbies', resourceRoot, function(job)
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+addEventHandler('jobs:fetchLobbies', resourceRoot, function(hash, player, job)
     if not jobs[job] then return end
     
     local filtered = {}
@@ -143,22 +142,24 @@ addEventHandler('jobs:fetchLobbies', resourceRoot, function(job)
         end
     end
 
-    triggerClientEvent(client, 'jobs:fetchLobbiesResult', resourceRoot, filtered)
+    -- triggerClientEvent(client, 'jobs:fetchLobbiesResult', resourceRoot, filtered)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', lobbies = filtered})
 end)
 
-addEventHandler('jobs:createLobby', resourceRoot, function(job)
-    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+addEventHandler('jobs:createLobby', resourceRoot, function(hash, client, job)
     if not jobs[job] then return end
 
     local success = createLobby(job, client, jobs[job].lobbySize)
     if not success then
-        triggerClientEvent(client, 'jobs:lobbyCreated', resourceRoot, false)
-        exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Posiadasz lub jesteś w lobby')
+        -- triggerClientEvent(client, 'jobs:lobbyCreated', resourceRoot, false)
+        -- exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Posiadasz lub jesteś w lobby')
+        exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Posiadasz lub jesteś w lobby'})
         return
     end
     
-    exports['m-notis']:addNotification(client, 'success', 'Sukces', 'Lobby zostało utworzone')
-    triggerClientEvent(client, 'jobs:lobbyCreated', resourceRoot, true)
+    -- exports['m-notis']:addNotification(client, 'success', 'Sukces', 'Lobby zostało utworzone')
+    -- triggerClientEvent(client, 'jobs:lobbyCreated', resourceRoot, true)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Lobby zostało utworzone'})
     sendPlayerUID(client)
     updateLobby(client)
 end)

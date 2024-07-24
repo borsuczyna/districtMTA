@@ -1,7 +1,3 @@
-addEvent('jobs:fetchLobbies', true)
-addEvent('jobs:fetchLobbiesResult', true)
-addEvent('jobs:createLobby', true)
-addEvent('jobs:lobbyCreated', true)
 addEvent('jobs:quitLobby', true)
 addEvent('jobs:lobbyLeft', true)
 addEvent('jobs:lobbyClosed', true)
@@ -19,31 +15,6 @@ local inLobby = false
 function isInLobby()
     return inLobby
 end
-
-addEventHandler('jobs:fetchLobbies', root, function()
-    if not jobGui then return end
-
-    triggerServerEvent('jobs:fetchLobbies', resourceRoot, jobGui)
-end)
-
-addEventHandler('jobs:fetchLobbiesResult', resourceRoot, function(lobbies)
-    if not lobbies then return end
-
-    exports['m-ui']:setInterfaceData('jobs', 'lobbies', lobbies)
-end)
-
-addEventHandler('jobs:createLobby', root, function()
-    if not jobGui then return end
-
-    triggerServerEvent('jobs:createLobby', resourceRoot, jobGui)
-end)
-
-addEventHandler('jobs:lobbyCreated', resourceRoot, function(success)
-    if not jobGui then return end
-
-    exports['m-ui']:triggerInterfaceEvent('jobs', 'lobby-created', success)
-    inLobby = success
-end)
 
 addEventHandler('jobs:quitLobby', root, function()
     if not jobGui then return end

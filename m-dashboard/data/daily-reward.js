@@ -57,7 +57,7 @@ window.dashboard_redeemDailyReward = async (button) => {
     if (data == null) {
         notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
     } else {
-        notis_addNotification(data.status == 'success' ? 'success' : 'error', data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
     
         if (data.status == 'success') {
             showNextDailyReward();

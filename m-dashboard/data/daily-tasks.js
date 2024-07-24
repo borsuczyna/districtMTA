@@ -45,7 +45,7 @@ window.dashboard_claimDailyTask = async (button, date) => {
     if (data == null) {
         notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
     } else {
-        notis_addNotification(data.status == 'success' ? 'success' : 'error', data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
     
         if (data.status == 'success') {
             button.parentElement.remove();
