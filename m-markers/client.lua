@@ -60,6 +60,7 @@ function updateMarker(marker)
             r2 = r2, g2 = g2, b2 = b2
         }
 
+        attachElements(markersData[marker].object, marker, 0, 0, 0.4)
         setObjectScale(markersData[marker].object, squareSize and squareSize[1] or size, squareSize and squareSize[2] or size, 1)
         updateRenderTarget(marker, markersData[marker].rt)
         setElementDoubleSided(markersData[marker].object, true)
@@ -70,7 +71,6 @@ function updateMarker(marker)
         dxSetShaderValue(markersData[marker].shader, 'isSquare', not not squareSize)
         setElementCollisionsEnabled(markersData[marker].object, false)
         engineApplyShaderToWorldTexture(markersData[marker].shader, '*', markersData[marker].object)
-
     end
 
     setMarkerColor(marker, r, g, b, 0)
@@ -135,7 +135,7 @@ function renderMarkers()
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, updateMarkers)
-addEventHandler('onClientRender', root, renderMarkers)
+addEventHandler('onClientPreRender', root, renderMarkers)
 
 addEventHandler('onClientElementStreamIn', root, function()
     if getElementType(source) == 'marker' then
