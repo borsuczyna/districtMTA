@@ -107,7 +107,6 @@ addEventHandler('jobs:buyUpgrade', resourceRoot, function(hash, client, job, upg
     local uid = getElementData(client, 'player:uid')
     if not uid then return end
 
-    print(job, upgrade)
     if not jobs[job] then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Invalid job')
         return
