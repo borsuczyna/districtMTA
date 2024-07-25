@@ -86,7 +86,7 @@ function renderRadar()
             if fileExists('data/images/blips/'..blipIcon..'.png') then
                 local distance = getDistanceBetweenPoints2D(x, y, bx, by)
                 if distance <= visible then
-                    local dist = math.min(distance/zoom/1.44, radarW/2)
+                    local dist = math.min(distance/1.3/zoom, radarW/2)
                     if (visible == 9999 and dist < radarW/2) or visible ~= 9999 then
                         local angle = findRotation(x, y, bx, by)
                         angle = angle - cz + 180
