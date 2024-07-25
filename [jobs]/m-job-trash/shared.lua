@@ -1,5 +1,6 @@
 settings = {
     jobStart = Vector3(1922.129, -1610.362, 13.383),
+    trashDump = Vector3(1941.664, -1631.658, 12.383),
     vehicleSpawn = Vector3(1910.667, -1614.267, 13.925),
     vehicleSpawnRot = Vector3(0, 0, -90),
 }
@@ -31,6 +32,23 @@ trash = {
     {2514.915, -1688.641, 13.583, -0.000, 0.000, 49.676},
     {2462.183, -1690.876, 13.512, -0.000, 0.000, 0.169},
 }
+
+objectModels = {
+    {1337, -0.4, {23, 0.44, 0, 0.45, 0, 220, 90}, true},
+    {1265, -0.5, {24, 0.2, 0, -0.1, 0, -90, 0}, false}
+}
+
+function getRandomTrashModel()
+    return unpack(objectModels[math.random(1, #objectModels)])
+end
+
+function getTrashInfoByModel(model)
+    for k,v in pairs(objectModels) do
+        if v[1] == model then
+            return unpack(v)
+        end
+    end
+end
 
 function getPositionFromElementOffset(element,offX,offY,offZ)
     local m = getElementMatrix ( element )  -- Get the matrix

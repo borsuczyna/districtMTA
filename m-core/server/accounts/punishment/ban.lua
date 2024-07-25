@@ -11,6 +11,7 @@ function tempBan(player, bannedBy, time, timeUnit, discordReason, reason)
 end
 
 function permBan(player, bannedBy, discordReason, reason)
+    print(player, bannedBy, discordReason, reason)
     if type(bannedBy) ~= 'string' then
         bannedBy = getPlayerName(bannedBy)
     end

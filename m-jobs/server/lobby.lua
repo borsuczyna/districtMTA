@@ -4,7 +4,7 @@ addEvent('jobs:quitLobby', true)
 addEvent('jobs:joinLobby', true)
 addEvent('jobs:kickFromLobby', true)
 addEvent('jobs:startJobI', true)
-addEvent('jobs:startJob', true)
+addEvent('jobs:startJob')
 
 local lobbies = {}
 

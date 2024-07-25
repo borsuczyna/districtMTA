@@ -14,6 +14,7 @@ local objects = {}
 local blips = {}
 local markers = {}
 local data = {}
+local lastEventSend = 0
 
 function findElementByHash(array, hash)
     for i, object in ipairs(array) do
@@ -30,14 +31,19 @@ function updateColshape(object, colshape)
 
     if colshape then
         local size = colshape.size or 2
-        local shape = createColSphere(0, 0, 0, size)
-        attachElements(shape, object.element, 0, 0, 0)
+        local shape = createColSphere(object.position[1], object.position[2], object.position[3], size)
+        if colshape.attached then
+            attachElements(shape, object.element, 0, 0, 0)
+        end
 
         if colshape.event then
             addEventHandler('onClientColShapeHit', shape, function(hitElement, matchingDimension)
                 if hitElement ~= localPlayer or not matchingDimension then return end
+                if getTickCount() - lastEventSend < 1000 then return end
 
+                print(getTickCount())
                 triggerServerEvent('jobs:colshapeHit', resourceRoot, object.hash)
+                lastEventSend = getTickCount()
             end)
         end
 
@@ -56,8 +62,10 @@ function updateObjectBlip(object, blip)
     end
 
     if blip then
-        local element = createBlip(0, 0, 0, blip.icon, 1, 255, 255, 255, 255, blip.visibleDistance)
-        attachElements(element, object.element)
+        local element = createBlip(object.position[1], object.position[2], object.position[3], blip.icon, 1, 255, 255, 255, 255, blip.visibleDistance)
+        if blip.attached then
+            attachElements(element, object.element, 0, 0, 0)
+        end
 
         object.blip = element
     end
@@ -81,6 +89,25 @@ function updateObjectBoneAttach(object, attach)
     end
 end
 
+function updateObjectGhost(object, ghost)
+    if ghost then
+        if not object.ghost or not isElement(object.ghost) then
+            object.ghost = createObject(object.model, object.position[1], object.position[2], object.position[3], object.rotation[1], object.rotation[2], object.rotation[3])
+            setElementAlpha(object.ghost, 155)
+            setElementCollisionsEnabled(object.ghost, false)
+        end
+
+        setElementModel(object.ghost, object.model)
+        setElementPosition(object.ghost, object.position[1], object.position[2], object.position[3])
+        setElementRotation(object.ghost, object.rotation[1], object.rotation[2], object.rotation[3])
+    else
+        if object.ghost and isElement(object.ghost) then
+            destroyElement(object.ghost)
+            object.ghost = nil
+        end
+    end
+end
+
 function _createObject(object)
     local element = createObject(object.model, object.position[1], object.position[2], object.position[3], object.rotation[1], object.rotation[2], object.rotation[3])
     object.element = element
@@ -98,15 +125,18 @@ function updateObject(object)
     obj.model = object.model
     obj.position = object.position
     obj.rotation = object.rotation
+    obj.customData = object.customData
 
     updateColshape(obj, object.options.colshape)
     updateObjectBlip(obj, object.options.blip)
     updateObjectBoneAttach(obj, object.options.attachBone)
     updateElementAttach(obj, object.options.attach)
+    updateObjectGhost(obj, object.options.ghost)
 
     setElementModel(obj.element, obj.model)
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
     setElementRotation(obj.element, obj.rotation[1], obj.rotation[2], obj.rotation[3])
+    setElementFrozen(obj.element, object.options.frozen or false)
 end
 
 function destroyObject(hash)
@@ -121,6 +151,10 @@ function destroyObject(hash)
         destroyElement(obj.blip)
     end
 
+    if obj.ghost and isElement(obj.ghost) then
+        destroyElement(obj.ghost)
+    end
+
     if obj.element and isElement(obj.element) then
         destroyElement(obj.element)
     end
@@ -131,6 +165,13 @@ function destroyObject(hash)
             break
         end
     end
+end
+
+function getObjectCustomData(hash, key)
+    local obj = findElementByHash(objects, hash)
+    if not obj then return end
+
+    return obj.customData[key]
 end
 
 function destroyArray(array)
@@ -152,6 +193,7 @@ end
 function destroyObjects()
     destroyArrayKey(objects, 'colshape')
     destroyArrayKey(objects, 'blip')
+    destroyArrayKey(objects, 'ghost')
     destroyArray(objects)
     objects = {}
 end
@@ -209,6 +251,24 @@ function _createMarker(marker)
     return findElementByHash(markers, marker.hash)
 end
 
+function updateMarkerEvent(marker, event)
+    if marker.event then
+        removeEventHandler('onClientMarkerHit', marker.element, marker.eventHandler)
+    end
+
+    if event then
+        marker.eventHandler = function(hitElement, matchingDimension)
+            if hitElement ~= localPlayer or not matchingDimension then return end
+            if getTickCount() - lastEventSend < 1000 then return end
+
+            triggerServerEvent('jobs:markerHit', resourceRoot, marker.hash)
+            lastEventSend = getTickCount()
+        end
+
+        addEventHandler('onClientMarkerHit', marker.element, marker.eventHandler)
+    end
+end
+
 function updateMarker(marker)
     local obj = findElementByHash(markers, marker.hash)
     if not obj then
@@ -221,6 +281,7 @@ function updateMarker(marker)
     obj.type = marker.type
 
     updateElementAttach(obj, marker.options.attach)
+    updateMarkerEvent(obj, marker.options.event)
 
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
     setMarkerSize(obj.element, obj.size)
@@ -262,6 +323,13 @@ end
 
 function getJobData(key)
     return data[key]
+end
+
+function getJobDataAsObject(key)
+    local hash = getJobData(key)
+    if not hash then return end
+
+    return findElementByHash(objects, hash)
 end
 
 addEventHandler('jobs:updateObjects', resourceRoot, function(_objects)

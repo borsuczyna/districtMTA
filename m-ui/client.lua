@@ -216,3 +216,10 @@ addEventHandler('ui:fetchDataResponse', resourceRoot, function(hash, response)
 end)
 
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)
+
+setTimer(function()
+    local result = exports['m-anticheat']:returnValue()
+    if result ~= 1 then
+        print('probably cheater') -- TODO
+    end
+end, 1000, 0)

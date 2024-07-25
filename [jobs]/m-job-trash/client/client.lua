@@ -1,6 +1,7 @@
 local renderTarget = false
 local lastRenderTargetUpdate = 0
 local fonts = {}
+local trashDumping = false
 
 local marker = createMarker(settings.jobStart + Vector3(0, 0, -1), 'cylinder', 1, 255, 140, 0, 0)
 setElementData(marker, 'marker:icon', 'work')
@@ -39,9 +40,35 @@ function updateRenderTarget()
     dxSetRenderTarget()
 end
 
-addEventHandler('onClientPreRender', root, function()
-    if getElementData(localPlayer, 'player:job') ~= 'trash' then return end
+local function updateDumpingObject()
+    local object = exports['m-jobs']:getJobDataAsObject('trashDumping')
+    if not object then
+        trashDumping = false
+        return
+    end
 
+    local jobVehicle = getElementData(localPlayer, 'player:jobVehicle')
+    if not jobVehicle or not isElement(jobVehicle) then return end
+
+    if not trashDumping then
+        trashDumping = getTickCount()
+    end
+
+    local progress = (getTickCount() - trashDumping) / 1400
+    if progress >= 1.2 then
+        progress = 1 - (progress - 1.2)
+    end
+
+    progress = math.max(math.min(getEasingValue(progress, 'OutBack'), 1), 0)
+
+    local x, y, z = getPositionFromElementOffset(jobVehicle, 0, -4 + progress * 0.5, progress)
+    local rx, ry, rz = getVehicleRotation(jobVehicle)
+    setElementCollisionsEnabled(object.element, false)
+    setElementPosition(object.element, x, y, z)
+    setElementRotation(object.element, rx + 130 * progress, ry, rz + 180)
+end
+
+local function updateJobVehicle()
     local jobVehicle = getElementData(localPlayer, 'player:jobVehicle')
     if not jobVehicle or not isElement(jobVehicle) then return end
 
@@ -54,4 +81,11 @@ addEventHandler('onClientPreRender', root, function()
     end
 
     dxDrawMaterialLine3D(x, y, z + 0.25, x, y, z - 0.25, renderTarget, 0.5 * (430 / 100), tocolor(255, 255, 255), lx, ly, lz)
+end
+
+addEventHandler('onClientPreRender', root, function()
+    if getElementData(localPlayer, 'player:job') ~= 'trash' then return end
+
+    updateDumpingObject()
+    updateJobVehicle()
 end)

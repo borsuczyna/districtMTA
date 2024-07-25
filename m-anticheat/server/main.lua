@@ -4,6 +4,6 @@ function ban(player, reason, log)
     local ip = getPlayerIP(player)
 
     exports['m-core']:permBan(player, 'Anticheat', log, reason)
-    local message = ('Zbanowano `%s` (`%s`, `%s`): %s'):format(name, serial, ip, log or reason)
+    local message = ('Banned `%s` (`%s`, `%s`): %s'):format(name, serial, ip, log or reason)
     exports['m-logs']:sendLog('anticheat', 'error', message)
 end

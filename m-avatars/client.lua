@@ -26,7 +26,7 @@ function getPlayerAvatarByUid(uid)
     return avatars[uid] or defaultAvatar
 end
 
-addEventHandler('avatars:receivePlayerAvatar', resourceRoot, function(uid, avatar)
+addEventHandler('avatars:receivePlayerAvatar', root, function(uid, avatar)
     local player = playerUids[uid]
     avatars[uid] = base64Encode(avatar)
 

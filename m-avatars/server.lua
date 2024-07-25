@@ -5,7 +5,7 @@ local avatarUrls = {}
 
 function sendPlayerAvatar(player, uid, avatar)
     if not isElement(player) then return end
-    triggerClientEvent(player, 'avatars:receivePlayerAvatar', resourceRoot, uid, avatar)
+    triggerClientEvent(player, 'avatars:receivePlayerAvatar', root, uid, avatar)
 end
 
 function returnPlayerAvatar(responseData, responseInfo, uid)

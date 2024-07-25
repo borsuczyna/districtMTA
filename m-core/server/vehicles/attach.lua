@@ -100,6 +100,8 @@ function disAllowVehicleAttach(player)
 end
 
 function tryEnterAdditionalSeat(player)
+    if getElementData(player, 'player:carryBin') then return end
+    if not isControlEnabled(player, 'enter_exit') or not isControlEnabled(player, 'enter_passenger') then return end
     local attachVehicle = getElementData(player, 'player:attachVehicle')
     if not attachVehicle then return end
     if getElementData(player, 'player:attachedVehicle') then return end

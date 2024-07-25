@@ -1,10 +1,14 @@
-addEvent('jobs:finishJob', true)
-addEvent('jobs:startJob', true)
-addEvent('jobs:finishJobLobby', true)
-addEvent('jobs:trash:trashHit')
+addEvent('jobs:finishJob')
+addEvent('jobs:startJob')
+addEvent('jobs:finishJobLobby')
 
 local vehicles = {}
 local timers = {}
+
+defaultBlipData = {
+    icon = 41,
+    visibleDistance = 500,
+}
 
 function setPlayerTimer(player, callback, time, ...)
     if timers[player] and isTimer(timers[player]) then
@@ -35,32 +39,41 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
     setVehicleOverrideLights(vehicle, 1)
     vehicles[hash] = vehicle
 
-    local marker = exports['m-jobs']:createLobbyMarker(hash, 'cylinder', 0, 0, 0, 1, 50, 140, 255, 0, {
+    exports['m-jobs']:createLobbyMarker(hash, 'cylinder', 0, 0, 0, 1, 50, 140, 255, 0, {
         icon = 'work',
         title = 'Wywóz śmieci',
         desc = 'Tył śmieciarki',
         attach = {
             element = vehicle,
-            position = {0, -4.5, -1.5},
-        }
+            position = {0, -4.9, -1.5},
+        },
+        event = 'jobs:trash:putTrash'
+    })
+
+    exports['m-jobs']:createLobbyMarker(hash, 'cylinder', settings.trashDump.x, settings.trashDump.y, settings.trashDump.z, 4, 50, 140, 255, 0, {
+        icon = 'work',
+        title = 'Wywóz śmieci',
+        desc = 'Oddawanie śmieci',
+        event = 'jobs:trash:dumpTrash'
     })
 
     for k,v in pairs(trash) do
-        local object = exports['m-jobs']:createLobbyObject(hash, 1337, v[1], v[2], v[3] - 0.4, 0, 0, v[6] + 180, {
+        local model, offset = getRandomTrashModel()
+        local object = exports['m-jobs']:createLobbyObject(hash, model, v[1], v[2], v[3] + offset, 0, 0, v[6] + 180, {
             noTrigger = true,
             colshape = {
                 size = 1,
                 event = 'jobs:trash:trashHit'
             },
-            blip = {
-                icon = 41,
-                visibleDistance = 500
-            }
+            blip = defaultBlipData,
+            frozen = true,
+            ghost = true
         })
     end
 
     exports['m-jobs']:updateLobbyObjects(hash)
     exports['m-jobs']:setLobbyData(hash, 'trashLevel', 0)
+    exports['m-jobs']:setLobbyData(hash, 'trashmaster', vehicle)
 
     for k,v in pairs(players) do
         setElementData(v, 'player:jobVehicle', vehicle)
@@ -74,6 +87,7 @@ addEventHandler('jobs:finishJob', root, function(job, hash, player)
     removeElementData(player, 'player:carryBin')
     toggleAllControls(player, true)
 
+    if not hash then return end -- jobs system restart
     local vehicle = vehicles[hash]
     if vehicle and isElement(vehicle) then
         exports['m-core']:disAllowVehicleAttach(player)
@@ -97,30 +111,7 @@ addEventHandler('onResourceStop', resourceRoot, function()
     end
 end)
 
-local function pickUpTrash(player, hash, objectHash)
-    setElementFrozen(player, false)
-    setPedAnimation(player)
-    setElementData(player, 'player:animation', 'carry')
-    setElementData(player, 'player:carryBin', objectHash)
-    toggleAllControls(player, true)
-    toggleControl(player, 'crouch', false)
-    toggleControl(player, 'jump', false)
-    toggleControl(player, 'sprint', true) -- TODO add sprint upgrade
-
-    exports['m-jobs']:attachObjectToPlayer(hash, objectHash, player, 23, 0.44, 0, 0.45, 0, 220, 90)
-end
-
-addEventHandler('jobs:trash:trashHit', root, function(hash, player, objectHash)
-    if getElementData(player, 'player:carryBin') then return end
-
-    exports['m-jobs']:setLobbyObjectOption(hash, objectHash, 'colshape', false)
-    exports['m-jobs']:setLobbyObjectOption(hash, objectHash, 'blip', false)
-    
-    setElementFrozen(player, true)
-    toggleAllControls(player, false)
-    setPedAnimation(player, "CARRY", "putdwn", -1, false)
-
-    setPlayerTimer(player, pickUpTrash, 1000, player, hash, objectHash)
-
-    -- exports['m-jobs']:attachObjectToPlayer(hash, objectHash, player, 'head', 0.1, -0.05, 0, 0, 90, 0)
+addCommandHandler('testattach', function(plr)
+    local object = createObject(1265, 0, 0, 0)
+    exports['m-pattach']:attach(object, plr, 24, 0.2, 0, -0.1, 0, -90, 0)
 end)

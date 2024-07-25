@@ -1,9 +1,10 @@
 addEvent('jobs:endJobI')
-addEvent('jobs:endJob', true)
-addEvent('jobs:finishJob', true)
-addEvent('jobs:startJob', true)
-addEvent('jobs:finishJobLobby', true)
+addEvent('jobs:endJob')
+addEvent('jobs:finishJob')
+addEvent('jobs:startJob')
+addEvent('jobs:finishJobLobby')
 addEvent('jobs:colshapeHit', true)
+addEvent('jobs:markerHit', true)
 
 local lobbies = {}
 
@@ -80,7 +81,8 @@ function createLobbyObject(playerOrHash, model, x, y, z, rx, ry, rz, options)
         model = model or 1337,
         position = {x or 0, y or 0, z or 0},
         rotation = {rx or 0, ry or 0, rz or 0},
-        options = options
+        options = options,
+        customData = {}
     }
 
     table.insert(lobby.objects, object)
@@ -105,6 +107,37 @@ function destroyLobbyObject(playerOrHash, objectHash)
             break
         end
     end
+end
+
+function setLobbyObjectCustomData(playerOrHash, objectHash, key, value)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    local object = findElementByHash(lobby.objects, objectHash)
+    if not object then return end
+
+    object.customData[key] = value
+    triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {object})
+end
+
+function getLobbyObjectCustomData(playerOrHash, objectHash, key)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    local object = findElementByHash(lobby.objects, objectHash)
+    if not object then return end
+
+    return object.customData[key]
+end
+
+function getLobbyObjectModel(playerOrHash, objectHash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    local object = findElementByHash(lobby.objects, objectHash)
+    if not object then return end
+
+    return object.model
 end
 
 function createLobbyBlip(playerOrHash, x, y, z, icon, visibleDistance, options)
@@ -145,15 +178,30 @@ function destroyLobbyBlip(playerOrHash, hash)
     end
 end
 
--- local marker = exports['m-jobs']:createLobbyMarker(hash, 'cylinder', 0, 0, 0, 1, 255, 140, 0, 0, {
---     icon = 'work',
---     title = 'Wywóz śmieci',
---     desc = 'Tył śmieciarki',
---     attach = {
---         element = vehicle,
---         position = {0, -4, -0.5},
---     }
--- })
+function getAllLobbyObjectsWithCustomData(key)
+    local objects = {}
+    for i, lobby in ipairs(lobbies) do
+        for j, object in ipairs(lobby.objects) do
+            if object.customData[key] then
+                table.insert(objects, {
+                    lobby = lobby.hash,
+                    hash = object.hash,
+                    value = object.customData[key]
+                })
+            end
+        end
+    end
+
+    return objects
+end
+
+function getLobbyPlayers(playerOrHash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    return lobby.players
+end
+
 function createLobbyMarker(playerOrHash, markerType, x, y, z, size, r, g, b, a, options)
     local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     local options = options or {}
@@ -191,6 +239,24 @@ end
 function attachObjectToPlayer(playerOrHash, objectHash, player, bone, x, y, z, rx, ry, rz)
     local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     setLobbyObjectOption(lobby.hash, objectHash, 'attachBone', {player, bone, x, y, z, rx, ry, rz})
+end
+
+function detachObjectFromPlayer(playerOrHash, objectHash, player)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    setLobbyObjectOption(lobby.hash, objectHash, 'attachBone', false)
+end
+
+function attachObject(playerOrHash, objectHash, element, x, y, z, rx, ry, rz)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    setLobbyObjectOption(lobby.hash, objectHash, 'attach', {
+        element = element,
+        position = {x, y, z, rx, ry, rz}
+    })
+end
+
+function detachObject(playerOrHash, objectHash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    setLobbyObjectOption(lobby.hash, objectHash, 'attach', false)
 end
 
 function updateLobbyObjects(playerOrHash)
@@ -295,4 +361,15 @@ addEventHandler('jobs:colshapeHit', resourceRoot, function(objectHash)
     if not object.options.colshape or not object.options.colshape.event then return end
 
     triggerEvent(object.options.colshape.event, root, lobby.hash, client, object.hash)
+end)
+
+addEventHandler('jobs:markerHit', resourceRoot, function(markerHash)
+    local lobby = getPlayerJobLobby(client)
+    if not lobby then return end
+
+    local marker = findElementByHash(lobby.markers, markerHash)
+    if not marker then return end
+    if not marker.options.event then return end
+
+    triggerEvent(marker.options.event, root, lobby.hash, client, marker.hash)
 end)
