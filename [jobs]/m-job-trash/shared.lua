@@ -3,6 +3,10 @@ settings = {
     trashDump = Vector3(1941.664, -1631.658, 12.383),
     vehicleSpawn = Vector3(1910.667, -1614.267, 13.925),
     vehicleSpawnRot = Vector3(0, 0, -90),
+    oneKgTrashCost = 0.8,
+    trashRefillTime = 60000 * 15,
+    upgradePointChancePerKg = 0.01,
+    kgFor1TopPoint = 250,
 }
 
 trash = {
@@ -56,4 +60,13 @@ function getPositionFromElementOffset(element,offX,offY,offZ)
     local y = offX * m[1][2] + offY * m[2][2] + offZ * m[3][2] + m[4][2]
     local z = offX * m[1][3] + offY * m[2][3] + offZ * m[3][3] + m[4][3]
     return x, y, z                               -- Return the transformed point
+end
+
+function table.find(t, value)
+    for k, v in pairs(t) do
+        if v == value then
+            return k
+        end
+    end
+    return nil
 end

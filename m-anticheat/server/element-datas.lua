@@ -10,7 +10,7 @@ local lockedElementDatas = {
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
-    'vehicle:additionalSeats',
+    'vehicle:additionalSeats', 'vehicle:job'
 
     'element:model', 
 }

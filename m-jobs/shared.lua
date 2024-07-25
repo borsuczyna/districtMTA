@@ -10,16 +10,19 @@ jobs = {
         upgrades = {
             {
                 name = 'Sprinter',
+                key = 'sprinter',
                 description = 'Zwiększa prędkość poruszania się o 10%',
                 points = 15
             },
             {
                 name = 'Kucharz',
+                key = 'kucharz',
                 description = 'Zwiększa szybkość przygotowywania burgerów o 10%',
                 points = 20
             },
             {
                 name = 'Natłok',
+                key = 'natlok',
                 description = 'Zwiększa ilość klientów o 10%',
                 points = 25
             },
@@ -36,16 +39,19 @@ jobs = {
         upgrades = {
             {
                 name = 'Sprinter',
+                key = 'sprinter',
                 description = 'Zwiększa prędkość poruszania się o 10%',
                 points = 15
             },
             {
                 name = 'Kierowca',
-                description = 'Zwiększa pojemność samochodu o 10%',
+                key = 'kierowca',
+                description = 'Zwiększa prędkość samochodu o 15%',
                 points = 20
             },
             {
                 name = 'Recykling',
+                key = 'recykling',
                 description = 'Zwiększa ilość punktów za wywóz śmieci o 10%',
                 points = 25
             },

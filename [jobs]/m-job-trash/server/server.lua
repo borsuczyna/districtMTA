@@ -24,6 +24,21 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
     local vehicle = createVehicle(408, settings.vehicleSpawn, settings.vehicleSpawnRot)
     setElementData(vehicle, 'vehicle:job', {players = players, hash = hash})
 
+    local allUpgrades = {}
+    for k,v in pairs(players) do
+        local upgrades = exports['m-jobs']:getPlayerJobUpgrades(v, 'trash')
+        for k,v in pairs(upgrades) do
+            allUpgrades[v] = true
+        end
+    end
+
+    if allUpgrades['kierowca'] then
+        print('kierowca')
+        local handling = getVehicleHandling(vehicle)
+        setVehicleHandling(vehicle, 'maxVelocity', handling['maxVelocity'] * 1.15)
+        setVehicleHandling(vehicle, 'engineAcceleration', handling['engineAcceleration'] * 1.15)
+    end
+
     for i, player in ipairs(players) do
         if i <= 2 then
             warpPedIntoVehicle(player, vehicle, i - 1)

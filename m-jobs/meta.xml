@@ -41,6 +41,10 @@
     <export function='leaveJob' type='server'/>
     <export function='getJobData' type='client'/>
     <export function='getJobDataAsObject' type='client'/>
+    <export function='giveMoney' type='server'/>
+    <export function='giveUpgradePoints' type='server'/>
+    <export function='giveTopPoints' type='server'/>
+    <export function='getPlayerJobUpgrades' type='server'/>
 
     <min_mta_version server='1.5.8' client='1.5.8'/>
 </meta>

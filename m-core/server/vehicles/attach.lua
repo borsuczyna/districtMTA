@@ -10,6 +10,7 @@ function _isPlayerInVehicle(player)
 end
 
 function getVehicleFreeAdditionalSeat(vehicle)
+    if not isElement(vehicle) then return end
     local seats = vehicleSeats[getElementModel(vehicle)]
     if not seats then return end
 

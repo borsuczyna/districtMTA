@@ -41,7 +41,6 @@ function updateColshape(object, colshape)
                 if hitElement ~= localPlayer or not matchingDimension then return end
                 if getTickCount() - lastEventSend < 1000 then return end
 
-                print(getTickCount())
                 triggerServerEvent('jobs:colshapeHit', resourceRoot, object.hash)
                 lastEventSend = getTickCount()
             end)

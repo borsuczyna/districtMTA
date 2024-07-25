@@ -142,3 +142,70 @@ function giveMoney(player, amount)
     dbExec(connection, 'INSERT INTO `m-jobs-money-history` (user, job, money) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE money = money + ?', uid, job, amount, amount)
     givePlayerMoney(player, amount)
 end
+
+function giveUpgradePoints(player, amount)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local job = getElementData(player, 'player:job')
+    if not job then return end
+    if not jobs[job] then return end
+
+    dbExec(connection, 'UPDATE `m-jobs-data` SET upgradePoints = upgradePoints + ? WHERE user = ? AND job = ?', amount, uid, job)
+end
+
+function giveTopPoints(player, amount)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local job = getElementData(player, 'player:job')
+    if not job then return end
+    if not jobs[job] then return end
+
+    dbExec(connection, 'UPDATE `m-jobs-data` SET points = points + ? WHERE user = ? AND job = ?', amount, uid, job)
+end
+
+function getPlayerJobUpgrades(player, job)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local upgrades = exports['m-mysql']:query('SELECT `upgrade` FROM `m-jobs-upgrades` WHERE `user` = ? AND `job` = ?', uid, job)
+    if not upgrades then return end
+
+    local result = {}
+    local jobUpgrades = jobs[job].upgrades
+    for k,v in pairs(upgrades) do
+        local upgrade = jobUpgrades[v.upgrade]
+        if upgrade then
+            table.insert(result, upgrade.key)
+        end
+    end
+    
+    return result
+end
+
+addEventHandler('onVehicleStartEnter', root, function(ped, jacked, door)
+    local jobVehicle = getElementData(source, 'vehicle:job')
+    if not jobVehicle then return end
+
+    local players = jobVehicle.players
+    if not players then return end
+
+    local includesPlayer = false
+    for k,v in pairs(players) do
+        if v == ped then
+            includesPlayer = true
+            break
+        end
+    end
+
+    if not includesPlayer then
+        cancelEvent()
+    end
+end)
