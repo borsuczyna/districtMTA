@@ -35,7 +35,7 @@ function renderNametag(player)
 
     local x, y, z = getPedBonePosition(player, 8)
     local dist = math.max(getDistanceBetweenPoints3D(Vector3(getCameraMatrix()), Vector3(x, y, z)) - 5, 0)
-    local x, y = getScreenFromWorldPosition(x, y, z + 0.4)
+    local x, y = getScreenFromWorldPosition(x, y, z + 0.25)
     if not x or not y then return end
 
     local scale = 1 - dist / 20
@@ -45,6 +45,8 @@ function renderNametag(player)
     local organization = getElementData(player, 'player:organization')
     local premium = getElementData(player, 'player:premium')
     local afk = getElementData(player, 'player:afk')
+    local mute = getElementData(player, 'player:mute')
+    local typing = getElementData(player, 'player:typing')
     local color = getPlayerColor(player)
 
     local icons = {}
@@ -59,6 +61,14 @@ function renderNametag(player)
 
     if afk then
         table.insert(icons, {'afk', tocolor(255, 0, 0, 200)})
+    end
+
+    if mute then
+        table.insert(icons, {'mute', tocolor(255, 0, 0, 200)})
+    end
+
+    if typing then
+        table.insert(icons, {'chat', tocolor(100, 155, 255, 200)})
     end
 
     local iconsWidth = #icons * 25*scale + (#icons - 1) * 5*scale
@@ -95,3 +105,13 @@ end
 addEventHandler('onClientResourceStart', resourceRoot, function()
     addEventHandler('onClientRender', root, renderNametags, true, 'high+9999')
 end)
+
+-- on chat toggle 
+setTimer(function()
+    local typing = getElementData(localPlayer, 'player:typing')
+    local typingLocal = isChatBoxInputActive()
+
+    if typing ~= typingLocal then
+        setElementData(localPlayer, 'player:typing', typingLocal)
+    end
+end, 300, 0)

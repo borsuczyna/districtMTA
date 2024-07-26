@@ -66,11 +66,12 @@ addEventHandler("onClientRender", root,
         for player, pMessage in pairs(messages) do
             for i, v in ipairs(pMessage) do
                 if isElement(v.player) then
-                    if v.player ~= localPlayer and tick - v.tick < timeVisible then
+                    if tick - v.tick < timeVisible then
                         local px, py, pz = getElementPosition(v.player)
                         if getDistanceBetweenPoints3D(x, y, z, px, py, pz) < distanceVisible and isLineOfSightClear(x, y, z, px, py, pz, true, not isPedInVehicle(v.player), false, true) then
                             v.alpha = v.alpha < 200 and v.alpha + 5 or v.alpha
-                            local bx, by, bz = getPedBonePosition(v.player, 6)
+                            local bx, by, bz = getPedBonePosition(v.player, 8)
+                            bz = bz + 0.35
                             local sx, sy = getScreenFromWorldPosition(bx, by, bz)
 
                             local elapsedTime = tick - v.tick
@@ -78,6 +79,7 @@ addEventHandler("onClientRender", root,
                             local progress = elapsedTime / duration
 
                             if sx and sy then
+                                sx = sx - 8
                                 if not v.yPos then v.yPos = sy end
                                 local width = dxGetTextWidth(v.text:gsub("#%x%x%x%x%x%x", ""), 1, font)
                                 local yPos = outElastic(elapsedTime, v.yPos, (sy - 24 * i) - v.yPos, duration, 3)
