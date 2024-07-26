@@ -1,24 +1,74 @@
 local f11Loaded, f11Visible, f11Timer = false, false, false
+local lastBlips = {}
+
+function table.find(t, callback)
+    for k,v in pairs(t) do
+        if callback(v) then
+            return k
+        end
+    end
+    return false
+end
 
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 
 function updateF11Data()
     local data = {}
+    local deleteBlips = {}
     local blips = getElementsByType('blip')
 
     for i, blip in ipairs(blips) do
+        local blipId = tostring(blip)
         local x, y = getElementPosition(blip)
         local icon = getBlipIcon(blip)
+        local lastSendData = lastBlips[blipId]
 
-        table.insert(data, {
-            x = x,
-            y = y,
-            icon = icon,
-        })
+        if not lastSendData or lastSendData.x ~= x or lastSendData.y ~= y or lastSendData.icon ~= icon then
+            table.insert(data, {
+                x = x,
+                y = y,
+                icon = icon,
+                id = blipId,
+            })
+
+            lastBlips[blipId] = {
+                x = x,
+                y = y,
+                icon = icon,
+            }
+        end
     end
 
-    exports['m-ui']:setInterfaceData('f11', 'blips', data)
+    for blipId in pairs(lastBlips) do
+        local found = table.find(blips, function(v)
+            local id = tostring(v)
+            return id == blipId
+        end)
+
+        if not found then
+            table.insert(deleteBlips, blipId)
+        end
+    end
+
+    for i, blipId in ipairs(deleteBlips) do
+        lastBlips[blipId] = nil
+    end
+
+    if #data > 0 then
+        exports['m-ui']:setInterfaceData('f11', 'updateBlips', data)
+    end
+    if #deleteBlips > 0 then
+        exports['m-ui']:setInterfaceData('f11', 'deleteBlips', deleteBlips)
+    end
+
+    local x, y = getElementPosition(localPlayer)
+    local _, _, rz = getElementRotation(localPlayer)
+    exports['m-ui']:setInterfaceData('f11', 'playerPosition', {
+        x = x,
+        y = y,
+        rot = rz,
+    })
 end
 
 addEventHandler('onPlayerQuit', root, function()
@@ -33,8 +83,9 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:triggerInterfaceEvent('f11', 'play-animation', true)
         exports['m-ui']:setInterfaceData('f11', 'position', { x = x, y = y })
         f11Loaded = true
+        lastBlips = {}
         updateF11Data()
-        f11Timer = setTimer(updateF11Data, 350, 0)
+        f11Timer = setTimer(updateF11Data, 10, 0)
     end
 end)
 

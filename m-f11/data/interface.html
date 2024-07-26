@@ -144,7 +144,7 @@
             <svg viewBox="0 0 15 15" fill="none" style="width: 0.8rem; height: 0.8rem;">
                 <circle cx="7.5" cy="7.5" r="7.5" fill="#D9D9D9" />
             </svg>
-            Kolory graczy na mapie
+            Kolory kropek na mapie
         </div>
     </div>
     <div class="list" style="flex: 6;" id="colors"></div>
@@ -187,61 +187,40 @@
     let currentBlips = [];
     let firstRender = true;
     let activeBlip = false;
+    let startTick = Date.now();
     let currentCategory = 'all';
+    let priorityBlips = [0, 43];
     let playerBlip = `<svg viewBox="0 0 15 15" fill="none" style="width: 0.8rem; height: 0.8rem;">
         <circle cx="7.5" cy="7.5" r="7.5" fill="{{ color }}" />
     </svg>`;
 
     let playerColors = {
         player: '#d9d9d9',
-        friend: '#43D987',
-        sapd: '#4ECDF7',
-        sara: '#FBC063',
-        samd: '#FD9DFF',
-        tsa: '#F2E951',
-        safd: '#FF5252'
+        jobVehicle: '#FC005B',
+        // friend: '#43D987',
+        // sapd: '#4ECDF7',
+        // sara: '#FBC063',
+        // samd: '#FD9DFF',
+        // tsa: '#F2E951',
+        // safd: '#FF5252'
     };
 
     let longNames = {
         player: 'Gracz',
-        friend: 'Znajomy',
-        sapd: 'San Andreas Police Department',
-        sara: 'San Andreas Road Assistance',
-        samd: 'San Andreas Medical Department',
-        tsa: 'Transport San Andreas',
-        safd: 'San Andreas Fire Department'
+        jobVehicle: 'Pojazd pracy',
+        // friend: 'Znajomy',
+        // sapd: 'San Andreas Police Department',
+        // sara: 'San Andreas Road Assistance',
+        // samd: 'San Andreas Medical Department',
+        // tsa: 'Transport San Andreas',
+        // safd: 'San Andreas Fire Department'
     };
 
     let legend = {
-        41: ['Praca dorywcza', 'job'],
-        42: ['Truth', 'job'],
-        43: ['Grove Street Families', 'departments'],
-        44: ['Ballas', 'departments'],
-        45: ['Vagos', 'departments'],
-        46: ['Los Santos Vagos', 'departments'],
-        47: ['Marabunta Grande', 'departments'],
-        48: ['Varrios Los Aztecas', 'departments'],
-        49: ['San Fierro Rifa', 'departments'],
-        30: ['Dom', 'houses'],
-        31: ['Lokal', 'houses'],
-        32: ['Biuro', 'houses'],
-        33: ['Sklep', 'houses'],
-        34: ['Warsztat', 'houses'],
-        35: ['Magazyn', 'houses'],
-        36: ['Apartament', 'houses'],
-        37: ['Penthouse', 'houses'],
-        38: ['Klub', 'houses'],
-        39: ['Restauracja', 'houses'],
-        50: ['Serwis', 'services'],
-        51: ['Warsztat', 'services'],
-        52: ['Salon', 'services'],
-        53: ['Restauracja', 'services'],
-        54: ['Kawiarnia', 'services'],
-        55: ['Bank', 'services'],
-        56: ['Klub', 'services'],
-        57: ['Sklep', 'services'],
-        58: ['Stacja paliw', 'services'],
-        59: ['Szpital', 'services']
+        40: ['Praca dorywcza', 'job'],
+        // 43: ['Pojazd pracy', 'job'],
+        41: ['Cel', 'all'],
+        42: ['Wypożyczalnia hulajnóg', 'services'],
     };
 
     function renderColors() {
@@ -279,7 +258,7 @@
 
                 list.innerHTML += `<div class="item ${currentBlipActive ? 'active' : ''}" onclick="f11_setBlip(event, ${blipId})" data-icon="${blipId}">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="../../m-hud/data/images/blips/${blipId}.png" class="icon" alt=""/>
+                        <img src="../../m-hud/data/images/blips/${blipId}.png?${startTick}" class="icon" alt=""/>
                         <span>${data[0]}</span>
                     </div>
                     ${currentBlipActive ? `<span class="controls">
@@ -354,25 +333,37 @@
         renderLegend();
     }
 
-    f11_createBlip = (blip, i) => {
-        createMapBlip({
-            element: document.querySelector('#f11 #map'),
-            icon: `../../m-hud/data/images/blips/${blip.icon}.png`,
-            size: 15,
+    f11_updateBlip = (blip, i) => {
+        let mapElement = document.querySelector('#f11 #map');
+        let updated = updateBlipById(mapElement, blip.id, {
+            icon: `../../m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
             x: blip.x,
             y: blip.y,
-            class: 'blip',
-            specialKey: `${blip.icon}-${i}`
+            priority: priorityBlips.includes(blip.icon) ? 1 : 0
         });
+
+        if (!updated) {
+            createMapBlip({
+                element: document.querySelector('#f11 #map'),
+                icon: `../../m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
+                size: 15,
+                x: blip.x,
+                y: blip.y,
+                class: 'blip',
+                specialKey: `${blip.icon}-${i}`,
+                id: blip.id,
+                priority: priorityBlips.includes(blip.icon) ? 1 : 0
+            });
+        }
     }
 
     f11_renderBlips = () => {
-        destroyAllMapBlips(document.querySelector('#f11 #map'));
+        // destroyAllMapBlips(document.querySelector('#f11 #map'));
         renderLegend();
 
         for (let i = 0; i < currentBlips.length; i++) {
             let blip = currentBlips[i];
-            f11_createBlip(blip, i);
+            f11_updateBlip(blip, i);
         }
     }
 
@@ -416,16 +407,66 @@
         texture: 'map-transparent.png?v1.01'
     });
 
-    addEvent('f11', 'interface:data:blips', async (blips) => {
+    addEvent('f11', 'interface:data:updateBlips', async (blips) => {
         blips = blips[0];
-        currentBlips = blips;
+
+        for (let blip of blips) {
+            let blipData = currentBlips.find(b => b.id === blip.id);
+            if (blipData) {
+                blipData.x = blip.x;
+                blipData.y = blip.y;
+                blipData.icon = blip.icon;
+            } else {
+                currentBlips.push(blip);
+            }
+        }
 
         f11_renderBlips();
+    });
+
+    addEvent('f11', 'interface:data:deleteBlips', async (blips) => {
+        blips = blips[0];
+        let mapElement = document.querySelector('#f11 #map');
+
+        for (let blip of blips) {
+            let blipData = currentBlips.find(b => b.id === blip);
+            if (blipData) {
+                let index = currentBlips.indexOf(blipData);
+                currentBlips.splice(index, 1);
+            }
+
+            destroyBlipById(mapElement, blip);
+        }
     });
 
     addEvent('f11', 'interface:data:position', async (data) => {
         data = data[0];
         mapGoToPosition(document.querySelector('#f11 #map'), data.x, data.y, 100);
+    });
+
+    addEvent('f11', 'interface:data:playerPosition', async (data) => {
+        data = data[0];
+        
+        let updated = updateBlipById(document.querySelector('#f11 #map'), 'player', {
+            x: data.x,
+            y: data.y,
+            rotation: data.rot
+        });
+
+        if (!updated) {
+            createMapBlip({
+                element: document.querySelector('#f11 #map'),
+                icon: `../../m-hud/data/images/player.png?${startTick}`,
+                size: 15,
+                x: data.x,
+                y: data.y,
+                rotation: data.rot,
+                class: 'blip',
+                specialKey: 'player',
+                id: 'player',
+                priority: 2
+            });
+        }
     });
 
     addEvent('f11', 'play-animation', async (appear) => {

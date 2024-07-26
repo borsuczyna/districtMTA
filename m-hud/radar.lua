@@ -79,7 +79,7 @@ function renderRadar()
     for k,v in pairs(blips) do
         local bx, by, bz = getElementPosition(v)
         local blipIcon = getBlipIcon(v)
-        local size = 36/zoom
+        local size = blipIcon == 0 and 36/zoom or 45/zoom
         local visible = getBlipVisibleDistance(v)
 
         if not (bx == 0 and by == 0 and blipIcon == 0) then

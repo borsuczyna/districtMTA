@@ -32,8 +32,18 @@
 
 <script>
     let maps = [];
+    let requestedMapUpdates = {};
+
+    function requestMapUpdate(map) {
+        if (requestedMapUpdates[map.element]) return;
+
+        requestedMapUpdates[map.element] = true;
+        requestAnimationFrame(updateMap.bind(null, map));
+    }
 
     function updateMap(map) {
+        requestedMapUpdates[map.element] = false;
+
         if (!document.body.contains(map.element)) {
             maps.splice(maps.indexOf(map), 1);
             return;
@@ -43,7 +53,8 @@
         let dom = map.element.getBoundingClientRect();
         let maxSize = Math.max(dom.width, dom.height);
         if (maxSize < 1) {
-            requestAnimationFrame(updateMap.bind(null, map));
+            // requestAnimationFrame(updateMap.bind(null, map));
+            requestMapUpdate(map);
             return;
         }
         
@@ -71,6 +82,7 @@
             blip.element.style.top = `${blipY}px`;
             blip.element.style.width = `${blip.size * map.zoom}px`;
             blip.element.style.height = `${blip.size * map.zoom}px`;
+            blip.element.style.transform = `translate(-50%, -50%) rotate(${-blip.rotation}deg)`;
         });
 
         // update smooth movement
@@ -87,7 +99,8 @@
             } else {
                 map.x = map.startMovePosition.x + (map.targetX - map.startMovePosition.x) * percent;
                 map.y = map.startMovePosition.y + (map.targetY - map.startMovePosition.y) * percent;
-                requestAnimationFrame(updateMap.bind(null, map));
+                // requestAnimationFrame(updateMap.bind(null, map));
+                requestMapUpdate(map);
             }
         }
     }
@@ -170,7 +183,8 @@
 
         maps.push(map);
 
-        requestAnimationFrame(updateMap.bind(null, map));
+        // requestAnimationFrame(updateMap.bind(null, map));
+        requestMapUpdate(map);
 
         data.blips?.forEach(blipData => {
             createMapBlip({
@@ -180,6 +194,31 @@
         });
     }
 
+    window.getBlipById = (element, id) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        return map.blips.find(blip => blip.id === id);
+    }
+
+    window.updateBlipById = (element, id, data) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return false;
+
+        let blip = map.blips.find(blip => blip.id === id);
+        if (!blip) return false;
+
+        if (data.x !== undefined) blip.x = data.x;
+        if (data.y !== undefined) blip.y = data.y;
+        if (data.rotation !== undefined) blip.rotation = data.rotation;
+        if (data.size !== undefined) blip.size = data.size;
+        if (data.priority !== undefined) blip.priority = data.priority;
+        if (data.icon !== undefined) blip.element.src = data.icon;
+
+        requestMapUpdate(map);
+        return true;
+    }
+
     window.createMapBlip = (data) => {
         let element = data.element;
 
@@ -187,10 +226,12 @@
         blip.src = data.icon;
         blip.style.width = `${data.size}px`;
         blip.style.height = `${data.size}px`;
+        if (data.priority) blip.style.zIndex = data.priority;
         blip.classList.add('__maps-map-blip');
         if (data.class) blip.className += ` ${data.class}`;
         if (data.position) blip.classList.add(`__maps-map-blip-${data.position}`);
         if (data.specialKey) blip.dataset.specialKey = data.specialKey;
+        if (data.id) blip.dataset.id = data.id;
         element.appendChild(blip);
 
         let map = maps.find(map => map.element === element);
@@ -200,7 +241,10 @@
             element: blip,
             x: data.x,
             y: data.y,
+            rotation: data.rotation ?? 0,
             size: data.size,
+            priority: data.priority ?? 0,
+            id: data.id,
         };
 
         if (data.onclick) {
@@ -210,7 +254,8 @@
 
         map.blips.push(blipData);
 
-        requestAnimationFrame(updateMap.bind(null, map));
+        // requestAnimationFrame(updateMap.bind(null, map));
+        requestMapUpdate(map);
     }
 
     window.destroyAllMapBlips = (element) => {
@@ -222,6 +267,17 @@
         });
 
         map.blips = [];
+    }
+
+    window.destroyBlipById = (element, id) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let blip = map.blips.find(blip => blip.id === id);
+        if (!blip) return;
+
+        blip.element.remove();
+        map.blips.splice(map.blips.indexOf(blip), 1);
     }
 
     window.destroyMap = (element) => {
