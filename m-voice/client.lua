@@ -35,3 +35,11 @@ end)
 addEventHandler('onClientPlayerVoiceStop', root, function()
     voicePlayers[source] = nil
 end)
+
+addEventHandler('onClientRender', root, function()
+    local cx, cy, cz = getCameraMatrix()
+    
+    for player in pairs(voicePlayers) do
+        updateVoiceVolume(player, cx, cy, cz)
+    end
+end)
