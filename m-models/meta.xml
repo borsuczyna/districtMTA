@@ -40,4 +40,27 @@
     <file src="data/decoded/cable-station-fix.dff"/>
     <file src="data/decoded/cable-station.col"/>
     <file src="data/decoded/cable-station.dff"/>
+    <file src="data/decoded/burger-interior.col"/>
+    <file src="data/decoded/burger-interior.dff"/>
+    <file src="data/decoded/burger-interior.txd"/>
+
+    <file src="data/decoded/burger/board.dff"/>
+    <file src="data/decoded/burger/bun.dff"/>
+    <file src="data/decoded/burger/burger-in-packaging.dff"/>
+    <file src="data/decoded/burger/burger.dff"/>
+    <file src="data/decoded/burger/cola-dispenser.dff"/>
+    <file src="data/decoded/burger/cola-glass.dff"/>
+    <file src="data/decoded/burger/cola-liquid.dff"/>
+    <file src="data/decoded/burger/fries-cooked.dff"/>
+    <file src="data/decoded/burger/fries.dff"/>
+    <file src="data/decoded/burger/fryer-grid.dff"/>
+    <file src="data/decoded/burger/fryer.dff"/>
+    <file src="data/decoded/burger/glass.dff"/>
+    <file src="data/decoded/burger/grill.dff"/>
+    <file src="data/decoded/burger/meat-cooked.dff"/>
+    <file src="data/decoded/burger/meat.dff"/>
+    <file src="data/decoded/burger/packaging.dff"/>
+    <file src="data/decoded/burger/salad-box.dff"/>
+    <file src="data/decoded/burger/salad.dff"/>
+    <file src="data/decoded/burger/textures.txd"/>
 </meta>

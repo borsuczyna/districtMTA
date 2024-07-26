@@ -76,6 +76,120 @@ models = {
         type = 'object',
         model = 1337,
     },
+    ['burger-interior'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+
+    ['burger/board'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/bun'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/burger-in-packaging'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/burger'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/cola-dispenser'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/cola-glass'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/cola-liquid'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/fries-cooked'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/fries'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/fryer-grid'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/fryer'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/glass'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/grill'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/meat-cooked'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/meat'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/packaging'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/salad-box'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/salad'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
 }
 
 function getModelsCount()
