@@ -52,7 +52,7 @@ jobs = {
             {
                 name = 'Recykling',
                 key = 'recykling',
-                description = 'Zwiększa ilość punktów za wywóz śmieci o 10%',
+                description = 'Zwiększa ilość wyrzucanych śmieci o 10%',
                 points = 25
             },
         }

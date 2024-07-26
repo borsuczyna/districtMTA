@@ -12,10 +12,14 @@ local function isPlayerOnHitCooldown(player)
     return hitTime[player] and hitTime[player] > getTickCount()
 end
 
-local function toggleJobControls(player)
-    toggleControl(player, 'crouch', false)
-    toggleControl(player, 'jump', false)
-    toggleControl(player, 'sprint', true)
+local function toggleJobControls(player, enable)
+    toggleControl(player, 'crouch', enable)
+    toggleControl(player, 'jump', enable)
+    if not enable then
+        toggleControl(player, 'sprint', getElementData(player, 'player:trashUpgradeSprint'))
+    else
+        toggleControl(player, 'sprint', true)
+    end
 end
 
 local function pickUpTrash(player, hash, objectHash)
@@ -27,8 +31,8 @@ local function pickUpTrash(player, hash, objectHash)
     if playAnimation then
         setElementData(player, 'player:animation', 'carry')
     end
-    toggleAllControls(player, true)
-    toggleJobControls(player) -- TODO add sprint upgrade
+    toggleAllControls(player, true, false)
+    toggleJobControls(player, false)
 
     exports['m-jobs']:attachObjectToPlayer(hash, objectHash, player, unpack(attachData))
 end
@@ -41,15 +45,17 @@ local function putBackTrash(player, hash, objectHash)
         setElementData(player, 'player:animation', 'carry')
     end
     removeElementData(player, 'player:dumpingTrash')
-    toggleAllControls(player, true)
+    toggleAllControls(player, true, false)
     setElementFrozen(player, false)
-    toggleJobControls(player) -- TODO add sprint upgrade
+    toggleJobControls(player, false)
     
     exports['m-jobs']:setLobbyData(hash, 'trashDumping', false)
     exports['m-jobs']:attachObjectToPlayer(hash, objectHash, player, unpack(attachData))
 
+    local hasRecycleUpgrade = getElementData(player, 'player:trashUpgradeRecycle')
     local trashLevel = exports['m-jobs']:getLobbyData(hash, 'trashLevel')
-    local newTrashLevel = math.min(trashLevel + math.random(450, 4500)/100, 10000)
+    local addAmount = math.random(450, 4500)/100 * (hasRecycleUpgrade and 1.1 or 1)
+    local newTrashLevel = math.min(trashLevel + addAmount, 10000)
     exports['m-jobs']:setLobbyData(hash, 'trashLevel', newTrashLevel)
     exports['m-notis']:addNotification(player, 'success', 'Kosz', 'Wyrzucono śmieci')
 end
@@ -58,14 +64,17 @@ local function dumpTrash(player, hash, objectHash)
     setPedAnimation(player)
     setElementFrozen(player, false)
     removeElementData(player, 'player:animation')
-    toggleAllControls(player, true)
-    toggleJobControls(player) -- TODO add sprint upgrade
+    toggleAllControls(player, true, false)
+    toggleJobControls(player, true)
 
     exports['m-jobs']:detachObjectFromPlayer(hash, objectHash, player)
     exports['m-jobs']:setLobbyData(hash, 'trashDumpingTemp', false)
     exports['m-jobs']:setLobbyData(hash, 'trashDumping', objectHash)
     exports['m-jobs']:setLobbyObjectOption(hash, objectHash, 'blip', false)
     exports['m-jobs']:setLobbyObjectCustomData(hash, objectHash, 'emptyTime', getTickCount())
+
+    local x, y, z = getElementPosition(player)
+    exports['m-jobs']:playSound3D(hash, ':m-job-trash/data/trash.mp3', x, y, z, 3, 25, 1)
 
     setPlayerTimer(player, putBackTrash, 3200, player, hash, objectHash)
 end
@@ -74,8 +83,8 @@ local function returnTrash(player, hash, objectHash)
     setPedAnimation(player)
     setElementFrozen(player, false)
     removeElementData(player, 'player:animation')
-    toggleAllControls(player, true)
-    toggleJobControls(player) -- TODO add sprint upgrade
+    toggleAllControls(player, true, false)
+    toggleJobControls(player, true)
 
     exports['m-jobs']:detachObjectFromPlayer(hash, objectHash, player)
 end
@@ -102,7 +111,7 @@ addEventHandler('jobs:trash:trashHit', root, function(hash, player, objectHash)
         exports['m-jobs']:setLobbyObjectCustomData(hash, objectHash, 'carried', false)
 
         setElementFrozen(player, true)
-        toggleAllControls(player, false)
+        toggleAllControls(player, false, false)
         setPedAnimation(player, "CARRY", "putdwn", -1, false)
 
         removeElementData(player, 'player:carryBin')
@@ -111,7 +120,7 @@ addEventHandler('jobs:trash:trashHit', root, function(hash, player, objectHash)
         exports['m-jobs']:setLobbyObjectCustomData(hash, objectHash, 'carried', true)
         
         setElementFrozen(player, true)
-        toggleAllControls(player, false)
+        toggleAllControls(player, false, false)
         setPedAnimation(player, "CARRY", "putdwn", -1, false)
     
         setElementData(player, 'player:carryBin', objectHash)
@@ -141,7 +150,7 @@ addEventHandler('jobs:trash:putTrash', root, function(hash, player, markerHash)
     end
 
     setElementFrozen(player, true)
-    toggleAllControls(player, false)
+    toggleAllControls(player, false, false)
     removeElementData(player, 'player:animation')
     setElementData(player, 'player:dumpingTrash', true)
     setPedAnimation(player, "CARRY", "putdwn", -1, false)

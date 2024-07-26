@@ -35,6 +35,7 @@
     <export function='getLobbyObjectModel' type='server'/>
     <export function='attachObject' type='server'/>
     <export function='detachObject' type='server'/>
+    <export function='playSound3D' type='server'/>
     <export function='setLobbyData' type='server'/>
     <export function='getLobbyData' type='server'/>
     <export function='getLobbyPlayers' type='server'/>

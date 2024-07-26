@@ -33,9 +33,6 @@ function assignPlayerData(player, data)
     updatePlayerMute(player)
     updatePlayerLicense(player)
 
-    toggleControl(player, 'fire', false)
-    toggleControl(player, 'aim_weapon', false)
-
     updatePlayerAchievements(player)
 
     local connection = exports['m-mysql']:getConnection()

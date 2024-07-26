@@ -67,18 +67,48 @@ function table.includes(tbl, value)
     return false
 end
 
+function getAvatarFromDatabaseResult(queryResult, client, uid)
+    local result, rows, lastId = dbPoll(queryResult, 0)
+    if not result then return end
+
+    if #result == 0 then return end
+
+    local avatar = result[1].avatar
+    if not avatar then return end
+
+    avatarUrls[uid] = avatar
+    requestedAvatars[uid] = true
+    table.insert(awaitingRequests[uid], client)
+    
+    getPlayerAvatar(uid, avatar)
+end
+
+function getPlayerAvatarFromDatabase(client, uid)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    dbQuery(getAvatarFromDatabaseResult, {client, uid}, connection, 'SELECT avatar FROM `m-users` WHERE uid = ?', uid)
+end
+
 addEvent('avatars:getPlayerAvatar', true)
 addEventHandler('avatars:getPlayerAvatar', resourceRoot, function(uid)
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-
-    local player = exports['m-core']:getPlayerByUid(uid)
-    if not player then return end
-
     if requestedAvatars[uid] then return end
 
+    if not awaitingRequests[uid] then
+        awaitingRequests[uid] = {}
+    end
+    if table.includes(awaitingRequests[uid], client) then return end
+
+    local player = exports['m-core']:getPlayerByUid(uid)
+    if not player then
+        getPlayerAvatarFromDatabase(client, uid)
+        return
+    end
+    
     local avatar = getElementData(player, 'player:avatar')
     if not avatar then return end
-
+    
     if avatarUrls[uid] ~= avatar then
         avatars[uid] = nil
     end
@@ -90,10 +120,6 @@ addEventHandler('avatars:getPlayerAvatar', resourceRoot, function(uid)
 
     avatarUrls[uid] = avatar
     requestedAvatars[uid] = true
-    if not awaitingRequests[uid] then
-        awaitingRequests[uid] = {}
-    end
-    if table.includes(awaitingRequests[uid], client) then return end
     table.insert(awaitingRequests[uid], client)
     
     getPlayerAvatar(uid, avatar)

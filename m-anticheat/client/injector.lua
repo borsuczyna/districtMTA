@@ -1,5 +1,6 @@
 local blockedFunctions = {
-    'addDebugHook', 'xpcall', 'pcall', 'loadstring'
+    'addDebugHook', 'xpcall', 'pcall', 'loadstring',
+    'createProjectile', 'detonateSatchels'
 }
 
 function onPreFunction(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
@@ -21,7 +22,3 @@ function onPreFunction(sourceResource, functionName, isAllowedByACL, luaFilename
 end
 
 addDebugHook('preFunction', onPreFunction, blockedFunctions)
-
-addEventHandler('onClientPaste', root, function()
-    cancelEvent()
-end, true, 'high+999999999')

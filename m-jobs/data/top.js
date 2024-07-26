@@ -5,7 +5,7 @@ window.jobs_setTopPlayers = (topPlayers) => {
         topPlayers[2]
     ];
 
-    let classNames = ['first', 'second', 'third'];
+    let classNames = ['second', 'first', 'third'];
     let list = document.querySelector('#jobs #top-players');
     let count = 0;
     list.innerHTML = '';

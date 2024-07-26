@@ -113,6 +113,7 @@ window.jobs_createLobby = async (button) => {
     makeButtonSpinner(button);
     let data = await mta.fetch('jobs', 'createLobby', jobs_getCurrentJob().job);
 
+    makeButtonSpinner(button, false);
     if (data == null) {
         notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
     } else {

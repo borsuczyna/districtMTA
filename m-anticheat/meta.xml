@@ -13,9 +13,6 @@
     <script src='server/trigger-locker.lua' type='server'/>
     <script src='server/element-datas.lua' type='server'/>
     <script src='server/explosions.lua' type='server'/>
-    <script src='server/weapons.lua' type='server'/>
-
-    <file src='data/test.dff'/>
 
     <export function='returnValue' type='client'/>
 

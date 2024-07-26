@@ -60,7 +60,11 @@ function updateMarker(marker)
             r2 = r2, g2 = g2, b2 = b2
         }
 
-        attachElements(markersData[marker].object, marker, 0, 0, 0.4)
+        local rot = 0
+        if squareSize and squareSize[3] then
+            rot = squareSize[3]
+        end
+        attachElements(markersData[marker].object, marker, 0, 0, 0.4, 0, 0, rot)
         setObjectScale(markersData[marker].object, squareSize and squareSize[1] or size, squareSize and squareSize[2] or size, 1)
         updateRenderTarget(marker, markersData[marker].rt)
         setElementDoubleSided(markersData[marker].object, true)

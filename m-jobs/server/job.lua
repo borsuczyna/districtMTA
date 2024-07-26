@@ -56,16 +56,16 @@ function getLobbyByHash(hash)
     end
 end
 
-function setLobbyData(hash, key, value)
-    local lobby = getLobbyByHash(hash)
+function setLobbyData(playerOrHash, key, value)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     if not lobby then return end
 
     lobby.data[key] = value
     triggerClientEvent(lobby.players, 'jobs:updateData', resourceRoot, key, value)
 end
 
-function getLobbyData(hash, key)
-    local lobby = getLobbyByHash(hash)
+function getLobbyData(playerOrHash, key)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     if not lobby then return end
 
     return lobby.data[key]
@@ -265,6 +265,13 @@ function updateLobbyObjects(playerOrHash)
 
     triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, lobby.objects)
     triggerClientEvent(lobby.players, 'jobs:updateBlips', resourceRoot, lobby.blips)
+end
+
+function playSound3D(playerOrHash, sound, x, y, z, minDistance, maxDistance, volume)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    triggerClientEvent(lobby.players, 'jobs:playSound3D', resourceRoot, sound, x, y, z, minDistance, maxDistance, volume)
 end
 
 function destroyJobLobby(lobby)

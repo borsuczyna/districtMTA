@@ -5,6 +5,7 @@ addEvent('jobs:destroyBlip', true)
 addEvent('jobs:destroyObjects', true)
 addEvent('jobs:destroyBlips', true)
 addEvent('jobs:updateMarkers', true)
+addEvent('jobs:playSound3D', true)
 addEvent('jobs:destroyMarker', true)
 addEvent('jobs:destroyMarkers', true)
 addEvent('jobs:updateData', true)
@@ -268,6 +269,14 @@ function updateMarkerEvent(marker, event)
     end
 end
 
+function updateSquareMarker(marker, square)
+    if square then
+        setElementData(marker.element, 'marker:square', square)
+    else
+        setElementData(marker.element, 'marker:square', nil)
+    end
+end
+
 function updateMarker(marker)
     local obj = findElementByHash(markers, marker.hash)
     if not obj then
@@ -281,6 +290,7 @@ function updateMarker(marker)
 
     updateElementAttach(obj, marker.options.attach)
     updateMarkerEvent(obj, marker.options.event)
+    updateSquareMarker(obj, marker.options.square)
 
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
     setMarkerSize(obj.element, obj.size)
@@ -310,6 +320,14 @@ end
 function destroyMarkers()
     destroyArray(markers)
     markers = {}
+end
+
+local _playSound3D = playSound3D
+function playSound3D(sound, x, y, z, minDistance, maxDistance, volume)
+    local sound = _playSound3D(sound, x, y, z)
+    setSoundMaxDistance(sound, maxDistance)
+    setSoundMinDistance(sound, minDistance)
+    setSoundVolume(sound, volume)
 end
 
 function updateData(key, value)
@@ -353,7 +371,9 @@ addEventHandler('jobs:updateMarkers', resourceRoot, function(_markers)
     end
 end)
 
+
 addEventHandler('jobs:destroyMarker', resourceRoot, destroyMarker)
 addEventHandler('jobs:destroyMarkers', resourceRoot, destroyMarkers)
+addEventHandler('jobs:playSound3D', resourceRoot, playSound3D)
 addEventHandler('jobs:updateData', resourceRoot, updateData)
 addEventHandler('jobs:resetData', resourceRoot, resetData)

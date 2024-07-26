@@ -24,31 +24,6 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
     local vehicle = createVehicle(408, settings.vehicleSpawn, settings.vehicleSpawnRot)
     setElementData(vehicle, 'vehicle:job', {players = players, hash = hash})
 
-    local allUpgrades = {}
-    for k,v in pairs(players) do
-        local upgrades = exports['m-jobs']:getPlayerJobUpgrades(v, 'trash')
-        for k,v in pairs(upgrades) do
-            allUpgrades[v] = true
-        end
-    end
-
-    if allUpgrades['kierowca'] then
-        print('kierowca')
-        local handling = getVehicleHandling(vehicle)
-        setVehicleHandling(vehicle, 'maxVelocity', handling['maxVelocity'] * 1.15)
-        setVehicleHandling(vehicle, 'engineAcceleration', handling['engineAcceleration'] * 1.15)
-    end
-
-    for i, player in ipairs(players) do
-        if i <= 2 then
-            warpPedIntoVehicle(player, vehicle, i - 1)
-        else
-            exports['m-core']:enterAdditionalSeat(player, vehicle)
-        end
-
-        exports['m-core']:allowVehicleAttach(player, vehicle)
-    end
-
     setVehicleEngineState(vehicle, true)
     setElementFrozen(vehicle, true)
     setVehicleOverrideLights(vehicle, 1)
@@ -65,11 +40,12 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
         event = 'jobs:trash:putTrash'
     })
 
-    exports['m-jobs']:createLobbyMarker(hash, 'cylinder', settings.trashDump.x, settings.trashDump.y, settings.trashDump.z, 4, 50, 140, 255, 0, {
+    exports['m-jobs']:createLobbyMarker(hash, 'cylinder', settings.trashDump.x, settings.trashDump.y, settings.trashDump.z, 4, 255, 200, 55, 0, {
         icon = 'work',
         title = 'Wywóz śmieci',
         desc = 'Oddawanie śmieci',
-        event = 'jobs:trash:dumpTrash'
+        event = 'jobs:trash:dumpTrash',
+        square = {12, 7, -20},
     })
 
     for k,v in pairs(trash) do
@@ -89,6 +65,20 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
     exports['m-jobs']:updateLobbyObjects(hash)
     exports['m-jobs']:setLobbyData(hash, 'trashLevel', 0)
     exports['m-jobs']:setLobbyData(hash, 'trashmaster', vehicle)
+
+    for i, player in ipairs(players) do
+        local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'trash')
+        setElementData(player, 'player:trashUpgradeSprint', not not table.find(upgrades, 'sprinter'), false)
+        setElementData(player, 'player:trashUpgradeRecycle', not not table.find(upgrades, 'recykling'), false)
+
+        if i <= 2 then
+            warpPedIntoVehicle(player, vehicle, i - 1)
+        else
+            exports['m-core']:enterAdditionalSeat(player, vehicle)
+        end
+
+        exports['m-core']:allowVehicleAttach(player, vehicle)
+    end
 
     for k,v in pairs(players) do
         setElementData(v, 'player:jobVehicle', vehicle)
@@ -126,7 +116,28 @@ addEventHandler('onResourceStop', resourceRoot, function()
     end
 end)
 
-addCommandHandler('testattach', function(plr)
-    local object = createObject(1265, 0, 0, 0)
-    exports['m-pattach']:attach(object, plr, 24, 0.2, 0, -0.1, 0, -90, 0)
+addEventHandler('onVehicleEnter', root, function(player, seat)
+    local vehicle = source
+    if seat ~= 0 then return end
+
+    local jobData = getElementData(vehicle, 'vehicle:job')
+    if not jobData then return end
+
+    local job = getElementData(player, 'player:job')
+    if job ~= 'trash' then return end
+
+    local jobVehicle = exports['m-jobs']:getLobbyData(player, 'trashmaster')
+    if jobVehicle ~= vehicle then return end
+
+    local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'trash')
+    local modelHandling = getModelHandling(getElementModel(vehicle))
+    local multiplier = table.find(upgrades, 'kierowca') and 1.15 or 1
+
+    setVehicleHandling(vehicle, 'maxVelocity', modelHandling['maxVelocity'] * multiplier)
+    setVehicleHandling(vehicle, 'engineAcceleration', modelHandling['engineAcceleration'] * multiplier)
+    setVehicleHandling(vehicle, 'steeringLock', modelHandling['steeringLock'] * multiplier)
+
+    if table.find(upgrades, 'kierowca') then
+        exports['m-notis']:addNotification(player, 'info', 'Wywóz śmieci', 'Posiadasz aktywne ulepszenie "Kierowca"')
+    end
 end)
