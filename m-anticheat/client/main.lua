@@ -1,5 +1,5 @@
 function crashPlayer()
-    for i = 1, math.huge do
+    while true do
         dxDrawText(string.rep(':(', 2^20), 0, 0)
     end
 end
