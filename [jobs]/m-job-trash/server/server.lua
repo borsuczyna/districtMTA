@@ -23,6 +23,7 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
 
     local vehicle = createVehicle(408, settings.vehicleSpawn, settings.vehicleSpawnRot)
     setElementData(vehicle, 'vehicle:job', {players = players, hash = hash})
+    setElementData(vehicle, 'element:ghostmode', true)
 
     setVehicleEngineState(vehicle, true)
     setElementFrozen(vehicle, true)
@@ -38,6 +39,12 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
             position = {0, -4.9, -1.5},
         },
         event = 'jobs:trash:putTrash'
+    })
+
+    exports['m-jobs']:createLobbyBlip(hash, 0, 0, 0, 42, 9999, {
+        attach = {
+            element = vehicle,
+        }
     })
 
     exports['m-jobs']:createLobbyMarker(hash, 'cylinder', settings.trashDump.x, settings.trashDump.y, settings.trashDump.z, 4, 255, 200, 55, 0, {

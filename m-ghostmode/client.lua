@@ -1,49 +1,79 @@
--- function setGhostMode(player)
---     local vehicle = getPedOccupiedVehicle(player)
+local ghostColShapes = {
+    -- createColSphere(1443.021, 389.348, 18.742, 5),
+}
 
---     if vehicle then
---         local ghostmode = getElementData(vehicle, 'vehicle:ghostmode')
+function getElementsByTypes(types)
+    local elements = {}
+    for _, type in ipairs(types) do
+        for _, element in ipairs(getElementsByType(type)) do
+            table.insert(elements, element)
+        end
+    end
+    return elements
+end
 
---         if ghostmode then
---             for _, vehicle in pairs(getElementsByType('vehicle')) do
---                 setElementCollidableWith(vehicle, player, false)
---             end
---         else
---             for _, vehicle in pairs(getElementsByType('vehicle')) do
---                 setElementCollidableWith(vehicle, player, true)
---             end
---         end
---     else
---         local ghostmode = getElementData(player, 'player:ghostmode')
+function isInsideGhostColShape(element)
+    for _, colShape in ipairs(ghostColShapes) do
+        if isElementWithinColShape(element, colShape) then
+            return true
+        end
+    end
+    return false
+end
 
---         if ghostmode then
---             for _, player in pairs(getElementsByType('player')) do
---                 setElementCollidableWith(player, localPlayer, false)
---             end
---         else
---             for _, player in pairs(getElementsByType('player')) do
---                 setElementCollidableWith(player, localPlayer, true)
---             end
---         end
---     end
--- end
+function isColShapeAGhost(colShape)
+    for _, ghostColShape in ipairs(ghostColShapes) do
+        if colShape == ghostColShape then
+            return true
+        end
+    end
+    return false
+end
 
--- addEvent('ghostmode:set', true)
--- addEventHandler('ghostmode:set', root, setGhostMode)
+function toggleCollisionBetweenElements(element, elements)
+    local ghostMode1 = getElementData(element, 'element:ghostmode') or isInsideGhostColShape(element)
 
--- function onElementStreamIn()
---     local elementType = getElementType(source)
+    for _, element2 in ipairs(elements) do
+        local ghostMode2 = getElementData(element2, 'element:ghostmode') or isInsideGhostColShape(element2)
+        
+        if ghostMode1 or ghostMode2 then
+            setElementAlpha(element, 200)
+            setElementCollidableWith(element, element2, false)
+        else
+            setElementAlpha(element, 255)
+            setElementCollidableWith(element, element2, true)
+        end
+    end
+end
 
---     if elementType == 'vehicle' or elementType == 'player' then
---         local player = localPlayer
---         local vehicle = getPedOccupiedVehicle(player)
+function updateElementGhostMode(element)
+    local elements = getElementsByTypes({'player', 'vehicle', 'ped'})
+    toggleCollisionBetweenElements(element, elements)
+end
 
---         if vehicle then
---             setElementCollidableWith(source, vehicle, not isDisabled)
---         else
---             setElementCollidableWith(source, player, not isDisabled)
---         end
---     end
--- end
+addEventHandler('onClientElementDataChange', root, function(dataName, oldValue, newValue)
+    if dataName == 'element:ghostmode' then
+        updateElementGhostMode(source)
+    end
+end)
 
--- addEventHandler('onClientElementStreamIn', root, onElementStreamIn)
+addEventHandler('onClientElementStreamIn', root, function()
+    updateElementGhostMode(source)
+end)
+
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    local elements = getElementsByTypes({'player', 'vehicle', 'ped'})
+    for _, element in ipairs(elements) do
+        updateElementGhostMode(element)
+    end
+end)
+
+addEventHandler('onClientColShapeHit', root, function(element)
+    if not isColShapeAGhost(source) then return end
+    updateElementGhostMode(element)
+end)
+
+addEventHandler('onClientColShapeLeave', root, function(element)
+    if not isColShapeAGhost(source) then return end
+    updateElementGhostMode(element)
+end)

@@ -10,15 +10,15 @@ local lockedElementDatas = {
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
-    'vehicle:additionalSeats', 'vehicle:job'
+    'vehicle:additionalSeats', 'vehicle:job',
 
-    'element:model', 
+    'element:model', 'element:ghostmode',
 }
 
 local selfElementDatas = {
     'player:afk', 'player:blockedDMs', 'player:blockedDMsReason',
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
-    'player:blockedPremiumChat', 'player:interfaceSize'
+    'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing'
 }
 
 function table.find(t, value)

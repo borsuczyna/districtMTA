@@ -1,8 +1,7 @@
-function setGhostMode(player)
-    triggerClientEvent('ghostmode:set', root, player)
-    print('kupa')
+function setElementGhostMode(element, state)
+    if state then
+        setElementData(element, 'element:ghostmode', true)
+    else
+        removeElementData(element, 'element:ghostmode')
+    end
 end
-
-addCommandHandler('ghostmodeXDDDD', function(plr,cmd,...)
-    setGhostMode(plr)
-end)
