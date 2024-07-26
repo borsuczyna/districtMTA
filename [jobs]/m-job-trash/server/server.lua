@@ -2,6 +2,7 @@ addEvent('jobs:finishJob')
 addEvent('jobs:startJob')
 addEvent('jobs:finishJobLobby')
 
+local blip = createBlip(settings.jobStart, 40, 2, 255, 255, 255, 255, 0, 9999)
 local vehicles = {}
 local timers = {}
 
@@ -41,7 +42,7 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
         event = 'jobs:trash:putTrash'
     })
 
-    exports['m-jobs']:createLobbyBlip(hash, 0, 0, 0, 42, 9999, {
+    exports['m-jobs']:createLobbyBlip(hash, 0, 0, 0, 43, 9999, {
         attach = {
             element = vehicle,
         }
