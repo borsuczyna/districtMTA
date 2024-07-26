@@ -1,4 +1,5 @@
 local encodeHashes = false
+local txdCache = {}
 local loadingQueue = {
     nextModelLoad = getTickCount()
 }
@@ -26,6 +27,17 @@ function getEncodeHash(name)
     return encodeHashes[name]
 end
 
+function getTXDFromPath(path)
+    if txdCache[path] then
+        return txdCache[path]
+    end
+
+    local data = decodeFileIn(path, path)
+    txdCache[path] = engineLoadTXD(data)
+
+    return txdCache[path]
+end
+
 function loadModel(name, data)
     if cancelLoadingModels then return end -- nop addDebugHook detected
 
@@ -36,9 +48,10 @@ function loadModel(name, data)
         model = data.newModel
     end
 
-    if fileExists(filePath .. '.txd') then
-        local txd = decodeFileIn(filePath .. '.txd', getEncodeHash(name .. '.txd'))
-        engineImportTXD(engineLoadTXD(txd), model)
+    local txdPath = data.txd and 'data/decoded/' .. data.txd or filePath
+    if fileExists(txdPath .. '.txd') then
+        local txd = getTXDFromPath(txdPath .. '.txd')
+        engineImportTXD(txd, model)
     end
     if fileExists(filePath .. '.dff') then
         local dff = decodeFileIn(filePath .. '.dff', getEncodeHash(name .. '.txd'))

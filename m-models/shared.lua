@@ -10,20 +10,66 @@ models = {
         type = 'object',
         model = 4825,
     },
+    ['spawn-road'] = {
+        custom = false,
+        type = 'object',
+        model = 4823,
+    },
+    ['spawn-garage'] = {
+        custom = false,
+        type = 'object',
+        model = 4824,
+        txd = 'spawn-ls',
+    },
+    ['building-fix'] = {
+        custom = false,
+        type = 'object',
+        model = 4101,
+    },
+    ['building-barrier'] = {
+        custom = false,
+        type = 'object',
+        model = 4102,
+    },
+    ['spawn-road2'] = {
+        custom = false,
+        type = 'object',
+        model = 6126,
+    },
+    ['spawn-road3'] = {
+        custom = false,
+        type = 'object',
+        model = 6128,
+    },
+    ['cable-station'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'spawn-ls',
+    },
+    ['cable-station-fix'] = {
+        custom = false,
+        type = 'object',
+        model = 6102,
+        txd = 'spawn-ls',
+    },
     ['cablecar'] = {
         custom = true,
         type = 'object',
         model = 1337,
+        txd = 'cablecar',
     },
     ['cablecar-door'] = {
         custom = true,
         type = 'object',
         model = 1337,
+        txd = 'cablecar',
     },
     ['cablecar-rail'] = {
         custom = true,
         type = 'object',
         model = 1337,
+        txd = 'cablecar',
     },
     ['railway-station'] = {
         custom = true,
