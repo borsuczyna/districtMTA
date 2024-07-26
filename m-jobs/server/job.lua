@@ -149,7 +149,8 @@ function createLobbyBlip(playerOrHash, x, y, z, icon, visibleDistance, options)
         hash = hash,
         position = {x or 0, y or 0, z or 0},
         visibleDistance = visibleDistance or 9999,
-        icon = icon or 41
+        icon = icon or 41,
+        options = options
     }
 
     table.insert(lobby.blips, blip)

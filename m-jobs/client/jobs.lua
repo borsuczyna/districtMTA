@@ -73,7 +73,7 @@ end
 
 function updateElementAttach(element, attach)
     if attach then
-        local x, y, z, rx, ry, rz = unpack(attach.position)
+        local x, y, z, rx, ry, rz = unpack(attach.position or {})
         attachElements(element.element, attach.element, x or 0, y or 0, z or 0, rx or 0, ry or 0, rz or 0)
     else
         detachElements(element.element)
