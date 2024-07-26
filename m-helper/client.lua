@@ -3,6 +3,11 @@ local helperLoaded, helperVisible, helperTimer = false, false, false
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 
+function setUpdates()
+    local updates = exports['m-updates']:getUpdates()
+    exports['m-ui']:setInterfaceData('helper', 'updates', updates)
+end
+
 function updateHelperData()
     local level = getElementData(localPlayer, 'player:level') or 1
     exports['m-ui']:setInterfaceData('helper', 'player', {
@@ -10,6 +15,8 @@ function updateHelperData()
         exp = getElementData(localPlayer, 'player:exp'),
         expToNext = exports['m-core']:getNextLevelExp(level),
     })
+
+    setUpdates()
 end
 
 addEventHandler('interface:load', root, function(name)
