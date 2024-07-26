@@ -1,5 +1,6 @@
 addEvent('jobs:getPlayerJobData', true)
 addEvent('jobs:buyUpgrade')
+jobMultipliersManager = createElement('jobMultipliersManager')
 
 function getPlayerJobDataResult(dbResult, player, job)
     if not dbResult then return end

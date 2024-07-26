@@ -38,9 +38,13 @@ window.jobs_startOrEndJob = (button) => {
 addEvent('jobs', 'interface:data:job-details', async (data) => {
     data = data[0];
 
+    if (data.multiplier && data.multiplier != 1) {
+        data.description += `<br><br><span class="multiplier-info">Mnożnik zarobków ${data.multiplier}x</span>`;
+    }
+
     document.querySelector('#jobs #job-name').innerText = data.name;
     document.querySelector('#jobs .background').style.backgroundImage = `url('../../m-jobs/data/images/${data.background}.png')`;
-    document.querySelector('#jobs #job-description').innerText = data.description;
+    document.querySelector('#jobs #job-description').innerHTML = data.description;
     document.querySelector('#jobs #level-required').innerHTML = data.minLevel;
     jobs_setLobbySize(data.lobbySize, data.minLobbySize);
 });

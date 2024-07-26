@@ -17,6 +17,7 @@ function updateJobsData()
 
     triggerServerEvent('jobs:getPlayerJobData', resourceRoot, jobGui)
 
+    data.multiplier = getJobMultiplier(jobGui)
     exports['m-ui']:setInterfaceData('jobs', 'job-details', data)
     exports['m-ui']:setInterfaceData('jobs', 'in-job', {
         current = getElementData(localPlayer, 'player:job'),

@@ -198,11 +198,12 @@ addEventHandler('jobs:trash:dumpTrash', root, function(hash, player)
 
     exports['m-jobs']:setLobbyData(hash, 'trashLevel', 0)
 
+    local multiplier = exports['m-jobs']:getJobMultiplier('trash')
     local players = exports['m-jobs']:getLobbyPlayers(hash)
-    local totalMoney = math.floor(trashLevel * settings.oneKgTrashCost)
+    local totalMoney = math.floor(trashLevel * settings.oneKgTrashCost * multiplier)
     local perPlayerMoney = math.floor(totalMoney / #players)
-    local upgradePoints = math.floor(totalMoney * settings.upgradePointChancePerKg * math.random(30, 150)/100)
-    local topPoints = math.floor(trashLevel / settings.kgFor1TopPoint)
+    local upgradePoints = math.floor(totalMoney * settings.upgradePointChancePerKg * math.random(30, 150)/100 * multiplier)
+    local topPoints = math.floor(trashLevel / settings.kgFor1TopPoint * multiplier)
 
     for _,player in pairs(players) do
         exports['m-jobs']:giveMoney(player, perPlayerMoney)

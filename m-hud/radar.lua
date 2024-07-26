@@ -74,9 +74,9 @@ function renderRadar()
 
     local _, _, cz = getElementRotation(getCamera())
     local x, y, z = getElementPosition(localPlayer)
-    -- draw blips with radar circle
     local blips = getElementsByType('blip')
-    for k,v in pairs(blips) do
+
+    local function drawBlip(v)
         local bx, by, bz = getElementPosition(v)
         local blipIcon = getBlipIcon(v)
         local size = blipIcon == 0 and 36/zoom or 45/zoom
@@ -95,6 +95,20 @@ function renderRadar()
                     end
                 end
             end
+        end 
+    end
+
+    for k,v in pairs(blips) do
+        local icon = getBlipIcon(v)
+        if icon ~= 0 then
+            drawBlip(v)
+        end
+    end
+
+    for k,v in pairs(blips) do
+        local icon = getBlipIcon(v)
+        if icon == 0 then
+            drawBlip(v)
         end
     end
 

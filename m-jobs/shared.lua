@@ -59,6 +59,17 @@ jobs = {
     }
 }
 
+function setJobMultiplier(job, multiplier)
+    local jobMultipliersManager = getElementsByType('jobMultipliersManager')[1]
+    setElementData(jobMultipliersManager, job, multiplier)
+    outputChatBox(('Multiplier for job `%s` has been set to %s'):format(job, multiplier))
+end
+
+function getJobMultiplier(job)
+    local jobMultipliersManager = getElementsByType('jobMultipliersManager')[1]
+    return getElementData(jobMultipliersManager, job) or 1
+end
+
 function table.find(t, value)
     for k, v in pairs(t) do
         if v == value then

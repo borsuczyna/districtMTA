@@ -21,6 +21,10 @@ local selfElementDatas = {
     'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing'
 }
 
+local selfVehicleElementDatas = {
+    'vehicle:onOffroad'
+}
+
 function table.find(t, value)
     for i, v in ipairs(t) do
         if v == value then
@@ -37,9 +41,23 @@ addEventHandler('onElementDataChange', root, function(dataName, oldValue)
         return
     end
 
+    if client and getElementType(source) == 'jobMultipliersManager' then
+        setElementData(source, dataName, oldValue)
+        setPlayerTriggerLocked(client, true, 'Tried to change job multipliers manager element data')
+        return
+    end
+
+    local playerVehicle = client and getPedOccupiedVehicle(client) or false
+
     if client and table.find(lockedElementDatas, dataName) then
         local newValue = getElementData(source, dataName)
         local message = ('Tried to change locked element data (`%s`, `%s`, `%s`)'):format(dataName, tostring(oldValue), tostring(newValue))
+        
+        setPlayerTriggerLocked(client, true, message)
+        setElementData(source, dataName, oldValue)
+    elseif client and getElementType(source) == 'vehicle' and playerVehicle ~= source and table.find(selfVehicleElementDatas, dataName) then
+        local newValue = getElementData(source, dataName)
+        local message = ('Tried to change not self vehicle element data (`%s`, `%s`, `%s`)'):format(dataName, tostring(oldValue), tostring(newValue))
         
         setPlayerTriggerLocked(client, true, message)
         setElementData(source, dataName, oldValue)

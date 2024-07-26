@@ -44,6 +44,8 @@
     <export function='getJobDataAsObject' type='client'/>
     <export function='giveMoney' type='server'/>
     <export function='giveUpgradePoints' type='server'/>
+    <export function='setJobMultiplier' type='server'/>
+    <export function='getJobMultiplier' type='shared'/>
     <export function='giveTopPoints' type='server'/>
     <export function='getPlayerJobUpgrades' type='server'/>
 
