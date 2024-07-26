@@ -37,12 +37,13 @@ function toggleCollisionBetweenElements(element, elements)
         local ghostMode2 = getElementData(element2, 'element:ghostmode') or isInsideGhostColShape(element2)
         
         if ghostMode1 or ghostMode2 then
-            setElementAlpha(element, 200)
             setElementCollidableWith(element, element2, false)
         else
-            setElementAlpha(element, 255)
             setElementCollidableWith(element, element2, true)
         end
+
+        setElementAlpha(element, ghostMode1 and 200 or 255)
+        setElementAlpha(element2, ghostMode2 and 200 or 255)
     end
 end
 
