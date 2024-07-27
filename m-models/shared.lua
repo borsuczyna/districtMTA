@@ -29,7 +29,7 @@ models = {
     ['building-barrier'] = {
         custom = false,
         type = 'object',
-        model = 4102,
+        model = 6103,
     },
     ['spawn-road2'] = {
         custom = false,

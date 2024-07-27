@@ -353,7 +353,8 @@
                 class: 'blip',
                 specialKey: `${blip.icon}-${i}`,
                 id: blip.id,
-                priority: priorityBlips.includes(blip.icon) ? 1 : 0
+                priority: priorityBlips.includes(blip.icon) ? 1 : 0,
+                hoverTooltip: blip.hoverTooltip || false
             });
         }
     }

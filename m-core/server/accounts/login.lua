@@ -1,4 +1,4 @@
-local function loginResult(queryResult, hash, data)
+local function loginResult(queryResult, hash, data, player)
     local result = dbPoll(queryResult, 0)
     if not result then
         sendAccountResponse(hash, {'login', false, 'Błąd podczas logowania'})
@@ -22,19 +22,20 @@ local function loginResult(queryResult, hash, data)
     end
 
     sendAccountResponse(hash, {'login', true, 'Zalogowano pomyślnie', accountData})
+    exports['m-core']:addUserLog(player, 'ACCOUNT', ('Zalogowano na konto'):format(login), ('Serial: ||%s||\nIP: ||%s||'):format(getPlayerSerial(player), getPlayerIP(player)))
 end
 
-local function loginInternal(data, hash)
+local function loginInternal(data, hash, player)
     local connection = exports['m-mysql']:getConnection()
     if not connection then
         sendAccountResponse(hash, {'login', false, 'Brak połączenia z bazą danych'})
         return
     end
 
-    dbQuery(loginResult, {hash, data}, connection, 'SELECT *, UNIX_TIMESTAMP(`premiumDate`) AS `premiumEnd`, UNIX_TIMESTAMP(`dailyRewardRedeem`) AS `dailyRewardRedeemDate` FROM `m-users` WHERE username = ? OR email = ?', data.usernameOrEmail, data.usernameOrEmail)
+    dbQuery(loginResult, {hash, data, player}, connection, 'SELECT *, UNIX_TIMESTAMP(`premiumDate`) AS `premiumEnd`, UNIX_TIMESTAMP(`dailyRewardRedeem`) AS `dailyRewardRedeemDate` FROM `m-users` WHERE username = ? OR email = ?', data.usernameOrEmail, data.usernameOrEmail)
 end
 
-function loginToAccount(hash, data)
+function loginToAccount(hash, data, player)
     assert(type(data) == 'table', 'createAccount: data is not a table')
     assert(type(data.usernameOrEmail) == 'string', 'createAccount: data.usernameOrEmail is not a string')
     assert(type(data.password) == 'string', 'createAccount: data.password is not a string')
@@ -45,7 +46,7 @@ function loginToAccount(hash, data)
     if #data.password > 18 then return 'Nieprawidłowe hasło' end
 
     data.password = encodePassword(data.password)
-    loginInternal(data, hash)
+    loginInternal(data, hash, player)
 end
 
 -- TEST - login

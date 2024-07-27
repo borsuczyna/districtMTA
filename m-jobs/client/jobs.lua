@@ -68,6 +68,7 @@ function updateObjectBlip(object, blip)
         end
 
         object.blip = element
+        setBlipVisibleDistance(element, blip.visibleDistance)
     end
 end
 

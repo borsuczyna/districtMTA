@@ -47,6 +47,9 @@ window.dashboard_fetchData = async (tab) => {
             case 'achievements':
                 dashboard_renderAchievements(data.data);
                 break;
+            case 'logs':
+                dashboard_renderLogs(data.data);
+                break;
         }
     }
 }

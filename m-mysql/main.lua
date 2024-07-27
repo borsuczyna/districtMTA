@@ -45,6 +45,13 @@ function query(queryString, ...)
     return false
 end
 
+function execute(queryString, ...)
+    if connection then
+        return dbExec(connection, queryString, ...)
+    end
+    return false
+end
+
 function getConnection()
     return connection
 end

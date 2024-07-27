@@ -3,12 +3,13 @@ addEvent('jobs:startJob')
 addEvent('jobs:finishJobLobby')
 
 local blip = createBlip(settings.jobStart, 40, 2, 255, 255, 255, 255, 0, 9999)
+setElementData(blip, 'blip:hoverText', 'Praca dorywcza<br>Wywóz śmieci')
 local vehicles = {}
 local timers = {}
 
 defaultBlipData = {
     icon = 41,
-    visibleDistance = 500,
+    visibleDistance = 9999,
 }
 
 function setPlayerTimer(player, callback, time, ...)

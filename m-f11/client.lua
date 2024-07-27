@@ -13,6 +13,18 @@ end
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 
+function getBlipHoverText(blip)
+    -- if is attached to player, return player name
+    if getElementType(blip) == 'blip' then
+        local attachedTo = getElementAttachedTo(blip)
+        if attachedTo and getElementType(attachedTo) == 'player' then
+            return getPlayerName(attachedTo)
+        end
+    end
+
+    return getElementData(blip, 'blip:hoverText')
+end
+
 function updateF11Data()
     local data = {}
     local deleteBlips = {}
@@ -23,19 +35,22 @@ function updateF11Data()
         local x, y = getElementPosition(blip)
         local icon = getBlipIcon(blip)
         local lastSendData = lastBlips[blipId]
+        local hoverTooltip = getBlipHoverText(blip)
 
-        if not lastSendData or lastSendData.x ~= x or lastSendData.y ~= y or lastSendData.icon ~= icon then
+        if not lastSendData or lastSendData.x ~= x or lastSendData.y ~= y or lastSendData.icon ~= icon or lastSendData.hoverTooltip ~= hoverTooltip then
             table.insert(data, {
                 x = x,
                 y = y,
                 icon = icon,
                 id = blipId,
+                hoverTooltip = hoverTooltip,
             })
 
             lastBlips[blipId] = {
                 x = x,
                 y = y,
                 icon = icon,
+                hoverTooltip = hoverTooltip,
             }
         end
     end

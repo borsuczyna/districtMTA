@@ -13,6 +13,7 @@ local lockedElementDatas = {
     'vehicle:additionalSeats', 'vehicle:job',
 
     'element:model', 'element:ghostmode',
+    'blip:hoverText',
 }
 
 local selfElementDatas = {

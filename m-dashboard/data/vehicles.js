@@ -65,71 +65,83 @@ window.dashboard_vehicleDetails = function(id, data) {
     let mileage = parseFloat(data?.mileage || vehicle.mileage);
 
     details.innerHTML = `
-        <div class="d-flex flex-column vehicle-details gap-1 mt-3" style="animation: fadeIn 0.3s ease-in-out;">
-            <div class="d-flex gap-1">
-                <div class="label">Model:</div>
-                <div>${vehicleName}</div>
-            </div>
-            <div class="d-flex gap-1">
-                <div class="label">Właściciel:</div>
-                <div>${htmlEscape(vehicle.ownerName)}</div>
-            </div>
-            <div class="d-flex gap-1">
-                <div class="label">Ostatni kierowca:</div>
-                <div>${htmlEscape(data?.lastDriver || vehicle.lastDriverName || 'Brak')}</div>
-            </div>
-            <div class="d-flex gap-1">
-                <div class="label">Paliwo:</div>
-                <div>${fuel.toFixed(2)}%</div>
-            </div>
-            <div class="d-flex gap-1">
-                <div class="label">Przebieg:</div>
-                <div>${mileage.toFixed(2)} km</div>
-            </div>
+        <div class="info-card mt-3" style="animation: fadeIn 0.3s ease-in-out;">
+            <div class="info-header">Szczegóły pojazdu</div>
+            <div class="info-body d-flex flex-column gap-1">
+                <div class="d-flex gap-1">
+                    <div class="label">Model:</div>
+                    <div>${vehicleName}</div>
+                </div>
+                <div class="d-flex gap-1">
+                    <div class="label">Właściciel:</div>
+                    <div>${htmlEscape(vehicle.ownerName)}</div>
+                </div>
+                <div class="d-flex gap-1">
+                    <div class="label">Ostatni kierowca:</div>
+                    <div>${htmlEscape(data?.lastDriver || vehicle.lastDriverName || 'Brak')}</div>
+                </div>
+                <div class="d-flex gap-1">
+                    <div class="label">Paliwo:</div>
+                    <div>${fuel.toFixed(2)}%</div>
+                </div>
+                <div class="d-flex gap-1">
+                    <div class="label">Przebieg:</div>
+                    <div>${mileage.toFixed(2)} km</div>
+                </div>
+                <div class="d-flex gap-1">
+                    <div class="label">W przechowalni:</div>
+                    <div>${vehicle.parking ? 'Tak' : 'Nie'}</div>
+                </div>
+        
+                ${!vehicle.parking ? `
+                    <div id="vehicle-map" class="mt-2"></div>
 
-            <div id="vehicle-map"></div>
-            <div class="d-flex gap-1 mt-2">
-                <div class="d-flex gap-1 align-items-center">
-                    <img src="../../m-maps/data/marker.png" class="player-blip icon" />
-                    <div class="label">Twoja pozycja</div>
-                </div>
-                <div class="d-flex gap-1 align-items-center">
-                    <img src="../../m-maps/data/marker.png" class="vehicle-blip icon" />
-                    <div class="label">Pozycja pojazdu</div>
-                </div>
+                    <div class="d-flex gap-1 mt-2">
+                        <div class="d-flex gap-1 align-items-center">
+                            <img src="../../m-maps/data/marker.png" class="player-blip icon" />
+                            <div class="label">Twoja pozycja</div>
+                        </div>
+                        <div class="d-flex gap-1 align-items-center">
+                            <img src="../../m-maps/data/marker.png" class="vehicle-blip icon" />
+                            <div class="label">Pozycja pojazdu</div>
+                        </div>
+                    </div>
+                ` : ''}
             </div>
         </div>
     `;
 
-    createMap({
-        element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
-        minZoom: 0.8,
-        zoom: 1.5,
-        maxZoom: 6,
-        x: position[0],
-        y: position[1],
-        limitBounds: true,
-        bounds: { x: 1400, y: 1400 },
-        texture: 'map-transparent.png?v1.01'
-    });
+    if (!vehicle.parking) {
+        createMap({
+            element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
+            minZoom: 0.8,
+            zoom: 1.5,
+            maxZoom: 6,
+            x: position[0],
+            y: position[1],
+            limitBounds: true,
+            bounds: { x: 1400, y: 1400 },
+            texture: 'map-transparent.png?v1.01'
+        });
 
-    createMapBlip({
-        element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
-        icon: '../../m-maps/data/marker.png',
-        size: 15,
-        x: window.dashboard_playerPosition[0],
-        y: window.dashboard_playerPosition[1],
-        class: 'player-blip'
-    });
+        createMapBlip({
+            element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
+            icon: '../../m-maps/data/marker.png',
+            size: 15,
+            x: window.dashboard_playerPosition[0],
+            y: window.dashboard_playerPosition[1],
+            class: 'player-blip'
+        });
 
-    createMapBlip({
-        element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
-        icon: '../../m-maps/data/marker.png',
-        size: 15,
-        x: position[0],
-        y: position[1],
-        class: 'vehicle-blip'
-    });
+        createMapBlip({
+            element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
+            icon: '../../m-maps/data/marker.png',
+            size: 15,
+            x: position[0],
+            y: position[1],
+            class: 'vehicle-blip'
+        });
+    }
 
     details.classList.remove('d-none');
 }

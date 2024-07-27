@@ -20,8 +20,16 @@ function executeElementScripts(element) {
         let code = script.innerHTML;
         script.remove();
 
-        let func = new Function(code);
-        func();
+        try {
+            let func = new Function(code);
+            try {
+                func();
+            } catch (runtimeError) {
+                logInterfaceError(script.src, code, runtimeError.stack);
+            }
+        } catch (syntaxError) {
+            logInterfaceError(script.src, code, syntaxError.stack);
+        }
     }
 }
 
@@ -148,16 +156,70 @@ function htmlEscape(text) {
     return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-async function include(jsFile) {
-    try {
-        let code = await fetch(jsFile);
-        let js = await code.text();
-        let func = new Function(js);
-        func();
-    } catch (e) {
-        console.error(e);
+function parseStack(stack) {
+    let regex = /(.+): (.+)\n\s+at eval \(eval at include \((.+):(\d+):(\d+)\), <anonymous>:(\d+):(\d+)\)/;
+    let match = stack.match(regex);
+    if (!match) {
+        regex = /(.+): (.+)\n\s+at (.+) \((.+):(\d+):(\d+)\)/;
+        match = stack.match(regex);
+        return null;
+    }
+
+    return {
+        error: match[1],
+        message: match[2],
+        line: parseInt(match[6]) - 3,
+        column: parseInt(match[7]),
+    };
+}
+
+async function logInterfaceError(file, js, stack) {
+    let parsedStack = parseStack(stack);
+    if (!parsedStack) {
+        parsedStack = {
+            error: stack,
+        };
+    } else {
+        let lines = js.split('\n');
+        parsedStack.originalLine = lines[parsedStack.line];
+    }
+
+    parsedStack.file = file;
+
+    let data = await mta.fetch('ui', 'logError', parsedStack);
+    if (data == null) {
+        notis_addNotification('error', 'Błąd interfejsu', 'Wystąpił błąd w interfejsie.<br>Nie udało się wysłać informacji o błędzie.');
     }
 }
+
+function copyErrorHash(hash) {
+    mta.triggerEvent('interface:setClipboard', hash);
+    notis_addNotification('info', 'Informacja', 'Skopiowano numer zgłoszenia błędu do schowka.');
+}
+
+async function include(jsFile) {
+    try {
+        let response = await fetch(jsFile);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch script: ${response.statusText}`);
+        }
+        let js = await response.text();
+
+        try {
+            let func = new Function(js);
+            try {
+                func();
+            } catch (runtimeError) {
+                logInterfaceError(jsFile, js, runtimeError.stack);
+            }
+        } catch (syntaxError) {
+            logInterfaceError(jsFile, js, syntaxError.stack);
+        }
+    } catch (fetchError) {
+        console.error(`Error fetching script ${jsFile}:`, fetchError);
+    }
+}
+
 
 function finishIncludes(interface) {
     mta.triggerEvent('interface:includes-finish', interface);

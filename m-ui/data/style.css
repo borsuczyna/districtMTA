@@ -29,6 +29,18 @@ body {
     overflow: hidden;
 }
 
+.error-hash {
+    color: #ff8800;
+}
+
+.error-hash:hover {
+    color: #ffaa00;
+}
+
+.error-hash:active {
+    color: #ffcc00;
+}
+
 .hidden {
     display: none !important;
 }

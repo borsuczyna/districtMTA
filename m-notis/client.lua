@@ -31,6 +31,7 @@ function addNotification(type, title, message, time)
     playSound('data/'..type..'.mp3')
 
     -- remove html from message
+    message = message:gsub('<br>', '\n')
     message = message:gsub('<[^>]+>', '')
     outputConsole('['..type..'] '..title..': '..message)
 end

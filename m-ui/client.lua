@@ -12,6 +12,7 @@ addEvent('interfaceLoaded', true)
 addEvent('interfaceElement:load', true)
 addEvent('interface:load', true)
 addEvent('interface:visibilityChange', true)
+addEvent('interface:setClipboard', true)
 addEventHandler('interfaceLoaded', resourceRoot, function()
     uiLoaded = true
 end)
@@ -213,6 +214,10 @@ end)
 addEvent('ui:fetchDataResponse', true)
 addEventHandler('ui:fetchDataResponse', resourceRoot, function(hash, response)
     triggerInterfaceEvent('main', 'ui:fetchDataResponse', hash, response)
+end)
+
+addEventHandler('interface:setClipboard', root, function(data)
+    setClipboard(data)
 end)
 
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)

@@ -74,6 +74,10 @@ function hideInterface()
         destroyElement(shader)
     end
 
+    if isTimer(cameraTimer) then
+        killTimer(cameraTimer)
+    end
+    
     if isElement(cameraObject) then
         detachElements(getCamera(), cameraObject)
         destroyElement(cameraObject)
@@ -85,10 +89,6 @@ function hideInterface()
 
     if isElement(screenSource) then
         destroyElement(screenSource)
-    end
-
-    if isTimer(cameraTimer) then
-        killTimer(cameraTimer)
     end
 
     showCursor(false)

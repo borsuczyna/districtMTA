@@ -173,13 +173,6 @@
         gap: 0.8rem;
     }
 
-    #dashboard .vehicle-details {
-        background: rgba(42, 42, 42, 0.4);
-        border: 1px solid rgba(54, 54, 54, 0.3);
-        border-radius: 0.5rem;
-        padding: 0.8rem;
-    }
-
     #dashboard #vehicle-map {
         height: max(20rem, 35vh);
         border-radius: 0.5rem;
@@ -597,6 +590,15 @@
         color: #ffffffcc;
     }
 
+    #dashboard .hidden-info {
+        filter: blur(0.25rem);
+        transition: filter 0.3s;
+    }
+
+    #dashboard .hidden-info:hover {
+        filter: blur(0);
+    }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;
@@ -771,8 +773,10 @@
         tasks.push(include('../../m-dashboard/data/daily-tasks.js'));
         tasks.push(include('../../m-dashboard/data/info.js'));
         tasks.push(include('../../m-dashboard/data/achievements.js'));
+        tasks.push(include('../../m-dashboard/data/logs.js'));
 
         await Promise.all(tasks);
+        await new Promise(resolve => setTimeout(resolve, 100));
         finishIncludes('dashboard');
     }
 

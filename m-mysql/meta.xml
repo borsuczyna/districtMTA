@@ -3,4 +3,5 @@
 
     <export function='getConnection' type='server'/>
     <export function='query' type='server'/>
+    <export function='execute' type='server'/>
 </meta>

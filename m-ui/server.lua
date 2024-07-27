@@ -1,3 +1,6 @@
+addEvent('ui:fetchData', true)
+addEvent('ui:logError')
+
 local requests = {}
 local lastHashes = {}
 local requestTimeout = 0
@@ -8,7 +11,19 @@ local function fetchRequest(client, triggerName, data)
     end
 end
 
-addEvent('ui:fetchData', true)
+local function generateHash()
+    local chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    local hash = ''
+    for i = 1, 24 do
+        local charPos = math.random(1, #chars)
+        hash = hash .. chars:sub(charPos, charPos)
+        if i % 6 == 0 and i < 24 then
+            hash = hash .. '-'
+        end
+    end
+    return hash
+end
+
 addEventHandler('ui:fetchData', resourceRoot, function(data)
     data = teaDecode(data, 'keep calm and play district mta')
     data = fromJSON(data)
@@ -41,7 +56,18 @@ function respondToRequest(hash, response)
     triggerClientEvent(client, 'ui:fetchDataResponse', resourceRoot, hash, response)
 end
 
--- add for ACL admin only setrequesttimeout
+addEventHandler('ui:logError', resourceRoot, function(hash, player, message)
+    if #toJSON(message) > 1000 then return end
+    
+    local uid = getElementData(player, 'player:uid') or -1
+    local errorHash = generateHash()
+
+    respondToRequest(hash, {status = 'success', errorHash = errorHash})
+    
+    exports['m-notis']:addNotification(player, 'error', 'Błąd interfesju', ('Wystąpił błąd w interfejsie.<br>Informacje o błędzie zostały wysłane do serwera.<br>Numer zgłoszenia: <a class="error-hash" href="#" onclick="copyErrorHash(\'%s\')">%s</a>'):format(errorHash, errorHash))
+    exports['m-mysql']:execute('INSERT INTO `m-ui-errors` SET `hash` = ?, `player` = ?, `message` = ?', errorHash, uid, toJSON(message))
+end)
+
 addCommandHandler('setrequesttimeout', function(player, command, timeout)
     local account = getPlayerAccount(player)
     if not isObjectInACLGroup('user.' .. getAccountName(account), aclGetGroup('Admin')) then
