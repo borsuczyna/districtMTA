@@ -125,7 +125,7 @@ window.dashboard_sendSetting = function(setting) {
         }
     } else if (settingData.type === 'range') {
         let range = document.querySelector(`#dashboard #settings #range-${setting}`);
-        let value = range.dataset.value;
+        let value = range?.dataset.value;
 
         mta.triggerEvent('dashboard:setSetting', setting, value);
 

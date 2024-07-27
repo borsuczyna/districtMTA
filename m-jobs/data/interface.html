@@ -6,7 +6,7 @@
         transform: translate(-50%, -50%) scale(0.9);
         background: rgba(29, 29, 29, 0.96);
         border: 1px solid rgb(57, 57, 57);
-        padding: 1.25rem;
+        padding: 0.75rem;
         border-radius: 0.8rem;
         display: flex;
         gap: 1rem;
@@ -378,7 +378,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gray p-3 rounded-2 h-100 d-flex flex-column align-items-center">
+        <div class="bg-gray p-2 rounded-2 h-100 d-flex flex-column align-items-center">
             <div class="header">Ulepszenia</div>
             <span class="small-text">Punkty ulepszeń: <span id="upgrade-points">-</span></span>
             <div class="upgrades-wrapper w-100 nice-scroll" style="width: 21rem;">
@@ -417,7 +417,7 @@
 </style>
 
 <div id="lobby-wrapper" class="d-none">
-    <div class="nice-table-wrapper" style="width: 35rem;">
+    <div class="nice-table-wrapper striped" style="width: 35rem;">
         <table id="lobbies-table">
             <thead>
                 <tr>
@@ -460,10 +460,16 @@
     #my-lobby-wrapper .nice-button:hover {
         background: #5d5d5d;
     }
+
+    #jobs .nice-table-wrapper {
+        background: none;
+        border: none;
+        padding: 0;
+    }
 </style>
 
 <div id="my-lobby-wrapper" class="d-none">
-    <div class="nice-table-wrapper" style="width: 35rem;">
+    <div class="nice-table-wrapper striped" style="width: 35rem;">
         <table id="my-lobby-table">
             <thead>
                 <tr>

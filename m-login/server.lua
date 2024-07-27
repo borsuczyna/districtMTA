@@ -57,10 +57,10 @@ addEventHandler('login:login', resourceRoot, function(hash, player, login, passw
 
     local message = exports['m-core']:loginToAccount(hash, {usernameOrEmail = login, password = password})
     if message then
-
         exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd logowania', message = message})
     end
 
+    exports['m-core']:addUserLog('ACCOUNT', ('Zalogowano na konto %s'):format(login), ('Serial: ||%s||\nIP: ||%s||'):format(getPlayerSerial(player), getPlayerIP(player)))
     waitingHashes[hash] = {player, getTickCount() + 5000}
 end)
 

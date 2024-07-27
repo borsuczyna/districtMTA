@@ -16,4 +16,6 @@ addEventHandler('onResourceStart', resourceRoot, function()
     setFPSLimit(fpsLimit)
     setOcclusionsEnabled(false)
     setWeather(18)
+
+    setWorldSpecialPropertyEnabled('burnflippedcars', false)
 end)

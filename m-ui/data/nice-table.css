@@ -78,3 +78,18 @@ input[type='search']::-webkit-search-cancel-button {
     -webkit-appearance: none;
     appearance: none;
 }
+
+.nice-table-wrapper.striped tbody tr {
+    background: rgba(54, 54, 54, 0.1);
+    color: rgba(255, 255, 255, 0.75);
+    transition: background 0.1s, color 0.1s;
+}
+
+.nice-table-wrapper.striped tbody tr:nth-child(2n) {
+    background: rgba(54, 54, 54, 0.35);
+}
+
+.nice-table-wrapper.striped tbody tr:hover {
+    background: rgba(54, 54, 54, 0.6);
+    color: rgba(255, 255, 255, 0.95);
+}

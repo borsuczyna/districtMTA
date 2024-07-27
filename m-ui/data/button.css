@@ -42,3 +42,43 @@
 .keycap-sm {
     padding: 0.1rem 0.3rem;
 }
+
+.flat-button {
+    background: rgba(91, 91, 91, 0.7);
+    border: 1px solid rgba(54, 54, 54, 0.7);
+    padding: 0.8rem;
+    color: #ffffffcc;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    width: calc(100% - 2rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: background 0.2s, border 0.2s;
+}
+
+.flat-button:hover {
+    background: rgba(116, 116, 116, 0.8);
+    border: 1px solid rgba(97, 97, 97, 0.7);
+    animation: button-hover 0.8s infinite;
+}
+
+.flat-button-small {
+    width: auto;
+    font-size: 0.8rem;
+    height: auto;
+    padding: 0.5rem 0.3rem;
+}
+
+.flat-button.grayed {
+    background: rgba(91, 91, 91, 0.3);
+    border: 1px solid rgba(54, 54, 54, 0.3);
+    cursor: not-allowed;
+}
+
+.flat-button.grayed:hover {
+    background: rgba(91, 91, 91, 0.3);
+    border: 1px solid rgba(54, 54, 54, 0.3);
+}

@@ -8,7 +8,7 @@ window.dashboard_renderPunishments = (data) => {
     };
 
     document.querySelector('#dashboard #tabs [tab="punishments"]').innerHTML = `
-        <div class="nice-table-wrapper">
+        <div class="nice-table-wrapper striped">
             <table id="punishments-table">
                 <thead>
                     <tr>

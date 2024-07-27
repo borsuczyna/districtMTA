@@ -141,6 +141,16 @@ end
 addEventHandler('onClientResourceStart', resourceRoot, updateMarkers)
 addEventHandler('onClientPreRender', root, renderMarkers)
 
+-- on restore
+addEventHandler('onClientRestore', root, function(didClearRenderTargets)
+    if not didClearRenderTargets then return end
+    for k,v in pairs(markersData) do
+        if isElement(k) then
+            updateRenderTarget(k, v.rt)
+        end
+    end
+end)
+
 addEventHandler('onClientElementStreamIn', root, function()
     if getElementType(source) == 'marker' then
         updateMarker(source)

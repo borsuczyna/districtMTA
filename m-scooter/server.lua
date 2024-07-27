@@ -1,6 +1,7 @@
 local timers = {}
 local rentals = {
 	{691.0, -514.883, 16.336, 90},
+	{1170.492, -1696.146, 13.547, 90},
 }
 
 local handling = {

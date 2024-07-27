@@ -18,6 +18,7 @@ addEvent('interfaceLoaded', true)
 function toggleMouse(button, down)
     if button ~= 'mouse2' or not down then return end
     showCursor(not isCursorShowing(), false)
+    toggleControl('chatbox', not isCursorShowing())
 end
 
 function updateScoreboardData()
@@ -115,6 +116,7 @@ function setScoreboardVisible(visible)
     _G[visible and 'addEventHandler' or 'removeEventHandler']('onClientKey', root, toggleMouse)
     if not visible then
         showCursor(false)
+        toggleControl('chatbox', true)
     end
 
     if not scoreboardLoaded and visible then

@@ -20,8 +20,10 @@ local function uidToPlate(uid)
         :upper(), uid % 10000)
 end
 
-local function loadPrivateVehicle(data)
+local function loadPrivateVehicle(data, player, position)
     destroyPrivateVehicle(data.uid)
+
+    if not player and data.parking and data.parking ~= 0 then return end
     
     local x, y, z = unpack(map(split(data.position, ','), tonumber))
     local rx, ry, rz = unpack(map(split(data.rotation, ','), tonumber))
@@ -76,6 +78,48 @@ local function loadPrivateVehicle(data)
     if data.sharedGroups then
         setElementData(vehicle, 'vehicle:sharedGroups', map(split(data.sharedGroups, ','), tonumber))
     end
+
+    if player then
+        warpPedIntoVehicle(player, vehicle)
+    end
+
+    if position then
+        setElementPosition(vehicle, position.x, position.y, position.z)
+    end
+end
+
+function putVehicleIntoParking(vehicle)
+    local uid = getElementData(vehicle, 'vehicle:uid')
+    if not uid then return false, 'Brak identyfikatora pojazdu' end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then
+        return false, 'Nie udało się schować pojazdu'
+    end
+
+    local query = 'UPDATE `m-vehicles` SET `parking` = 1, `parkingDate` = NOW() WHERE `uid` = ?'
+    dbExec(connection, query, uid)
+
+    savePrivateVehicle(vehicle)
+    destroyPrivateVehicle(uid)
+    return true
+end
+
+function getVehicleFromParking(player, hash, vehicleId, position, rotation)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local positionString = ('%s,%s,%s'):format(position.x, position.y, position.z)
+    local rotationString = ('%s,%s,%s'):format(rotation.x, rotation.y, rotation.z)
+    
+    local whereQuery, queryArgs = createWhereOwnerQuery(player, shared, group)
+    local query = 'UPDATE `m-vehicles` SET `parking` = 0, `position` = ?, `rotation` = ? WHERE `uid` = ? AND ' .. whereQuery
+    
+    dbExec(connection, query, positionString, rotationString, vehicleId, unpack(queryArgs))
+    dbQuery(loadPrivateVehiclesResult, {player, hash}, connection, 'SELECT * FROM `m-vehicles` WHERE `uid` = ? AND ' .. whereQuery, vehicleId, unpack(queryArgs))
 end
 
 function buildSavePrivateVehicleQuery(vehicle)
@@ -146,11 +190,19 @@ function saveAllPrivateVehicles()
     exports['m-logs']:sendLog('vehicles', 'info', 'Zapisano dane wszystkich pojazdów (' .. getTickCount() - startTime .. 'ms)')
 end
 
-local function loadPrivateVehiclesResult(queryResult)
+function loadPrivateVehiclesResult(queryResult, player, hash)
     local result = dbPoll(queryResult, 0)
-    
+
+    if hash then
+        if #result == 0 then
+            exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie udało się wyjąć pojazdu'})
+        else
+            exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wyjęto pojazd z parkingu'})
+        end
+    end
+
     for _, row in ipairs(result) do
-        loadPrivateVehicle(row)
+        loadPrivateVehicle(row, player)
     end
 end
 
@@ -208,12 +260,70 @@ function tryVehicleStartEnter(player, seat)
     setElementData(source, 'vehicle:lastDriver', uid)
 end
 
+local function getPlayerVehiclesResult(queryHandle, player, hash)
+    local result = dbPoll(queryHandle, 0)
+    if not result then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie udało się pobrać danych'})
+        return
+    end
+    
+    exports['m-ui']:respondToRequest(hash, {status = 'success', data = result})
+end
+
+function createWhereOwnerQuery(player, shared, group, footer)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    if shared == nil then shared = true end
+    if group == nil then group = true end
+    footer = footer or ''
+
+    local query = '(' .. footer .. '`owner` = ?'
+    local queryArgs = {uid}
+
+    if shared then
+        query = query .. ' OR FIND_IN_SET(?, ' .. footer .. '`sharedPlayers`))'
+        table.insert(queryArgs, uid)
+    else
+        query = query .. ')'
+    end
+
+    -- TODO: sharedGroups
+
+    return query, queryArgs
+end
+
+function getPlayerVehicles(player, hash, parking, shared, group)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    if shared == nil then shared = true end
+    if group == nil then group = true end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = [[
+        SELECT v.*, u.username AS ownerName, ud.username AS lastDriverName
+        FROM `m-vehicles` v
+        JOIN `m-users` u ON u.`uid` = v.`owner`
+        LEFT JOIN `m-users` ud ON ud.`uid` = v.`lastDriver`
+    ]]
+
+    local whereQuery, queryArgs = createWhereOwnerQuery(player, shared, group, 'v.')
+    query = query .. ' WHERE ' .. whereQuery
+
+    if parking ~= nil then
+        query = query .. ' AND `parking` = ' .. (parking and 1 or 0)
+    end
+
+    dbQuery(getPlayerVehiclesResult, {player, hash}, connection, query, unpack(queryArgs))
+end
+
 addEventHandler('onResourceStart', resourceRoot, loadPrivateVehicles)
 addEventHandler('onResourceStop', resourceRoot, saveAllPrivateVehicles)
 addEventHandler('onVehicleStartEnter', root, tryVehicleStartEnter)
 setTimer(saveAllPrivateVehicles, 300000, 0) -- 5 minutes
-
--- entering vehicles beacuse mta is stupid
 
 addEventHandler('onVehicleEnter', root, function(player, seat)
     setElementData(player, 'player:occupiedVehicle', source)

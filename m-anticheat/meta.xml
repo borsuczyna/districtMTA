@@ -7,6 +7,7 @@
     <script src='client/nt.lua' type='client' cache='false'/>
     <script src='client/injector.lua' type='client' cache='false'/>
     <script src='client/speed-hack.lua' type='client' cache='false'/>
+    <script src='client/world.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
     <!-- <script src='server/vpn.lua' type='server'/> -->

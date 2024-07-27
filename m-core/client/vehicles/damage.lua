@@ -16,6 +16,7 @@ end)
 addEventHandler('onClientRender', root, function()
     for _, vehicle in ipairs(getElementsByType('vehicle', root, true)) do
         local health = getElementHealth(vehicle)
+        
         if health > 315 then
             setVehicleDamageProof(vehicle, false)
         end

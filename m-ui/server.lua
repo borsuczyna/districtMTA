@@ -1,5 +1,12 @@
 local requests = {}
 local lastHashes = {}
+local requestTimeout = 0
+
+local function fetchRequest(client, triggerName, data)
+    if not triggerEvent(triggerName, root, data.hash, client, unpack(data.arguments)) then
+        triggerClientEvent(client, 'ui:fetchDataResponse', resourceRoot, data.hash)
+    end
+end
 
 addEvent('ui:fetchData', true)
 addEventHandler('ui:fetchData', resourceRoot, function(data)
@@ -18,8 +25,10 @@ addEventHandler('ui:fetchData', resourceRoot, function(data)
     requests[data.hash] = client
     lastHashes[data.hash] = {client = client, tick = getTickCount()}
 
-    if not triggerEvent(triggerName, root, data.hash, client, unpack(data.arguments)) then
-        triggerClientEvent(client, 'ui:fetchDataResponse', resourceRoot, data.hash)
+    if requestTimeout > 0 then
+        setTimer(fetchRequest, requestTimeout, 1, client, triggerName, data)
+    else
+        fetchRequest(client, triggerName, data)
     end
 end)
 
@@ -31,3 +40,18 @@ function respondToRequest(hash, response)
 
     triggerClientEvent(client, 'ui:fetchDataResponse', resourceRoot, hash, response)
 end
+
+-- add for ACL admin only setrequesttimeout
+addCommandHandler('setrequesttimeout', function(player, command, timeout)
+    local account = getPlayerAccount(player)
+    if not isObjectInACLGroup('user.' .. getAccountName(account), aclGetGroup('Admin')) then
+        return outputChatBox('Brak uprawnień', player, 255, 0, 0)
+    end
+
+    if not tonumber(timeout) then
+        return outputChatBox('Użycie: /setrequesttimeout <timeout>', player, 255, 0, 0)
+    end
+
+    requestTimeout = tonumber(timeout) or 500
+    outputChatBox(('Zmieniono timeout zapytań do %dms'):format(requestTimeout), player, 0, 255, 0)
+end)

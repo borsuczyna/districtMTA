@@ -299,46 +299,6 @@
         font-size: 1.2rem;
     }
 
-    #dashboard .flat-button {
-        background: rgba(91, 91, 91, 0.7);
-        border: 1px solid rgba(54, 54, 54, 0.7);
-        padding: 0.8rem;
-        color: #ffffffcc;
-        border-radius: 0.5rem;
-        font-size: 0.85rem;
-        cursor: pointer;
-        width: calc(100% - 2rem);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1;
-        transition: background 0.2s, border 0.2s;
-    }
-
-    #dashboard .flat-button:hover {
-        background: rgba(116, 116, 116, 0.8);
-        border: 1px solid rgba(97, 97, 97, 0.7);
-        animation: button-hover 0.8s infinite;
-    }
-
-    #dashboard .flat-button-small {
-        width: auto;
-        font-size: 0.8rem;
-        height: auto;
-        padding: 0.5rem 0.8rem;
-    }
-
-    #dashboard .flat-button.grayed {
-        background: rgba(91, 91, 91, 0.3);
-        border: 1px solid rgba(54, 54, 54, 0.3);
-        cursor: not-allowed;
-    }
-
-    #dashboard .flat-button.grayed:hover {
-        background: rgba(91, 91, 91, 0.3);
-        border: 1px solid rgba(54, 54, 54, 0.3);
-    }
-
     #dashboard #daily-reward-history {
         background: rgba(42, 42, 42, 0.5);
         border: 1px solid rgba(54, 54, 54, 0.4);
@@ -688,6 +648,7 @@
             <div class="item" tab="achievements" onclick="dashboard_fetchData('achievements'); dashboard_changeTab(this)">Osiągnięcia</div>
             <div class="item" tab="vehicles" onclick="dashboard_fetchData('vehicles'); dashboard_changeTab(this)">Pojazdy</div>
             <div class="item" tab="punishments" onclick="dashboard_fetchData('punishments'); dashboard_changeTab(this)">Kary</div>
+            <div class="item" tab="logs" onclick="dashboard_fetchData('logs'); dashboard_changeTab(this)">Logi</div>
             <div class="item" tab="settings" onclick="dashboard_changeTab(this)">Ustawienia</div>
         </div>
     </div>
@@ -732,9 +693,6 @@
             </div>
         </div>
         <div class="tab" tab="daily-tasks">
-            <h2 style="margin-bottom: 0.2rem;">Zadania dzienne</h2>
-            <p style="margin-top: 0; margin-bottom: 1rem;">Odbierz nagrody za wykonane zadania!</p>
-
             <div id="daily-tasks">
                 <div class="d-flex p-5 flex-grow-1 flex-column justify-center align-items-center mt-5 label">
                     <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
@@ -743,9 +701,6 @@
             </div>
         </div>
         <div class="tab" tab="daily-reward">
-            <h2 style="margin-bottom: 0.2rem;">Nagroda dzienna</h2>
-            <p style="margin-top: 0;">Odbierz swoją nagrodę za codzienne logowanie!</p>
-
             <div class="d-flex w-100 gap-3 align-items-start justify-center mt-4">
                 <div class="daily-reward-card small yesterday">
                     <div class="box"></div>
@@ -785,6 +740,12 @@
             </div>
         </div>
         <div class="tab" tab="punishments">
+            <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
+                <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
+                <span class="mt-3">Ładowanie...</span>
+            </div>
+        </div>
+        <div class="tab" tab="logs">
             <div class="d-flex p-5 flex-column justify-center align-items-center mt-5 label">
                 <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
                 <span class="mt-3">Ładowanie...</span>

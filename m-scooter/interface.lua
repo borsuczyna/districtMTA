@@ -1,7 +1,5 @@
 local scooterUILoaded, scooterUIVisible, scooterHideTimer = false, false, false
 
-addEvent('scooter:interface:rent', true)
-
 function setInterfaceData()
     local renting = getElementData(localPlayer, 'scooter:rented')
     exports['m-ui']:triggerInterfaceEvent('scooter', 'play-animation', true)

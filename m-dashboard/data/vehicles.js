@@ -5,13 +5,14 @@ window.dashboard_renderVehicles = (data) => {
     dataCache.vehicles = data;
 
     document.querySelector('#dashboard #tabs [tab="vehicles"]').innerHTML = `
-        <div class="nice-table-wrapper">
+        <div class="nice-table-wrapper striped">
             <table id="vehicles-table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Pojazd</th>
                         <th>Właścicel</th>
+                        <th>Parking</th>
                         <th>Opcje</th>
                     </tr>
                 </thead>
@@ -30,6 +31,7 @@ window.dashboard_renderVehicles = (data) => {
             { data: 'uid' },
             { data: 'model', render: (data) => window.vehicleNames[parseInt(data) - 400] },
             { data: 'ownerName' },
+            { data: 'parking', render: (data) => data ? 'Tak' : 'Nie' },
             { data: 'uid', render: (data) => {
                 return `<div class="d-flex gap-1">
                     <div class="flat-button flat-button-small" onclick="dashboard_getVehicleDetails(${data})">Szczegóły</div>
@@ -38,7 +40,7 @@ window.dashboard_renderVehicles = (data) => {
         ],
         order: [[0, 'desc']],
         columnDefs: [
-            { targets: [3], orderable: false, className: 'dt-right d-flex justify-end' }
+            { targets: [4], orderable: false, className: 'dt-right d-flex justify-end' }
         ]
     });
 }

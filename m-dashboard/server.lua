@@ -83,15 +83,8 @@ addEventHandler('dashboard:fetchData', resourceRoot, function(hash, player, data
         query = 'SELECT * FROM `m-punishments` WHERE user = ?'
         queryArgs = {uid}
     elseif data == 'vehicles' then
-        query = [[
-            SELECT v.*, u.username AS ownerName, ud.username AS lastDriverName
-            FROM `m-vehicles` v
-            JOIN `m-users` u ON u.`uid` = v.`owner`
-            LEFT JOIN `m-users` ud ON ud.`uid` = v.`lastDriver`
-            WHERE v.`owner` = ? OR FIND_IN_SET(?, v.`sharedPlayers`)
-        ]]
-
-        queryArgs = {uid, uid}
+        exports['m-core']:getPlayerVehicles(player, hash, nil, true, true)
+        return
     elseif data == 'account' then
         query = [[
             SELECT u.`username`, u.`registerDate`, u.`lastActive`, COUNT(v.`uid`) AS vehiclesCount

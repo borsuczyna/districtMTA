@@ -10,6 +10,7 @@
 
     <script src='server/main.lua' type='server'/>
     <script src='server/id.lua' type='server'/>
+    <script src='server/logs.lua' type='server'/>
     <script src='server/chat.lua' type='server'/>
     <script src='server/antyspam.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
@@ -50,6 +51,9 @@
     <export function='getPlayerFromPartialName' type='shared'/>
     <export function='getPlayerById' type='shared'/>
 
+    <export function='addUserLog' type='server'/>
+    <export function='getLogType' type='server'/>
+
     <export function='createAccount' type='server'/>
     <export function='loginToAccount' type='server'/>
     <export function='assignPlayerData' type='server'/>
@@ -85,6 +89,9 @@
     <export function='enterAdditionalSeat' type='server'/>
     <export function='allowVehicleAttach' type='server'/>
     <export function='disAllowVehicleAttach' type='server'/>
+    <export function='putVehicleIntoParking' type='server'/>
+    <export function='getVehicleFromParking' type='server'/>
+    <export function='getPlayerVehicles' type='server'/>
 
     <export function='premiumChatDiscord' http='true'/>
 

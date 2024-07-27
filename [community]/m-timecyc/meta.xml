@@ -1,0 +1,10 @@
+<meta>
+    <script src="timecyc.lua" type="client"/>
+
+    <file src="timecyc.dat" type="client"/>
+
+    <export function="getTimeCycleValue" type="client"/>
+    <export function="getWeather" type="client"/>
+    <export function="setWeather" type="client"/>
+    <export function="setWeatherBlended" type="client"/>
+</meta>

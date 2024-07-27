@@ -92,7 +92,9 @@ addCommandHandler('dv', function(player, cmd)
     end
 
     local isSpawned = not getElementData(vehicle, 'vehicle:uid')
-    if not isSpawned then
+    local isJob = getElementData(vehicle, 'vehicle:job')
+    local isScooter = getElementData(vehicle, 'scooter:owner')
+    if not isSpawned or isJob or isScooter then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz usunąć tego pojazdu')
         return
     end

@@ -32,6 +32,9 @@ window.dashboard_fetchData = async (tab) => {
         notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
     } else {
         switch (tab) {
+            case 'logs':
+                dashboard_renderLogs(data.data);
+                break;
             case 'punishments':
                 dashboard_renderPunishments(data.data);
                 break;
