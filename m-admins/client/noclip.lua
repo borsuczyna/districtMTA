@@ -67,6 +67,10 @@ end
 function toggleNoClip()
     if not doesPlayerHavePermission(localPlayer, 'noclip') then return end
 
+    if not noclipEnabled and getElementData(localPlayer, 'player:job') and getElementData(localPlayer, 'player:rank') < 5 then
+        return exports['m-notis']:addNotification('error', 'Noclip', 'Nie możesz używać noclipa będąc w pracy')
+    end
+
     noclipEnabled = not noclipEnabled
 
     local element = localPlayer
@@ -85,5 +89,11 @@ function toggleNoClip()
         setElementFrozen(element, false)
     end
 end
+
+addEventHandler('onClientElementDataChange', localPlayer, function(dataName)
+    if dataName == 'player:job' and noclipEnabled then
+        toggleNoClip()
+    end
+end)
 
 bindKey('x', 'down', toggleNoClip)
