@@ -64,7 +64,7 @@ addEventHandler('ui:logError', resourceRoot, function(hash, player, message)
 
     respondToRequest(hash, {status = 'success', errorHash = errorHash})
     
-    exports['m-notis']:addNotification(player, 'error', 'Błąd interfesju', ('Wystąpił błąd w interfejsie.<br>Informacje o błędzie zostały wysłane do serwera.<br>Numer zgłoszenia: <a class="error-hash" href="#" onclick="copyErrorHash(\'%s\')">%s</a>'):format(errorHash, errorHash))
+    exports['m-notis']:addNotification(player, 'error', 'Błąd interfejsu', ('Wystąpił błąd w interfejsie.<br>Informacje o błędzie zostały wysłane do serwera.<br>Numer zgłoszenia: <a class="error-hash" href="#" onclick="copyErrorHash(\'%s\')">%s</a>'):format(errorHash, errorHash))
     exports['m-mysql']:execute('INSERT INTO `m-ui-errors` SET `hash` = ?, `player` = ?, `message` = ?', errorHash, uid, toJSON(message))
 end)
 

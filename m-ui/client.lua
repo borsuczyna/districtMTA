@@ -163,7 +163,7 @@ function renderInterface()
         dxDrawImage(0, 0, sx, sy, browser, 0, 0, 0, tocolor(255, 255, 255, 255), false)
 
         local cx, cy = getCursorPosition()
-        if not cx or not cy then cx, cy = -5000, -5000 end
+        if not cx or not cy then cx, cy = 0, 0 end
         cx, cy = cx*sx, cy*sy
         injectBrowserMouseMove(browser, cx, cy)
 
