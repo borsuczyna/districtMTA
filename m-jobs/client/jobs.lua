@@ -171,11 +171,19 @@ function destroyObject(hash)
     end
 end
 
-function getObjectCustomData(hash, key)
+function getLobbyObjectCustomData(hash, key)
     local obj = findElementByHash(objects, hash)
     if not obj then return end
 
     return obj.customData[key]
+end
+
+function getObjectHash(element)
+    for i, object in ipairs(objects) do
+        if object.element == element then
+            return object.hash
+        end
+    end
 end
 
 function destroyArray(array)

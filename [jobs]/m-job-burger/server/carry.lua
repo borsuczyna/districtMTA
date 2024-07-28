@@ -1,6 +1,16 @@
 local carryObjects = {}
 
-function makePlayerCarryObject(player, model)
+function getPlayerCarryKey(player)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    return ('player:%d:carry'):format(uid)
+end
+
+function makePlayerCarryObject(player, model, data)
+    local key = getPlayerCarryKey(player)
+    if not key then return end
+
     setElementData(player, 'player:animation', 'carry-burger')
 
     if carryObjects[player] then
@@ -18,6 +28,19 @@ function makePlayerCarryObject(player, model)
         dimension = getElementDimension(player),
         scale = scale,
     })
+
+    exports['m-jobs']:setLobbyData(player, key, {
+        object = carryObjects[player],
+        model = model,
+        data = data,
+    })
+end
+
+function getPlayerCarryObject(player)
+    local key = getPlayerCarryKey(player)
+    if not key then return end
+
+    return exports['m-jobs']:getLobbyData(player, key)
 end
 
 function stopPlayerCarryObject(player, hash)
@@ -25,6 +48,7 @@ function stopPlayerCarryObject(player, hash)
 
     if carryObjects[player] then
         exports['m-jobs']:destroyLobbyObject(hash or player, carryObjects[player])
+        exports['m-jobs']:setLobbyData(player, getPlayerCarryKey(player), nil)
         carryObjects[player] = nil
     end
 end

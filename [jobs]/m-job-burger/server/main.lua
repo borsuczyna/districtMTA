@@ -43,6 +43,7 @@ local function loadElements(hash, dimension)
             frozen = true,
             dimension = dimension,
             scale = element.scale,
+            customData = {clickTrigger = element.clickTrigger}
         })
     end
 
@@ -54,7 +55,7 @@ local function startBurgerJob(hash, players)
 
     for _, player in pairs(players) do
         setElementPosition(player, unpack(settings.getJobSpawn()))
-        makePlayerCarryObject(player, 'burger/burger')
+        -- makePlayerCarryObject(player, 'burger/burger')
     end
 
     loadElements(hash, dimension)

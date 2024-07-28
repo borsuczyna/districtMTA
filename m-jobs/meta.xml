@@ -42,6 +42,7 @@
     <export function='leaveJob' type='server'/>
     <export function='getJobData' type='client'/>
     <export function='getJobDataAsObject' type='client'/>
+    <export function='getObjectHash' type='client'/>
     <export function='giveMoney' type='server'/>
     <export function='giveUpgradePoints' type='server'/>
     <export function='setJobMultiplier' type='server'/>

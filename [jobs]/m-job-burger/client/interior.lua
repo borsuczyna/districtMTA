@@ -22,6 +22,7 @@ function setBurgerInteriorVisible(state)
         updateCamera()
         addEventHandler('onClientRender', root, updateMovement)
         addEventHandler('onClientClick', root, goToPositionClick)
+        addEventHandler('onClientClick', root, onClickObjectInteraction, true, 'low')
         showCursor(true, false)
     else
         if isElement(interiorObject) then
@@ -35,6 +36,7 @@ function setBurgerInteriorVisible(state)
 
         removeEventHandler('onClientRender', root, updateMovement)
         removeEventHandler('onClientClick', root, goToPositionClick)
+        removeEventHandler('onClientClick', root, onClickObjectInteraction)
     end
 end
 

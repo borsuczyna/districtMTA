@@ -57,7 +57,10 @@ settings = {
             scale = 1.45,
         },
         {
-            trigger = 'meat',
+            clickTrigger = {
+                type = 'server',
+                event = 'meat'
+            },
             model = 'burger/meat',
             position = {2.3, -1.5, 1.055},
             rotation = {0, 0, -200},
@@ -93,7 +96,10 @@ settings = {
         },
         -- trash
         {
-            trigger = 'trash',
+            clickTrigger = {
+                type = 'server',
+                event = 'trash'
+            },
             model = 'burger/trash',
             position = {3, -0.5, 1},
             rotation = {0, 0, 90},
@@ -123,6 +129,11 @@ settings = {
 
     carryPositions = {
         ['burger/burger'] = {
+            position = {0.06, 0.05, 0},
+            rotation = {-90, 0, 0},
+            scale = 1.5,
+        },
+        ['burger/meat'] = {
             position = {0.06, 0.05, 0},
             rotation = {-90, 0, 0},
             scale = 1.5,

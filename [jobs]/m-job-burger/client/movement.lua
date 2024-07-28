@@ -1,4 +1,16 @@
-local goToPosition = false
+goToPosition = false
+goToAction = false
+
+function tryAction()
+    if not goToAction then return end
+
+    local objectHash, clickTrigger = unpack(goToAction)
+    if clickTrigger.type == 'server' then
+        triggerServerEvent('jobs:burger:clickElement', resourceRoot, clickTrigger.event, objectHash)
+    else
+        triggerEvent('jobs:burger:clickElement', resourceRoot, clickTrigger.event, objectHash)
+    end
+end
 
 function updateMovement()
     if not goToPosition then return end
@@ -8,9 +20,10 @@ function updateMovement()
     if goToPosition[5] then return end
 
     local distance = getDistanceBetweenPoints2D(goToPosition[1], goToPosition[2], getElementPosition(localPlayer))
-    if distance < 0.5 then
+    if distance < 0.65 then
         setPedControlState(localPlayer, 'forwards', false)
         goToPosition[5] = true
+        tryAction()
     end
 end
 
@@ -18,11 +31,10 @@ function goToPositionClick(button, state, x, y, wx, wy, wz, element)
     if button ~= 'left' or state ~= 'down' or not wx then return end
 
     local px, py, pz = getElementPosition(localPlayer)
-    local rot = findRotation(px, py, wx, wy)
-    setElementRotation(localPlayer, 0, 0, rot, 'default', true)
     setPedControlState(localPlayer, 'forwards', true)
 
     local hit, hx, hy, hz = processLineOfSight(px, py, pz, wx, wy, pz, true, false, false, true, false, false, false, false, localPlayer, true)
-
+    local rot = findRotation(px, py, hx or wx, hy or wy)
     goToPosition = {hx or wx, hy or wy, hz or wz, rot}
+    goToAction = false
 end

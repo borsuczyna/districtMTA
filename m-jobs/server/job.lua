@@ -82,7 +82,7 @@ function createLobbyObject(playerOrHash, model, x, y, z, rx, ry, rz, options)
         position = {x or 0, y or 0, z or 0},
         rotation = {rx or 0, ry or 0, rz or 0},
         options = options,
-        customData = {}
+        customData = options.customData or {}
     }
 
     table.insert(lobby.objects, object)
