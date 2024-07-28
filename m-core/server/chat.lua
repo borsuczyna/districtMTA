@@ -9,9 +9,12 @@ local function removeHex(text)
     return text:gsub('#%x%x%x%x%x%x', '')
 end
 
-function sendLocalMessage(x, y, z, message, distance, r, g, b)
+function sendLocalMessage(x, y, z, dimension, message, distance, r, g, b)
     for _, player in ipairs(getElementsWithinRange(x, y, z, distance, 'player')) do
-        outputChatBox(message, player, r or 255, g or 255, b or 255, true)
+        local dim = getElementDimension(player)
+        if dim == dimension then
+            outputChatBox(message, player, r or 255, g or 255, b or 255, true)
+        end
     end
 end
 
@@ -37,8 +40,8 @@ end
 
 addEventHandler('onPlayerChat', root, function(message, messageType)
     cancelEvent()
-
     if not getElementData(source, 'player:uid') or not getElementData(source, 'player:spawn') then return end
+    
     if antySpam[source] and getTickCount() - antySpam[source] < 500 then
         exports['m-notis']:addNotification(source, 'error', 'Anty spam', 'Nie możesz wysyłać wiadomości tak szybko!')
         return
@@ -51,6 +54,7 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     end
 
     local x, y, z = getElementPosition(source)
+    local dimension = getElementDimension(source)
     local playerName = getPlayerName(source)
     local playerID = getElementData(source, 'player:id')
     local playerUID = getElementData(source, 'player:uid')
@@ -60,13 +64,13 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     
     if messageType == 0 then -- local
         local message = ('%s(#ffffff%d%s) #dddddd%s: #eeeeee%s'):format(color, playerID, color, playerName, message)
-        sendLocalMessage(x, y, z, message, 20, 255, 215, 125)
+        sendLocalMessage(x, y, z, dimension, message, 20, 255, 215, 125)
         exports['m-admins']:addLog('chat', message, {
             {'teleport', 'teleport-uid', playerUID}
         }) 
     elseif messageType == 1 then -- me
-        local message = ('* %s %s'):format(playerName, message)
-        sendLocalMessage(x, y, z, message, 20, 233, 66, 245)
+        local message = ('* %s (%s)'):format(message, playerName)
+        sendLocalMessage(x, y, z, dimension, message, 20, 233, 66, 245)
         exports['m-admins']:addLog('chat', '#ff99cc' .. message, {
             {'teleport', 'teleport-uid', playerUID}
         })
@@ -77,7 +81,8 @@ end)
 
 addCommandHandler('do', function(player, command, ...)
     if not getElementData(player, 'player:uid') or not getElementData(player, 'player:spawn') then return end
-    
+    if not getElementDimension(pl) == 0 then return end
+
     local timeLeft, admin = isPlayerMuted(player)
     if timeLeft then
         exports['m-notis']:addNotification(player, 'error', 'Wyciszenie', ('Jesteś wyciszony przez %s na %s z powodu: %s'):format(admin, timeLeft, 'elo'))
@@ -86,6 +91,7 @@ addCommandHandler('do', function(player, command, ...)
 
     local x, y, z = getElementPosition(player)
     local message = removeHex(table.concat({...}, ' '))
+    local dimension = getElementDimension(player)
     local playerName = getPlayerName(player)
     local playerID = getElementData(player, 'player:id')
     local playerUID = getElementData(player, 'player:uid')
@@ -93,7 +99,7 @@ addCommandHandler('do', function(player, command, ...)
     local color = getPlayerColor(player)
 
     local message = ('** %s (%s)'):format(message, playerName)
-    sendLocalMessage(x, y, z, message, 20, 0, 112, 224)
+    sendLocalMessage(x, y, z, dimension, message, 20, 0, 112, 224)
     exports['m-admins']:addLog('chat', '#70aaff' .. message, {
         {'teleport', 'teleport-uid', playerUID}
     })
@@ -134,6 +140,7 @@ end
 
 addCommandHandler('pm', function(player, command, playerToFind, ...)
     if not getElementData(player, 'player:uid') or not getElementData(player, 'player:spawn') then return end
+    
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
