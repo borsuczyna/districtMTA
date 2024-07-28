@@ -138,6 +138,9 @@ function updateObject(object)
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
     setElementRotation(obj.element, obj.rotation[1], obj.rotation[2], obj.rotation[3])
     setElementFrozen(obj.element, object.options.frozen or false)
+    setElementDimension(obj.element, object.options.dimension or 0)
+    setElementData(obj.element, 'element:model', object.options.customModel)
+    setObjectScale(obj.element, object.options.scale or 1)
 end
 
 function destroyObject(hash)

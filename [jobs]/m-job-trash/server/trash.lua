@@ -67,7 +67,7 @@ local function dumpTrash(player, hash, objectHash)
     toggleAllControls(player, true, false)
     toggleJobControls(player, true)
 
-    exports['m-jobs']:detachObjectFromPlayer(hash, objectHash, player)
+    exports['m-jobs']:detachObjectFromPlayer(hash, objectHash)
     exports['m-jobs']:setLobbyData(hash, 'trashDumpingTemp', false)
     exports['m-jobs']:setLobbyData(hash, 'trashDumping', objectHash)
     exports['m-jobs']:setLobbyObjectOption(hash, objectHash, 'blip', false)
@@ -86,7 +86,7 @@ local function returnTrash(player, hash, objectHash)
     toggleAllControls(player, true, false)
     toggleJobControls(player, true)
 
-    exports['m-jobs']:detachObjectFromPlayer(hash, objectHash, player)
+    exports['m-jobs']:detachObjectFromPlayer(hash, objectHash)
 end
 
 local function isTrashEmpty(hash, objectHash)
@@ -175,6 +175,12 @@ local function updateTrashObjects()
             restoreBlip(lobbyHash, hash)
         end
     end
+end
+
+function forcefullyPutBinBack(hash, objectHash)
+    exports['m-jobs']:setLobbyObjectCustomData(hash, objectHash, 'carried', false)
+    exports['m-jobs']:setLobbyObjectOption(hash, objectHash, 'blip', defaultBlipData)
+    exports['m-jobs']:detachObjectFromPlayer(hash, objectHash)
 end
 
 addEventHandler('jobs:trash:dumpTrash', root, function(hash, player)

@@ -242,7 +242,7 @@ function attachObjectToPlayer(playerOrHash, objectHash, player, bone, x, y, z, r
     setLobbyObjectOption(lobby.hash, objectHash, 'attachBone', {player, bone, x, y, z, rx, ry, rz})
 end
 
-function detachObjectFromPlayer(playerOrHash, objectHash, player)
+function detachObjectFromPlayer(playerOrHash, objectHash)
     local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     setLobbyObjectOption(lobby.hash, objectHash, 'attachBone', false)
 end
@@ -343,7 +343,9 @@ addEventHandler('jobs:endJobI', resourceRoot, function(hash, player)
     end
 
     leaveJob(player)
-    exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Zakończono pracę'})
+    if hash then
+        exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Zakończono pracę'})
+    end
 end)
 
 addEventHandler('jobs:endJob', resourceRoot, function()

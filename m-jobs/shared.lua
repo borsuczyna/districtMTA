@@ -1,11 +1,11 @@
 jobs = {
     burger = {
-        name = 'Burgerownia',
+        name = 'Pracownik burgerowni',
         background = 'forest',
-        description = 'Praca burgerowni polega na przygotowywaniu i sprzedawaniu burgerów dla klientów.',
+        description = 'Praca w burgerowni polega na przygotowywaniu i sprzedawaniu burgerów dla klientów.',
         coop = true,
         minLobbySize = 1,
-        lobbySize = 4,
+        lobbySize = 8,
         minLevel = 1,
         upgrades = {
             {

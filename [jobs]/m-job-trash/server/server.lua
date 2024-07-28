@@ -59,7 +59,7 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
 
     for k,v in pairs(trash) do
         local model, offset = getRandomTrashModel()
-        local object = exports['m-jobs']:createLobbyObject(hash, model, v[1], v[2], v[3] + offset, 0, 0, v[6] + 180, {
+        exports['m-jobs']:createLobbyObject(hash, model, v[1], v[2], v[3] + offset, 0, 0, v[6] + 180, {
             noTrigger = true,
             colshape = {
                 size = 1,
@@ -96,6 +96,11 @@ end)
 
 addEventHandler('jobs:finishJob', root, function(job, hash, player)
     if job ~= 'trash' then return end
+
+    local carryBin = getElementData(player, 'player:carryBin')
+    if carryBin then
+        forcefullyPutBinBack(hash, carryBin)
+    end
 
     removeElementData(player, 'player:animation')
     removeElementData(player, 'player:carryBin')
@@ -148,5 +153,13 @@ addEventHandler('onVehicleEnter', root, function(player, seat)
 
     if table.find(upgrades, 'kierowca') then
         exports['m-notis']:addNotification(player, 'info', 'Wywóz śmieci', 'Posiadasz aktywne ulepszenie "Kierowca"')
+    end
+end)
+
+addEventHandler('onPlayerResourceStart', root, function(resource)
+    if resource ~= getThisResource() then return end
+
+    if getElementData(source, 'player:job') == 'trash' then
+        triggerEvent('jobs:endJobI', root, false, source)
     end
 end)
