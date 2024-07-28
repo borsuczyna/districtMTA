@@ -3,6 +3,7 @@ addEvent('interfaceLoaded', true)
 addEvent('interaction:useOption', true)
 addEvent('interaction:action-feedback', true)
 addEvent('interaction:window', true)
+addEvent('interaction:sync', true)
 
 local interactionLoaded, interactionVisible, interactionTimer = false, false, false
 local openDoors = {trunks = {}, hoods = {}, doors = {}}
@@ -278,5 +279,15 @@ end)
 addEventHandler('onClientVehicleExit', root, function(player)
     if player == localPlayer then
         setInteractionVisible(false)
+    end
+end)
+
+addEventHandler('interaction:sync', root, function(windowStates)
+    for vehicle, states in pairs(windowStates) do
+        if vehicle and isElement(vehicle) then
+            for window, state in pairs(states) do
+                setVehicleWindowOpen(vehicle, window, state)
+            end
+        end
     end
 end)

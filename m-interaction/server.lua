@@ -1,4 +1,5 @@
 local lastActionTime = {}
+local windowStates = {}
 
 local function getVehicleSpeed(vehicle)
     local vx, vy, vz = getElementVelocity(vehicle)
@@ -31,6 +32,12 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
     elseif action == 'window' then
         local seat = getPedOccupiedVehicleSeat(client)
         triggerClientEvent(root, 'interaction:window', resourceRoot, vehicle, seatsWindows[seat], args[1])
+
+        if not windowStates[vehicle] then
+            windowStates[vehicle] = {}
+        end
+
+        windowStates[vehicle][seatsWindows[seat]] = args[1]
     elseif action == 'handbrake' then
         if getVehicleSpeed(vehicle) > 2 then
             exports['m-notis']:addNotification(client, 'warning', 'Interakcja', 'Nie możesz zaciągnąć ręcznego podczas jazdy')
@@ -45,6 +52,10 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
     end
 
     triggerClientEvent(client, 'interaction:action-feedback', resourceRoot, action, feedbackData)
+end)
+
+addEventHandler('onPlayerJoin', root, function()
+    triggerClientEvent(source, 'interaction:sync', resourceRoot, windowStates)
 end)
 
 addEventHandler('onPlayerQuit', root, function()
