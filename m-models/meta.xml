@@ -12,9 +12,6 @@
     <file src="data/decoded/spawn-ls.dff"/>
     <file src="data/decoded/spawn-ls.col"/>
     <file src="data/decoded/spawn-ls.txd"/>
-    <file src="data/decoded/int-1.dff"/>
-    <file src="data/decoded/int-1.col"/>
-    <file src="data/decoded/int-1.txd"/>
     <file src="data/decoded/cablecar-door.col"/>
     <file src="data/decoded/cablecar-door.dff"/>
     <file src="data/decoded/cablecar-rail.col"/>
@@ -62,5 +59,7 @@
     <file src="data/decoded/burger/packaging.dff"/>
     <file src="data/decoded/burger/salad-box.dff"/>
     <file src="data/decoded/burger/salad.dff"/>
+    <file src="data/decoded/burger/door.dff"/>
+    <file src="data/decoded/burger/trash.dff"/>
     <file src="data/decoded/burger/textures.txd"/>
 </meta>

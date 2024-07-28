@@ -29,7 +29,7 @@ function generateHash(length = 32) {
 
 mta = mta || {};
 mta.fetch = async (parentResource, endpoint, arguments, options = {
-    timeout: 5000,
+    timeout: 15000,
 }) => {
     if (!Array.isArray(arguments)) {
         arguments = [arguments];

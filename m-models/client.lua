@@ -55,7 +55,7 @@ function loadModel(name, data)
     end
     if fileExists(filePath .. '.dff') then
         local dff = decodeFileIn(filePath .. '.dff', getEncodeHash(name .. '.txd'))
-        engineReplaceModel(engineLoadDFF(dff), model)
+        engineReplaceModel(engineLoadDFF(dff), model, true)
     end
     if fileExists(filePath .. '.col') then
         local col = decodeFileIn(filePath .. '.col', getEncodeHash(name .. '.txd'))

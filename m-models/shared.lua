@@ -190,6 +190,18 @@ models = {
         model = 1337,
         txd = 'burger/textures'
     },
+    ['burger/trash'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/door'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
 }
 
 function getModelsCount()

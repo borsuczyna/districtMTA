@@ -160,8 +160,16 @@ function parseStack(stack) {
     let regex = /(.+): (.+)\n\s+at eval \(eval at include \((.+):(\d+):(\d+)\), <anonymous>:(\d+):(\d+)\)/;
     let match = stack.match(regex);
     if (!match) {
-        regex = /(.+): (.+)\n\s+at (.+) \((.+):(\d+):(\d+)\)/;
-        match = stack.match(regex);
+        regex = /<anonymous>:(\d+):(\d+)/;
+        let tempMatch = stack.match(regex);
+        if (tempMatch) {
+            return {
+                error: 'Runtime error',
+                message: stack,
+                line: parseInt(tempMatch[1]) - 3,
+                column: parseInt(tempMatch[2]),
+            };
+        }
         return null;
     }
 
