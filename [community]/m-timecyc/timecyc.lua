@@ -186,6 +186,7 @@ function updateSA(weather_id,currentHour,currentMinute)
     --sky 
     setSkyGradient(currentColours.sky_top[1],currentColours.sky_top[2],currentColours.sky_top[3],currentColours.sky_bot[1],currentColours.sky_bot[2],currentColours.sky_bot[3])
     --sun
+    -- resetSkyGradient()
     setSunColor(currentColours.sun_core[1],currentColours.sun_core[2],currentColours.sun_core[3],currentColours.sun_corona[1],currentColours.sun_corona[2],currentColours.sun_corona[3])
     setSunSize(currentColours.sun_size)
     -- fog
