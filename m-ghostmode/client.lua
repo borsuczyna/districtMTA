@@ -1,10 +1,20 @@
+local elementTypes = {'player', 'vehicle', 'ped'}
 local ghostColShapes = {
     -- createColSphere(1443.021, 389.348, 18.742, 5),
 }
 
-function getElementsByTypes(types)
+function table.find(t, value)
+    for k, v in pairs(t) do
+        if v == value then
+            return k
+        end
+    end
+    return false
+end
+
+function getElementsByTypesNew(types_)
     local elements = {}
-    for _, type in ipairs(types) do
+    for _, type in ipairs(types_) do
         for _, element in ipairs(getElementsByType(type)) do
             table.insert(elements, element)
         end
@@ -31,6 +41,9 @@ function isColShapeAGhost(colShape)
 end
 
 function toggleCollisionBetweenElements(element, elements)
+    local elementType = getElementType(element)
+    if not table.find(elementTypes, elementType) then return end
+    
     local ghostMode1 = getElementData(element, 'element:ghostmode') or isInsideGhostColShape(element)
 
     for _, element2 in ipairs(elements) do
@@ -48,12 +61,15 @@ function toggleCollisionBetweenElements(element, elements)
 end
 
 function updateElementGhostMode(element)
-    local elements = getElementsByTypes({'player', 'vehicle', 'ped'})
+    local elements = getElementsByTypesNew(elementTypes)
     toggleCollisionBetweenElements(element, elements)
 end
 
 addEventHandler('onClientElementDataChange', root, function(dataName, oldValue, newValue)
     if dataName == 'element:ghostmode' then
+        local elementType = getElementType(source)
+        if not table.find(elementTypes, elementType) then return end
+
         updateElementGhostMode(source)
     end
 end)
@@ -63,7 +79,7 @@ addEventHandler('onClientElementStreamIn', root, function()
 end)
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    local elements = getElementsByTypes({'player', 'vehicle', 'ped'})
+    local elements = getElementsByTypesNew(elementTypes)
     for _, element in ipairs(elements) do
         updateElementGhostMode(element)
     end
@@ -71,10 +87,16 @@ end)
 
 addEventHandler('onClientColShapeHit', root, function(element)
     if not isColShapeAGhost(source) then return end
+    local elementType = getElementType(element)
+    if not table.find(elementTypes, elementType) then return end
+    
     updateElementGhostMode(element)
 end)
 
 addEventHandler('onClientColShapeLeave', root, function(element)
     if not isColShapeAGhost(source) then return end
+    local elementType = getElementType(element)
+    if not table.find(elementTypes, elementType) then return end
+
     updateElementGhostMode(element)
 end)
