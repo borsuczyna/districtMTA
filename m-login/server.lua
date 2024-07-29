@@ -84,25 +84,38 @@ addEventHandler('login:register', resourceRoot, function(hash, player, email, lo
     waitingHashes[hash] = {player, getTickCount() + 5000}
 end)
 
-addEventHandler('login:spawn', resourceRoot, function(data)
+addEventHandler('login:spawn', resourceRoot, function(category, index)
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn without being logged in/while being already spawned')
         return
     end
 
-    if type(data) ~= 'table' then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
+    -- if type(data) ~= 'table' then
+    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
+    --     return
+    -- end
+
+    -- local x, y, z = data['1'], data['3'], data['4']
+    local spawnCategory = spawns[category]
+    if not spawnCategory then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn category')
         return
     end
 
-    local x, y, z = data['2'], data['3'], data['4']
-    if type(x) ~= 'number' or type(y) ~= 'number' or type(z) ~= 'number' then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
+    local spawnData = spawnCategory[tonumber(index) + 1]
+    if not spawnData then
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn index')
         return
     end
 
-    spawnPlayer(client, x, y, z, 0, getElementData(client, 'player:skin'))
+    local name, x, y, z, rot = unpack(spawnData)
+    -- if type(x) ~= 'number' or type(y) ~= 'number' or type(z) ~= 'number' then
+    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
+    --     return
+    -- end
+
+    spawnPlayer(client, x, y, z, rot, getElementData(client, 'player:skin'))
     setElementData(client, 'player:spawn', {x, y, z})
     setCameraTarget(client, client)
 end)

@@ -16,6 +16,8 @@ function sendLocalMessage(x, y, z, dimension, message, distance, r, g, b)
             outputChatBox(message, player, r or 255, g or 255, b or 255, true)
         end
     end
+
+    outputServerLog(removeHex(message))
 end
 
 function getPlayerColor(player)
@@ -81,7 +83,6 @@ end)
 
 addCommandHandler('do', function(player, command, ...)
     if not getElementData(player, 'player:uid') or not getElementData(player, 'player:spawn') then return end
-    if not getElementDimension(pl) == 0 then return end
 
     local timeLeft, admin = isPlayerMuted(player)
     if timeLeft then
@@ -130,10 +131,10 @@ function sendPm(fromPlayer, toPlayer, message)
 
     outputChatBox(('%s» [#ffffff%d%s] #ffffff%s: %s'):format(toColor, toPlayerID, toColor, toPlayerName, message), fromPlayer, 255, 255, 255, true)
     outputChatBox(('%s« [#ffffff%d%s] #ffffff%s: %s'):format(fromColor, fromPlayerID, fromColor, fromPlayerName, message), toPlayer, 255, 255, 255, true)
-    -- exports['m-admins']:addLog('pm', ('(%d) %s -> (%d) %s: %s'):format(fromPlayerID, fromPlayerName, toPlayerID, toPlayerName, message))
+    
+    outputServerLog(('(%d) %s -> (%d) %s: %s'):format(fromPlayerID, fromPlayerName, toPlayerID, toPlayerName, message))
     exports['m-admins']:addLog('pm', ('%s(#ffffff%d%s) #ffffff%s -> %s(#ffffff%d%s) #ffffff%s: %s'):format(getPlayerColor(fromPlayer), fromPlayerID, getPlayerColor(fromPlayer), fromPlayerName, getPlayerColor(toPlayer), toPlayerID, getPlayerColor(toPlayer), toPlayerName, message))
 
-    -- playSFX("genrl", 52, 19, false)
     triggerClientEvent(toPlayer, 'onClientPlayPrivateMessageSound', resourceRoot)
     respondTo[toPlayer] = fromPlayer
 end

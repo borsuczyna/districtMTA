@@ -265,7 +265,7 @@
         let index = [...selectedButton.parentElement.children].indexOf(selectedButton);
         let spawn = window.login_spawn_spawns[category][index];
 
-        mta.triggerEvent('login-spawn:spawn', JSON.stringify(spawn));
+        mta.triggerEvent('login-spawn:spawn', category, index);
         document.querySelector('#login-spawn').classList.add('hide');
     }
 

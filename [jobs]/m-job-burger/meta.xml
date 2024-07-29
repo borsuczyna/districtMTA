@@ -6,10 +6,20 @@
     <script src='client/interior.lua' type='client' cache='false'/>
     <script src='client/movement.lua' type='client' cache='false'/>
     <script src='client/click.lua' type='client' cache='false'/>
+    <script src='client/board.lua' type='client' cache='false'/>
+    <script src='client/grill.lua' type='client' cache='false'/>
+    <script src='client/circle.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
     <script src='server/carry.lua' type='server'/>
     <script src='server/events.lua' type='server'/>
+    <script src='server/board.lua' type='server'/>
+    <script src='server/grill.lua' type='server'/>
+
+    <file src='data/circle.fx'/>
+    <file src='data/stoper-bg.png'/>
+    <file src='data/stoper.png'/>
+    <file src='data/flame.png'/>
 
     <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

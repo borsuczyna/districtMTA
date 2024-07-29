@@ -1,5 +1,13 @@
 addEvent('jobs:burger:startJob', true)
 addEvent('jobs:burger:finishJob', true)
+addEvent('jobs:burger:serverTickResponse', true)
+
+sx, sy = guiGetScreenSize()
+zoom = (sx < 2048) and math.min(2.2, 2048/sx) or 1
+local serverTick = {
+    clientStart = 0,
+    serverStart = 0
+}
 
 local marker = createMarker(settings.jobStart + Vector3(0, 0, -1), 'cylinder', 1, 255, 140, 0, 0)
 setElementData(marker, 'marker:icon', 'work')
@@ -25,3 +33,16 @@ end)
 addEventHandler('jobs:burger:finishJob', resourceRoot, function(hash)
     showInteriorLoading(false)
 end)
+
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    triggerServerEvent('jobs:burger:getServerTick', resourceRoot)
+end)
+
+addEventHandler('jobs:burger:serverTickResponse', resourceRoot, function(tick)
+    serverTick.clientStart = getTickCount()
+    serverTick.serverStart = tick
+end)
+
+function getServerTick()
+    return serverTick.serverStart + (getTickCount() - serverTick.clientStart)
+end

@@ -1,6 +1,7 @@
 addEvent('jobs:finishJob')
 addEvent('jobs:startJob')
 addEvent('jobs:finishJobLobby')
+addEvent('jobs:burger:getServerTick', true)
 
 local dimensionsInUse = {}
 local interiorObject = createObject(1337, unpack(settings.interior))
@@ -91,6 +92,10 @@ addEventHandler('jobs:finishJobLobby', root, function(job, hash)
     if job ~= 'burger' then return end
 
     freeDimension(hash)
+end)
+
+addEventHandler('jobs:burger:getServerTick', root, function()
+    triggerClientEvent(client, 'jobs:burger:serverTickResponse', resourceRoot, getTickCount())
 end)
 
 addEventHandler('onPlayerResourceStart', root, function(resource)

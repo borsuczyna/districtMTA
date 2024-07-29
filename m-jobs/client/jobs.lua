@@ -109,6 +109,18 @@ function updateObjectGhost(object, ghost)
     end
 end
 
+function updateObjectEffect(object, effect)
+    if object.effect and isElement(object.effect) then
+        destroyElement(object.effect)
+    end
+
+    if effect then
+        local element = createEffect(effect.name, object.position[1], object.position[2], object.position[3], 0, 0, 0)
+        setEffectDensity(element, effect.density or 1)
+        object.effect = element
+    end
+end
+
 function _createObject(object)
     local element = createObject(object.model, object.position[1], object.position[2], object.position[3], object.rotation[1], object.rotation[2], object.rotation[3])
     object.element = element
@@ -133,6 +145,7 @@ function updateObject(object)
     updateObjectBoneAttach(obj, object.options.attachBone)
     updateElementAttach(obj, object.options.attach)
     updateObjectGhost(obj, object.options.ghost)
+    updateObjectEffect(obj, object.options.effect)
 
     setElementModel(obj.element, obj.model)
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
@@ -163,12 +176,32 @@ function destroyObject(hash)
         destroyElement(obj.element)
     end
 
+    if obj.effect and isElement(obj.effect) then
+        destroyElement(obj.effect)
+    end
+
     for i, object in ipairs(objects) do
         if object == obj then
             table.remove(objects, i)
             break
         end
     end
+end
+
+function updateObjectsEffectsPosition()
+    for i, object in ipairs(objects) do
+        if object.effect and isElement(object.effect) then
+            local x, y, z = getElementPosition(object.element)
+            setElementPosition(object.effect, x, y, z)
+        end
+    end
+end
+
+function getObjectByHash(hash)
+    local object = findElementByHash(objects, hash)
+    if not object then return end
+    
+    return object.element
 end
 
 function getLobbyObjectCustomData(hash, key)
@@ -206,6 +239,7 @@ function destroyObjects()
     destroyArrayKey(objects, 'colshape')
     destroyArrayKey(objects, 'blip')
     destroyArrayKey(objects, 'ghost')
+    destroyArrayKey(objects, 'effect')
     destroyArray(objects)
     objects = {}
 end
@@ -389,3 +423,4 @@ addEventHandler('jobs:destroyMarkers', resourceRoot, destroyMarkers)
 addEventHandler('jobs:playSound3D', resourceRoot, playSound3D)
 addEventHandler('jobs:updateData', resourceRoot, updateData)
 addEventHandler('jobs:resetData', resourceRoot, resetData)
+addEventHandler('onClientPreRender', root, updateObjectsEffectsPosition)

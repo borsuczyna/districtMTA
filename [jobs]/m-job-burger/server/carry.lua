@@ -7,7 +7,7 @@ function getPlayerCarryKey(player)
     return ('player:%d:carry'):format(uid)
 end
 
-function makePlayerCarryObject(player, model, data)
+function makePlayerCarryObject(player, model, nData, options)
     local key = getPlayerCarryKey(player)
     if not key then return end
 
@@ -22,17 +22,24 @@ function makePlayerCarryObject(player, model, data)
     local rx, ry, rz = unpack(data.rotation)
     local scale = data.scale
 
-    carryObjects[player] = exports['m-jobs']:createLobbyObject(player, 1337, 0, 0, 0, 0, 0, 0, {
+    local objectOptions = {
         customModel = model,
         attachBone = {player, 34, x, y, z, rx, ry, rz},
         dimension = getElementDimension(player),
         scale = scale,
-    })
+    }
+
+    for k,v in pairs(options or {}) do
+        objectOptions[k] = v
+    end
+
+    carryObjects[player] = exports['m-jobs']:createLobbyObject(player, 1337, 0, 0, 0, 0, 0, 0, objectOptions)
 
     exports['m-jobs']:setLobbyData(player, key, {
         object = carryObjects[player],
         model = model,
-        data = data,
+        data = nData,
+        options = options,
     })
 end
 

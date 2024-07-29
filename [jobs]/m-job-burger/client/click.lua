@@ -13,7 +13,7 @@ function onClickObjectInteraction(button, state, x, y, wx, wy, wz, element)
     local x, y, z = getElementPosition(element)
     local hit, hx, hy, hz = processLineOfSight(px, py, pz, x, y, z, true, false, false, true, false, false, false, false, localPlayer, true)
     local rot = findRotation(px, py, x, y)
-    goToPosition = {hx or x, hy or y, hz or z, rot}
+    setGoToPosition(hx or x, hy or y, hz or z, rot)
     goToAction = {objectHash, clickTrigger}
 end
 

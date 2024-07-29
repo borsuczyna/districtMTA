@@ -1,6 +1,14 @@
 goToPosition = false
 goToAction = false
 
+function clampMovePosition(x, y, z)
+    local jobBounds = settings.getJobBounds()
+    x = math.max(jobBounds.x[1], math.min(jobBounds.x[2], x))
+    y = math.max(jobBounds.y[1], math.min(jobBounds.y[2], y))
+
+    return x, y, z
+end
+
 function tryAction()
     if not goToAction then return end
 
@@ -12,15 +20,35 @@ function tryAction()
     end
 end
 
+function setGoToPosition(x, y, z, rot, action)
+    x, y, z = clampMovePosition(x, y, z)
+    goToPosition = {x, y, z, rot, false}
+    goToAction = action
+end
+
+function drawBoundLines()
+    local jobBounds = settings.getJobBounds()
+    local _, _, z = getElementPosition(localPlayer)
+    local x1, y1, z1 = jobBounds.x[1], jobBounds.y[1], z
+    local x2, y2, z2 = jobBounds.x[2], jobBounds.y[2], z
+
+    dxDrawLine3D(x1, y1, z1, x2, y1, z1, tocolor(255, 0, 0), 1)
+    dxDrawLine3D(x2, y1, z1, x2, y2, z1, tocolor(255, 0, 0), 1)
+    dxDrawLine3D(x2, y2, z1, x1, y2, z1, tocolor(255, 0, 0), 1)
+    dxDrawLine3D(x1, y2, z1, x1, y1, z1, tocolor(255, 0, 0), 1)
+end
+
 function updateMovement()
+    drawBoundLines()
     if not goToPosition then return end
 
     setElementRotation(localPlayer, 0, 0, goToPosition[4], 'default', true)
 
+    dxDrawLine3D(goToPosition[1], goToPosition[2], goToPosition[3], goToPosition[1], goToPosition[2], goToPosition[3] + 1, tocolor(255, 0, 0), 1)
     if goToPosition[5] then return end
 
     local distance = getDistanceBetweenPoints2D(goToPosition[1], goToPosition[2], getElementPosition(localPlayer))
-    if distance < 0.65 then
+    if distance < 0.3 then
         setPedControlState(localPlayer, 'forwards', false)
         goToPosition[5] = true
         tryAction()
@@ -35,6 +63,7 @@ function goToPositionClick(button, state, x, y, wx, wy, wz, element)
 
     local hit, hx, hy, hz = processLineOfSight(px, py, pz, wx, wy, pz, true, false, false, true, false, false, false, false, localPlayer, true)
     local rot = findRotation(px, py, hx or wx, hy or wy)
-    goToPosition = {hx or wx, hy or wy, hz or wz, rot}
+    -- goToPosition = {hx or wx, hy or wy, hz or wz, rot}
+    setGoToPosition(hx or wx, hy or wy, hz or wz, rot)
     goToAction = false
 end

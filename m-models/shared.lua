@@ -166,6 +166,12 @@ models = {
         model = 1337,
         txd = 'burger/textures'
     },
+    ['burger/meat-overcooked'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
     ['burger/meat'] = {
         custom = true,
         type = 'object',

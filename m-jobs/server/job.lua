@@ -18,6 +18,8 @@ function startJob(job, players, minPlayers)
         blips = {},
         markers = {},
         data = {},
+        timers = {},
+        playerTimers = {},
         hash = hash
     })
 
@@ -138,6 +140,68 @@ function getLobbyObjectModel(playerOrHash, objectHash)
     if not object then return end
 
     return object.model
+end
+
+function setLobbyTimer(playerOrHash, event, time, ...)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    local args = {...}
+
+    local hash = generateHash()
+    local timer = setTimer(function()
+        triggerEvent(event, root, lobby.hash, unpack(args))
+    end, time, 1)
+
+    lobby.timers[hash] = timer
+    return hash
+end
+
+function killLobbyTimer(playerOrHash, hash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    local timer = lobby.timers[hash]
+    if not timer then return end
+
+    if isTimer(timer) then
+        killTimer(timer)
+    end
+
+    lobby.timers[hash] = nil
+end
+
+function setPlayerLobbyTimer(playerOrHash, player, event, time, ...)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    local args = {...}
+
+    local hash = generateHash()
+    local timer = setTimer(function()
+        triggerEvent(event, root, lobby.hash, player, unpack(args))
+    end, time, 1)
+
+    if not lobby.playerTimers[player] then
+        lobby.playerTimers[player] = {}
+    end
+
+    lobby.playerTimers[player][hash] = timer
+    return hash
+end
+
+function killPlayerLobbyTimer(playerOrHash, player, hash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    if not lobby.playerTimers[player] then
+        lobby.playerTimers[player] = {}
+    end
+
+    local timer = lobby.playerTimers[player][hash]
+    if not timer then return end
+
+    if isTimer(timer) then
+        killTimer(timer)
+    end
+
+    lobby.playerTimers[player][hash] = nil
 end
 
 function createLobbyBlip(playerOrHash, x, y, z, icon, visibleDistance, options)
@@ -278,6 +342,13 @@ end
 function destroyJobLobby(lobby)
     triggerEvent('jobs:finishJobLobby', root, lobby.job, lobby.hash)
 
+    -- kill timers
+    for i, timer in pairs(lobby.timers) do
+        if isTimer(timer) then
+            killTimer(timer)
+        end
+    end
+
     for i, player in ipairs(lobby.players) do
         setElementData(player, 'player:job', false)
     end
@@ -323,6 +394,15 @@ function finishPlayerJob(player)
     triggerClientEvent(player, 'jobs:destroyBlips', resourceRoot)
     triggerClientEvent(player, 'jobs:destroyMarkers', resourceRoot)
     exports['m-notis']:addNotification(player, 'info', 'Praca', 'Zakończono pracę')
+
+    -- kill player timers
+    if lobby and lobby.playerTimers and lobby.playerTimers[player] then
+        for i, timer in pairs(lobby.playerTimers[player]) do
+            if isTimer(timer) then
+                killTimer(timer)
+            end
+        end
+    end
 
     local lobby = getPlayerJobLobby(player)
     if not lobby then return end

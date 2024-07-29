@@ -44,6 +44,7 @@
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>
     <file src="data/decoded/burger/bun.dff"/>
+    <file src="data/decoded/burger/bun.col"/>
     <file src="data/decoded/burger/burger-in-packaging.dff"/>
     <file src="data/decoded/burger/burger.dff"/>
     <file src="data/decoded/burger/cola-dispenser.dff"/>
@@ -55,12 +56,17 @@
     <file src="data/decoded/burger/fryer.dff"/>
     <file src="data/decoded/burger/glass.dff"/>
     <file src="data/decoded/burger/grill.dff"/>
+    <file src="data/decoded/burger/grill.col"/>
     <file src="data/decoded/burger/meat-cooked.dff"/>
+    <file src="data/decoded/burger/meat-cooked.col"/>
+    <file src="data/decoded/burger/meat-overcooked.dff"/>
+    <file src="data/decoded/burger/meat-overcooked.col"/>
     <file src="data/decoded/burger/meat.dff"/>
     <file src="data/decoded/burger/meat.col"/>
     <file src="data/decoded/burger/packaging.dff"/>
     <file src="data/decoded/burger/salad-box.dff"/>
     <file src="data/decoded/burger/salad.dff"/>
+    <file src="data/decoded/burger/salad.col"/>
     <file src="data/decoded/burger/door.dff"/>
     <file src="data/decoded/burger/trash.dff"/>
     <file src="data/decoded/burger/trash.col"/>
