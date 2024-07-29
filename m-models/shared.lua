@@ -202,6 +202,36 @@ models = {
         model = 1337,
         txd = 'burger/textures'
     },
+    ['gas-station/gas-station-ls1'] = {
+        custom = false,
+        type = 'object',
+        model = 5489,
+        txd = 'gas-station/gas-station-ls',
+    },
+    ['gas-station/gas-station-ls2'] = {
+        custom = false,
+        type = 'object',
+        model = 5409,
+        txd = 'gas-station/gas-station-ls',
+    },
+    ['gas-station/gas-station-ls3'] = {
+        custom = false,
+        type = 'object',
+        model = 14581,
+        txd = 'gas-station/gas-station-ls',
+    },
+    ['gas-station/door'] = {
+        custom = false,
+        type = 'object',
+        model = 1492,
+        txd = 'gas-station/gas-station-ls',
+    },
+    ['gas-station/glass'] = {
+        custom = false,
+        type = 'object',
+        model = 16251,
+        txd = 'gas-station/gas-station-ls',
+    },
 }
 
 function getModelsCount()

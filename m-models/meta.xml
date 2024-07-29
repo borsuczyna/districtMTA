@@ -65,4 +65,16 @@
     <file src="data/decoded/burger/trash.dff"/>
     <file src="data/decoded/burger/trash.col"/>
     <file src="data/decoded/burger/textures.txd"/>
+
+    <file src="data/decoded/gas-station/gas-station-ls.txd"/>
+    <file src="data/decoded/gas-station/gas-station-ls1.col"/>
+    <file src="data/decoded/gas-station/gas-station-ls1.dff"/>
+    <file src="data/decoded/gas-station/gas-station-ls2.col"/>
+    <file src="data/decoded/gas-station/gas-station-ls2.dff"/>
+    <file src="data/decoded/gas-station/gas-station-ls3.col"/>
+    <file src="data/decoded/gas-station/gas-station-ls3.dff"/>
+    <file src="data/decoded/gas-station/door.col"/>
+    <file src="data/decoded/gas-station/door.dff"/>
+    <file src="data/decoded/gas-station/glass.col"/>
+    <file src="data/decoded/gas-station/glass.dff"/>
 </meta>
