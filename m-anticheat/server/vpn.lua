@@ -4,7 +4,7 @@ function checkPlayerUsingVPN(player)
     fetchRemote('http://proxy.mind-media.com/block/proxycheck.php?ip='..ip, function(data, err)
         if err == 0 then
             if data == 'Y' then
-                ban(player, 'VPN', ('tried to join using VPN (IP: %s)'):format(ip))
+                ban(player, 'VPN', 'VPN')
             end
         end
     end)
