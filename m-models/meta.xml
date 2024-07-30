@@ -48,10 +48,15 @@
     <file src="data/decoded/burger/burger-in-packaging.dff"/>
     <file src="data/decoded/burger/burger.dff"/>
     <file src="data/decoded/burger/cola-dispenser.dff"/>
+    <file src="data/decoded/burger/cola-dispenser.col"/>
     <file src="data/decoded/burger/cola-glass.dff"/>
+    <file src="data/decoded/burger/cola-glass-full.dff"/>
     <file src="data/decoded/burger/cola-liquid.dff"/>
     <file src="data/decoded/burger/fries-cooked.dff"/>
+    <file src="data/decoded/burger/fries-burned.dff"/>
     <file src="data/decoded/burger/fries.dff"/>
+    <file src="data/decoded/burger/fries-box-burned.dff"/>
+    <file src="data/decoded/burger/fries-box.dff"/>
     <file src="data/decoded/burger/fryer-grid.dff"/>
     <file src="data/decoded/burger/fryer.dff"/>
     <file src="data/decoded/burger/fryer.col"/>

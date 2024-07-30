@@ -118,6 +118,12 @@ models = {
         model = 1337,
         txd = 'burger/textures'
     },
+    ['burger/cola-glass-full'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
     ['burger/cola-liquid'] = {
         custom = true,
         type = 'object',
@@ -130,7 +136,25 @@ models = {
         model = 1337,
         txd = 'burger/textures'
     },
+    ['burger/fries-burned'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
     ['burger/fries'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/fries-box'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'burger/textures'
+    },
+    ['burger/fries-box-burned'] = {
         custom = true,
         type = 'object',
         model = 1337,
