@@ -76,6 +76,9 @@
     <file src="data/decoded/burger/door.dff"/>
     <file src="data/decoded/burger/trash.dff"/>
     <file src="data/decoded/burger/trash.col"/>
+    <file src="data/decoded/burger/building.dff"/>
+    <file src="data/decoded/burger/building.col"/>
+    <file src="data/decoded/burger/building.txd"/>
     <file src="data/decoded/burger/textures.txd"/>
 
     <file src="data/decoded/gas-station/gas-station-ls.txd"/>

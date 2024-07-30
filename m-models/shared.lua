@@ -232,6 +232,11 @@ models = {
         model = 1337,
         txd = 'burger/textures'
     },
+    ['burger/building'] = {
+        custom = false,
+        type = 'object',
+        model = 5741,
+    },
     ['gas-station/gas-station-ls1'] = {
         custom = false,
         type = 'object',
