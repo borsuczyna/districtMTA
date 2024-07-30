@@ -83,4 +83,8 @@
     <file src="data/decoded/gas-station/door.dff"/>
     <file src="data/decoded/gas-station/glass.col"/>
     <file src="data/decoded/gas-station/glass.dff"/>
+
+    <file src="data/decoded/clothing-interior.txd"/>
+    <file src="data/decoded/clothing-interior.dff"/>
+    <file src="data/decoded/clothing-interior.col"/>
 </meta>

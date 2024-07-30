@@ -238,6 +238,11 @@ models = {
         model = 16251,
         txd = 'gas-station/gas-station-ls',
     },
+    ['clothing-interior'] = {
+	    custom = false,
+	    type = 'object',
+	    model = 2324,
+    },
 }
 
 function getModelsCount()
