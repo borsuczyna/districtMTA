@@ -31,7 +31,7 @@ window.dashboard_renderLogs = (data) => {
         ...defaultTableData,
         data: data,
         columns: [
-            { data: 'type', render: (data) => data == 1 ? 'Zalogowano' : 'Wylogowano' },
+            { data: 'type', render: (data) => USER_LOG[data] },
             { data: 'log' },
             { data: 'date', render: (data, type) => {
                 if (type == 'display') {
