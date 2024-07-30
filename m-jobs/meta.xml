@@ -23,8 +23,10 @@
     <export function='createLobbyObject' type='server'/>
     <export function='createLobbyBlip' type='server'/>
     <export function='createLobbyMarker' type='server'/>
+    <export function='createLobbyPed' type='server'/>
     <export function='destroyLobbyObject' type='server'/>
     <export function='destroyLobbyBlip' type='server'/>
+    <export function='destroyLobbyPed' type='server'/>
     <export function='updateLobbyObjects' type='server'/>
     <export function='setLobbyObjectOption' type='server'/>
     <export function='attachObjectToPlayer' type='server'/>
@@ -39,12 +41,18 @@
     <export function='setLobbyData' type='server'/>
     <export function='getLobbyData' type='server'/>
     <export function='getLobbyPlayers' type='server'/>
+    <export function='getLobbyPed' type='server'/>
+    <export function='setPedRotation' type='server'/>
+    <export function='setPedControlState' type='server'/>
+    <export function='makePedGoAway' type='server'/>
     <export function='leaveJob' type='server'/>
     <export function='getJobData' type='client'/>
     <export function='getJobDataAsObject' type='client'/>
     <export function='getObjectHash' type='client'/>
     <export function='findElementByHash' type='client'/>
     <export function='getObjectByHash' type='client'/>
+    <export function='getPedByHash' type='client'/>
+    <export function='getPedHash' type='client'/>
     <export function='giveMoney' type='server'/>
     <export function='setLobbyTimer' type='server'/>
     <export function='killLobbyTimer' type='server'/>

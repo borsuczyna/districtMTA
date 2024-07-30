@@ -17,6 +17,7 @@ function startJob(job, players, minPlayers)
         objects = {},
         blips = {},
         markers = {},
+        peds = {},
         data = {},
         timers = {},
         playerTimers = {},
@@ -243,6 +244,83 @@ function destroyLobbyBlip(playerOrHash, hash)
     end
 end
 
+function createLobbyPed(playerOrHash, model, x, y, z, rx, ry, rz, options)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    local options = options or {}
+
+    local hash = generateHash()
+    local ped = {
+        hash = hash,
+        model = model or 1337,
+        position = {x or 0, y or 0, z or 0},
+        rotation = {rx or 0, ry or 0, rz or 0},
+        options = options
+    }
+
+    table.insert(lobby.peds, ped)
+
+    if not options.noTrigger then
+        triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+    end
+
+    return hash
+end
+
+function destroyLobbyPed(playerOrHash, hash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    local ped = findElementByHash(lobby.peds, hash)
+    if not ped then return end
+
+    for i, player in ipairs(lobby.players) do
+        triggerClientEvent(player, 'jobs:destroyPed', resourceRoot, hash)
+    end
+
+    for i, object in ipairs(lobby.peds) do
+        if object == ped then
+            table.remove(lobby.peds, i)
+            break
+        end
+    end
+end
+
+function getLobbyPed(playerOrHash, hash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    return findElementByHash(lobby.peds, hash)
+end
+
+function setPedRotation(playerOrHash, ped, rotation)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    ped.rotation[3] = rotation
+    triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+end
+
+function setPedControlState(playerOrHash, ped, state, enabled)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+    
+    ped.options.controlStates = ped.options.controlStates or {}
+    ped.options.controlStates[state] = enabled
+    triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+end
+
+function makePedGoAway(playerOrHash, hash)
+    local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
+    if not lobby then return end
+
+    local ped = findElementByHash(lobby.peds, hash)
+    if not ped then return end
+
+    ped.options.controlStates = ped.options.controlStates or {}
+    ped.options.controlStates['forwards'] = true
+    ped.rotation[3] = ped.rotation[3] + 180
+
+    triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+end
+
 function getAllLobbyObjectsWithCustomData(key)
     local objects = {}
     for i, lobby in ipairs(lobbies) do
@@ -393,6 +471,7 @@ function finishPlayerJob(player)
     triggerClientEvent(player, 'jobs:destroyObjects', resourceRoot)
     triggerClientEvent(player, 'jobs:destroyBlips', resourceRoot)
     triggerClientEvent(player, 'jobs:destroyMarkers', resourceRoot)
+    triggerClientEvent(player, 'jobs:destroyPeds', resourceRoot)
     exports['m-notis']:addNotification(player, 'info', 'Praca', 'Zakończono pracę')
 
     -- kill player timers

@@ -8,12 +8,16 @@ addEvent('jobs:updateMarkers', true)
 addEvent('jobs:playSound3D', true)
 addEvent('jobs:destroyMarker', true)
 addEvent('jobs:destroyMarkers', true)
+addEvent('jobs:updatePeds', true)
+addEvent('jobs:destroyPed', true)
+addEvent('jobs:destroyPeds', true)
 addEvent('jobs:updateData', true)
 addEvent('jobs:resetData', true)
 
 local objects = {}
 local blips = {}
 local markers = {}
+local peds = {}
 local data = {}
 local lastEventSend = 0
 
@@ -154,6 +158,9 @@ function updateObject(object)
     setElementDimension(obj.element, object.options.dimension or 0)
     setElementData(obj.element, 'element:model', object.options.customModel)
     setObjectScale(obj.element, object.options.scale or 1)
+    if object.options.noCollision then
+        setElementCollisionsEnabled(obj.element, false)
+    end
 end
 
 function destroyObject(hash)
@@ -242,6 +249,106 @@ function destroyObjects()
     destroyArrayKey(objects, 'effect')
     destroyArray(objects)
     objects = {}
+end
+
+function _createPed(ped)
+    local element = createPed(ped.model, ped.position[1], ped.position[2], ped.position[3], ped.rotation[1], ped.rotation[2], ped.rotation[3])
+    ped.element = element
+
+    table.insert(peds, ped)
+    return findElementByHash(peds, ped.hash)
+end
+
+local controlTable = { "fire", "aim_weapon", "next_weapon", "previous_weapon", "forwards", "backwards", "left", "right", "zoom_in", "zoom_out",
+"change_camera", "jump", "sprint", "look_behind", "crouch", "action", "walk", "conversation_yes", "conversation_no",
+"group_control_forwards", "group_control_back", "enter_exit", "vehicle_fire", "vehicle_secondary_fire", "vehicle_left", "vehicle_right",
+"steer_forward", "steer_back", "accelerate", "brake_reverse", "radio_next", "radio_previous", "radio_user_track_skip", "horn", "sub_mission",
+"handbrake", "vehicle_look_left", "vehicle_look_right", "vehicle_look_behind", "vehicle_mouse_look", "special_control_left", "special_control_right",
+"special_control_down", "special_control_up" }
+
+function updatePedControlStates(ped, states)
+    for i, control in ipairs(controlTable) do
+        setPedControlState(ped, control, states[control] or false)
+    end
+end
+
+function updateElementDatas(ped, datas)
+    for key, value in pairs(datas) do
+        setElementData(ped, key, value)
+    end
+end
+
+function updatePed(ped)
+    local obj = findElementByHash(peds, ped.hash)
+    if not obj then
+        obj = _createPed(ped)
+    end
+
+    obj.model = ped.model
+    obj.position = ped.position
+    obj.rotation = ped.rotation
+
+    updateColshape(obj, ped.options.colshape)
+    updateObjectBlip(obj, ped.options.blip)
+    updatePedControlStates(obj.element, ped.options.controlStates or {})
+    updateElementDatas(obj.element, ped.options.datas or {})
+
+    setElementModel(obj.element, obj.model)
+    setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
+    setElementRotation(obj.element, obj.rotation[1], obj.rotation[2], obj.rotation[3], 'default', true)
+    setElementFrozen(obj.element, ped.options.frozen or false)
+    setElementDimension(obj.element, ped.options.dimension or 0)
+    setElementData(obj.element, 'element:model', ped.options.customModel)
+    setObjectScale(obj.element, ped.options.scale or 1)
+    if ped.options.noCollision then
+        setElementCollisionsEnabled(obj.element, false)
+    end
+end
+
+function destroyPed(hash)
+    local obj = findElementByHash(peds, hash)
+    if not obj then return end
+
+    if obj.colshape and isElement(obj.colshape) then
+        destroyElement(obj.colshape)
+    end
+
+    if obj.blip and isElement(obj.blip) then
+        destroyElement(obj.blip)
+    end
+
+    if obj.element and isElement(obj.element) then
+        destroyElement(obj.element)
+    end
+
+    for i, ped in ipairs(peds) do
+        if ped == obj then
+            table.remove(peds, i)
+            break
+        end
+    end
+end
+
+function getPedByHash(hash)
+    local ped = findElementByHash(peds, hash)
+    if not ped then return end
+    
+    return ped.element
+end
+
+function getPedHash(element)
+    for i, ped in ipairs(peds) do
+        if ped.element == element then
+            return ped.hash
+        end
+    end
+end
+
+function destroyPeds()
+    destroyArrayKey(peds, 'colshape')
+    destroyArrayKey(peds, 'blip')
+    destroyArray(peds)
+    peds = {}
 end
 
 function _createBlip(blip)
@@ -417,6 +524,13 @@ addEventHandler('jobs:updateMarkers', resourceRoot, function(_markers)
     end
 end)
 
+addEventHandler('jobs:destroyPed', resourceRoot, destroyPed)
+addEventHandler('jobs:destroyPeds', resourceRoot, destroyPeds)
+addEventHandler('jobs:updatePeds', resourceRoot, function(_peds)
+    for i, ped in ipairs(_peds) do
+        updatePed(ped)
+    end
+end)
 
 addEventHandler('jobs:destroyMarker', resourceRoot, destroyMarker)
 addEventHandler('jobs:destroyMarkers', resourceRoot, destroyMarkers)
