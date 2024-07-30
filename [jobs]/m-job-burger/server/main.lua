@@ -42,6 +42,7 @@ local function loadElements(hash, dimension)
             customModel = element.model,
             noTrigger = true,
             frozen = true,
+            noCollision = element.noCollision,
             dimension = dimension,
             scale = element.scale,
             customData = {clickTrigger = element.clickTrigger}
@@ -60,6 +61,11 @@ local function startBurgerJob(hash, players)
     end
 
     loadElements(hash, dimension)
+    addLobbyNpc(hash, dimension)
+end
+
+function getPlayerCookMultiplier(player)
+    return 10
 end
 
 addEventHandler('jobs:startJob', root, function(job, hash, players)

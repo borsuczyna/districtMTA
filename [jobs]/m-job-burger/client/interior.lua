@@ -20,16 +20,21 @@ function setBurgerInteriorVisible(state)
         setElementData(interiorObject, 'element:model', 'burger-interior')
         
         updateCamera()
-        loadFries(interiorObject)
+        loadFryers(interiorObject)
+        createColaObject(interiorObject)
+        toggleMovement(true)
+        
         addEventHandler('onClientRender', root, updateMovement)
         addEventHandler('onClientRender', root, updateGrillsCook)
         addEventHandler('onClientClick', root, goToPositionClick)
+        addEventHandler('onClientClick', root, clickPed)
         addEventHandler('onClientClick', root, onClickObjectInteraction, true, 'low')
         showCursor(true, false)
     else
         clearBoards()
         clearGrills()
-        clearFries()
+        clearFryers()
+        destroyColaObject()
         
         if isElement(interiorObject) then
             destroyElement(interiorObject)
@@ -43,6 +48,7 @@ function setBurgerInteriorVisible(state)
         removeEventHandler('onClientRender', root, updateMovement)
         removeEventHandler('onClientRender', root, updateGrillsCook)
         removeEventHandler('onClientClick', root, goToPositionClick)
+        removeEventHandler('onClientClick', root, clickPed)
         removeEventHandler('onClientClick', root, onClickObjectInteraction)
     end
 end

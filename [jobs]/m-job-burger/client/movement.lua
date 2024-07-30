@@ -1,3 +1,4 @@
+canMove = true
 goToPosition = false
 goToAction = false
 
@@ -24,6 +25,14 @@ function setGoToPosition(x, y, z, rot, action)
     x, y, z = clampMovePosition(x, y, z)
     goToPosition = {x, y, z, rot, false}
     goToAction = action
+end
+
+function toggleMovement(state)
+    canMove = state
+    if not state then
+        setPedControlState(localPlayer, 'forwards', false)
+        goToPosition = false
+    end
 end
 
 function drawBoundLines()
@@ -60,6 +69,7 @@ function updateMovement()
 end
 
 function goToPositionClick(button, state, x, y, wx, wy, wz, element)
+    if not canMove then return end
     if button ~= 'left' or state ~= 'down' or not wx then return end
 
     local px, py, pz = getElementPosition(localPlayer)

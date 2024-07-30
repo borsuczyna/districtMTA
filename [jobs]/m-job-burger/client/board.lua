@@ -28,7 +28,7 @@ addEventHandler('jobs:burger:board', resourceRoot, function(boardId, objectHash,
 
         local effect;
         
-        if model == 'burger/meat-overcooked' then
+        if model == 'burger/meat-overcooked' or model == 'burger/fries-burned' then
             effect = createEffect('fire', x, y, z, 0, 0, 0)
             setEffectDensity(effect, 0.2)
         end

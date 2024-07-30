@@ -13,6 +13,9 @@ settings = {
 
     cookTime = {
         burger = 8000,
+        fries = 6000,
+        cola = 1000,
+        colaRenew = 10000,
     },
     burnTime = 7000,
 
@@ -68,20 +71,21 @@ settings = {
         },
         -- meat
         {
+            clickTrigger = {
+                type = 'server',
+                event = 'meat'
+            },
             model = 'burger/board',
             position = {2.3, -1.5, 0.99},
             rotation = {0, 0, -200},
             scale = 1.45,
         },
         {
-            clickTrigger = {
-                type = 'server',
-                event = 'meat'
-            },
             model = 'burger/meat',
             position = {2.3, -1.5, 1.025},
             rotation = {0, 0, -200},
             scale = 1.9,
+            noCollision = true,
         },
         -- fryers
         {
@@ -106,7 +110,10 @@ settings = {
         },
         -- cola dispenser
         {
-            trigger = 'cola',
+            clickTrigger = {
+                type = 'server',
+                event = 'cola'
+            },
             model = 'burger/cola-dispenser',
             position = {2.75, 1.85, 1},
             rotation = {0, 0, -25},
@@ -155,9 +162,8 @@ settings = {
             rotation = {0, 0, -80},
         },
     },
-
     
-    fries = {
+    fryers = {
         {
             position = {-0.35, 1.85, 1.2},
             rotation = {0, 0, 0},
@@ -168,6 +174,17 @@ settings = {
             rotation = {0, 0, 0},
             scale = 1.8,
         },
+    },
+
+    cola = {
+        model = 'burger/cola-glass',
+        position = {2.59, 1.63, 1.25},
+        rotation = {0, 0, 0},
+        scale = 1.0,
+    },
+
+    pedSpawns = {
+        {1193.330, -911.100, 43.354, 0},
     },
 
     carryPositions = {
@@ -196,6 +213,21 @@ settings = {
             rotation = {-90, 0, 0},
             scale = 1.5,
         },
+        ['burger/fries-box'] = {
+            position = {0.1, 0.16, -0.015},
+            rotation = {-90, 0, 0},
+            scale = 1.5,
+        },
+        ['burger/fries-box-burned'] = {
+            position = {0.1, 0.16, -0.015},
+            rotation = {-90, 0, 0},
+            scale = 1.5,
+        },
+        ['burger/cola-glass-full'] = {
+            position = {0.07, 0.2, -0.011},
+            rotation = {-90, 0, 0},
+            scale = 1.0,
+        },
     },
     
     layPositions = {
@@ -219,10 +251,28 @@ settings = {
             position = {0, 0, 0.025},
             scale = 1.6,
         },
+        ['burger/fries-box'] = {
+            position = {0, 0, 0.145},
+            scale = 1.6,
+        },
+        ['burger/fries-box-burned'] = {
+            position = {0, 0, 0.145},
+            scale = 1.6,
+        },
 
         ['burger/grill-meat'] = {
             position = {0, -0.08, 0.125},
             scale = 1.9,
+        },
+        ['burger/fryer-fries'] = {
+            position = {0, 0, 0.025},
+            rotation = {0, 0, 0},
+            scale = 1.9,
+        },
+        ['burger/cola-glass-full'] = {
+            position = {0, 0, 0.2},
+            rotation = {0, 0, 0},
+            scale = 1.0,
         },
     },
 

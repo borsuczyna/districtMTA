@@ -9,6 +9,8 @@
     <script src='client/board.lua' type='client' cache='false'/>
     <script src='client/grill.lua' type='client' cache='false'/>
     <script src='client/fries.lua' type='client' cache='false'/>
+    <script src='client/cola.lua' type='client' cache='false'/>
+    <script src='client/npc.lua' type='client' cache='false'/>
     <script src='client/circle.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
@@ -17,11 +19,17 @@
     <script src='server/board.lua' type='server'/>
     <script src='server/grill.lua' type='server'/>
     <script src='server/fryer.lua' type='server'/>
+    <script src='server/cola.lua' type='server'/>
+    <script src='server/npc.lua' type='server'/>
 
     <file src='data/circle.fx'/>
     <file src='data/stoper-bg.png'/>
     <file src='data/stoper.png'/>
     <file src='data/flame.png'/>
+    <file src='data/cola.png'/>
+    <file src='data/burger.png'/>
+    <file src='data/fries.png'/>
+    <file src='data/salad.png'/>
 
     <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

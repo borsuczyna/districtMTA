@@ -1,6 +1,7 @@
 local carryObjects = {
     meat = 'meat',
     salad = 'salad-box',
+    cola = 'cola-glass-full',
 }
 
 function useCarryItem(client, event)
@@ -27,5 +28,9 @@ addEventHandler('jobs:burger:clickElement', resourceRoot, function(event, object
     elseif event == 'fryer-1' or event == 'fryer-2' then
         local fryerId = event == 'fryer-1' and 1 or 2
         useFryer(client, objectHash, fryerId)
+    elseif event == 'cola' then
+        useCola(client, objectHash)
+    elseif event == 'jobs:burger:clickNpc' then
+        clickNpc(client, objectHash)
     end
 end)

@@ -1,6 +1,7 @@
 addEvent('jobs:burger:clickElement')
 
 function onClickObjectInteraction(button, state, x, y, wx, wy, wz, element)
+    if not canMove then return end
     if button ~= 'left' or state ~= 'down' or not element then return end
 
     local objectHash = exports['m-jobs']:getObjectHash(element)

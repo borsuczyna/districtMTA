@@ -26,23 +26,21 @@ function useGrill(client, objectHash, grillId)
 
         stopPlayerCarryObject(client)
         
-        local cookTime = settings.cookTime.burger
+        local multiplier = getPlayerCookMultiplier(client)
+        local cookTime = settings.cookTime.burger / multiplier
         local burnTime = cookTime + settings.burnTime
         exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:grill', cookTime, grillId)
         local burnTimer = exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:grillBurn', burnTime, grillId, objectHash)
 
-        exports['m-jobs']:setLobbyData(client, key, {
+        local timeData = {
             start = getTickCount(),
             finish = getTickCount() + cookTime,
             burn = getTickCount() + burnTime,
             burnTimer = burnTimer
-        })
+        }
 
-        triggerClientEvent(client, 'jobs:burger:grill', resourceRoot, grillId, objectHash, {
-            start = getTickCount(),
-            finish = getTickCount() + cookTime,
-            burn = getTickCount() + burnTime
-        })
+        exports['m-jobs']:setLobbyData(client, key, timeData)
+        triggerClientEvent(client, 'jobs:burger:grill', resourceRoot, grillId, objectHash, timeData)
     else
         if carryData then return end
         if grillData.finish > getTickCount() then
@@ -61,7 +59,7 @@ function useGrill(client, objectHash, grillId)
             options = {
                 effect = {
                     name = 'fire',
-                    density = 0.2
+                    density = 0.3,
                 }
             }
         end

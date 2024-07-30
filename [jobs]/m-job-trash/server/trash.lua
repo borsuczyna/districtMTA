@@ -187,14 +187,9 @@ addEventHandler('jobs:trash:dumpTrash', root, function(hash, player)
     if getElementData(player, 'player:dumpingTrash') then return end
 
     local vehicle = getElementData(player, 'player:jobVehicle')
-    if not vehicle or getPedOccupiedVehicle(player) ~= vehicle then
-        exports['m-notis']:addNotification(player, 'error', 'Wywóz śmieci', 'Nie jesteś w śmieciarce')
-        return
-    end
-    if getVehicleOccupant(vehicle, 0) ~= player then
-        exports['m-notis']:addNotification(player, 'error', 'Wywóz śmieci', 'Tylko kierowca może oddawać śmieci')
-        return
-    end
+    
+    if not vehicle or getPedOccupiedVehicle(player) ~= vehicle then return end
+    if getVehicleOccupant(vehicle, 0) ~= player then return end
 
     local trashLevel = exports['m-jobs']:getLobbyData(hash, 'trashLevel')
     if trashLevel < 50 then

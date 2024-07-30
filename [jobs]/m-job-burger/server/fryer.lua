@@ -20,34 +20,54 @@ function useFryer(client, objectHash, fryerId)
     local key = getFryerKey(client, fryerId)
     
     if not fryerData then
-        local cookTime = settings.cookTime.burger
-        local burnTime = cookTime + settings.burgerBurnTime
-        exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:grill', cookTime, grillId)
-        local burnTimer = exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:grillBurn', burnTime, grillId, objectHash)
+        local multiplier = getPlayerCookMultiplier(client)
+        local cookTime = settings.cookTime.fries / multiplier
+        local burnTime = cookTime + settings.burnTime
+        exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:fryer', cookTime, fryerId)
+        local burnTimer = exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:fryerBurn', burnTime, fryerId, objectHash)
 
-        exports['m-jobs']:setLobbyData(client, key, {
+        local timeData = {
             start = getTickCount(),
             finish = getTickCount() + cookTime,
             burn = getTickCount() + burnTime,
             burnTimer = burnTimer
-        })
+        }
 
-        triggerClientEvent(client, 'jobs:burger:grill', resourceRoot, grillId, objectHash, {
-            start = getTickCount(),
-            finish = getTickCount() + cookTime,
-            burn = getTickCount() + burnTime
-        })
+        exports['m-jobs']:setLobbyData(client, key, timeData)
+        triggerClientEvent(client, 'jobs:burger:fryer', resourceRoot, fryerId, objectHash, timeData)
     else
         local carryData = getPlayerCarryObject(client)
         if carryData then return end
 
-        
+        if fryerData.finish > getTickCount() then
+            exports['m-notis']:addNotification(client, 'warning', 'Frytkownica', 'Frytki nie są jeszcze gotowe')
+            return
+        end
+
+        exports['m-jobs']:killPlayerLobbyTimer(client, client, fryerData.burnTimer)
+
+        triggerClientEvent(client, 'jobs:burger:fryer', resourceRoot, fryerId)
+
+        local burned = fryerData.burn < getTickCount()
+        local options = {}
+
+        if burned then
+            options = {
+                effect = {
+                    name = 'fire',
+                    density = 0.3,
+                },
+            }
+        end
+
+        makePlayerCarryObject(client, burned and 'burger/fries-box-burned' or 'burger/fries-box', nil, options)
+        exports['m-jobs']:setLobbyData(client, key, nil)
     end
 end
 
--- addEventHandler('jobs:burger:fryer', resourceRoot, function(hash, client, fryerId)
---     triggerClientEvent(client, 'jobs:burger:fryerFinish', resourceRoot, fryerId)
--- end)
+addEventHandler('jobs:burger:fryer', resourceRoot, function(hash, client, fryerId)
+    triggerClientEvent(client, 'jobs:burger:fryerFinish', resourceRoot, fryerId)
+end)
 
 addEventHandler('jobs:burger:fryerBurn', resourceRoot, function(hash, client, fryerId, objectHash)
     triggerClientEvent(client, 'jobs:burger:fryerBurn', resourceRoot, fryerId, objectHash)
