@@ -98,7 +98,7 @@ function drawGrillProgress(grill, data, serverTick)
 
     if burning then
         local burnProgress = math.min(clampedProgress * 5, 1)
-        local animProgress = getEasingValue(clampedProgress, 'OutBounce')
+        local animProgress = getEasingValue(burnProgress, 'OutBounce')
         bounceAnimation = 1 + animProgress * 0.5
 
         local r, g, b = interpolateBetween(255, 255, 255, 255, 0, 0, burnProgress, 'Linear')

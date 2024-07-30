@@ -36,7 +36,6 @@ function createLobby(job, ownedPlayer, maxPlayers)
 
     if lobby then
         exports['m-notis']:addNotification(ownedPlayer, 'error', 'Błąd', 'Posiadasz lub jesteś w lobby')
-        triggerClientEvent(ownedPlayer, 'jobs:lobbyCreated', resourceRoot, false)
         return false
     end
 
@@ -151,14 +150,10 @@ addEventHandler('jobs:createLobby', resourceRoot, function(hash, client, job)
 
     local success = createLobby(job, client, jobs[job].lobbySize)
     if not success then
-        -- triggerClientEvent(client, 'jobs:lobbyCreated', resourceRoot, false)
-        -- exports['m-notis']:addNotification(client, 'error', 'Błąd', 'Posiadasz lub jesteś w lobby')
         exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd', message = 'Posiadasz lub jesteś w lobby'})
         return
     end
     
-    -- exports['m-notis']:addNotification(client, 'success', 'Sukces', 'Lobby zostało utworzone')
-    -- triggerClientEvent(client, 'jobs:lobbyCreated', resourceRoot, true)
     exports['m-ui']:respondToRequest(hash, {status = 'success', title = 'Sukces', message = 'Lobby zostało utworzone'})
     sendPlayerUID(client)
     updateLobby(client)

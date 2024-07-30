@@ -39,19 +39,23 @@ function drawBoundLines()
 end
 
 function updateMovement()
-    drawBoundLines()
+    -- drawBoundLines()
     if not goToPosition then return end
 
+    local distance = getDistanceBetweenPoints2D(goToPosition[1], goToPosition[2], getElementPosition(localPlayer))
     setElementRotation(localPlayer, 0, 0, goToPosition[4], 'default', true)
 
-    dxDrawLine3D(goToPosition[1], goToPosition[2], goToPosition[3], goToPosition[1], goToPosition[2], goToPosition[3] + 1, tocolor(255, 0, 0), 1)
+    -- dxDrawLine3D(goToPosition[1], goToPosition[2], goToPosition[3], goToPosition[1], goToPosition[2], goToPosition[3] + 1, tocolor(255, 0, 0), 1)
     if goToPosition[5] then return end
 
-    local distance = getDistanceBetweenPoints2D(goToPosition[1], goToPosition[2], getElementPosition(localPlayer))
     if distance < 0.3 then
         setPedControlState(localPlayer, 'forwards', false)
         goToPosition[5] = true
         tryAction()
+    else
+        local x, y, z = getElementPosition(localPlayer)
+        local rotation = findRotation(x, y, goToPosition[1], goToPosition[2])
+        goToPosition[4] = rotation
     end
 end
 

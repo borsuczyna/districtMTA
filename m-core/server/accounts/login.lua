@@ -22,7 +22,7 @@ local function loginResult(queryResult, hash, data, player)
     end
 
     sendAccountResponse(hash, {'login', true, 'Zalogowano pomyślnie', accountData})
-    exports['m-core']:addUserLog(player, 'ACCOUNT', ('Zalogowano na konto'):format(login), ('Serial: ||%s||\nIP: ||%s||'):format(getPlayerSerial(player), getPlayerIP(player)))
+    exports['m-core']:addUserLog(player, 'ACCOUNT', 'Zalogowano na konto', ('Serial: ||%s||\nIP: ||%s||'):format(getPlayerSerial(player), getPlayerIP(player)))
 end
 
 local function loginInternal(data, hash, player)
@@ -40,8 +40,8 @@ function loginToAccount(hash, data, player)
     assert(type(data.usernameOrEmail) == 'string', 'createAccount: data.usernameOrEmail is not a string')
     assert(type(data.password) == 'string', 'createAccount: data.password is not a string')
 
-    if #data.usernameOrEmail < 3 then return 'Nieprawidłowa Login lub email' end
-    if #data.usernameOrEmail > 18 then return 'Nieprawidłowa Login lub email' end
+    if #data.usernameOrEmail < 3 then return 'Nieprawidłowy login lub email' end
+    if #data.usernameOrEmail > 18 then return 'Nieprawidłowy login lub email' end
     if #data.password < 3 then return 'Nieprawidłowe hasło' end
     if #data.password > 18 then return 'Nieprawidłowe hasło' end
 

@@ -11,8 +11,10 @@ settings = {
         {6010, 200, 1198.611, -912.601, 43.143},
     },
 
-    burgerCookTime = 8000,
-    burgerBurnTime = 7000,
+    cookTime = {
+        burger = 8000,
+    },
+    burnTime = 7000,
 
     elements = {
         -- salad
@@ -83,16 +85,22 @@ settings = {
         },
         -- fryers
         {
-            trigger = 'fryer',
+            clickTrigger = {
+                type = 'server',
+                event = 'fryer-1'
+            },
             model = 'burger/fryer',
-            position = {-0.35, 2.0, 1},
+            position = {-0.35, 2.0, 0.95},
             rotation = {0, 0, 0},
             scale = 1.8,
         },
         {
-            trigger = 'fryer',
+            clickTrigger = {
+                type = 'server',
+                event = 'fryer-2'
+            },
             model = 'burger/fryer',
-            position = {0.75, 2.0, 1},
+            position = {0.75, 2.0, 0.95},
             rotation = {0, 0, 0},
             scale = 1.8,
         },
@@ -145,6 +153,20 @@ settings = {
             model = 'burger/door',
             position = {-7.25, -0.86, 0},
             rotation = {0, 0, -80},
+        },
+    },
+
+    
+    fries = {
+        {
+            position = {-0.35, 1.85, 1.2},
+            rotation = {0, 0, 0},
+            scale = 1.8,
+        },
+        {
+            position = {0.75, 1.85, 1.2},
+            rotation = {0, 0, 0},
+            scale = 1.8,
         },
     },
 

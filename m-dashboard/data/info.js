@@ -8,8 +8,11 @@ function timeToString(time) {
     }
 
     addTime(Math.floor(time / 86400), 'dni');
+    time %= 86400;
     addTime(Math.floor(time / 3600), 'godzin');
+    time %= 3600;
     addTime(Math.floor(time % 3600 / 60), 'minut');
+    time %= 60;
     addTime(time % 60, 'sekund');
 
     return timeData.join(', ');

@@ -8,6 +8,7 @@
     <script src='client/click.lua' type='client' cache='false'/>
     <script src='client/board.lua' type='client' cache='false'/>
     <script src='client/grill.lua' type='client' cache='false'/>
+    <script src='client/fries.lua' type='client' cache='false'/>
     <script src='client/circle.lua' type='client' cache='false'/>
 
     <script src='server/main.lua' type='server'/>
@@ -15,6 +16,7 @@
     <script src='server/events.lua' type='server'/>
     <script src='server/board.lua' type='server'/>
     <script src='server/grill.lua' type='server'/>
+    <script src='server/fryer.lua' type='server'/>
 
     <file src='data/circle.fx'/>
     <file src='data/stoper-bg.png'/>

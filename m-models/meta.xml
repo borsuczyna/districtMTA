@@ -54,6 +54,7 @@
     <file src="data/decoded/burger/fries.dff"/>
     <file src="data/decoded/burger/fryer-grid.dff"/>
     <file src="data/decoded/burger/fryer.dff"/>
+    <file src="data/decoded/burger/fryer.col"/>
     <file src="data/decoded/burger/glass.dff"/>
     <file src="data/decoded/burger/grill.dff"/>
     <file src="data/decoded/burger/grill.col"/>

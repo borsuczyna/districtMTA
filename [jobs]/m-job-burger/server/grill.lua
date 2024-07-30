@@ -26,8 +26,8 @@ function useGrill(client, objectHash, grillId)
 
         stopPlayerCarryObject(client)
         
-        local cookTime = settings.burgerCookTime
-        local burnTime = cookTime + settings.burgerBurnTime
+        local cookTime = settings.cookTime.burger
+        local burnTime = cookTime + settings.burnTime
         exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:grill', cookTime, grillId)
         local burnTimer = exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:grillBurn', burnTime, grillId, objectHash)
 

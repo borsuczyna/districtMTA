@@ -96,6 +96,8 @@ end
 addEventHandler('onPlayerQuit', root, function()
     savePlayerData(source)
     updatePlayerDailyTaskProgress(source)
+
+    exports['m-core']:addUserLog(source, 'ACCOUNT', 'Wylogowano z konta', ('Serial: ||%s||\nIP: ||%s||'):format(getPlayerSerial(source), getPlayerIP(source)))
 end)
 
 setTimer(saveAllPlayers, 300000, 0) -- 5 minutes
