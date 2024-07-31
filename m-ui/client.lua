@@ -223,8 +223,13 @@ end)
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)
 
 setTimer(function()
-    local result = exports['m-anticheat']:returnValue()
-    if result ~= 1 then
-        print('probably cheater') -- TODO
+    local functions = {'loadInterface', 'createWindow', 'setPlayerNametags', 'getRandomPlayers'}
+    
+    for _, functionName in pairs(functions) do
+        local result = exports['m-anticheat'][functionName]()
+
+        if result ~= 1 then
+            print('probably cheater') -- TODO
+        end
     end
 end, 1000, 0)

@@ -1,5 +1,5 @@
 <meta>
-    <download_priority_group>9999</download_priority_group>
+    <download_priority_group>9998</download_priority_group>
     <script src='client.lua' type='client' cache='false'/>
     <script src='fonts.lua' type='client' cache='false'/>
     <script src='server.lua' type='server'/>

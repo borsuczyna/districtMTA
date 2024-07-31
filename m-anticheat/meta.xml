@@ -1,11 +1,10 @@
 <meta>
-    <download_priority_group>9998</download_priority_group>
+    <download_priority_group>9999</download_priority_group>
 
 	<include resource='m-ui'/>
 
-    <script src='client/main.lua' type='client' cache='false'/>
-    <script src='client/nt.lua' type='client' cache='false'/>
     <script src='client/injector.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
     <script src='client/speed-hack.lua' type='client' cache='false'/>
     <script src='client/world.lua' type='client' cache='false'/>
 
@@ -15,7 +14,10 @@
     <script src='server/element-datas.lua' type='server'/>
     <script src='server/explosions.lua' type='server'/>
 
-    <export function='returnValue' type='client'/>
+    <export function='loadInterface' type='client'/>
+    <export function='createWindow' type='client'/>
+    <export function='setPlayerNametags' type='client'/>
+    <export function='getRandomPlayers' type='client'/>
 
     <export function='setPlayerTriggerLocked' type='server'/>
     <export function='isPlayerTriggerLocked' type='server'/>

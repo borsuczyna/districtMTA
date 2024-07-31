@@ -11,3 +11,7 @@ function checkWorldSpecialProperties()
 end
 
 setTimer(checkWorldSpecialProperties, 15000, 0)
+
+function getRandomPlayers()
+    return 1
+end
