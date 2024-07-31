@@ -11,9 +11,14 @@ function useCarryItem(client, event)
     makePlayerCarryObject(client, 'burger/' .. carryObjects[event])
 end
 
+function playClientSound(client, sound)
+    triggerClientEvent(client, 'jobs:burger:playSound', resourceRoot, sound)
+end
+
 addEvent('jobs:burger:clickElement', true)
 addEventHandler('jobs:burger:clickElement', resourceRoot, function(event, objectHash)
     if event == 'trash' then
+        playClientSound(client, 'trash')
         stopPlayerCarryObject(client)
     elseif event == 'meat' or event == 'salad' then
         useCarryItem(client, event)

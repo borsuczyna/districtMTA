@@ -30,6 +30,14 @@
     <file src='data/burger.png'/>
     <file src='data/fries.png'/>
     <file src='data/salad.png'/>
+    <file src='data/cloud.png'/>
+
+    <file src='data/grill.wav'/>
+    <file src='data/cant.wav'/>
+    <file src='data/trash.wav'/>
+    <file src='data/bell.wav'/>
+    <file src='data/burn.wav'/>
+    <file src='data/click.wav'/>
 
     <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

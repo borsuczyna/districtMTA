@@ -40,6 +40,7 @@ function useFryer(client, objectHash, fryerId)
         if carryData then return end
 
         if fryerData.finish > getTickCount() then
+            playClientSound(client, 'cant')
             exports['m-notis']:addNotification(client, 'warning', 'Frytkownica', 'Frytki nie są jeszcze gotowe')
             return
         end
@@ -62,6 +63,7 @@ function useFryer(client, objectHash, fryerId)
 
         makePlayerCarryObject(client, burned and 'burger/fries-box-burned' or 'burger/fries-box', nil, options)
         exports['m-jobs']:setLobbyData(client, key, nil)
+        playClientSound(client, 'click')
     end
 end
 

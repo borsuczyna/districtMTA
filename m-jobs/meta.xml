@@ -17,6 +17,7 @@
 
     <file src='data/images/forest.png'/>
     <file src='data/images/trash.png'/>
+    <file src='data/images/burger.png'/>
 
     <export function='showJobGui' type='client'/>
     <export function='hideJobGui' type='client'/>

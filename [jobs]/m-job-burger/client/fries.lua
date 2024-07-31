@@ -6,6 +6,7 @@ local fries = {}
 local fryers = {}
 local effects = {}
 local friesData = {}
+local friesSounds = {}
 
 function loadFryers(interior)
     for i, data in ipairs(settings.fryers) do
@@ -52,8 +53,13 @@ addEventHandler('jobs:burger:fryer', resourceRoot, function(fryerId, objectHash,
         destroyElement(fries[fryerId])
     end
 
+    if friesSounds[fryerId] and isElement(friesSounds[fryerId]) then
+        stopSound(friesSounds[fryerId])
+    end
+
     friesData[fryerId] = nil
     fries[fryerId] = nil
+    friesSounds[fryerId] = nil
     setEffect(fryerId, false)
 
     if objectHash then
@@ -76,6 +82,8 @@ addEventHandler('jobs:burger:fryer', resourceRoot, function(fryerId, objectHash,
 
         fries[fryerId] = object
         friesData[fryerId] = data
+        friesSounds[fryerId] = playSound('data/grill.wav')
+        playSound('data/click.wav')
         setEffect(fryerId, 'vent', 0.8)
     else
         local x, y, z = getElementPosition(fryers[fryerId])
@@ -112,5 +120,6 @@ addEventHandler('jobs:burger:fryerBurn', resourceRoot, function(fryerId, objectH
         setElementData(fries[fryerId], 'element:model', 'burger/fries-burned')
 
         setEffect(fryerId, 'fire', 0.2)
+        playSound('data/burn.wav')
     end
 end)

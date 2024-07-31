@@ -23,6 +23,7 @@ function getCola(player, objectHash)
     triggerClientEvent(player, 'jobs:burger:cola', resourceRoot, objectHash, timeData)
 
     exports['m-jobs']:setPlayerLobbyTimer(client, client, 'jobs:burger:cola', cookTime)
+    playClientSound(player, 'click')
 end
 
 function useCola(client, objectHash)
@@ -35,6 +36,7 @@ function useCola(client, objectHash)
     local colaData = exports['m-jobs']:getLobbyData(client, key)
 
     if colaData and colaData.renew > getTickCount() then
+        playClientSound(client, 'cant')
         exports['m-notis']:addNotification(client, 'warning', 'Cola', 'Cola jeszcze się nie schłodziła')
         return
     end

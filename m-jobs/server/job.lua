@@ -148,9 +148,9 @@ function setLobbyTimer(playerOrHash, event, time, ...)
     local args = {...}
 
     local hash = generateHash()
-    local timer = setTimer(function()
-        triggerEvent(event, root, lobby.hash, unpack(args))
-    end, time, 1)
+    local timer = setTimer(function(event, hash, args)
+        triggerEvent(event, root, hash, unpack(args))
+    end, time, 1, event, lobby.hash, args)
 
     lobby.timers[hash] = timer
     return hash
@@ -175,9 +175,9 @@ function setPlayerLobbyTimer(playerOrHash, player, event, time, ...)
     local args = {...}
 
     local hash = generateHash()
-    local timer = setTimer(function()
-        triggerEvent(event, root, lobby.hash, player, unpack(args))
-    end, time, 1)
+    local timer = setTimer(function(event, hash, player, args)
+        triggerEvent(event, root, hash, player, unpack(args))
+    end, time, 1, event, hash, player, args)
 
     if not lobby.playerTimers[player] then
         lobby.playerTimers[player] = {}
@@ -290,18 +290,24 @@ function getLobbyPed(playerOrHash, hash)
     return findElementByHash(lobby.peds, hash)
 end
 
-function setPedRotation(playerOrHash, ped, rotation)
+function setPedRotation(playerOrHash, hash, rotation)
     local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     if not lobby then return end
+
+    local ped = findElementByHash(lobby.peds, hash)
+    if not ped then return end
 
     ped.rotation[3] = rotation
     triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
 end
 
-function setPedControlState(playerOrHash, ped, state, enabled)
+function setPedControlState(playerOrHash, hash, state, enabled)
     local lobby = type(playerOrHash) == 'string' and getLobbyByHash(playerOrHash) or getPlayerJobLobby(playerOrHash)
     if not lobby then return end
     
+    local ped = findElementByHash(lobby.peds, hash)
+    if not ped then return end
+
     ped.options.controlStates = ped.options.controlStates or {}
     ped.options.controlStates[state] = enabled
     triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})

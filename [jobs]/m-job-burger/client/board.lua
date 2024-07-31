@@ -1,8 +1,11 @@
 addEvent('jobs:burger:board', true)
+addEvent('jobs:burger:playSound', true)
 
 local boards = {}
 
 addEventHandler('jobs:burger:board', resourceRoot, function(boardId, objectHash, model)
+    playSound('data/click.wav')
+    
     if boards[boardId] then
         destroyElement(boards[boardId].object)
         if boards[boardId].effect then
@@ -50,3 +53,7 @@ function clearBoards()
         end
     end
 end
+
+addEventHandler('jobs:burger:playSound', resourceRoot, function(sound)
+    playSound('data/' .. sound .. '.wav')
+end)

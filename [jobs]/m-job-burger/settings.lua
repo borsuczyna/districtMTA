@@ -12,10 +12,12 @@ settings = {
     cookTime = {
         burger = 8000,
         fries = 6000,
-        cola = 1000,
-        colaRenew = 10000,
+        cola = 400,
+        colaRenew = 5000,
     },
     burnTime = 7000,
+
+    npcSpawnInterval = {10000, 55000},
 
     elements = {
         -- salad
@@ -182,8 +184,13 @@ settings = {
     },
 
     pedSpawns = {
-        {1193.330, -911.100, 43.354, 0},
+        {1191.595, -911.085, 43.354, 0},
+        {1192.595, -911.085, 43.354, 0},
+        {1193.695, -911.085, 43.354, 0},
+        {1194.695, -911.085, 43.354, 0},
     },
+
+    pedLeaveTarget = {1193.315, -914.912, 43.354},
 
     carryPositions = {
         ['burger/burger-in-packaging'] = {
@@ -287,5 +294,5 @@ settings = {
         }
     end,
 
-    interiorExit = {1199.504, -920.487, 43.109},
+    interiorExit = {1206.660, -907.264, 43.211},
 }

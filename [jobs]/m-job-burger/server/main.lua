@@ -61,11 +61,16 @@ local function startBurgerJob(hash, players)
     end
 
     loadElements(hash, dimension)
-    addLobbyNpc(hash, dimension)
+
+    for i = 1, 2 do
+        addLobbyNpc(hash, dimension)
+    end
+
+    exports['m-jobs']:setLobbyTimer(hash, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))
 end
 
 function getPlayerCookMultiplier(player)
-    return 10
+    return 1
 end
 
 addEventHandler('jobs:startJob', root, function(job, hash, players)

@@ -5,6 +5,7 @@ addEvent('jobs:burger:grilled', true)
 local grills = {}
 local grillsData = {}
 local effects = {}
+local grillSounds = {}
 
 local function setEffect(grillId, name, density)
     local x, y, z = getElementPosition(grills[grillId])
@@ -24,9 +25,14 @@ addEventHandler('jobs:burger:grill', resourceRoot, function(grillId, objectHash,
         destroyElement(effects[grillId])
     end
 
+    if grillSounds[grillId] and isElement(grillSounds[grillId]) then
+        stopSound(grillSounds[grillId])
+    end
+
     grillsData[grillId] = nil
     effects[grillId] = nil
     grills[grillId] = nil
+    grillSounds[grillId] = nil
 
     if objectHash then
         local grillObject = exports['m-jobs']:getObjectByHash(objectHash)
@@ -47,6 +53,8 @@ addEventHandler('jobs:burger:grill', resourceRoot, function(grillId, objectHash,
 
         grills[grillId] = object
         grillsData[grillId] = data
+        grillSounds[grillId] = playSound('data/grill.wav')
+        playSound('data/click.wav')
 
         setEffect(grillId, 'vent', 0.8)
     end
@@ -56,6 +64,7 @@ addEventHandler('jobs:burger:grillBurn', resourceRoot, function(grillId, objectH
     if grills[grillId] and isElement(grills[grillId]) then
         setElementData(grills[grillId], 'element:model', 'burger/meat-overcooked')
         setEffect(grillId, 'fire', 0.2)
+        playSound('data/burn.wav')
     end
 end)
 

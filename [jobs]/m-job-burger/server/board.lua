@@ -19,7 +19,10 @@ function useBoard(client, objectHash, boardId)
     local carryData = getPlayerCarryObject(client)
     
     if not boardData then
-        if not carryData then return end
+        if not carryData then
+            playClientSound(client, 'cant')
+            return
+        end
 
         stopPlayerCarryObject(client)
 

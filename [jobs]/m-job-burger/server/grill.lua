@@ -44,6 +44,7 @@ function useGrill(client, objectHash, grillId)
     else
         if carryData then return end
         if grillData.finish > getTickCount() then
+            playClientSound(client, 'cant')
             exports['m-notis']:addNotification(client, 'warning', 'Grill', 'Burger nie jest jeszcze gotowy')
             return
         end
@@ -66,6 +67,7 @@ function useGrill(client, objectHash, grillId)
 
         makePlayerCarryObject(client, burned and 'burger/meat-overcooked' or 'burger/meat-cooked', nil, options)
         exports['m-jobs']:setLobbyData(client, key, nil)
+        playClientSound(client, 'click')
     end
 end
 
@@ -75,6 +77,7 @@ function useBun(client, objectHash)
 
     stopPlayerCarryObject(client)
     makePlayerCarryObject(client, 'burger/burger-in-packaging')
+    playClientSound(client, 'click')
 end
 
 addEventHandler('jobs:burger:grill', resourceRoot, function(hash, client, grillId)

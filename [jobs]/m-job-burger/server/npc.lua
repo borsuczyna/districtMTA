@@ -1,4 +1,6 @@
+addEvent('jobs:burger:pedEnter')
 addEvent('jobs:burger:pedLeave')
+addEvent('jobs:burger:addRandomNpc')
 
 local carryOrderItems = {
     ['burger/fries-box'] = 'fries',
@@ -7,9 +9,24 @@ local carryOrderItems = {
     ['burger/cola-glass-full'] = 'cola',
 }
 
-local function getRandomPedSpawnPosition()
+local function getRandomPedSpawnPosition(lobby)
+    local usedPositions = exports['m-jobs']:getLobbyData(lobby, 'usedPedSpawns') or {}
+
     local index = math.random(1, #settings.pedSpawns)
-    return settings.pedSpawns[index]
+    while usedPositions[index] do
+        index = math.random(1, #settings.pedSpawns)
+    end
+
+    usedPositions[index] = true
+    exports['m-jobs']:setLobbyData(lobby, 'usedPedSpawns', usedPositions)
+
+    return settings.pedSpawns[index], index
+end
+
+local function removeUsedPedSpawn(lobby, index)
+    local usedPositions = exports['m-jobs']:getLobbyData(lobby, 'usedPedSpawns') or {}
+    usedPositions[index] = nil
+    exports['m-jobs']:setLobbyData(lobby, 'usedPedSpawns', usedPositions)
 end
 
 local function getRandomPedSkin()
@@ -18,8 +35,7 @@ end
 
 local function getRandomOrder()
     local possible = {{2, 'fries'}, {2, 'salad'}, {2, 'burger'}, {2, 'cola'}}
-    -- local count = math.random(1, 4)
-    local count = 1
+    local count = math.random(1, 3)
     local order = {}
     local used = {}
 
@@ -50,7 +66,8 @@ function addLobbyNpc(lobby, dimension)
         dimension = exports['m-jobs']:getLobbyData(lobby, 'dimension')
     end
 
-    local x, y, z, rot = unpack(getRandomPedSpawnPosition())
+    local spawn, index = getRandomPedSpawnPosition(lobby)
+    local x, y, z, rot = unpack(spawn)
     local model = getRandomPedSkin()
     local npc = exports['m-jobs']:createLobbyPed(lobby, model, x, y, z, 0, 0, rot, {
         dimension = dimension,
@@ -62,20 +79,25 @@ function addLobbyNpc(lobby, dimension)
     table.insert(npcs, {
         hash = npc,
         order = getRandomOrder(),
+        spawnIndex = index,
     })
 
     exports['m-jobs']:setLobbyData(lobby, 'npcs', npcs)
+    local players = exports['m-jobs']:getLobbyPlayers(lobby)
+    triggerClientEvent(players, 'jobs:burger:playSound', resourceRoot, 'bell')
 end
 
 function playPedLeaveAnimation(lobby, hash)
-    -- local ped = exports['m-jobs']:getLobbyPed(lobby, hash)
-    -- if not ped then return end
+    local ped = exports['m-jobs']:getLobbyPed(lobby, hash)
+    if not ped then return end
 
-    -- exports['m-jobs']:setPedControlState(lobby, ped, 'forwards', true)
-    -- exports['m-jobs']:setPedRotation(lobby, ped, ped.rotation[3] + 180)
     exports['m-jobs']:makePedGoAway(lobby, hash)
-    exports['m-jobs']:setLobbyTimer(lobby, 'jobs:burger:pedLeave', 1000, hash)
+    exports['m-jobs']:setLobbyTimer(lobby, 'jobs:burger:pedLeave', 400, hash)
 end
+
+addEventHandler('jobs:burger:pedEnter', resourceRoot, function(lobby, hash)
+    exports['m-jobs']:setPedControlState(lobby, hash, 'forwards', false)
+end)
 
 addEventHandler('jobs:burger:pedLeave', resourceRoot, function(lobby, hash)
     exports['m-jobs']:destroyLobbyPed(lobby, hash)
@@ -88,9 +110,9 @@ function removeLobbyNpc(lobby, hash, npcs)
 
     for i, npc in ipairs(npcs) do
         if npc.hash == hash then
+            removeUsedPedSpawn(lobby, npc.spawnIndex)
             table.remove(npcs, i)
             exports['m-jobs']:setLobbyData(lobby, 'npcs', npcs)
-            -- exports['m-jobs']:destroyLobbyPed(lobby, hash)
             playPedLeaveAnimation(lobby, hash)
             break
         end
@@ -138,11 +160,13 @@ function tryGiveOrder(npcs, carryData, player, npc)
 
     if not found then
         exports['m-notis']:addNotification(player, 'warning', 'Zamówienie', 'Nie możesz dostarczyć tego zamówienia')
+        playClientSound(player, 'cant')
         return
     end
 
     exports['m-jobs']:setLobbyData(player, 'npcs', npcs)
     stopPlayerCarryObject(player)
+    playClientSound(player, 'click')
 
     if #order == 0 then
         finishOrder(npcs, player, npc)
@@ -163,3 +187,8 @@ function clickNpc(client, hash)
         end
     end
 end
+
+addEventHandler('jobs:burger:addRandomNpc', resourceRoot, function(lobby)
+    addLobbyNpc(lobby)
+    exports['m-jobs']:setLobbyTimer(lobby, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))
+end)

@@ -8,19 +8,34 @@ function getNpcElement(hash)
     return cache[hash]
 end
 
+local function drawOutlinedText(text, x, y, x2, y2, color, ...)
+    dxDrawText(text, x - 1, y - 1, x - 1, y - 1, tocolor(0, 0, 0, 90), ...)
+    dxDrawText(text, x + 1, y - 1, x + 1, y - 1, tocolor(0, 0, 0, 90), ...)
+    dxDrawText(text, x - 1, y + 1, x - 1, y + 1, tocolor(0, 0, 0, 90), ...)
+    dxDrawText(text, x + 1, y + 1, x + 1, y + 1, tocolor(0, 0, 0, 90), ...)
+    dxDrawText(text, x, y, x, y, color, ...)
+end
+
 local function renderNpcOrder(npcElement, order)
     local x, y, z = getElementPosition(npcElement)
     local x, y, z = x, y, z + 1.5
 
-    local text = 'Order:\n'
-    for _, item in pairs(order) do
-        text = text .. item[1] .. 'x ' .. item[2] .. '\n'
-    end
-
     local sx, sy = getScreenFromWorldPosition(x, y, z)
     if not sx or not sy then return end
 
-    dxDrawText(text, sx, sy, sx, sy, tocolor(255, 255, 255), 1, 'default-bold', 'center', 'center')
+    local size = 50/zoom
+    local width = #order * size + 8/zoom * (#order - 1)
+
+    local x = -width/2
+
+    dxDrawImage(sx - width/2 - size * 0.2, sy - size * 0.3, width + size * 0.4, size * 1.85, 'data/cloud.png', 0, 0, 0, tocolor(255, 255, 255), false)
+
+    for _, item in pairs(order) do
+        dxDrawImage(sx + x - size * 0.2, sy - size * 0.2, size * 1.4, size * 1.4, 'data/' .. item[2] .. '.png', 0, 0, 0, tocolor(255, 255, 255), false)
+        drawOutlinedText('x' .. item[1], sx + x + size * 1.05, sy + size * 0.85, nil, nil, tocolor(255, 255, 255), 1.3, 'default-bold', 'right', 'center')
+
+        x = x + size + 8/zoom
+    end
 end
 
 function renderNpcOrders()

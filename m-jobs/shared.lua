@@ -1,7 +1,7 @@
 jobs = {
     burger = {
         name = 'Pracownik burgerowni',
-        background = 'forest',
+        background = 'burger',
         description = 'Praca w burgerowni polega na przygotowywaniu i sprzedawaniu burgerów dla klientów.',
         coop = true,
         minLobbySize = 1,
