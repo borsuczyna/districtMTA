@@ -1,5 +1,5 @@
 local blockedFunctions = {
-    'addDebugHook', 'xpcall', 'pcall', 'loadstring',
+    'addDebugHook', 'xpcall', 'pcall', 'loadstring', 'setDebugViewActive',
     'createProjectile', 'detonateSatchels'
 }
 
