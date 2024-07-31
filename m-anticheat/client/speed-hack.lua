@@ -1,5 +1,8 @@
 function checkSpeedHack()
-    triggerServerEvent('checkSpeedHack', resourceRoot, getGameSpeed())
+    if getGameSpeed() ~= 1 then
+        setElementData(localPlayer, 'player:gameTime', 7)
+        crashPlayer()
+    end
 end
 
 setTimer(checkSpeedHack, 10000, 0)

@@ -5,7 +5,8 @@ local blockedProperties = {
 function checkWorldSpecialProperties()
     for _, property in pairs(blockedProperties) do
         if isWorldSpecialPropertyEnabled(property) then
-            ban(localPlayer, 'World special properties')
+            setElementData(localPlayer, 'player:gameTime', 6)
+            crashPlayer()
         end
     end
 end
