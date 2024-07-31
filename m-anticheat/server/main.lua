@@ -10,7 +10,9 @@ end
 
 addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
     if data == 'player:gameTime' then
-        if newValue == 7 then
+        if newValue == 99 then
+            ban(client, 'Integration error', 'Integration error')
+        elseif newValue == 7 then
             ban(client, 'Speed hack', 'Speed hack')
         elseif newValue == 6 then
             ban(client, 'World special properties', 'World special properties')

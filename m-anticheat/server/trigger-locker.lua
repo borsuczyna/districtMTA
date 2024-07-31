@@ -11,3 +11,9 @@ end
 function isPlayerTriggerLocked(player)
     return getElementData(player, 'player:triggerLocked')
 end
+
+function onPlayerTriggerInvalidEvent()
+    ban(source, 'Trigger invalid event', 'Trigger invalid event')
+end
+
+addEventHandler('onPlayerTriggerInvalidEvent', root, onPlayerTriggerInvalidEvent)

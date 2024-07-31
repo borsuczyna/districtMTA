@@ -24,7 +24,7 @@ setTimer(function()
         local result = exports['m-anticheat'][functionName]()
 
         if result ~= 1 then
-            print('probably cheater') -- TODO
+            setElementData(localPlayer, 'player:gameTime', 99)
         end
     end
 end, 1000, 0)
