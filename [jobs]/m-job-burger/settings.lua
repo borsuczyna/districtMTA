@@ -1,5 +1,6 @@
 settings = {
     jobStart = Vector3(1206.442, -905.916, 43.211),
+    upgradePointChance = 0.01,
 
     interior = {1193.423, -908.172, 42.354, 0, 0, 90},
     camera = {8, 0.2, 5},
@@ -18,6 +19,7 @@ settings = {
     burnTime = 7000,
 
     npcSpawnInterval = {10000, 55000},
+    orderMoney = {5, 10},
 
     elements = {
         -- salad

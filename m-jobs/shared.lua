@@ -7,6 +7,7 @@ jobs = {
         minLobbySize = 1,
         lobbySize = 8,
         minLevel = 1,
+        canEndWithGui = true,
         upgrades = {
             {
                 name = 'Sprinter',
@@ -58,6 +59,10 @@ jobs = {
         }
     }
 }
+
+function getJobName(job)
+    return jobs[job].name
+end
 
 function setJobMultiplier(job, multiplier)
     local jobMultipliersManager = getElementsByType('jobMultipliersManager')[1]

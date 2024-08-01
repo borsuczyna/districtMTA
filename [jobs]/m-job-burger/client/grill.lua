@@ -147,6 +147,16 @@ function clearGrills()
             destroyElement(effect)
         end
     end
+
+    for i, sound in ipairs(grillSounds) do
+        if isElement(sound) then
+            stopSound(sound)
+        end
+    end
+
+    grills = {}
+    grillsData = {}
+    effects = {}
 end
 
 local effectNames = {

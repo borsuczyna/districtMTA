@@ -1,0 +1,3 @@
+/compiler/bin/*
+/compiler/obj/*
+/compiler/[output]/*

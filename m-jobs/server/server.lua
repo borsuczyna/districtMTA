@@ -142,6 +142,9 @@ function giveMoney(player, amount)
 
     dbExec(connection, 'INSERT INTO `m-jobs-money-history` (user, job, money) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE money = money + ?', uid, job, amount, amount)
     givePlayerMoney(player, amount)
+
+    local earned = getElementData(player, 'player:job-earned') or 0
+    setElementData(player, 'player:job-earned', earned + amount)
 end
 
 function giveUpgradePoints(player, amount)

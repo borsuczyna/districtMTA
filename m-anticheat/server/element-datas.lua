@@ -8,12 +8,13 @@ local lockedElementDatas = {
     'player:triggerLocked', 'player:dailyRewardDay', 'player:dailyRewardRedeem',
     'player:time', 'player:session', 'player:achievements', 
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
+    'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job',
 
     'element:model', 'element:ghostmode',
-    'blip:hoverText',
+    'blip:hoverText', 'redirected',
 }
 
 local selfElementDatas = {

@@ -102,6 +102,10 @@
         color: #DA4A4A;
     }
 
+    #hud .fw-bold {
+        font-weight: bold;
+    }
+
     @keyframes money-change-animation {
         0% {
             opacity: 0;
@@ -135,9 +139,13 @@
 
     #hud .title {
         color: #FFAB48;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: bold;
-        text-shadow: 0 0 1rem #ffaa48ba;
+        text-shadow: 0.07rem 0.07rem 0.07rem #222222ba;
+    }
+
+    #hud span {
+        font-size: 0.94rem;
     }
 </style>
 
@@ -161,11 +169,20 @@
         </div>
     </div>
 
-    <!-- <div class="job d-flex flex-column gap-1 align-items-end">
-        <div class="title">Magazynier</div>
-        <span>Aktualnie przepracowano: 0h 0m</span>
-        <span>Zarobiono: $0</span>
-    </div> -->
+    <div class="job d-flex flex-column gap-1 align-items-end d-none" id="job-details">
+        <div class="title" id="job-name">Magazynier</div>
+        <span id="worked-time">Aktualnie przepracowano: 0h 0m</span>
+        <span id="earned">Zarobiono: $0</span>
+
+        <div id="job-coop" class="d-none">
+            <div class="title mt-1 text-end">Współpraca</div>
+            <span id="coop-with"></span>
+        </div>
+
+        <div id="end-job" class="mt-1 d-none">
+            <div class="nice-button button-sm" onclick="hud_endJob()">Zakończ pracę</div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -256,6 +273,48 @@
         }
     }
 
+    window.hud_setJobDetails = (job) => {
+        document.querySelector('#hud .job').classList.toggle('d-none', !job);
+        window.jobData = job;
+        if (!job) return;
+
+        let workedTime = [];
+        if (job.workedTime > 3600) {
+            workedTime.push(`${Math.floor(job.workedTime / 3600)}h`);
+            job.workedTime %= 3600;
+        }
+        if (job.workedTime > 60) {
+            workedTime.push(`${Math.floor(job.workedTime / 60)}m`);
+            job.workedTime %= 60;
+        }
+        if (job.workedTime > 0) {
+            workedTime.push(`${job.workedTime}s`);
+        }
+
+        let jobDetails = document.querySelector('#hud .job');
+        jobDetails.querySelector('#worked-time').textContent = `Aktualnie przepracowano: ${workedTime.join(' ')}`;
+        jobDetails.querySelector('#earned').textContent = `Zarobiono: $${job.earned}`;
+        jobDetails.querySelector('#job-name').textContent = job.name;
+
+        let jobCoop = jobDetails.querySelector('#job-coop');
+        jobCoop.classList.toggle('d-none', !(job.coop && job.coop.length > 0));
+        if (job.coop && job.coop.length > 0) {
+            jobCoop.querySelector('#coop-with').textContent = job.coop.join(', ');
+        }
+
+        let endJob = jobDetails.querySelector('#end-job');
+        endJob.classList.toggle('d-none', !job.endJob);
+    }
+
+    window.hud_endJob = async () => {
+        let data = await mta.fetch('jobs', 'endJobI');
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            makeButtonSpinner(button, false);
+        }
+    }
+
     addEvent('hud', 'interface:data:hud:data', (data) => {
         let { money, health, level, exp, nickname } = data[0];
 
@@ -264,5 +323,9 @@
         window.hud_setLevel(level);
         window.hud_setNickname(nickname);
         window.hud_setMoney(money);
+    });
+
+    addEvent('hud', 'interface:data:hud:job', (data) => {
+        window.hud_setJobDetails(data[0]);
     });
 </script>

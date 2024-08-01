@@ -76,9 +76,16 @@ function addLobbyNpc(lobby, dimension)
         }
     })
 
+    local order = getRandomOrder()
+    local orderSize = 0
+    for _, item in ipairs(order) do
+        orderSize = orderSize + item[1]
+    end
+
     table.insert(npcs, {
         hash = npc,
-        order = getRandomOrder(),
+        order = order,
+        orderSize = orderSize,
         spawnIndex = index,
     })
 
@@ -126,7 +133,35 @@ end
 function finishOrder(npcs, player, npc)
     exports['m-jobs']:setLobbyData(player, 'npcs', npcs)
     removeLobbyNpc(player, npc.hash, npcs)
-    exports['m-notis']:addNotification(player, 'success', 'Zamówienie', 'Zamówienie dostarczone')
+
+    local orderSize = npc.orderSize
+    local money = 0
+    for i = 1, orderSize do
+        money = money + math.random(unpack(settings.orderMoney))
+    end
+    
+    local players = exports['m-jobs']:getLobbyPlayers(player)
+    local perPlayerMoney = math.floor(money / #players)
+    
+    local giveUpgradePoints = math.random(0, 100) > 95
+    
+    for _, player in pairs(players) do
+        exports['m-jobs']:giveMoney(player, perPlayerMoney)
+
+        if giveUpgradePoints then
+            exports['m-jobs']:giveUpgradePoints(player, 1)
+        end
+    end
+
+    local message = ('Za dostarczone zamówienie zarobiono $%d'):format(perPlayerMoney)
+    if giveUpgradePoints then
+        message = message .. (' + 1 punktów ulepszeń (razem $%d)'):format(money)
+    else
+        message = message .. (' (razem $%d)'):format(money)
+    end
+
+    exports['m-notis']:addNotification(players, 'success', 'Zamówienie', message)
+    -- :D
 end
 
 function tryGiveOrder(npcs, carryData, player, npc)

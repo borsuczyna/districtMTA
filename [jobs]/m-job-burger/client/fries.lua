@@ -29,7 +29,17 @@ function clearFryers()
         destroyElement(object)
     end
 
+    for i, object in ipairs(effects) do
+        destroyElement(object)
+    end
+
+    for i, object in ipairs(fries) do
+        destroyElement(object)
+    end
+
+    fries = {}
     fryers = {}
+    effects = {}
 end
 
 local function setEffect(fryerId, name, density)

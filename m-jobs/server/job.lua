@@ -27,6 +27,10 @@ function startJob(job, players, minPlayers)
     for i, player in ipairs(players) do
         setElementData(player, 'player:job', job)
         setElementData(player, 'player:job-hash', hash)
+        setElementData(player, 'player:job-players', players)
+        setElementData(player, 'player:job-end', jobs[job].canEndWithGui)
+        setElementData(player, 'player:job-earned', 0)
+        setElementData(player, 'player:job-start', getRealTime().timestamp)
     end
 
     exports['m-notis']:addNotification(players, 'info', 'Informacja', 'Praca została rozpoczęta')
@@ -454,6 +458,10 @@ function leaveJob(player)
 
     finishPlayerJob(player)
     exports['m-notis']:addNotification(lobby.players, 'info', 'Praca', 'Gracz ' .. htmlEscape(getPlayerName(player)) .. ' zakończył pracę')
+
+    for i, p in ipairs(lobby.players) do
+        setElementData(p, 'player:job-players', lobby.players)
+    end
 
     if #lobby.players < lobby.minPlayers then
         exports['m-notis']:addNotification(lobby.players, 'error', 'Praca', 'Zbyt mało graczy na kontynuację pracy')

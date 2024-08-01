@@ -9,6 +9,12 @@ function setPlayerTriggerLocked(player, state, reason)
 end
 
 function isPlayerTriggerLocked(player)
+    local redirected = getElementData(player, 'redirected')
+    if redirected then
+        exports['m-logs']:sendLog('anticheat', 'error', ('Player %s is redirected but sent trigger, anty redirect?'):format(getPlayerName(player)))
+        return true
+    end
+
     return getElementData(player, 'player:triggerLocked')
 end
 

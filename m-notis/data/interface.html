@@ -182,11 +182,12 @@
 
         document.getElementById('notis-wrapper').appendChild(notification);
         setTimer('notis', notis_removeNotification, time, notification);
+        notis_hudVisibilityChanged();
     }
 
     window.notis_hudVisibilityChanged = () => {
         let visible = isInterfaceVisible('hud') && isInterfaceLoaded('hud');
-        document.getElementById('notis').style.top = visible ? '15rem' : '0';
+        document.getElementById('notis').style.top = visible ? (window.jobData ? (window.jobData.coop ? '28rem' : '25rem') : '15rem') : '0';
     }
 
     addEvent('notis', 'interface:visible', (name, visible) => {

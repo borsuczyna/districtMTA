@@ -1,38 +1,38 @@
-local players = {}
-local timers = {}
+local canJoin = {}
+local valid = {}
+local canJoinTimer = {}
 
-local function reconnectPlayer(player)
-    if isElement(player) then
-        local serial = getPlayerSerial(player)
-
-        if players[serial] then 
-            players[serial] = false
-        else 
-            redirectPlayer(player, '', 0)
-            removeEventHandler('onPlayerQuit', player, onQuit)
-
-            setTimer(function(newSerial)
-                players[newSerial] = true
-            end, 3000, 1, serial)
-        end 
-    end 
+local function restoreSerialRestriction(serial)
+    canJoin[serial] = false
 end
 
-function onJoin()
-    addEventHandler('onPlayerQuit', source, onQuit)
-    timers[source] = setTimer(reconnectPlayer, 10000, 1, source)
-end 
+local function reconnectPlayer(player)
+    local serial = getPlayerSerial(player)
 
-addEventHandler('onPlayerJoin', root, onJoin)
+    redirectPlayer(player, '', 0)
+    canJoin[serial] = true
+    setElementData(player, 'redirected', true)
+end
 
-function onQuit()
+addEventHandler('onPlayerJoin', root, function()
     local serial = getPlayerSerial(source)
+    if not canJoin[serial] then
+        reconnectPlayer(source)
+        return
+    end
+end)
 
-    if players[serial] then 
-        players[serial] = false
+addEventHandler('onPlayerQuit', root, function()
+    local serial = getPlayerSerial(source)
+    if getElementData(source, 'redirected') then
+        canJoinTimer[serial] = setTimer(restoreSerialRestriction, 15000, 1, serial)
+        return
+    end
 
-        if isTimer(timers[source]) then 
-            killTimer(timers[source])
-        end 
-    end 
-end 
+    local serial = getPlayerSerial(source)
+    canJoin[serial] = false
+
+    if canJoinTimer[serial] and isTimer(canJoinTimer[serial]) then
+        killTimer(canJoinTimer[serial])
+    end
+end)

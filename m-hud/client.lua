@@ -2,10 +2,50 @@ local hudLoaded = false
 local hudVisible = false
 local lastSentData = {}
 local nextLevelExpCache = {}
+local jobTimer = false
+local jobNames = {}
 
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
 addEvent('avatars:onPlayerAvatarChange', true)
+
+local function getJobName(key)
+    if jobNames[key] then
+        return jobNames[key]
+    end
+
+    local job = exports['m-jobs']:getJobName(key)
+    jobNames[key] = job
+
+    return job
+end
+
+function updateJobData()
+    local jobData = false
+
+    local job = getElementData(localPlayer, 'player:job')
+    if job then
+        local jobStart = getElementData(localPlayer, 'player:job-start')
+        local coop = getElementData(localPlayer, 'player:job-players')
+        local coopPlayers = false
+        if #coop > 1 then
+            coopPlayers = {}
+            for k,v in ipairs(coop) do
+                table.insert(coopPlayers, getPlayerName(v))
+            end
+        end
+
+        jobData = {
+            name = getJobName(job),
+            workedTime = jobStart and (getRealTime().timestamp - jobStart) or 0,
+            earned = getElementData(localPlayer, 'player:job-earned') or 0,
+            coop = coopPlayers,
+            endJob = getElementData(localPlayer, 'player:job-end'),
+        }
+    end
+
+    exports['m-ui']:setInterfaceData('hud', 'hud:job', jobData)
+end
 
 function updateHud(avatar)
     if not hudVisible then return end
@@ -56,6 +96,7 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:setInterfaceZIndex('hud', 997)
         lastSentData = {}
         addEventHandler('onClientRender', root, updateHud)
+        jobTimer = setTimer(updateJobData, 1000, 0)
         updateHud()
         hudLoaded = true
 
@@ -78,6 +119,7 @@ function setHudVisible(visible)
         if not visible then
             exports['m-ui']:destroyInterfaceElement('hud')
             removeEventHandler('onClientRender', root, updateHud)
+            killTimer(jobTimer)
             hudLoaded = false
         else
             exports['m-ui']:setInterfaceVisible('hud', true)

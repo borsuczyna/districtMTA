@@ -64,6 +64,7 @@
     <export function='getJobMultiplier' type='shared'/>
     <export function='giveTopPoints' type='server'/>
     <export function='getPlayerJobUpgrades' type='server'/>
+    <export function='getJobName' type='shared'/>
 
     <min_mta_version server='1.5.8' client='1.5.8'/>
 </meta>
