@@ -127,7 +127,13 @@
             iconDom.innerHTML = iconsList[icon[0]];
             iconDom.classList.add('icon');
             iconDom.onclick = () => {
-                mta.triggerEvent('reports:iconClick', ...icon.slice(1));
+                let args = [...icon.slice(1)];
+                if (args[0] == 'removeReport') {
+                    adminReports_rejectReport(args[1]);
+                    return;
+                }
+                
+                mta.triggerEvent('reports:iconClick', ...args);
             }
             element.appendChild(iconDom);
         });
@@ -186,7 +192,7 @@
                 setIcons(el.querySelector('.icons'), [
                     ['teleport', 'teleportTo', el.dataset.reporter],
                     ['teleport', 'teleportTo', el.dataset.target],
-                    ['trash', 'rejectReport', hash],
+                    ['trash', 'removeReport', hash],
                 ]);
             }
         });
