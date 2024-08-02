@@ -66,6 +66,9 @@ local function startBurgerJob(hash, players)
         addLobbyNpc(hash, dimension)
     end
 
+    local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'burger')
+    
+
     exports['m-jobs']:setLobbyTimer(hash, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))
 end
 

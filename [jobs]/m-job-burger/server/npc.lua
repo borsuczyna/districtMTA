@@ -224,6 +224,10 @@ function clickNpc(client, hash)
 end
 
 addEventHandler('jobs:burger:addRandomNpc', resourceRoot, function(lobby)
+    -- i zrob petle na graczy, jak 1 gracz bedzie miec ulepszenie to czas * 0.9
+    -- jak 3 graczy to czas * 0.7
+    -- ale max jak moze byc to 0.4 daj
+
     addLobbyNpc(lobby)
     exports['m-jobs']:setLobbyTimer(lobby, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))
 end)

@@ -1,3 +1,4 @@
-/compiler/bin/*
-/compiler/obj/*
-/compiler/[output]/*
+compiler/bin
+compiler/obj
+compiler/[[]output[]]
+compiler/js-obfuscator/node_modules
