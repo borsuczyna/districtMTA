@@ -37,6 +37,7 @@ local function loadPrivateVehicle(data, player, position)
     local lights = map(split(data.lights, ','), tonumber)
     local wheelStates = map(split(data.wheels, ','), tonumber)
     local tuning = map(split(data.tuning, ','), tonumber)
+    local dirt = map(split(data.dirt, ','), tonumber)
 
     local vehicle = createVehicle(data.model, x, y, z, rx, ry, rz, plate)
     setElementData(vehicle, 'vehicle:uid', data.uid)
@@ -66,6 +67,9 @@ local function loadPrivateVehicle(data, player, position)
     for _, tuning in pairs(tuning) do
         addVehicleUpgrade(vehicle, tuning)
     end
+    
+    exports['m-dirt']:setVehicleDirtLevel(vehicle, dirt[1])
+    exports['m-dirt']:setVehicleDirtProgress(vehicle, dirt[2])
 
     if data.lastDriver then
         setElementData(vehicle, 'vehicle:lastDriver', data.lastDriver)
@@ -130,8 +134,10 @@ function buildSavePrivateVehicleQuery(vehicle)
     local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
     local tuning = getVehicleUpgrades(vehicle) or {}
+    local dirt = {exports['m-dirt']:getVehicleDirtLevel(vehicle), exports['m-dirt']:getVehicleDirtProgress(vehicle)}
     local r, g, b = getVehicleHeadLightColor(vehicle)
     table.insert(color, r); table.insert(color, g); table.insert(color, b)
+
     local saveData = {
         lastDriver = lastDriver,
         fuel = fuel,
@@ -151,6 +157,7 @@ function buildSavePrivateVehicleQuery(vehicle)
         end), ','),
         wheels = table.concat({getVehicleWheelStates(vehicle)}, ','),
         tuning = table.concat(tuning, ','),
+        dirt = table.concat(dirt, ','),
     }
 
     local query = 'UPDATE `m-vehicles` SET ' .. table.concat(mapk(saveData, function(value, key)

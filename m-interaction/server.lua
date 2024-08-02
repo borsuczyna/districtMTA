@@ -54,7 +54,8 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
     triggerClientEvent(client, 'interaction:action-feedback', resourceRoot, action, feedbackData)
 end)
 
-addEventHandler('onPlayerJoin', root, function()
+addEventHandler('onPlayerResourceStart', root, function(resource)
+    if resource ~= getThisResource() then return end
     triggerClientEvent(source, 'interaction:sync', resourceRoot, windowStates)
 end)
 

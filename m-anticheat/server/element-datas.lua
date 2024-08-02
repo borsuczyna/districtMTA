@@ -24,7 +24,7 @@ local selfElementDatas = {
 }
 
 local selfVehicleElementDatas = {
-    'vehicle:onOffroad'
+    'vehicle:dirtLevel', 'vehicle:dirtProgress', 'vehicle:dirtTime', 'vehicle:onOffroad'
 }
 
 function table.find(t, value)
