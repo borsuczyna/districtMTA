@@ -48,20 +48,6 @@ end
 
 addEventHandler('setVehicleDirtProgressServer', root, setVehicleDirtProgress)
 
-function setVehicleGrungeCommand(player, commandName, amount)
-	amount = tonumber(amount)
-	if amount and type(amount) == "number" and amount >= 1 and amount <= 5 then
-		local vehicle = getPedOccupiedVehicle(player)
-		if vehicle then
-			setVehicleDirtLevel(vehicle, amount)
-			setVehicleDirtProgress(vehicle, 0)
-		end
-	else
-		outputChatBox("[ERROR]#FFFFFF Value must be between #d7b4281 #FFFFFFand #d7b4285 #FFFFFF.", player, 255, 0, 0, true)
-	end
-end
-addCommandHandler("setgrunge", setVehicleGrungeCommand)
-
 function setVehicleDirtTime(vehicle, theTime)
 	theTime = tonumber(theTime)
 

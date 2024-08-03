@@ -1,13 +1,15 @@
 <meta>
+    <min_mta_version server='1.6.0-9.22195'/>
+
     <script src='client/afk.lua' type='client' cache='false'/>
     <script src='client/cursor.lua' type='client' cache='false'/>
     <script src='client/network.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
-
+    
     <!-- vehicles -->
     <script src='client/vehicles/damage.lua' type='client' cache='false'/>
     <script src='client/vehicles/attach.lua' type='client' cache='false'/>
-
+    
     <script src='server/main.lua' type='server'/>
     <script src='server/id.lua' type='server'/>
     <script src='server/logs.lua' type='server'/>
@@ -21,7 +23,7 @@
     <script src='server/daily-reward.lua' type='server'/>
     <script src='server/daily-tasks.lua' type='server'/>
     <script src='server/achievements.lua' type='server'/>
-
+    
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>
     <script src='server/accounts/create.lua' type='server'/>
@@ -31,29 +33,29 @@
     <script src='server/accounts/punishment/ban.lua' type='server'/>
     <script src='server/accounts/punishment/mute.lua' type='server'/>
     <script src='server/accounts/punishment/license.lua' type='server'/>
-
+    
     <!-- vehicles -->
     <script src='server/vehicles/main.lua' type='server'/>
     <script src='server/vehicles/damage.lua' type='server'/>
     <script src='server/vehicles/engine.lua' type='server'/>
     <script src='server/vehicles/fuel-mileage.lua' type='server'/>
     <script src='server/vehicles/attach.lua' type='server'/>
-
+    
     <script src='shared/players.lua' type='shared' cache='false'/>
     <script src='shared/useful.lua' type='shared' cache='false'/>
     <script src='shared/vehicles.lua' type='shared' cache='false'/>
     <script src='shared/exp.lua' type='shared' cache='false'/>
     <script src='shared/daily-reward.lua' type='shared' cache='false'/>
     <script src='shared/daily-tasks.lua' type='shared' cache='false'/>
-
+    
     <export function='removeHex' type='shared'/>
-
+    
     <export function='getPlayerFromPartialName' type='shared'/>
     <export function='getPlayerById' type='shared'/>
-
+    
     <export function='addUserLog' type='server'/>
     <export function='getLogType' type='server'/>
-
+    
     <export function='createAccount' type='server'/>
     <export function='loginToAccount' type='server'/>
     <export function='assignPlayerData' type='server'/>
@@ -92,8 +94,6 @@
     <export function='putVehicleIntoParking' type='server'/>
     <export function='getVehicleFromParking' type='server'/>
     <export function='getPlayerVehicles' type='server'/>
-
+    
     <export function='premiumChatDiscord' http='true'/>
-
-    <min_mta_version server='1.6.0' client='1.6.0'/>
 </meta>

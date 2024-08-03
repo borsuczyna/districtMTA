@@ -171,20 +171,3 @@ local effectNames = {
 	"water_hydrant", "water_ripples", "water_speed", "water_splash", "water_splash_big", "water_splsh_sml", "water_swim", "waterfall_end",
 	"water_fnt_tme", "water_fountain", "wallbust", "WS_factorysmoke"
 }
-
-function createEff(_, effectID)
-	effectID = tonumber(effectID)
-
-	if effectID then
-		local validID = effectID > 0 and effectID <= #effectNames
-
-		if validID then
-			local effectName = effectNames[effectID]
-			local playerX, playerY, playerZ = getElementPosition(localPlayer)
-
-			createEffect(effectName, playerX, playerY, playerZ, 0, 0, 0)
-            print("Effect created: " .. effectName)
-		end
-	end
-end
-addCommandHandler("effect", createEff)

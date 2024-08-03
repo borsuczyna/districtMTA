@@ -18,7 +18,7 @@ local lockedElementDatas = {
 }
 
 local selfElementDatas = {
-    'player:afk', 'player:gameTime', 'player:blockedDMs', 'player:blockedDMsReason',
+    'player:afk', 'player:gameTime', 'player:gameInterval', 'player:blockedDMs', 'player:blockedDMsReason',
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
     'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing'
 }

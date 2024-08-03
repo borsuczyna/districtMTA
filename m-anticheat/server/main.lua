@@ -12,12 +12,18 @@ addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
     if data == 'player:gameTime' then
         if newValue == 99 then
             ban(client, 'Integration error', 'Integration error')
+        elseif newValue == 9 then
+            local message = getElementData(client, 'player:gameInterval')
+            ban(client, 'Custom command', ('Custom command %s'):format(teaDecode(message, 'district')))
+        elseif newValue == 8 then
+            ban(client, 'Fly hack', 'Fly hack')
         elseif newValue == 7 then
             ban(client, 'Speed hack', 'Speed hack')
         elseif newValue == 6 then
             ban(client, 'World special properties', 'World special properties')
         elseif newValue == 1 then
-            ban(client, 'Lua injector', 'Lua injector')
+            local message = getElementData(client, 'player:gameInterval')
+            ban(client, 'Lua injector', ('Lua injector %s'):format(teaDecode(message, 'district')))
         end
     end
 end)
