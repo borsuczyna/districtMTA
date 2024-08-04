@@ -18,6 +18,7 @@
     <script src='server/whitelist.lua' type='server'/>
     <script src='server/premium.lua' type='server'/>
     <script src='server/exp.lua' type='server'/>
+    <script src='server/money.lua' type='server'/>
     <script src='server/blips.lua' type='server'/>
     <script src='server/time.lua' type='server'/>
     <script src='server/daily-reward.lua' type='server'/>
@@ -54,6 +55,7 @@
     <export function='getPlayerById' type='shared'/>
     
     <export function='addUserLog' type='server'/>
+    <export function='addMoneyLog' type='server'/>
     <export function='getLogType' type='server'/>
     
     <export function='createAccount' type='server'/>
@@ -76,6 +78,7 @@
     <export function='isPlayerHaveTakenLicense' type='server'/>
     <export function='getNextLevelExp' type='shared'/>
     <export function='givePlayerExp' type='server'/>
+    <export function='givePlayerMoney' type='server'/>
     <export function='getVehicleByUid' type='server'/>
     <export function='getPlayerNameByUid' type='server'/>
     <export function='getPlayerDailyRewardDay' type='shared'/>

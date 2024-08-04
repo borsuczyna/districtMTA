@@ -1,7 +1,7 @@
 <style>
     #inventory-wrapper {
         position: absolute;
-        right: 2.5rem;
+        left: 1.5rem;
         top: 50%;
         background: rgba(26, 26, 26, 0.9);
         border: 0.0625rem solid rgba(54, 54, 54, 0.45);
@@ -11,7 +11,9 @@
         color: #fff;
         width: 21rem;
         padding: 1rem;
-        transform: translateY(-50%);
+        opacity: 0;
+        transform: translateY(-50%) scale(0.8);
+        transition: opacity 0.2s, transform 0.2s;
     }
 
     #inventory .top {
@@ -36,6 +38,10 @@
         overflow-y: auto;
     }
 
+    #inventory .items-small {
+        max-height: 10rem;
+    }
+
     #inventory .item {
         background: rgba(87, 87, 87, 0.1);
         border-radius: 0.625rem;
@@ -52,6 +58,16 @@
         object-fit: contain;
     }
 
+    #inventory .item .count {
+        position: absolute;
+        bottom: 0.25rem;
+        right: 0.25rem;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.25rem;
+        font-size: 0.7rem;
+    }
+
     #inventory .item:not(.empty) {
         /* background: linear-gradient(rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.1)); */
         background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
@@ -62,41 +78,48 @@
     }
 
     /* rarities */
-    /* uncommon - green */
+    /* green - uncommon */
     #inventory .item.uncommon {
         /* background: linear-gradient(rgba(74, 255, 39, 0.05), rgba(74, 255, 39, 0.2)); */
         background: radial-gradient(circle at 50% 50%, rgba(132, 220, 95, 0.3), rgba(48, 119, 47, 0.2));
         border: 0.0625rem solid rgba(74, 255, 39, 0.05);
     }
 
-    /* rare - blueuish-cyan */
+    /* blueuish-cyan - rare */
     #inventory .item.rare {
         background: radial-gradient(circle at 50% 50%, rgba(130, 201, 255, 0.3), rgba(46, 141, 244, 0.15));
         border: 0.0625rem solid rgba(39, 255, 255, 0.05);
     }
 
-    /* epic - purplish pink */
+    /* purplish pink - epic */
     #inventory .item.epic {
         background: radial-gradient(circle at 50% 50%, rgba(188, 111, 229, 0.35), rgba(84, 57, 141, 0.3));
         border: 0.0625rem solid rgba(255, 39, 255, 0.05);
     }
 
-    /* legendary - orange */
+    /* orange - legendary */
     #inventory .item.legendary {
         background: radial-gradient(circle at 50% 50%, rgba(255, 174, 81, 0.35), rgba(175, 75, 0, 0.14));
         border: 0.0625rem solid rgba(255, 39, 39, 0.05);
     }
 
-    /* mythic - gold */
+    /* gold - mythic */
     #inventory .item.mythic {
         background: radial-gradient(circle at 50% 50%, rgba(236, 200, 95, 0.4), rgba(149, 114, 35, 0.14));
         border: 0.0625rem solid rgba(255, 255, 39, 0.05);
     }
 
-    /* exotic sex cyan green */
+    
+    /* cyan green exotic */
     #inventory .item.exotic {
         background: radial-gradient(circle at 50% 50%, rgba(101, 244, 208, 0.35), rgba(78, 117, 184, 0.14));
         border: 0.0625rem solid rgba(39, 255, 39, 0.05);
+    }
+      
+    /* red - divine */
+    #inventory .item.divine {
+        background: radial-gradient(circle at 50% 50%, rgba(255, 39, 39, 0.35), rgba(255, 39, 39, 0.14));
+        border: 0.0625rem solid rgba(255, 39, 39, 0.05);
     }
     
     #inventory .item:not(.empty):hover {
@@ -151,7 +174,7 @@
         max-width: 14rem;
         opacity: 0;
         display: none;
-        transition: opacity 0.2s;
+        transition: opacity 0.2s, left 0.2s, top 0.2s;
         transform: translate(-50%, -100%);
     }
 
@@ -210,6 +233,10 @@
         background-image: linear-gradient(90deg, #65f4d0 0.01%, #4e75b8 21.88%, #65f4d0 44.06%, #4e75b8 70%, #65f4d0 100%);
     }
 
+    #inventory #inventory-tooltip .title.divine {
+        background-image: linear-gradient(90deg, #ff0000 0.01%, #cd0000 21.88%, #ff3d3d 44.06%, #cd0000 70%, #ff0000 100%);
+    }
+
     #inventory #inventory-options {
         position: absolute;
         display: flex;
@@ -257,6 +284,82 @@
         height: 0.9rem;
     }
 
+    #inventory:has(#inventory-options.show) #inventory-tooltip {
+        display: none !important;
+    }
+
+    #inventory .status {
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        background: #ff0000;
+    }
+
+    #inventory .status.active {
+        background: #00ff00;
+    }
+
+    #inventory #accepted-timer {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #ff0000;
+        text-align: center;
+        animation: blink-danger 1.2s infinite;
+    }
+
+    #inventory #player-list {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    #inventory #player-list .player {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0.7rem;
+        background: rgba(87, 87, 87, 0.2);
+        border-radius: 0.625rem;
+        color: #ffffffbb;
+        margin-left: 0rem;
+    }
+
+    #inventory .progress {
+        width: 100%;
+        height: 0.5rem;
+        background: rgba(90, 90, 90, 0.615);
+        margin-top: 0.5rem;
+        margin-bottom: 0.2rem;
+        border-radius: 0.25rem;
+    }
+
+    #inventory .progress .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #ffab48 0.01%, #fc8c5b 100%);
+        border-radius: 0.25rem;
+        transition: width 10s cubic-bezier(0.2, 0.2, 0.2, 0.2);
+        box-shadow: 0 0 1rem 0.5rem #ffaa4822;
+    }
+
+    #inventory .label {
+        font-size: 0.8rem;
+        color: #ffffff99;
+    }
+
+    #inventory .input {
+        padding: 0.475rem 0.5rem;
+        border-radius: 0.625rem;
+        border: none;
+        background: rgba(62, 62, 62, 0.35);
+        color: #ffffffcd;
+
+    }
+
+    #inventory .input::-webkit-inner-spin-button,
+    #inventory .input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;
@@ -270,20 +373,80 @@
             background-position: 0% 50%;
         }
     }
+
+    @keyframes blink-danger {
+        0% {
+            color: #ff0000;
+        }
+
+        50% {
+            color: rgb(255, 99, 99)
+        }
+
+        100% {
+            color: #ff0000;
+        }
+    }
 </style>
 
-<div id="inventory-wrapper">
+<div id="inventory-wrapper" class="nice-scroll">
     <div class="top">
-        <span class="title">Twoje przedmioty</span>
-        <img src="../../m-login/data/logo.png" style="width: 1.9rem;"/>
+        <span class="title" id="main-tab-title">Twoje przedmioty</span>
+    </div>
+
+    <div id="items-loading" class="pt-4 pb-3 d-flex justify-center align-items-center gap-2 d-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+        Wczytywanie...
     </div>
     
-    <div class="nice-scroll">
+    <div id="items-wrapper">
         <div class="items pr-2"></div>
     </div>
-    
+
+    <div id="players-wrapper" class="d-none mt-2">
+        <div id="player-list"></div>
+    </div>
+
     <div class="d-flex justify-center mt-2">
         <div class="categories"> </div>
+    </div>
+
+    <div id="trade-wrapper" class="d-none">
+        <div id="your-offer-wrapper">
+            <div class="top mt-2">
+                <span class="title">Twoja oferta</span>
+            </div>
+            
+            <div class="items items-small pr-2">elo</div>
+        </div>
+    
+        <div id="their-offer-wrapper">
+            <div class="top mt-2">
+                <span class="title"></span>
+            </div>
+            
+            <div class="items items-small pr-2"></div>
+        </div>
+
+        <div class="d-flex justify-between align-items-center mt-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="status"></div>
+                <span id="trade-1"></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span id="trade-2"></span>
+                <div class="status"></div>
+            </div>
+        </div>
+
+        <div id="accepted-timer" class="mt-2 d-none">
+            Finalizacja wymiany za 14 sekund...
+        </div>
+
+        <div class="d-flex justify-center gap-2 align-items-center mt-2">
+            <div class="flat-button flat-button-small" onclick="inventory_acceptTrading()" id="accept-button">Zatwierdź</div>
+            <div class="flat-button flat-button-small" onclick="inventory_cancelTrading()">Anuluj</div>
+        </div>
     </div>
 </div>
 
@@ -295,10 +458,7 @@
 <div id="inventory-options"></div>
 
 <script>
-    let hideTimer, hideOptionsTimer;
-    let inventoryItems = [];
-    let useItem = false;
-    let icons = {
+    window.inventory_icons = {
         star: `<svg height="800px" width="800px" version="1.1" viewBox="0 0 47.94 47.94" xml:space="preserve">
             <path fill="currentColor" d="M26.285,2.486l5.407,10.956c0.376,0.762,1.103,1.29,1.944,1.412l12.091,1.757 c2.118,0.308,2.963,2.91,1.431,4.403l-8.749,8.528c-0.608,0.593-0.886,1.448-0.742,2.285l2.065,12.042 c0.362,2.109-1.852,3.717-3.746,2.722l-10.814-5.685c-0.752-0.395-1.651-0.395-2.403,0l-10.814,5.685 c-1.894,0.996-4.108-0.613-3.746-2.722l2.065-12.042c0.144-0.837-0.134-1.692-0.742-2.285l-8.749-8.528 c-1.532-1.494-0.687-4.096,1.431-4.403l12.091-1.757c0.841-0.122,1.568-0.65,1.944-1.412l5.407-10.956 C22.602,0.567,25.338,0.567,26.285,2.486z"/>
         </svg>`,
@@ -314,238 +474,71 @@
         close: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M70.5 19L18 71.5M18 19L70.5 71.5" stroke="currentColor" stroke-width="16" stroke-linecap="round" />
         </svg>`,
+        add: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M81.3731 45.2501H7.12689M44.25 8.12695V82.3732" stroke="currentColor" stroke-width="16" stroke-linecap="round" />
+        </svg>`,
+        trade: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M77.5 27H10M10 27L27 10M10 27L27 44M77.5 62H10M77.5 62L60.5 45M77.5 62L60.5 79" stroke="currentColor" stroke-width="11" stroke-linecap="round" />
+        </svg>`,
+        fish: `<svg width="266" height="265" viewBox="0 0 266 265" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M199.879 35.0549C193.311 25.2108 189.521 16.0444 187.541 10.2966C220.497 -1.7734 252.999 -0.985921 266.306 0.0260336C266.896 7.78105 267.416 22.0442 265.376 39.0147C264.042 50.0837 261.455 63.4338 256.538 77.2705C232.606 69.7394 213.563 55.5528 199.879 35.0549ZM234.126 23.7942L221.957 11.631L209.789 23.7942L221.957 35.9626L234.126 23.7942Z" fill="currentColor" />
+            <path d="M103.5 61.5C89.5005 88 83.3337 108 84.0004 118.5C52.4006 112.5 46.4995 89 46.5 74C73.5 18 112 6 162.5 3C152.667 7.66667 119.683 30.8686 103.5 61.5Z" fill="currentColor" />
+            <path d="M57.3012 207.37C42.9448 211.947 24.1645 210.968 0.171867 197.509C24.6728 149.207 59.3188 152.302 79.6855 159.723C82.748 160.839 85.488 162.059 87.8234 163.207C92.018 165.28 94.9003 167.15 95.994 167.894C95.9721 147.489 97.908 128.676 101.747 111.837C111.728 68.0407 134.742 36.4571 170.143 17.9555C170.525 17.7529 170.903 17.556 171.28 17.3649L172.418 16.7686C172.423 16.7738 172.423 16.7847 172.423 16.7904C174.807 23.4788 178.975 33.1426 185.822 43.5393C196.662 59.9956 216.487 81.4123 250.192 92.4594C245.215 102.747 238.757 112.941 230.383 122.32C201.77 154.374 157.219 170.502 97.8476 170.322C98.9522 172.093 100.582 174.905 102.261 178.514C103.371 180.904 104.509 183.644 105.531 186.663C112.493 207.215 114.15 240.653 67.1551 264.497C53.6971 240.507 52.718 221.726 57.3012 207.37Z" fill="currentColor" />
+        </svg>`
     };
-
-    let possibleOptions = {
-        use: {
-            name: 'Użyj',
-            icon: icons.target,
-            action: (item) => {
-                let itemData = itemsData[item];
-                // hideOptions();
-                notis_addNotification('warning', 'test', `Użyto ${itemData.title}`);
-                hideOptions();
-            }
-        },
-        close: {
-            name: 'Zamknij',
-            icon: icons.close,
-            action: () => {
-                hideOptions();
-            }
-        },
-    };
-    
-    let categories = {
-        'all': {
-            name: 'Wszystko',
-            icon: icons.star,
-        },
-        'food': {
-            name: 'Jedzenie',
-            icon: icons.food,
-        },
-        'weapon': {
-            name: 'Broń',
-            icon: icons.weapon,
-        },
-    };
-
-    let itemsData = {
-        test: {
-            title: 'M4 jakas bronka',
-            description: 'M4 to karabin szturmowy, który jest używany przez wiele jednostek specjalnych na całym świecie.',
-            category: 'weapon',
-            icon: '../../m-inventory/data/icons/m4.png',
-            rarity: 'uncommon',
-        }
-    };
-
-    window.inventory_setCategory = function (el) {
-        let categoriesEl = document.querySelector('#inventory .categories');
-        let categoriesKeys = Object.keys(categories);
-
-        categoriesEl.querySelectorAll('.category').forEach(category => category.classList.remove('active'));
-        el.classList.add('active');
-
-        renderItems();
-    }
-
-    async function renderOptions(options) {
-        if (hideOptionsTimer) {
-            clearTimeout(hideOptionsTimer);
-            hideOptionsTimer = null;
-        }
-
-        let optionsEl = document.querySelector('#inventory-options');
-        optionsEl.innerHTML = '';
-
-        for (let [key, option] of Object.entries(possibleOptions)) {
-            optionsEl.innerHTML += `<div class="option" onclick="inventory_optionClick('${key}')">
-                ${option.icon}
-                ${option.name}
-            </div>`;
-        }
-
-        optionsEl.style.display = 'flex';
-        await new Promise(resolve => setTimeout(resolve, 10));
-        optionsEl.style.opacity = 1;
-    }
-
-    function hideOptions() {
-        let optionsEl = document.querySelector('#inventory-options');
-        optionsEl.style.opacity = 0;
-        hideOptionsTimer = setTimeout(() => {
-            optionsEl.style.display = 'none';
-        }, 200);
-    }
-
-    function setOptionsPosition(event) {
-        let optionsEl = document.querySelector('#inventory-options');
-        let x = event.clientX;
-        let y = event.clientY;
-
-        optionsEl.style.left = x + 'px';
-        optionsEl.style.top = y + 'px';
-    }
-
-    function renderCategories() {
-        let categoriesEl = document.querySelector('#inventory .categories');
-        let categoriesKeys = Object.keys(categories);
-
-        categoriesEl.innerHTML = '';
-        for (let i = 0; i < categoriesKeys.length; i++) {
-            categoriesEl.innerHTML += `<div class="category ${i == 0 ? 'active' : ''}" onclick="inventory_setCategory(this)" key="${categoriesKeys[i]}">
-                ${categories[categoriesKeys[i]].icon}
-            </div>`;
-        }
-    }
-
-    function fixRows() {
-        let emptyRows = document.querySelectorAll('#inventory .item.empty');
-        emptyRows.forEach(row => row.remove());
-
-        let items = document.querySelectorAll('#inventory .item');
-        let itemsCount = items.length;
-
-        let rows = Math.max(Math.ceil(itemsCount / 5), 1);
-        let emptyItems = rows * 5 - itemsCount;
-
-        for (let i = 0; i < emptyItems; i++) {
-            let item = document.createElement('div');
-            item.classList.add('item', 'empty');
-            document.querySelector('#inventory .items').appendChild(item);
-        }
-    }
-
-    window.inventory_optionClick = (action) => {
-        let key = useItem.getAttribute('data-inventory-item');
-        if (!possibleOptions[action] || !possibleOptions[action].action) return;
-
-        possibleOptions[action].action(key);
-    }
-
-    window.inventory_showTooltip = async (el) => {
-        if (hideTimer) {
-            clearTimeout(hideTimer);
-            hideTimer = null;
-        }
-
-        let itemData = itemsData[el.getAttribute('data-inventory-item')];
-        let tooltip = document.querySelector('#inventory-tooltip');
-        let parent = el.parentElement;
-        
-        tooltip.querySelector('.title').innerText = itemData.title;
-        tooltip.querySelector('.title').setAttribute('data-text', itemData.title);
-        tooltip.querySelector('.title').className = 'title ' + el.classList[1];
-        tooltip.querySelector('.description').innerText = itemData.description;
-
-        let rect = el.getBoundingClientRect();
-        let x = rect.x + rect.width / 2;
-        let y = rect.y - 10;
-
-        if (x > window.innerWidth - 100) {
-            tooltip.style.right = (x - window.innerWidth) + 'px';
-            tooltip.style.left = 'auto';
-            tooltip.style.top = (rect.y + rect.height / 2) + 'px';
-            tooltip.style.transform = 'translate(-100%, -50%)';
-        } else {
-            tooltip.style.left = x + 'px';
-            tooltip.style.right = 'auto';
-            tooltip.style.top = y + 'px';
-            tooltip.style.transform = 'translate(-50%, -100%)';
-        }
-
-        tooltip.style.display = 'block';
-        await new Promise(resolve => setTimeout(resolve, 10));
-        tooltip.style.opacity = 1;
-    }
-
-    window.inventory_showOptions = async (event, el) => {
-        let itemData = itemsData[el.getAttribute('data-inventory-item')];
-        let options = ['use', 'close', ...(itemData.specialOptions ?? [])];
-
-        renderOptions(options);
-        setOptionsPosition(event);
-        useItem = el;
-    }
-
-    window.inventory_hideTooltip = async () => {
-        let tooltip = document.querySelector('#inventory-tooltip');
-        tooltip.style.opacity = 0;
-        hideTimer = setTimeout(() => {
-            tooltip.style.display = 'none';
-        }, 200);
-    }
-
-    function renderItems() {
-        let category = document.querySelector('#inventory .category.active').getAttribute('key');
-        let items = document.querySelector('#inventory .items');
-        items.innerHTML = '';
-
-        for (let i = 0; i < inventoryItems.length; i++) {
-            let item = inventoryItems[i];
-            let itemData = itemsData[item.item];
-
-            if (category !== 'all' && itemData.category !== category) continue;
-
-            items.innerHTML += `<div class="item ${item.rarity}" data-inventory-item="${item.item}" onmouseover="inventory_showTooltip(this)" onmouseleave="inventory_hideTooltip()" onclick="inventory_showOptions(event, this)">
-                <img src="${itemData.icon}"/>
-            </div>`;
-        }
-
-        fixRows();
-    }
-
-    function addItem(item, rarity, noRowsUpdate = false) {
-        inventoryItems.push({
-            item: item,
-            rarity: rarity,
-        });
-
-        if (!noRowsUpdate) renderItems();
-    }
 
     addEvent('inventory', 'mousedown', (event) => {
         if (!event.target.closest('#inventory-options'))
-        hideOptions();
+        inventory_hideOptions();
     });
 
-    renderCategories();
+    addEvent('inventory', 'interface:data:itemsData', (data) => {
+        data = data[0];
 
-    for (let i = 0; i < 4; i++) {
-        addItem('test', i > 1 ? 'uncommon' : '', true);
+        inventory_itemsData = data;
+    });
+
+    addEvent('inventory', 'interface:data:trading', (data) => {
+        if (!data) {
+            inventory_hideTrading();
+            return;
+        }
+
+        data = data[0];
+
+        inventory_renderCategories();
+        inventory_renderItems();
+        inventory_showTrade();
+        inventory_updateTrade();
+
+        document.querySelector('#inventory #their-offer-wrapper .title').textContent = `Oferta gracza ${data.otherName}`;
+        document.querySelector('#inventory #trade-1').textContent = data.myName;
+        document.querySelector('#inventory #trade-2').textContent = data.otherName;
+    });
+
+    addEvent('inventory', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#inventory #inventory-wrapper').style.opacity = appear ? '1' : '0';
+        document.querySelector('#inventory #inventory-wrapper').style.transform = appear ? 'translateY(-50%)' : 'translateY(-50%) scale(0.8)';
+    });
+
+    async function loadIncludes() {
+        let tasks = [];
+
+        tasks.push(include('../../m-inventory/data/trade.js'));
+        tasks.push(include('../../m-inventory/data/player-list.js'));
+        tasks.push(include('../../m-inventory/data/tooltip.js'));
+        tasks.push(include('../../m-inventory/data/options.js'));
+        tasks.push(include('../../m-inventory/data/categories.js'));
+        tasks.push(include('../../m-inventory/data/items.js'));
+
+        await Promise.all(tasks);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        finishIncludes('inventory');
+        inventory_renderCategories();
+        inventory_renderItems();
+        inventory_loadItems();
     }
-    addItem('test', 'mythic', true);
-    for (let i = 0; i < 4; i++) {
-        addItem('test', i > 1 ? 'uncommon' : '', true);
-    }
-    addItem('test', 'mythic', true);
-    for (let i = 0; i < 4; i++) {
-        addItem('test', i > 1 ? 'uncommon' : '', true);
-    }
-    addItem('test', 'mythic', true);
-    addItem('test', 'mythic', true);
-    addItem('test', 'mythic', true);
-    renderItems();
+
+    loadIncludes();
 </script>

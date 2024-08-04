@@ -45,7 +45,7 @@ function givePlayerReward(player, reward)
         reward.callback(player)
     else
         if reward.type == 'money' then
-            givePlayerMoney(player, count)
+            givePlayerMoney(player, 'daily reward', 'Nagroda dzienna', count)
         elseif reward.type == 'exp' then
             givePlayerExp(player, count)
         end

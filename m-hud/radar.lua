@@ -49,7 +49,7 @@ function renderRadar()
     local zoom = zoomOriginal * ( 28 / interfaceSize )
     radarSettings.size = 470/zoom
 
-    local px, py, pz = getElementPosition(localPlayer)
+    local px, py, pz = getElementPosition(getCameraTarget() or localPlayer)
     local x = (px) / 6000
     local y = (py) / -6000
     dxSetShaderValue(radar.shader, "gUVPosition", x, y)
@@ -73,7 +73,7 @@ function renderRadar()
     dxDrawText(zone, radarX + radarW - 20/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 225), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
 
     local _, _, cz = getElementRotation(getCamera())
-    local x, y, z = getElementPosition(localPlayer)
+    local x, y, z = getElementPosition(getCameraTarget() or localPlayer)
     local blips = getElementsByType('blip')
 
     local function drawBlip(v)
@@ -113,9 +113,9 @@ function renderRadar()
     end
 
     -- draw player arrow
-    local px, py, pz = getElementPosition(localPlayer)
+    local px, py, pz = getElementPosition(getCameraTarget() or localPlayer)
     local x, y, w, h = radarX + radarW/2 - 14/zoom, radarY + radarH/2 - 14/zoom, 28/zoom, 28/zoom
-    local rx, ry, rz = getElementRotation(localPlayer)
+    local rx, ry, rz = getElementRotation(getCameraTarget() or localPlayer)
     dxDrawImage(x, y, w, h, "data/images/player.png", camrot - rz, 0, 0, tocolor(255, 255, 255, 255))
 end
 

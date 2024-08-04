@@ -63,7 +63,7 @@ function unbanPlayer(admin, serial, ip)
         return
     end
 
-    local message = ('Admin `%s` odbanował gracza o serialu `%s`, fingerprincie `%s` oraz IP `%s`'):format(admin, serial or "-", ip or "-")
+    local message = ('Admin `%s` odbanował gracza o serialu `%s` oraz IP `%s`'):format(admin, serial or "-", ip or "-")
     exports['m-logs']:sendLog('bans', 'success', message)
     return true
 end

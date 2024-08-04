@@ -5,7 +5,9 @@ local allowedCommands = {
     {'reports', 'm-admins'},
     {'gp', 'm-core'},
     {'colsshow', 'm-jobs'},
-    {'browserdebug', 'm-ui'}
+    {'browserdebug', 'm-ui'},
+    {'stat', 'rescpu'},
+    {'trade', 'm-inventory'}
 }
 
 function checkCommandHandlers()

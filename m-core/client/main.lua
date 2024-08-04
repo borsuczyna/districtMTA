@@ -4,8 +4,11 @@ addEventHandler('onClientPlayPrivateMessageSound', resourceRoot, function()
 end)
 
 addEventHandler('onClientRender', root, function()
-    toggleControl('fire', false)
-    toggleControl('aim_weapon', false)
+    local weaponType = getPedWeapon(localPlayer)
+    local state = not (weaponType == 0)
+
+    toggleControl('fire', state)
+    toggleControl('aim_weapon', state)
 end)
 
 addEventHandler('onClientResourceStart', root, function()

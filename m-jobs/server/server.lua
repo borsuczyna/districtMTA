@@ -140,8 +140,10 @@ function giveMoney(player, amount)
     if not job then return end
     if not jobs[job] then return end
 
+    local jobName = getJobName(job)
+
     dbExec(connection, 'INSERT INTO `m-jobs-money-history` (user, job, money) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE money = money + ?', uid, job, amount, amount)
-    givePlayerMoney(player, amount)
+    exports['m-core']:addMoneyLog(player, 'job', ('Wypłata z pracy %s'):format(jobName), amount)
 
     local earned = getElementData(player, 'player:job-earned') or 0
     setElementData(player, 'player:job-earned', earned + amount)

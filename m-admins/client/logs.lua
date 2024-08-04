@@ -96,7 +96,6 @@ addEventHandler('logs:iconClick', root, function(icon, ...)
     
         exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
         
-        removePedFromVehicle(localPlayer)
         local x, y, z = getElementPosition(foundPlayer)
         setElementPosition(localPlayer, x, y + 0.5, z)
     end

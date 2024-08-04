@@ -50,7 +50,7 @@ function isDrivingOnGrass()
     local vehicle = getPedOccupiedVehicle(localPlayer)
 
     if vehicle then
-        local controller = getVehicleController(vehicle)
+        local controller = getVehicleOccupant(vehicle, 0)
         
         if controller == localPlayer then
 		    local x, y, z = getElementPosition(vehicle)

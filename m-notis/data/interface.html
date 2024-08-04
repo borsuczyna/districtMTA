@@ -167,7 +167,7 @@
     }
 
     window.notis_addNotification = (type, title, description, time = 5000) => {
-        if (document.getElementById('notis-wrapper').children.length >= 5) {
+        if (document.getElementById('notis-wrapper').children.length >= 8) {
             window.notis_queue.push([type, title, description, time]);
             return;
         }

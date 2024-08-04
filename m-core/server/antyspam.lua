@@ -1,8 +1,8 @@
 local antySpam = {}
 local antySpamTime = 500
 local blockedCommands = {
-    'Admin', 'admin', 'say', 'pm', 're', 'do', 'me', 'v',
-    'refresh', 'restart', 'start', 'stop', 'Reload'
+    'Admin', 'admin', 'adminpanel', 'refresh', 'restart', 'start', 'stop', 'Reload',
+    'say', 'pm', 're', 'do', 'me', 'v',
 }
 
 addEventHandler('onPlayerCommand', root, function(cmd)

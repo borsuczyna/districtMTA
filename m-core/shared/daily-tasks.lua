@@ -8,7 +8,7 @@ dailyTasks = {
         max = 20,
         rewardText = '1000$',
         reward = function(player)
-            givePlayerMoney(player, 1000)
+            givePlayerMoney(player, 'daily task', 'Zadanie dzienne', 1000)
         end,
     },
 }

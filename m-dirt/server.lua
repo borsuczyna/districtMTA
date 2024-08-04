@@ -26,6 +26,11 @@ function setVehicleDirtLevel(vehicle, level)
 
 		triggerEvent('onVehicleDirtLevelChange', vehicle, oldDirtLevel, newDirtLevel)
 		setElementData(vehicle, 'vehicle:dirtLevel', newDirtLevel)
+		
+		local controller = getVehicleController(vehicle)
+		if controller and newDirtLevel > 1 then
+			exports['m-notis']:addNotification(controller, 'info', 'Brud', 'Twoj pojazd jest brudny, udaj się do najbliższej myjni aby go umyć')
+		end
 	end
 
 	return false

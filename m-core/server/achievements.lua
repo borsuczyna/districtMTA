@@ -7,7 +7,7 @@ local achievements = {
             return getPlayerMoney(player) >= 1000
         end,
         reward = function(player)
-            givePlayerMoney(player, 1000)
+            givePlayerMoney(player, 'daily reward', 'Nagroda dzienna', 1000)
         end,
     }
 }

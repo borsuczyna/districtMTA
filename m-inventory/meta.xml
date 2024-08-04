@@ -1,6 +1,23 @@
 <meta>
+    <script src='server.lua' type='server'/>
+    <script src='trade.lua' type='server'/>
     <script src='client.lua' type='client' cache='false'/>
+    <script src='shared.lua' type='shared' cache='false'/>
+
+    <script src='items/potion.lua' type='client' cache='false'/>
 
     <file src='data/interface.html'/>
+    <file src='data/tooltip.js'/>
+    <file src='data/player-list.js'/>
+    <file src='data/options.js'/>
+    <file src='data/categories.js'/>
+    <file src='data/items.js'/>
+    <file src='data/trade.js'/>
+    
     <file src='data/icons/m4.png'/>
+    <file src='data/icons/wire.png'/>
+    <file src='data/icons/worm.png'/>
+    <file src='data/icons/hot-dog.png'/>
+    <file src='data/icons/fishing-rod.png'/>
+    <file src='data/icons/potion.png'/>
 </meta>

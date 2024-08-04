@@ -6,6 +6,7 @@ local logChannels = {
     bans = 'https://discord.com/api/webhooks/1257432355203711056/qUAR4s2mW1wi8ta7f5JczUoNVgB76N7m4SzkTVjgMKWur_9jgM5oNfFF4_6PZ1Youyb2',
     admin = 'https://discord.com/api/webhooks/1257714046023630898/7q7mxNBL04RGbPNiv9I7Sq18RMSuSaRdFkhjYpDZeaepzDk0EXRTOvxJWjImxXuo5vGP',
     reports = 'https://discord.com/api/webhooks/1258091355050082439/ChhbMnteB9NmP_CPIrqCq-INIzrOogw7NEVpdNUwWe-RMubPjVS6cosK7qGueAp0kkSF',
+    trade = 'https://discordapp.com/api/webhooks/1269364540101890191/1ypT9BzZCd7zCA_ZSElRV_wYw23FS-5umn6GCXPfYlQGGdLPz5o7kMcB9UH0kmUWeCrH',
 }
 
 local icons = {

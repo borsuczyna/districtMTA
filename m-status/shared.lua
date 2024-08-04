@@ -19,6 +19,7 @@ end
 function getPlayerStatus(player)
     local uid = getElementData(player, 'player:uid') or 0
     local rank = getElementData(player, 'player:rank') or 0
+    local premium = getElementData(player, 'player:premium-end')
     local afk = getElementData(player, 'player:afk')
     local job = getElementData(player, 'player:job')
 
@@ -36,6 +37,10 @@ function getPlayerStatus(player)
         statusColor = '#ff0000'
     end
 
+    if premium then
+        statusColor = '#ffcc00'
+    end
+
     if rank and rank > 0 then
         if not ranksData[rank] then
             ranksData[rank] = {
@@ -51,7 +56,7 @@ function getPlayerStatus(player)
     if job then
         status = getJobName(job)
         statusColor = '#9E00FF'
-        maxPlayers = #getElementData(localPlayer, 'player:job-players') or 0
+        maxPlayers = #(getElementData(player, 'player:job-players') or {}) or 0
     end
 
     return status, statusColor, maxPlayers

@@ -8,10 +8,16 @@ local rankColors = {}
 
 function getPlayerColor(player)
     local color = '#cccccc'
-    local premium = getElementData(player, 'player:premium')
+    local premium = getElementData(player, 'player:premium-end')
+    local rank = getElementData(player, 'player:rank')
 
     if premium then
         color = '#ffcc00'
+    end
+    
+    if rank then
+        local r, g, b = exports['m-admins']:getRankColor(rank)
+        color = string.format('#%02x%02x%02x', r, g, b)
     end
 
     return color
@@ -43,7 +49,7 @@ function renderNametag(player)
 
     local rank = getElementData(player, 'player:rank')
     local organization = getElementData(player, 'player:organization')
-    local premium = getElementData(player, 'player:premium')
+    local premium = getElementData(player, 'player:premium-end')
     local afk = getElementData(player, 'player:afk')
     local mute = getElementData(player, 'player:mute')
     local typing = getElementData(player, 'player:typing')
@@ -56,7 +62,7 @@ function renderNametag(player)
     end
 
     if premium then
-        table.insert(icons, {'premium'})
+        table.insert(icons, {'premium', tocolor(255, 204, 0, 200)})
     end
 
     if afk then

@@ -51,6 +51,7 @@ function updateHud(avatar)
     if not hudVisible then return end
     
     setPlayerHudComponentVisible('all', false)
+    setPlayerHudComponentVisible('crosshair', true)
 
     local level = getElementData(localPlayer, 'player:level') or 1
     local nextLevelExp = nextLevelExpCache[level]
@@ -119,7 +120,9 @@ function setHudVisible(visible)
         if not visible then
             exports['m-ui']:destroyInterfaceElement('hud')
             removeEventHandler('onClientRender', root, updateHud)
-            killTimer(jobTimer)
+            if isTimer(jobTimer) then
+                killTimer(jobTimer)
+            end
             hudLoaded = false
         else
             exports['m-ui']:setInterfaceVisible('hud', true)

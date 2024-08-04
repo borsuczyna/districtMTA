@@ -192,6 +192,8 @@ async function logInterfaceError(file, js, stack) {
         parsedStack.originalLine = lines[parsedStack.line];
     }
 
+    console.error(parsedStack.error, parsedStack.message, file, parsedStack.line, parsedStack);
+
     parsedStack.file = file;
 
     let data = await mta.fetch('ui', 'logError', parsedStack);

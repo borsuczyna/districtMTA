@@ -1,5 +1,5 @@
 local blockedProperties = {
-    'aircars', 'hovercars', 'extrabunny', 'extrajump', 'burnflippedcars'
+    'aircars', 'hovercars', 'extrabunny', 'burnflippedcars'
 }
 
 function checkWorldSpecialProperties()
