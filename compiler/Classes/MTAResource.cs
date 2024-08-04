@@ -1,78 +1,10 @@
-using System.Text;
 using System.Xml;
-
-public enum ScriptType
-{
-    Server,
-    Client,
-    Shared
-}
-
-public class MTAScript
-{
-    private static HttpClient _httpClient = new();
-    private Dictionary<string, bool> apiCodes = new()
-    {
-        ["ERROR Nothing to do - Please select compile and/or obfuscate"] = true,
-        ["ERROR Could not compile file"] = true,
-        ["ERROR Could not read file"] = true,
-        ["ERROR Already compiled"] = true,
-        ["ERROR Already encrypted"] = true,
-    };
-
-    public string path { get; set; }
-    public string name { get; set; }
-    public ScriptType type { get; set; } = ScriptType.Shared;
-    
-    public MTAScript(string path, ScriptType type)
-    {
-        name = new DirectoryInfo(path).Name;
-        this.path = Path.GetDirectoryName(path) ?? string.Empty;
-        this.type = type;
-    }
-
-    public async Task<byte[]?> Compile(string resourcePath)
-    {
-        var scriptPath = Path.Combine(resourcePath, path, name);
-        if (!File.Exists(scriptPath))
-            return null;
-
-        var script = await File.ReadAllTextAsync(scriptPath);
-        var response = await _httpClient.PostAsync("https://luac.mtasa.com/?compile=1&debug=0&obfuscate=3", new StringContent(script));
-
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        var buffer = await response.Content.ReadAsByteArrayAsync();
-        var responseString = Encoding.UTF8.GetString(buffer);
-        if (apiCodes.ContainsKey(responseString))
-        {
-            Console.WriteLine($"Failed to compile {name} with response: {responseString}");
-            return null;
-        }
-
-        return buffer;
-    }
-}
-
-public class MTAFile
-{
-    public string path { get; set; }
-    public string name { get; set; }
-    public bool isValid { get; set; }
-
-    public MTAFile(string path)
-    {
-        this.path = path;
-        name = new DirectoryInfo(path).Name;
-        isValid = true;
-    }
-}
 
 public class MTAResource
 {
     public string path { get; set; }
     public string name { get; set; }
+    public string outputName { get; set; }
     public bool isValid { get; set; }
     private List<MTAScript> scripts { get; set; } = new();
     private List<MTAFile> files { get; set; } = new();
@@ -81,9 +13,15 @@ public class MTAResource
     {
         this.path = path;
         name = new DirectoryInfo(path).Name;
+        outputName = name;
+
+        if (Defines.compileResourceNames)
+            outputName = StringEncoder.ReverselessEncode(outputName, 64);
+
+        outputName = $"{Defines.resourceNameFooter}{outputName}";
         
+        // Read resource
         isValid = ReadMeta();
-        // Console.WriteLine($"Resource {name} {(isValid ? "loaded" : "not loaded")} with {scripts.Count} scripts");
     }
 
     private bool ReadMeta()
@@ -118,10 +56,12 @@ public class MTAResource
                 if (typeAttribute != null)
                 {
                     var type = typeAttribute.InnerText.ToLower();
-                    if (type == "server")
-                        scriptType = ScriptType.Server;
-                    else if (type == "client")
-                        scriptType = ScriptType.Client;
+                    scriptType = type switch
+                    {
+                        "server" => ScriptType.Server,
+                        "client" => ScriptType.Client,
+                        _ => ScriptType.Shared
+                    };
                 }
             }
 
@@ -164,17 +104,45 @@ public class MTAResource
             files.Add(file);
         }
         
+        // read map
+        var mapNodes = xml.SelectNodes("//map");
+        if (mapNodes == null)
+            return true;
+
+        foreach (XmlNode mapNode in mapNodes)
+        {
+            string? filePath = null;
+            var attributes = mapNode.Attributes;
+            if (attributes != null)
+            {
+                var srcAttribute = attributes.GetNamedItem("src");
+                if (srcAttribute != null)
+                    filePath = srcAttribute.InnerText.Replace("/", "\\");
+            }
+
+            if (filePath == null)
+            {
+                Console.WriteLine($"Map path not found in {name}/meta.xml");
+                return false;
+            }
+
+            var file = new MTAFile(filePath);
+            files.Add(file);
+        }
+
         return true;
     }
 
     private async Task<bool> CompileScript(MTAScript script, string outputPath)
     {
-        var scriptPath = Path.Combine(outputPath, name, script.path);
+        var scriptPath = Path.Combine(outputPath, outputName, script.path);
+        
         if (!Directory.Exists(scriptPath))
             Directory.CreateDirectory(scriptPath);
 
-        scriptPath = Path.Combine(scriptPath, script.name);
+        scriptPath = Path.Combine(scriptPath, script.outputName);
         var buffer = await script.Compile(path);
+        
         if (buffer == null)
         {
             Console.WriteLine($"Failed to compile {script.name}");
@@ -185,12 +153,88 @@ public class MTAResource
         return true;
     }
 
+    private void CopyMeta(string outputPath)
+    {
+        var metaPath = Path.Combine(path, "meta.xml");
+        var outputMetaPath = Path.Combine(outputPath, outputName, "meta.xml");
+        var xml = new XmlDocument();
+        xml.Load(metaPath);
+
+        if (Defines.compileScriptNames)
+        {
+            var scriptNodes = xml.SelectNodes("//script");
+            if (scriptNodes != null)
+            {
+                foreach (XmlNode scriptNode in scriptNodes)
+                {
+                    var attributes = scriptNode.Attributes;
+                    if (attributes == null)
+                        continue;
+
+                    var srcAttribute = attributes.GetNamedItem("src");
+                    if (srcAttribute == null)
+                        continue;
+
+                    var newPath = Path.GetDirectoryName(srcAttribute.InnerText) ?? string.Empty;
+                    var encodedName = StringEncoder.ReverselessEncode(Path.GetFileName(srcAttribute.InnerText), 64);
+                    srcAttribute.InnerText = Path.Combine(newPath, encodedName);
+
+                    var cacheAttribute = attributes.GetNamedItem("cache");
+                    if (cacheAttribute == null)
+                    {
+                        var cache = xml.CreateAttribute("cache");
+                        cache.Value = "false";
+                        attributes.Append(cache);
+                    }
+                }
+            }
+        }
+
+        var includeNodes = xml.SelectNodes("//include");
+        if (includeNodes != null)
+        {
+            foreach (XmlNode includeNode in includeNodes)
+            {
+                var attributes = includeNode.Attributes;
+                if (attributes == null)
+                    continue;
+
+                var resourceAttribute = attributes.GetNamedItem("resource");
+                if (resourceAttribute == null)
+                    continue;
+
+                string newName = resourceAttribute.InnerText;
+                if (Defines.compileResourceNames)
+                    newName = StringEncoder.ReverselessEncode(newName, 64);
+                
+                var encodedName = $"{Defines.resourceNameFooter}{newName}";
+                resourceAttribute.InnerText = encodedName;
+            }
+        }
+
+        var minVersion = xml.SelectSingleNode("//min_mta_version");
+        if (minVersion == null)
+        {
+            var minMtaVersion = xml.CreateElement("min_mta_version");
+            var server = xml.CreateAttribute("server");
+            server.Value = "1.6.0-9.20752";
+            var client = xml.CreateAttribute("client");
+            client.Value = "1.6.0-9.20752";
+            minMtaVersion.Attributes.Append(server);
+            minMtaVersion.Attributes.Append(client);
+            xml.DocumentElement?.AppendChild(minMtaVersion);
+        }
+
+        xml.Save(outputMetaPath);
+    }
+
     private void CopyFiles(string sourcePath, string outputPath)
     {
         foreach (var file in files)
         {
             var sourceFilePath = Path.Combine(sourcePath, file.path);
-            var outputFilePath = Path.Combine(outputPath, name, file.path);
+            var outputFilePath = Path.Combine(outputPath, outputName, file.path);
+
             if (!Directory.Exists(Path.GetDirectoryName(outputFilePath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath) ?? string.Empty);
             
@@ -244,11 +288,12 @@ public class MTAResource
 
     public async Task<bool> Compile(string outputPath)
     {
-        var metaPath = Path.Combine(outputPath, name, "meta.xml");
-        if (!Directory.Exists(Path.Combine(outputPath, name)))
-            Directory.CreateDirectory(Path.Combine(outputPath, name));
+        var metaPath = Path.Combine(outputPath, outputName, "meta.xml");
+        if (!Directory.Exists(Path.Combine(outputPath, outputName)))
+            Directory.CreateDirectory(Path.Combine(outputPath, outputName));
 
-        File.Copy(Path.Combine(path, "meta.xml"), metaPath, true);
+        // File.Copy(Path.Combine(path, "meta.xml"), metaPath, true);
+        CopyMeta(outputPath);
 
         CopyFiles(path, outputPath);
         return await CompileScripts(outputPath);
