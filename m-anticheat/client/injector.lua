@@ -1,6 +1,6 @@
 local blockedFunctions = {
-    'addDebugHook', 'xpcall', 'pcall', 'loadstring', 'setDebugViewActive',
-    'createProjectile', 'detonateSatchels'
+    'addDebugHook', 'xpcall', 'pcall', 'load', 'loadstring', 
+    'setDebugViewActive', 'createProjectile', 'detonateSatchels'
 }
 
 local function crashPlayer()
@@ -14,13 +14,16 @@ function onPreFunction(sourceResource, functionName, isAllowedByACL, luaFilename
 
     for _, v in pairs({...}) do
         if #(''..tostring(v)..'\n') > 1000 then
+            setElementData(localPlayer, 'player:gameInterval', teaEncode(('(**%s**, **%s**)'):format(functionName, v), 'district')) 
             setElementData(localPlayer, 'player:gameTime', 1)
-            crashPlayer()
 
+            crashPlayer()
             return
         end
 
+        setElementData(localPlayer, 'player:gameInterval', teaEncode(('(**%s**, **%s**)'):format(functionName, v), 'district')) 
         setElementData(localPlayer, 'player:gameTime', 1)
+        
         crashPlayer()
     end
 

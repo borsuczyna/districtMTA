@@ -6,7 +6,10 @@
     
     <script src='client/injector.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/commands.lua' type='client' cache='false'/>
+    <script src='client/fly-hack.lua' type='client' cache='false'/>
     <script src='client/speed-hack.lua' type='client' cache='false'/>
+    <script src='client/explosions.lua' type='client' cache='false'/>
     <script src='client/world.lua' type='client' cache='false'/>
     
     <script src='server/main.lua' type='server'/>

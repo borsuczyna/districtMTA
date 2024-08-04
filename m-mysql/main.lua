@@ -1,9 +1,9 @@
 local connection, settings;
 local settings = {
-    host = 'sql.22.svpj.link',
-    user = 'db_104668',
-    password = 'qtMAtF0j6BPL',
-    database = 'db_104668',
+    host = 'localhost',
+    user = 'root',
+    password = '',
+    database = 'mtaserver',
     timeout = 10000,
 }
 
@@ -11,13 +11,12 @@ function connectDatabase()
     connection = dbConnect('mysql', 'dbname='..settings.database..';host='..settings.host, settings.user, settings.password)
 
     if not connection then
-        outputDebugString('[CRITICAL] Failed to connect to the database')
-        outputServerLog('[CRITICAL] Failed to connect to the database')
+        outputDebugString('Failed to connect to the database')
+        outputServerLog('Failed to connect to the database')
     else
         outputDebugString('Connected to the database')
         outputServerLog('Connected to the database')
 
-        -- Check if the connection is alive every 30 seconds
         setTimer(alive, 30000, 0)
     end
 end

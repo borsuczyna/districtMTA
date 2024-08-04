@@ -20,6 +20,10 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
     local feedbackData = false
 
     if action == 'engine' then
+        if getVehicleSpeed(vehicle) > 2 then
+            exports['m-notis']:addNotification(client, 'warning', 'Interakcja', 'Nie możesz zgasić silnika podczas jazdy')
+            return
+        end
         setVehicleEngineState(vehicle, not getVehicleEngineState(vehicle))
     elseif action == 'lights' then
         setVehicleOverrideLights(vehicle, getVehicleOverrideLights(vehicle) ~= 2 and 2 or 1)
@@ -54,7 +58,8 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
     triggerClientEvent(client, 'interaction:action-feedback', resourceRoot, action, feedbackData)
 end)
 
-addEventHandler('onPlayerJoin', root, function()
+addEventHandler('onPlayerResourceStart', root, function(resource)
+    if resource ~= getThisResource() then return end
     triggerClientEvent(source, 'interaction:sync', resourceRoot, windowStates)
 end)
 

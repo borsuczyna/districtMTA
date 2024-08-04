@@ -14,5 +14,10 @@
     <file src='data/overlay.fx'/>
     <file src='data/texreplace.fx'/>
 
-    <export function='getVehicleDirtLevel' type='client'/>
+    <export function='setVehicleDirtLevel' type='server'/>
+    <export function='setVehicleDirtProgress' type='server'/>
+    
+    <export function='getVehicleDirtLevel' type='shared'/>
+    <export function='getVehicleDirtProgress' type='shared'/>
+    <export function='getNextDirtTime' type='shared'/>
 </meta>

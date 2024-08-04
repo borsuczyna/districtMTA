@@ -82,5 +82,3 @@ addEvent('dashboard', 'update-data', (data) => {
     // position
     window.dashboard_playerPosition = data.playerPosition;
 });
-
-dashboard_fetchData('account');
