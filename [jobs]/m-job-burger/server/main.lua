@@ -57,7 +57,13 @@ local function startBurgerJob(hash, players)
 
     for _, player in pairs(players) do
         setElementPosition(player, unpack(settings.getJobSpawn()))
-        -- makePlayerCarryObject(player, 'burger/burger')
+
+        local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'burger')
+        setElementData(player, "player:job-upgrades-cache", upgrades)
+        
+        local multiplier = getLobbyTimeMultiplier(players)
+        exports['m-notis']:addNotification(player, 'info', 'Praca burgerowni', ('Obecny mnożnik pracy: %d%%'):format(math.floor((1 - multiplier) * 100 + 0.5)))
+        exports['m-jobs']:setLobbyTimer(hash, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)) * multiplier)
     end
 
     loadElements(hash, dimension)
@@ -65,11 +71,21 @@ local function startBurgerJob(hash, players)
     for i = 1, 2 do
         addLobbyNpc(hash, dimension)
     end
+end
 
-    local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'burger')
-    
+function getLobbyTimeMultiplier(players)
+    local baseMultiplier = 1
+    local minMultiplier = 0.4
 
-    exports['m-jobs']:setLobbyTimer(hash, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))
+    for _, player in ipairs(players) do
+        local upgrades = getElementData(player, "player:job-upgrades-cache") or {}
+
+        if table.find(upgrades, 'natlok') then
+            baseMultiplier = math.max(baseMultiplier - 0.1, minMultiplier)
+        end
+    end
+
+    return baseMultiplier
 end
 
 function getPlayerCookMultiplier(player)

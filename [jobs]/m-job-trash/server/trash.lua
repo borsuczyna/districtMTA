@@ -16,7 +16,8 @@ local function toggleJobControls(player, enable)
     toggleControl(player, 'crouch', enable)
     toggleControl(player, 'jump', enable)
     if not enable then
-        toggleControl(player, 'sprint', getElementData(player, 'player:trashUpgradeSprint'))
+        local upgrades = getElementData(player, 'player:job-upgrades-cache')
+        toggleControl(player, 'sprint', not not table.find(upgrades, 'sprinter'))
     else
         toggleControl(player, 'sprint', true)
     end
@@ -52,7 +53,8 @@ local function putBackTrash(player, hash, objectHash)
     exports['m-jobs']:setLobbyData(hash, 'trashDumping', false)
     exports['m-jobs']:attachObjectToPlayer(hash, objectHash, player, unpack(attachData))
 
-    local hasRecycleUpgrade = getElementData(player, 'player:trashUpgradeRecycle')
+    local upgrades = getElementData(player, 'player:job-upgrades-cache')
+    local hasRecycleUpgrade = table.find(upgrades, 'recykling')
     local trashLevel = exports['m-jobs']:getLobbyData(hash, 'trashLevel')
     local addAmount = math.random(450, 4500)/100 * (hasRecycleUpgrade and 1.1 or 1)
     local newTrashLevel = math.min(trashLevel + addAmount, 10000)

@@ -10,3 +10,12 @@ function findRotation(x1, y1, x2, y2)
     local t = -math.deg(math.atan2(x2 - x1, y2 - y1))
     return t < 0 and t + 360 or t
 end
+
+function table.find(t, value)
+    for k, v in pairs(t) do
+        if v == value then
+            return k
+        end
+    end
+    return nil
+end

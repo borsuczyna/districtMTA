@@ -77,8 +77,7 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
 
     for i, player in ipairs(players) do
         local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'trash')
-        setElementData(player, 'player:trashUpgradeSprint', not not table.find(upgrades, 'sprinter'), false)
-        setElementData(player, 'player:trashUpgradeRecycle', not not table.find(upgrades, 'recykling'), false)
+        setElementData(player, 'player:job-upgrades-cache', upgrades, false)
 
         if i <= 2 then
             warpPedIntoVehicle(player, vehicle, i - 1)
