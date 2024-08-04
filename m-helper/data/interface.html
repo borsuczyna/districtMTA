@@ -305,11 +305,6 @@
                 <p>Aby zakupić swój prywatny pojazd możemy wybrać możemy wybrać trzy opcje - kupić tani samochód z przebiegiem u tzw. cygana, kupić nowy pojazd w salonie lub zakupić pojazd od gracza na giełdzie. Po zakupie pojazdu najlepiej od razu go zatankować. Swoje auto możemy bezpiecznie schować w przechowalni, bądź zostawić je zaparkowane na odpowiednich miejscach parkingowych.</p>
 
                 <div id="map-1" class="mb-2"></div>
-                <!-- <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
-                <p>Aby zacząć grę na serwerze districtMTA, musisz zainstalować klienta MTA:SA. Możesz pobrać go ze strony <a href="https://mtasa.com" target="_blank">mtasa.com</a>. Po zainstalowaniu klienta, wystarczy, że wpiszesz w wyszukiwarce "districtMTA" i dołączysz do serwera.</p>
-                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p>
-                <p>Aby zacząć grę na serwerze districtMTA, musisz zainstalować klienta MTA:SA. Możesz pobrać go ze strony <a href="https://mtasa.com" target="_blank">mtasa.com</a>. Po zainstalowaniu klienta, wystarczy, że wpiszesz w wyszukiwarce "districtMTA" i dołączysz do serwera.</p>
-                <p>Jeśli chcesz dowiedzieć się więcej o serwerze, odwiedź naszą stronę internetową: <a href="https://districtmta.pl" target="_blank">districtmta.pl</a></p> -->
             </div>
             <div class="tab" data-tab="test">
                 <h2>Zarobki</h2>
@@ -424,7 +419,6 @@
         
         mapGoToPosition(document.querySelector('#helper #map-1'), blipData.x, blipData.y, 500);
 
-        // scroll map parent to bottom
         let startTab = document.querySelector('#helper .tab[data-tab="start"]');
         startTab.scrollTo({
             top: startTab.scrollHeight,
@@ -447,28 +441,6 @@
 
     addEvent('helper', 'interface:data:updates', (data) => {
         let updates = data[0];
-
-        // [
-        //     {
-        //         "date": 1719160364,
-        //         "image": "data/3.png?v2",
-        //         "title": "Testowa wiadomość",
-        //         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        //     },
-        //     {
-        //         "date": 1719160364,
-        //         "image": "data/2.png?v2",
-        //         "title": "Informacja o aktualizacji",
-        //         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        //     },
-        //     {
-        //         "date": 1719160364,
-        //         "image": "data/1.png?v2",
-        //         "title": "Testowa wiadomość 2",
-        //         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        //     }
-        // ]
-        
         helper_setUpdates(updates);
     });
 

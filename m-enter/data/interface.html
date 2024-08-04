@@ -1,0 +1,55 @@
+<style>
+    #enter {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.125rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        padding: 0.7rem;
+        max-width: 29rem;
+        transform: translateX(-50%) scale(0.9);
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+        color: #D0D0D0;
+    }
+
+    #enter .title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #E9E9E9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #enter .small {
+        font-size: 0.9rem;
+        color: #B0B0B0;
+        text-align: center;
+    }
+</style>
+
+<div class="d-flex flex-column">
+    <div class="d-flex justify-between align-items-center gap-4" style="border-bottom: 0.125rem solid #2d2d2d;">
+        <div class="title">-</div>
+        <div class="small" style="margin-bottom: 0.45rem;">Kliknij Q, aby wejść do środka</div>
+    </div>
+    <span class="small long-description" style="margin-top: 0.25rem;"></span>
+</div>
+
+<script>
+    addEvent('enter', 'interface:data:enterData', (data) => {
+        data = data[0];
+
+        document.querySelector('#enter .title').innerText = data.name;
+        document.querySelector('#enter .long-description').innerText = data.description;
+    });
+
+    addEvent('enter', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#enter').style.opacity = appear ? '1' : '0';
+        document.querySelector('#enter').style.transform = appear ? 'translateX(-50%) scale(1)' : 'translateX(-50%) scale(0.9)';
+    });
+</script>

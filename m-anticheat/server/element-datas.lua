@@ -58,6 +58,10 @@ addEventHandler('onElementDataChange', root, function(dataName, oldValue)
         setPlayerTriggerLocked(client, true, message)
         setElementData(source, dataName, oldValue)
     elseif client and getElementType(source) == 'vehicle' and playerVehicle ~= source and table.find(selfVehicleElementDatas, dataName) then
+        if not playerVehicle then
+            setElementData(source, dataName, oldValue)
+            return
+        end
         local newValue = getElementData(source, dataName)
         local message = ('Tried to change not self vehicle element data (`%s`, `%s`, `%s`)'):format(dataName, tostring(oldValue), tostring(newValue))
         
