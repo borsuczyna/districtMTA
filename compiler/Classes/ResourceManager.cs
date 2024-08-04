@@ -1,16 +1,11 @@
-using System.Reflection.Metadata;
-
 public class ResourceManager
 {
     private string path;
-    private string outputPath;
-
     public List<MTAResource> resources { get; set; } = new();
 
-    public ResourceManager(string path, string outputPath = "[output]")
+    public ResourceManager(string path)
     {
         this.path = path;
-        this.outputPath = outputPath;
 
         CreateOutputPath();
         LoadResources(path);
@@ -18,19 +13,19 @@ public class ResourceManager
 
     private void CreateOutputPath()
     {
-        if (!Directory.Exists(outputPath))
-            Directory.CreateDirectory(outputPath);
+        if (!Directory.Exists(Defines.outputPath))
+            Directory.CreateDirectory(Defines.outputPath);
 
-        foreach (var file in Directory.GetFiles(outputPath))
+        foreach (var file in Directory.GetFiles(Defines.outputPath))
             File.Delete(file);
 
-        foreach (var directory in Directory.GetDirectories(outputPath))
+        foreach (var directory in Directory.GetDirectories(Defines.outputPath))
             Directory.Delete(directory, true);
     }
 
     private void LoadResource(string path)
     {
-        var resource = new MTAResource(path);
+        var resource = new MTAResource(path: path);
         if (resource.isValid)
             resources.Add(resource);
     }
@@ -51,10 +46,11 @@ public class ResourceManager
 
     private async Task CompileResource(MTAResource resource, List<MTAResource> failed)
     {
-        bool success = await resource.Compile(outputPath);
+        bool success = await resource.Compile(Defines.outputPath);
+
         if (success)
         {
-            Console.WriteLine($"Compiled resource {resource.name}");
+            Console.WriteLine($"Compiled resource {resource.name} -> {resource.outputName}");
         }
         else
         {

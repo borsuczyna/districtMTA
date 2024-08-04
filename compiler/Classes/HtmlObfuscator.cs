@@ -22,6 +22,10 @@ public class HtmlObfuscator
         var scripts = doc.DocumentNode.Descendants("script").ToList();
         foreach (var script in scripts)
         {
+            var srcAttribute = script.Attributes["src"];
+            if (srcAttribute != null)
+                continue;
+
             var obfuscatedCode = JavaScriptObfuscator.Obfuscate(script.InnerHtml);
             if (obfuscatedCode == null)
                 throw new Exception("Failed to obfuscate JavaScript code");
