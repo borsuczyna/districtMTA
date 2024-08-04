@@ -92,7 +92,7 @@ function enterInterior()
     if not enterData or entering then return end
 
     entering = true
-    exports['m-loading']:setLoadingVisible(true, 'Wczytywanie...', 2000)
+    exports['m-loading']:setLoadingVisible(true, getElementInterior(localPlayer) == 0 and 'Ładowanie interioru...' or 'Ładowanie...', 1000)
     setElementFrozen(localPlayer, true)
 
     setTimer(triggerServerEvent, 1000, 1, 'enter:interior', resourceRoot, enterData.id)
