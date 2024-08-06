@@ -1,3 +1,16 @@
+local function assignPlayerInventory(player, data)
+    local inventory = fromJSON(data)
+
+    -- unequip all items
+    for i, item in ipairs(inventory) do
+        if item.metadata and item.metadata.equipped then
+            item.metadata.equipped = false
+        end
+    end
+
+    setElementData(player, 'player:inventory', inventory, false)
+end
+
 function assignPlayerData(player, data)
     local settings = fromJSON(data.settings)
     
@@ -13,7 +26,8 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:dailyRewardDay', data.dailyRewardDay)
     setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
     setElementData(player, 'player:avatar', data.avatar)
-    setElementData(player, 'player:inventory', fromJSON(data.inventory), false)
+    -- setElementData(player, 'player:inventory', playerInventory, false)
+    assignPlayerInventory(player, data.inventory)
 
     -- check if difference between now and dailyRewardRedeem is less than 24 hours, if so show notification that streak is lost
     local diff = getRealTime().timestamp - data.dailyRewardRedeemDate
