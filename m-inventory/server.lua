@@ -5,17 +5,32 @@ function getPlayerInventory(player)
     return getElementData(player, 'player:inventory') or {}
 end
 
-function doesPlayerHaveItem(player, item, count)
-    count = count or 1
-    local inventory = getPlayerInventory(player)
-
+local function checkIfPlayerHaveItem(inventory, player, item, count)
     for i, v in ipairs(inventory) do
         if v.item == item and v.amount >= count then
             return true, v
         end
     end
-
     return false
+end
+
+function doesPlayerHaveItem(player, item, count)
+    count = count or 1
+    local inventory = getPlayerInventory(player)
+
+    return checkIfPlayerHaveItem(inventory, player, item, count)
+end
+
+function doesPlayerHaveItems(player, items)
+    local inventory = getPlayerInventory(player)
+    for item, count in pairs(items) do
+        local have = checkIfPlayerHaveItem(inventory, player, item, count)
+        if not have then
+            return false, item
+        end
+    end
+
+    return true
 end
 
 function getPlayerItemAmount(player, item)
@@ -120,6 +135,18 @@ function getPlayerItemsByRegex(player, regex)
     return items
 end
 
+function matchItems(player, callback)
+    local inventory = getPlayerInventory(player)
+    local items = {}
+    for i, v in ipairs(inventory) do
+        if callback(v) then
+            table.insert(items, v)
+        end
+    end
+
+    return items
+end
+
 function doesPlayerHaveAnyItemByRegexEquipped(player, regex)
     local inventory = getPlayerInventory(player)
     for i, v in ipairs(inventory) do
@@ -199,3 +226,7 @@ addEventHandler('inventory:useItem', root, function(hash, player, itemHash)
     
     exports['m-ui']:respondToRequest(hash, {status = 'success', inventory = getPlayerInventory(player)})
 end)
+
+-- test
+local randomplr = getRandomPlayer()
+setElementData(randomplr, 'player:inventory', fromJSON('[ [ { "hash": "KvEeTLMQXjJ14MTc", "metadata": { "progress": 27, "equipped": false }, "item": "fishingRod", "amount": 1 }, { "hash": "VdfxQYjidvb8Od4N", "item": "bait", "amount": 109 }, { "hash": "NcIHBd9hLdkOutOz", "item": "hotDog", "amount": 3 }, { "hash": "OFTT7Cwg4YCg1Vcz", "item": "wire", "amount": 13 }, { "hash": "ENUUp4XmIdGXRbTI", "metadata": { "progress": 100, "equipped": false }, "item": "fishingRod", "amount": 1 }, { "hash": "42XsyDdOaVUnjdPc", "item": "potion", "amount": 2 }, { "hash": "vRXB8NsD2egii4tx", "metadata": { "ammo": 30 }, "item": "m4", "amount": 1 } ] ]'))

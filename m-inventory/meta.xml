@@ -4,17 +4,22 @@
     <script src='items/server/m4.lua' type='server'/>
     <script src='items/server/potion.lua' type='server'/>
 
-    <script src='items/client/potion.lua' type='shared' cache='false'/>
-    <script src='items/client/fishingRod.lua' type='shared' cache='false'/>
-    <script src='items/client/bait.lua' type='shared' cache='false'/>
-    <script src='items/client/wire.lua' type='shared' cache='false'/>
-    <script src='items/client/hotdog.lua' type='shared' cache='false'/>
-    <script src='items/client/m4.lua' type='shared' cache='false'/>
+    <script src='items/shared/potion.lua' type='shared' cache='false'/>
+    <script src='items/shared/fishingRod.lua' type='shared' cache='false'/>
+    <script src='items/shared/bait.lua' type='shared' cache='false'/>
+    <script src='items/shared/wire.lua' type='shared' cache='false'/>
+    <script src='items/shared/hotdog.lua' type='shared' cache='false'/>
+    <script src='items/shared/m4.lua' type='shared' cache='false'/>
+    
+    <script src='items/list.lua' type='shared' cache='false'/>
+    
+    <!-- crafting -->
+    <script src='crafting/recipes.lua' type='shared' cache='false'/>
+    <script src='crafting/server.lua' type='server'/>
 
     <script src='server.lua' type='server'/>
     <script src='trade.lua' type='server'/>
     <script src='client.lua' type='client' cache='false'/>
-    <script src='shared.lua' type='shared' cache='false'/>
 
     <file src='data/interface.html'/>
     <file src='data/tooltip.js'/>
@@ -23,6 +28,7 @@
     <file src='data/categories.js'/>
     <file src='data/items.js'/>
     <file src='data/trade.js'/>
+    <file src='data/crafting.js'/>
     
     <file src='data/icons/m4.png'/>
     <file src='data/icons/wire.png'/>

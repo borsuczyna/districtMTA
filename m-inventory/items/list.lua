@@ -15,15 +15,19 @@ itemsData = {
 }
 
 function getItemName(item)
+    if type(item) == 'table' then
+        return itemsData[item.item].title
+    end
+
     return itemsData[item].title
 end
 
 function getItemData(item)
-    if type(item) == 'string' then
-        return itemsData[item]
-    elseif type(item) == 'table' then
+    if type(item) == 'table' then
         return itemsData[item.item]
     end
+
+    return itemsData[item]
 end
 
 function generateHash()

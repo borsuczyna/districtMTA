@@ -178,6 +178,7 @@ function parseStack(stack) {
         message: match[2],
         line: parseInt(match[6]) - 3,
         column: parseInt(match[7]),
+        originalError: stack,
     };
 }
 
@@ -186,6 +187,7 @@ async function logInterfaceError(file, js, stack) {
     if (!parsedStack) {
         parsedStack = {
             error: stack,
+            originalError: stack,
         };
     } else {
         let lines = js.split('\n');

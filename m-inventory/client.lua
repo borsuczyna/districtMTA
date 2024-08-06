@@ -8,6 +8,7 @@ addEvent('trade:hide', true)
 addEvent('trade:hideInventory', true)
 addEvent('trade:update', true)
 addEvent('inventory:getNearbyPlayers', true)
+addEvent('inventory:getCraftingRecipes', true)
 
 function setUpdates()
     local updates = exports['m-updates']:getUpdates()
@@ -119,6 +120,10 @@ addEventHandler('inventory:getNearbyPlayers', root, function()
     end
 
     exports['m-ui']:setInterfaceData('inventory', 'nearbyPlayers', nearbyPlayers)
+end)
+
+addEventHandler('inventory:getCraftingRecipes', root, function()
+    exports['m-ui']:setInterfaceData('inventory', 'craftingRecipes', craftingRecipes)
 end)
 
 addEventHandler('trade:update', root, function(myOffer, theirOffer, accepted, acceptedUsers)

@@ -9,8 +9,15 @@ window.inventory_showTooltip = async (el) => {
     // let itemData = inventory_itemsData[el.getAttribute('data-inventory-item')];
     let itemHash = el.getAttribute('data-inventory-item');
     let item = inventory_getItemByHash(itemHash);
-    if (!item) return;
-    let itemData = inventory_itemsData[item.item];
+    let itemData;
+    if (item) {
+        itemData = inventory_itemsData[item.item];
+    } else {
+        let itemKey = el.getAttribute('data-inventory-item-data');
+        itemData = inventory_itemsData[itemKey];
+    }
+
+    if (!itemData) return;
 
     let tooltip = document.querySelector('#inventory-tooltip');
     let parent = el.parentElement;
@@ -29,11 +36,18 @@ window.inventory_showTooltip = async (el) => {
     let renderedText = defaultRenderTemplate
         .replace(/{description}/g, htmlEscape(itemData.description))
         .replace(/\{metadata\.(\w+)\}/g, (match, key) => {
-            let value = (item.metadata ?? {})[key] ?? '';
+            let value = item ? item.metadata : itemData.metadata;
+            value = (value ?? {})[key] ?? '';
             if (typeof value == 'boolean') {
                 return value ? 'Tak' : 'Nie';
             }
             return value;
+        })
+        // when item == null remove all ||text||
+        .replace(/\|\|([^|])*\|\|/g, (match) => {
+            let text = match.slice(2, -2);
+            if (!item) return '';
+            return text;
         });
     
     tooltip.querySelector('.description').innerHTML = renderedText;

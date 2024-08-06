@@ -13,11 +13,11 @@ function createFishingRodItem(rarity)
         },
     
         render = [[{description}<br>
-            <div class="progress">
+            ||<div class="progress">
                 <div class="colored-progress-bar" style="width: {metadata.progress}%;"></div>
             </div>
             <div class="label">Postęp: {metadata.progress}%</div>
-            <div class="label">Założona: {metadata.equipped}</div>
+            <div class="label">Założona: {metadata.equipped}</div>||
         ]],
     }
 end

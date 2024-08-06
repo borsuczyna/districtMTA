@@ -43,6 +43,11 @@ window.inventory_loadPossibleOptions = () => {
             name: 'Dodaj do oferty',
             icon: inventory_icons.add,
             action: window.inventory_removeFromOffer
+        },
+        craft: {
+            name: 'Wytwórz',
+            icon: inventory_icons.craft,
+            action: window.inventory_craftItem
         }
     };
 }
@@ -110,7 +115,20 @@ window.inventory_optionClick = async (action, button) => {
     
     let hash = useItem.getAttribute('data-inventory-item');
     let item = inventory_getItemByHash(hash);
-    if (!item) return;
+    let itemData, craftItem, recipeId;
+
+    if (!item) {
+        recipeId = useItem.getAttribute('data-crafting');
+        if (recipeId != null) {
+            let item = useItem.getAttribute('data-inventory-item-data');
+            itemData = inventory_itemsData[item];
+            craftItem = item;
+        } else {
+            return;
+        }
+    } else {
+        itemData = inventory_itemsData[item.item];
+    }
     
     if (!possibleOptions[action] || !possibleOptions[action].action) return;
     
@@ -118,11 +136,11 @@ window.inventory_optionClick = async (action, button) => {
     
     waiting = true;
     makeButtonSpinner(button);
-    await possibleOptions[action].action(hash);
+    await possibleOptions[action].action(hash ?? recipeId);
     makeButtonSpinner(button, false);
     waiting = false;
 
-    if (!parent || !parent.querySelector(`[data-inventory-item="${hash}"]`)) {
+    if (!hash || !parent || !parent.querySelector(`[data-inventory-item="${hash}"]`)) {
         inventory_hideOptions();
     } else {
         useItem = parent.querySelector(`[data-inventory-item="${hash}"]`);
@@ -141,10 +159,21 @@ function setOptionsPosition(event) {
 window.inventory_showOptions = async (event, el) => {
     let itemHash = el.getAttribute('data-inventory-item');
     let item = inventory_getItemByHash(itemHash);
-    if (!item) return;
-    let itemData = inventory_itemsData[item.item];
+    let itemData, options;
 
-    let options = [itemData.onUse != false ? 'use' : null, 'close', ...(itemData.specialOptions ?? [])];
+    if (!item) {
+        let recipeId = el.getAttribute('data-crafting');
+        if (recipeId != null) {
+            let item = el.getAttribute('data-inventory-item-data');
+            itemData = inventory_itemsData[item];
+            options = ['craft', 'close'];
+        } else {
+            return;
+        }
+    } else {
+        itemData = inventory_itemsData[item.item];
+        options = [itemData.onUse != false ? 'use' : null, 'close', ...(itemData.specialOptions ?? [])];
+    }
 
     let insideYourOffer = el.parentElement.parentElement.id == 'your-offer-wrapper';
     let insideTheirOffer = el.parentElement.parentElement.id == 'their-offer-wrapper';
