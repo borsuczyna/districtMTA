@@ -40,6 +40,15 @@
     <file src="data/decoded/burger-interior.col"/>
     <file src="data/decoded/burger-interior.dff"/>
     <file src="data/decoded/burger-interior.txd"/>
+    <file src="data/decoded/fishing-rod.dff"/>
+    <file src="data/decoded/fishing-rod-u.dff"/>
+    <file src="data/decoded/fishing-rod-r.dff"/>
+    <file src="data/decoded/fishing-rod-e.dff"/>
+    <file src="data/decoded/fishing-rod-l.dff"/>
+    <file src="data/decoded/fishing-rod-m.dff"/>
+    <file src="data/decoded/fishing-rod-x.dff"/>
+    <file src="data/decoded/fishing-rod-d.dff"/>
+    <file src="data/decoded/fishing-rod.txd"/>
 
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>

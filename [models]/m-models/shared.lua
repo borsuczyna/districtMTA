@@ -272,6 +272,54 @@ models = {
 	    type = 'object',
 	    model = 2324,
     },
+    ['fishing-rod'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-u'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-r'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-e'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-l'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-m'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-x'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
+    ['fishing-rod-d'] = {
+	    custom = true,
+	    type = 'object',
+	    model = 1337,
+        txd = 'fishing-rod',
+    },
 }
 
 function getModelsCount()
