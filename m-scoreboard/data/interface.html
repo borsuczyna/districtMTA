@@ -293,7 +293,7 @@
 <div id="scoreboard-inner">
     <div id="top-bar">
         <div class="d-flex gap-2 logo">
-            <img src="../../m-login/data/logo.png" style="width: 3rem;"/>
+            <img src="/m-login/data/logo.png" style="width: 3rem;"/>
             <span>
                 <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
                 <span class="gradient-text text-glow">MTA</span>
@@ -360,7 +360,7 @@
     window.scoreboard_addPlayer = function(uid, id, name, ping, organization, status, statusColor, level, me, category) {
         const table = document.querySelector('#scoreboard #player-list');
         const item = document.createElement('div');
-        const avatar = (avatars[uid] && avatars[uid].length > 100) ? `data:image/png;base64,${avatars[uid]}` : '../../m-avatars/data/user.png';
+        const avatar = (avatars[uid] && avatars[uid].length > 100) ? `data:image/png;base64,${avatars[uid]}` : '/m-avatars/data/user.png';
         item.classList.add('item');
         if (me) item.classList.add('me');
         item.dataset.category = category;

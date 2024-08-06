@@ -13,7 +13,7 @@
     }
 
     #hud .avatar {
-        background-image: url('../../m-hud/data/images/user.png?v2');
+        background-image: url('/m-hud/data/images/user.png?v2');
         background-size: cover;
         width: 100%;
         height: 100%;
@@ -268,7 +268,7 @@
         if (avatar.length > 100) {
             document.querySelector('#hud .avatar').style.backgroundImage = `url('data:image/png;base64,${avatar}')`;
         } else {
-            avatar = `../../${avatar.slice(1)}`;
+            avatar = `/${avatar.slice(1)}`;
             document.querySelector('#hud .avatar').style.backgroundImage = `url('${avatar}')`;
         }
     }

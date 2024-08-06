@@ -62,7 +62,7 @@
     }
 
     #dashboard .avatar {
-        background-image: url('../../m-hud/data/images/user.png?v2');
+        background-image: url('/m-hud/data/images/user.png?v2');
         background-size: cover;
         width: 3rem;
         height: 3rem;
@@ -626,7 +626,7 @@
 
 <div id="top" class="d-flex justify-between align-items-center">
     <div class="d-flex gap-1 logo">
-        <img src="../../m-login/data/logo.png" style="width: 3.5rem;"/>
+        <img src="/m-login/data/logo.png" style="width: 3.5rem;"/>
         <span>
             <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
             <span class="gradient-text text-glow">MTA</span>
@@ -765,15 +765,15 @@
     async function loadIncludes() {
         let tasks = [];
 
-        tasks.push(include('../../m-dashboard/data/main.js'));
-        tasks.push(include('../../m-dashboard/data/settings.js'));
-        tasks.push(include('../../m-dashboard/data/vehicles.js'));
-        tasks.push(include('../../m-dashboard/data/punishment.js'));
-        tasks.push(include('../../m-dashboard/data/daily-reward.js'));
-        tasks.push(include('../../m-dashboard/data/daily-tasks.js'));
-        tasks.push(include('../../m-dashboard/data/info.js'));
-        tasks.push(include('../../m-dashboard/data/achievements.js'));
-        tasks.push(include('../../m-dashboard/data/logs.js'));
+        tasks.push(include('/m-dashboard/data/main.js'));
+        tasks.push(include('/m-dashboard/data/settings.js'));
+        tasks.push(include('/m-dashboard/data/vehicles.js'));
+        tasks.push(include('/m-dashboard/data/punishment.js'));
+        tasks.push(include('/m-dashboard/data/daily-reward.js'));
+        tasks.push(include('/m-dashboard/data/daily-tasks.js'));
+        tasks.push(include('/m-dashboard/data/info.js'));
+        tasks.push(include('/m-dashboard/data/achievements.js'));
+        tasks.push(include('/m-dashboard/data/logs.js'));
 
         await Promise.all(tasks);
         await new Promise(resolve => setTimeout(resolve, 100));

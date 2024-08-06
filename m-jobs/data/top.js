@@ -38,7 +38,7 @@ window.jobs_setAvatar = (uid, avatar) => {
     if (avatar.length > 100) {
         item.style.backgroundImage = `url('data:image/png;base64,${avatar}')`;
     } else {
-        avatar = `../../${avatar.slice(1)}`;
+        avatar = `/${avatar.slice(1)}`;
         item.style.backgroundImage = `url('${avatar}')`;
     }
 }

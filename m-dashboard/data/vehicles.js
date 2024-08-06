@@ -98,11 +98,11 @@ window.dashboard_vehicleDetails = function(id, data) {
 
                     <div class="d-flex gap-1 mt-2">
                         <div class="d-flex gap-1 align-items-center">
-                            <img src="../../m-maps/data/marker.png" class="player-blip icon" />
+                            <img src="/m-maps/data/marker.png" class="player-blip icon" />
                             <div class="label">Twoja pozycja</div>
                         </div>
                         <div class="d-flex gap-1 align-items-center">
-                            <img src="../../m-maps/data/marker.png" class="vehicle-blip icon" />
+                            <img src="/m-maps/data/marker.png" class="vehicle-blip icon" />
                             <div class="label">Pozycja pojazdu</div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ window.dashboard_vehicleDetails = function(id, data) {
 
         createMapBlip({
             element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
-            icon: '../../m-maps/data/marker.png',
+            icon: '/m-maps/data/marker.png',
             size: 15,
             x: window.dashboard_playerPosition[0],
             y: window.dashboard_playerPosition[1],
@@ -135,7 +135,7 @@ window.dashboard_vehicleDetails = function(id, data) {
 
         createMapBlip({
             element: document.querySelector('#dashboard #vehicle-details #vehicle-map'),
-            icon: '../../m-maps/data/marker.png',
+            icon: '/m-maps/data/marker.png',
             size: 15,
             x: position[0],
             y: position[1],

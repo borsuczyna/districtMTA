@@ -263,7 +263,7 @@
 
                 list.innerHTML += `<div class="item ${currentBlipActive ? 'active' : ''}" onclick="f11_setBlip(event, ${blipId})" data-icon="${blipId}">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="../../m-hud/data/images/blips/${blipId}.png?${startTick}" class="icon" alt=""/>
+                        <img src="/m-hud/data/images/blips/${blipId}.png?${startTick}" class="icon" alt=""/>
                         <span>${data[0]}</span>
                     </div>
                     ${currentBlipActive ? `<span class="controls">
@@ -341,7 +341,7 @@
     f11_updateBlip = (blip, i) => {
         let mapElement = document.querySelector('#f11 #map');
         let updated = updateBlipById(mapElement, blip.id, {
-            icon: `../../m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
+            icon: `/m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
             x: blip.x,
             y: blip.y,
             priority: blipPriority[blip.icon] || 0
@@ -350,7 +350,7 @@
         if (!updated) {
             createMapBlip({
                 element: document.querySelector('#f11 #map'),
-                icon: `../../m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
+                icon: `/m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
                 size: 15,
                 x: blip.x,
                 y: blip.y,
@@ -462,7 +462,7 @@
         if (!updated) {
             createMapBlip({
                 element: document.querySelector('#f11 #map'),
-                icon: `../../m-hud/data/images/player.png?${startTick}`,
+                icon: `/m-hud/data/images/player.png?${startTick}`,
                 size: 15,
                 x: data.x,
                 y: data.y,

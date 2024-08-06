@@ -43,7 +43,7 @@ addEvent('jobs', 'interface:data:job-details', async (data) => {
     }
 
     document.querySelector('#jobs #job-name').innerText = data.name;
-    document.querySelector('#jobs .background').style.backgroundImage = `url('../../m-jobs/data/images/${data.background}.png')`;
+    document.querySelector('#jobs .background').style.backgroundImage = `url('/m-jobs/data/images/${data.background}.png')`;
     document.querySelector('#jobs #job-description').innerHTML = data.description;
     document.querySelector('#jobs #level-required').innerHTML = data.minLevel;
     jobs_setLobbySize(data.lobbySize, data.minLobbySize);

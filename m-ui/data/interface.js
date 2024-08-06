@@ -51,7 +51,7 @@ async function loadInterfaceElement(name) {
 
 async function loadInterfaceElementFromFile(name, path) {
     try {
-        let code = await fetch(`../../${path}`);
+        let code = await fetch(`/${path}`);
         let html = await code.text();
         let element = getInterfaceElement(name);
         element.innerHTML = html;

@@ -258,7 +258,7 @@
 <div id="helper-wrapper" class="nice-scroll">
     <div class="top gap-2">
         <div class="d-flex gap-1 logo">
-            <img src="../../m-login/data/logo.png" style="width: 3rem;"/>
+            <img src="/m-login/data/logo.png" style="width: 3rem;"/>
             <span>
                 <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
                 <span class="gradient-text text-glow">MTA</span>
@@ -374,7 +374,7 @@
             let item = document.createElement('div');
             item.className = 'item d-flex gap-2 update';
             item.innerHTML = `
-                <img src="../../m-updates/${update.image}" class="update-image"/>
+                <img src="/m-updates/${update.image}" class="update-image"/>
                 <div class="d-flex flex-column w-100">
                     <div class="d-flex justify-between">
                         <div class="title">${update.title}</div>
@@ -403,7 +403,7 @@
         for (let blip of startMap) {
             createMapBlip({
                 element: document.querySelector('#helper #map-1'),
-                icon: `../../m-hud/data/images/blips/${blip.blip}.png?${startTick}`,
+                icon: `/m-hud/data/images/blips/${blip.blip}.png?${startTick}`,
                 size: 15,
                 class: 'blip',
                 x: blip.x,

@@ -34,7 +34,7 @@
     }
 
     #jobs .avatar {
-        background-image: url('../../m-hud/data/images/user.png?v2');
+        background-image: url('/m-hud/data/images/user.png?v2');
         background-size: cover;
         width: 5rem;
         height: 5rem;
@@ -208,7 +208,7 @@
     }
 
     #jobs .background {
-        background-image: url('../../m-jobs/data/images/forest.png');
+        background-image: url('/m-jobs/data/images/forest.png');
         position: absolute;
         top: 0;
         left: 0;
@@ -492,11 +492,11 @@
     async function loadIncludes() {
         let tasks = [];
 
-        tasks.push(include('../../m-jobs/data/main.js'));
-        tasks.push(include('../../m-jobs/data/top.js'));
-        tasks.push(include('../../m-jobs/data/upgrades.js'));
-        tasks.push(include('../../m-jobs/data/history.js'));
-        tasks.push(include('../../m-jobs/data/lobby.js'));
+        tasks.push(include('/m-jobs/data/main.js'));
+        tasks.push(include('/m-jobs/data/top.js'));
+        tasks.push(include('/m-jobs/data/upgrades.js'));
+        tasks.push(include('/m-jobs/data/history.js'));
+        tasks.push(include('/m-jobs/data/lobby.js'));
 
         await Promise.all(tasks);
         finishIncludes('jobs');
