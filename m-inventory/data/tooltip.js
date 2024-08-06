@@ -19,6 +19,12 @@ window.inventory_showTooltip = async (el) => {
     tooltip.querySelector('.title').setAttribute('data-text', itemData.title);
     tooltip.querySelector('.title').className = 'title ' + el.classList[1];
 
+    let computedStyle = window.getComputedStyle(el);
+    let rarityColor = computedStyle.getPropertyValue('--rarity-color');
+    let rarityColorDark = computedStyle.getPropertyValue('--rarity-color-dark');
+    tooltip.style.setProperty('--rarity-color', rarityColor);
+    tooltip.style.setProperty('--rarity-color-dark', rarityColorDark);
+
     let defaultRenderTemplate = itemData.render ?? `{description}`;
     let renderedText = defaultRenderTemplate
         .replace(/{description}/g, htmlEscape(itemData.description))

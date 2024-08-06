@@ -108,6 +108,38 @@ function getPlayerItemByHash(player, hash)
     return false
 end
 
+function getPlayerItemsByRegex(player, regex)
+    local inventory = getPlayerInventory(player)
+    local items = {}
+    for i, v in ipairs(inventory) do
+        if v.item:match(regex) then
+            table.insert(items, v)
+        end
+    end
+
+    return items
+end
+
+function doesPlayerHaveAnyItemByRegexEquipped(player, regex)
+    local inventory = getPlayerInventory(player)
+    for i, v in ipairs(inventory) do
+        if v.item:match(regex) and v.metadata and v.metadata.equipped then
+            return true
+        end
+    end
+
+    return false
+end
+
+function getPlayerItem(player, itemHash)
+    local inventory = getPlayerInventory(player)
+    for i, v in ipairs(inventory) do
+        if v.hash == itemHash then
+            return v
+        end
+    end
+end
+
 function getItemMetadata(player, itemHash, key)
     local item = getPlayerItemByHash(player, itemHash)
     if not item then return end

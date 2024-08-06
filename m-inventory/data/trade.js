@@ -38,7 +38,7 @@ window.inventory_addToOffer = async (hash) => {
     notis_addNotification('success', 'Sukces', 'Dodano przedmiot do oferty');
 }
 
-window.inventory_removeFromOffer = async (item) => {
+window.inventory_removeFromOfferTrade = async (item) => {
     let count = item.amount > 1 ? (await inventory_askForCount(item.amount)) : 1;
     if (count == null || count < 1) {
         notis_addNotification('error', 'Błąd', 'Nieprawidłowa ilość');

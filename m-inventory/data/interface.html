@@ -49,6 +49,8 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        --rarity-color: #bebebe;
+        --rarity-color-dark: #bebebe;
         aspect-ratio: 1/1;
     }
 
@@ -83,43 +85,56 @@
         /* background: linear-gradient(rgba(74, 255, 39, 0.05), rgba(74, 255, 39, 0.2)); */
         background: radial-gradient(circle at 50% 50%, rgba(132, 220, 95, 0.3), rgba(48, 119, 47, 0.2));
         border: 0.0625rem solid rgba(74, 255, 39, 0.05);
+        --rarity-color: rgb(74, 255, 39);
+        --rarity-color-dark: rgb(132, 220, 95);
     }
 
     /* blueuish-cyan - rare */
     #inventory .item.rare {
-        background: radial-gradient(circle at 50% 50%, rgba(130, 201, 255, 0.3), rgba(46, 141, 244, 0.15));
+        background: radial-gradient(circle at 50% 50%, rgba(130, 201, 255, 0.302), rgba(46, 141, 244, 0.15));
         border: 0.0625rem solid rgba(39, 255, 255, 0.05);
+        --rarity-color: rgb(39, 255, 255);
+        --rarity-color-dark: rgb(130, 201, 255);
     }
 
     /* purplish pink - epic */
     #inventory .item.epic {
         background: radial-gradient(circle at 50% 50%, rgba(188, 111, 229, 0.35), rgba(84, 57, 141, 0.3));
         border: 0.0625rem solid rgba(255, 39, 255, 0.05);
+        --rarity-color: rgb(255, 39, 255);
+        --rarity-color-dark: rgb(188, 111, 229);
     }
 
     /* orange - legendary */
     #inventory .item.legendary {
         background: radial-gradient(circle at 50% 50%, rgba(255, 174, 81, 0.35), rgba(175, 75, 0, 0.14));
         border: 0.0625rem solid rgba(255, 39, 39, 0.05);
+        --rarity-color: rgb(255, 123, 0);
+        --rarity-color-dark: rgb(255, 174, 81);
     }
 
     /* gold - mythic */
     #inventory .item.mythic {
         background: radial-gradient(circle at 50% 50%, rgba(236, 200, 95, 0.4), rgba(149, 114, 35, 0.14));
         border: 0.0625rem solid rgba(255, 255, 39, 0.05);
+        --rarity-color: rgb(255, 255, 39);
+        --rarity-color-dark: rgb(236, 200, 95);
     }
 
-    
     /* cyan green exotic */
     #inventory .item.exotic {
         background: radial-gradient(circle at 50% 50%, rgba(101, 244, 208, 0.35), rgba(78, 117, 184, 0.14));
         border: 0.0625rem solid rgba(39, 255, 39, 0.05);
+        --rarity-color: rgb(39, 255, 107);
+        --rarity-color-dark: rgb(101, 244, 177);
     }
       
     /* red - divine */
     #inventory .item.divine {
         background: radial-gradient(circle at 50% 50%, rgba(255, 39, 39, 0.35), rgba(255, 39, 39, 0.14));
         border: 0.0625rem solid rgba(255, 39, 39, 0.05);
+        --rarity-color: rgb(255, 39, 39);
+        --rarity-color-dark: rgb(255, 39, 39);
     }
     
     #inventory .item:not(.empty):hover {
@@ -334,10 +349,21 @@
 
     #inventory .progress .progress-bar {
         height: 100%;
-        background: linear-gradient(90deg, #ffab48 0.01%, #fc8c5b 100%);
+        background: linear-gradient(90deg, #ffab48, #fc8c5b 100%);
         border-radius: 0.25rem;
         transition: width 10s cubic-bezier(0.2, 0.2, 0.2, 0.2);
         box-shadow: 0 0 1rem 0.5rem #ffaa4822;
+    }
+
+    #inventory .progress .colored-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--rarity-color), var(--rarity-color-dark) 50%, var(--rarity-color) 100%);
+        background-size: 200% 100%;
+        background-position: 0% 0;
+        border-radius: 0.25rem;
+        transition: width 10s cubic-bezier(0.2, 0.2, 0.2, 0.2);
+        box-shadow: 0 0 1rem 0.5rem color-mix(in srgb, var(--rarity-color) 20%, transparent 80%);
+        animation: gradient-progress 1s linear infinite;
     }
 
     #inventory .label {
@@ -385,6 +411,20 @@
 
         100% {
             color: #ff0000;
+        }
+    }
+
+    @keyframes gradient-progress {
+        0% {
+            background-position: 0% 0%;
+        }
+
+        50% {
+            background-position: 100% 0%;
+        }
+
+        100% {
+            background-position: 200% 0%;
         }
     }
 </style>
@@ -525,16 +565,17 @@
     async function loadIncludes() {
         let tasks = [];
 
-        tasks.push(include('../../m-inventory/data/trade.js'));
-        tasks.push(include('../../m-inventory/data/player-list.js'));
-        tasks.push(include('../../m-inventory/data/tooltip.js'));
-        tasks.push(include('../../m-inventory/data/options.js'));
-        tasks.push(include('../../m-inventory/data/categories.js'));
-        tasks.push(include('../../m-inventory/data/items.js'));
+        tasks.push(include('/m-inventory/data/trade.js'));
+        tasks.push(include('/m-inventory/data/player-list.js'));
+        tasks.push(include('/m-inventory/data/tooltip.js'));
+        tasks.push(include('/m-inventory/data/options.js'));
+        tasks.push(include('/m-inventory/data/categories.js'));
+        tasks.push(include('/m-inventory/data/items.js'));
 
         await Promise.all(tasks);
         await new Promise(resolve => setTimeout(resolve, 100));
         finishIncludes('inventory');
+        inventory_loadPossibleOptions();
         inventory_renderCategories();
         inventory_renderItems();
         inventory_loadItems();

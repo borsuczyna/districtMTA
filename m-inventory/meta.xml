@@ -1,10 +1,20 @@
 <meta>
+    <script src='items/server/fishingRod.lua' type='server'/>
+    <script src='items/server/hotdog.lua' type='server'/>
+    <script src='items/server/m4.lua' type='server'/>
+    <script src='items/server/potion.lua' type='server'/>
+
+    <script src='items/client/potion.lua' type='shared' cache='false'/>
+    <script src='items/client/fishingRod.lua' type='shared' cache='false'/>
+    <script src='items/client/bait.lua' type='shared' cache='false'/>
+    <script src='items/client/wire.lua' type='shared' cache='false'/>
+    <script src='items/client/hotdog.lua' type='shared' cache='false'/>
+    <script src='items/client/m4.lua' type='shared' cache='false'/>
+
     <script src='server.lua' type='server'/>
     <script src='trade.lua' type='server'/>
     <script src='client.lua' type='client' cache='false'/>
     <script src='shared.lua' type='shared' cache='false'/>
-
-    <script src='items/potion.lua' type='client' cache='false'/>
 
     <file src='data/interface.html'/>
     <file src='data/tooltip.js'/>

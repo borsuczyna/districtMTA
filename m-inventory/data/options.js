@@ -2,46 +2,50 @@ let hideOptionsTimer = null;
 let useItem = false;
 let waiting = false;
 let prevHtml = '';
-let possibleOptions = {
-    use: {
-        name: 'Użyj',
-        icon: inventory_icons.target,
-        action: async (hash) => {
-            let item = inventory_getItemByHash(hash);
-            if (!item) return;
-            
-            let data = await mta.fetch('inventory', 'useItem', hash);
-            inventory_hideOptions();
-            
-            if (data == null) {
-                notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
-                return;
-            } else if (data.status != 'success') {
-                notis_addNotification('error', 'Błąd', data.message);
-            }
+let possibleOptions = {};
 
-            inventory_items = data.inventory;
-            inventory_renderItems();
+window.inventory_loadPossibleOptions = () => {
+    possibleOptions = {
+        use: {
+            name: 'Użyj',
+            icon: window.inventory_icons.target,
+            action: async (hash) => {
+                let item = inventory_getItemByHash(hash);
+                if (!item) return;
+                
+                let data = await mta.fetch('inventory', 'useItem', hash);
+                inventory_hideOptions();
+                
+                if (data == null) {
+                    notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+                    return;
+                } else if (data.status != 'success') {
+                    notis_addNotification('error', 'Błąd', data.message);
+                }
+    
+                inventory_items = data.inventory;
+                inventory_renderItems();
+            }
+        },
+        close: {
+            name: 'Zamknij',
+            icon: window.inventory_icons.close,
+            action: async () => {
+                inventory_hideOptions();
+            }
+        },
+        remove: {
+            name: 'Usuń z oferty',
+            icon: window.inventory_icons.close,
+            action: window.inventory_removeFromOffer
+        },
+        add_to_offer: {
+            name: 'Dodaj do oferty',
+            icon: inventory_icons.add,
+            action: window.inventory_removeFromOffer
         }
-    },
-    close: {
-        name: 'Zamknij',
-        icon: inventory_icons.close,
-        action: async () => {
-            inventory_hideOptions();
-        }
-    },
-    remove: {
-        name: 'Usuń z oferty',
-        icon: inventory_icons.close,
-        action: inventory_removeFromOffer
-    },
-    add_to_offer: {
-        name: 'Dodaj do oferty',
-        icon: inventory_icons.add,
-        action: inventory_addToOffer
-    }
-};
+    };
+}
 
 window.inventory_askForCount = async (max = 9999) => {
     let optionsEl = document.querySelector('#inventory-options');
