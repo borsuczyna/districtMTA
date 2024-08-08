@@ -1,5 +1,3 @@
-addEvent('vehicle-shop:show', true)
-
 local boilerplateUILoaded, boilerplateUIVisible, boilerplateHideTimer = false, false, false
 
 function setInterfaceData()
@@ -51,19 +49,6 @@ function toggleBoilerplateUI()
     if not getElementData(localPlayer, 'player:spawn') then return end
     setBoilerplateUIVisible(not boilerplateUIVisible)
 end
-
-addEventHandler('vehicle-shop:show', resourceRoot, function(data)
-    setBoilerplateUIVisible(true)
-    boilerplateData = data
-end)
-
-addEventHandler('onClientColShapeLeave', root, function(element, matchingDimension)
-    if element ~= localPlayer or not matchingDimension then return end
-    if not getElementData(source, 'vehicle:shop-vehicle') then return end
-
-    setBoilerplateUIVisible(false)
-    boilerplateData = false
-end)
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
     toggleBoilerplateUI()

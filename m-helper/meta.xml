@@ -1,5 +1,5 @@
 <meta>
     <script src='client.lua' type='client' cache='false'/>
 
-    <file src='data/interface.html'/>
+    <file src='data/interface.html' download='false'/>
 </meta>
