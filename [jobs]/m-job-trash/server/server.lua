@@ -149,10 +149,6 @@ addEventHandler('onVehicleEnter', root, function(player, seat)
     setVehicleHandling(vehicle, 'maxVelocity', modelHandling['maxVelocity'] * multiplier)
     setVehicleHandling(vehicle, 'engineAcceleration', modelHandling['engineAcceleration'] * multiplier)
     setVehicleHandling(vehicle, 'steeringLock', modelHandling['steeringLock'] * multiplier)
-
-    if table.find(upgrades, 'kierowca') then
-        exports['m-notis']:addNotification(player, 'info', 'Wywóz śmieci', 'Posiadasz aktywne ulepszenie "Kierowca"')
-    end
 end)
 
 addEventHandler('onPlayerResourceStart', root, function(resource)
