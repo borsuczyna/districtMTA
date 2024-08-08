@@ -195,12 +195,15 @@ window.inventory_shop_addOrSell = async (element, event) => {
     inventory_shop_addToCart(item, type, count);
 }
 
-window.inventory_buySelectedItems = async () => {
+window.inventory_buySelectedItems = async (button) => {
+    if (isButtonSpinner(button)) return;
+    
     if (inventory_shoppingData.length === 0) {
         notis_addNotification('error', 'Sklep', 'Nie wybrano żadnych przedmiotów');
         return;
     }
 
+    makeButtonSpinner(button);
     let totalPrice = inventory_shoppingData.reduce((acc, item) => {
         switch (item.type) {
             case 'buy':
@@ -221,6 +224,7 @@ window.inventory_buySelectedItems = async () => {
     };
 
     let data = await mta.fetch('inventory', 'buyItems', buyItems);
+    makeButtonSpinner(button, false);
     if (data == null) {
         notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
         return;

@@ -86,12 +86,6 @@ addEventHandler('inventory:buyItems', root, function(hash, player, data)
         end
     end
 
-    -- if totalPrice > 0 then
-    --     takePlayerMoney(player, totalPrice)
-    -- elseif totalPrice < 0 then
-    --     givePlayerMoney(player, math.abs(totalPrice))
-    -- end
-
     local details = (totalPrice > 0 and 'Zakup' or 'Sprzedaż') .. ' przedmiotów w sklepie '.. shopData.name .. ', ' .. shopData.description
     exports['m-core']:givePlayerMoney(player, 'shop', details, -totalPrice)
 

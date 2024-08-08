@@ -2,6 +2,7 @@ local serverSide = not localPlayer
 
 local function hitShopMarker(hitElement, matchingDimension)
     if hitElement ~= localPlayer or not matchingDimension then return end
+    if getPedOccupiedVehicle(localPlayer) then return end
 
     local title = getElementData(source, 'marker:title')
     local desc = getElementData(source, 'marker:desc')

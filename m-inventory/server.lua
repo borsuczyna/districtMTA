@@ -56,6 +56,10 @@ function getPlayerItemAmount(player, item)
     return item.amount
 end
 
+function clone(t)
+    return fromJSON(toJSON(t))
+end
+
 function addPlayerItem(player, item, amount, metadata)
     local inventory = getPlayerInventory(player)
     local itemData = itemsData[item]
@@ -94,10 +98,10 @@ function addPlayerItem(player, item, amount, metadata)
     if amount <= 0 then return end
 
     if not itemData.metadata then
-        table.insert(inventory, {item = item, amount = amount, metadata = metadata or itemData.metadata, hash = generateHash()})
+        table.insert(inventory, {item = item, amount = amount, metadata = clone(metadata or itemData.metadata), hash = generateHash()})
     else
         for i = 1, amount do
-            table.insert(inventory, {item = item, amount = 1, metadata = metadata or itemData.metadata, hash = generateHash()})
+            table.insert(inventory, {item = item, amount = 1, metadata = clone(metadata or itemData.metadata), hash = generateHash()})
         end
     end
     setElementData(player, 'player:inventory', inventory, false)
