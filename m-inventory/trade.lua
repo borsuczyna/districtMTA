@@ -90,6 +90,11 @@ addEventHandler('inventory:addToOffer', root, function(hash, player, itemHash, a
         return
     end
 
+    if amount <= 0 then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nieprawidłowa ilość przedmiotów'})
+        return
+    end
+
     if item.amount < amount then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie posiadasz tyle przedmiotów'})
         return
@@ -146,19 +151,15 @@ addEventHandler('inventory:removeFromOffer', root, function(hash, player, itemHa
     end
 
     local tradeItems = trades[player].items
-    -- if not tradeItems[item] then
-    --     exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie masz tego przedmiotu w ofercie'})
-    --     return
-    -- end
     if not tradeItems[itemHash] then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie masz tego przedmiotu w ofercie'})
         return
     end
 
-    -- tradeItems[item] = math.max(tradeItems[item] - amount, 0)
-    -- if tradeItems[item] == 0 then
-    --     tradeItems[item] = nil
-    -- end
+    if amount <= 0 then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nieprawidłowa ilość przedmiotów'})
+        return
+    end
 
     tradeItems[itemHash].amount = math.max(tradeItems[itemHash].amount - amount, 0)
     if tradeItems[itemHash].amount == 0 then

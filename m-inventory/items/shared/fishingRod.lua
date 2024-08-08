@@ -1,7 +1,7 @@
-function createFishingRodItem(rarity)
+function createFishingRodItem(rarity, title, description)
     return {
-        title = 'Wędka',
-        description = 'Przydałby się sprzęt do wędkowania.',
+        title = title,
+        description = description,
         category = 'fish',
         icon = '/m-inventory/data/icons/fishing-rod.png',
         rarity = rarity,

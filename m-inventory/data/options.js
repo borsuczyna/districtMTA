@@ -21,6 +21,7 @@ window.inventory_loadPossibleOptions = () => {
                     return;
                 } else if (data.status != 'success') {
                     notis_addNotification('error', 'Błąd', data.message);
+                    return;
                 }
     
                 inventory_items = data.inventory;
@@ -37,12 +38,12 @@ window.inventory_loadPossibleOptions = () => {
         remove: {
             name: 'Usuń z oferty',
             icon: window.inventory_icons.close,
-            action: window.inventory_removeFromOffer
+            action: window.inventory_removeFromOfferTrade
         },
         add_to_offer: {
             name: 'Dodaj do oferty',
             icon: inventory_icons.add,
-            action: window.inventory_removeFromOffer
+            action: window.inventory_addToOffer
         },
         craft: {
             name: 'Wytwórz',
@@ -129,7 +130,7 @@ window.inventory_optionClick = async (action, button) => {
     } else {
         itemData = inventory_itemsData[item.item];
     }
-    
+
     if (!possibleOptions[action] || !possibleOptions[action].action) return;
     
     let parent = useItem?.parentElement;
@@ -147,7 +148,7 @@ window.inventory_optionClick = async (action, button) => {
     }
 }
 
-function setOptionsPosition(event) {
+window.inventory_setOptionsPosition = (event) => {
     let optionsEl = document.querySelector('#inventory-options');
     let x = event.clientX;
     let y = event.clientY;
@@ -187,6 +188,6 @@ window.inventory_showOptions = async (event, el) => {
     }
 
     inventory_renderOptions(options);
-    setOptionsPosition(event);
+    inventory_setOptionsPosition(event);
     useItem = el;
 }

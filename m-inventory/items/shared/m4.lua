@@ -1,7 +1,7 @@
 function createM4Item()
     return {
         title = 'M4',
-        description = 'Karabin szturmowy, który jest używany przez wiele jednostek specjalnych na całym świecie.',
+        description = 'Karabin szturmowy, który jest używany przez wiele jednostek specjalnych na całym świecie',
         category = 'weapon',
         icon = '/m-inventory/data/icons/m4.png',
         rarity = 'divine',

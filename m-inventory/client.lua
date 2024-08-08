@@ -1,4 +1,4 @@
-local inventoryLoaded, inventoryVisible, inventoryTimer = false, false, false
+local inventoryLoaded, inventoryVisible, inventoryTimer, insideShop = false, false, false, false
 local trading = false
 
 addEvent('interface:includes-finish', true)
@@ -10,13 +10,9 @@ addEvent('trade:update', true)
 addEvent('inventory:getNearbyPlayers', true)
 addEvent('inventory:getCraftingRecipes', true)
 
-function setUpdates()
-    local updates = exports['m-updates']:getUpdates()
-    exports['m-ui']:setInterfaceData('inventory', 'updates', updates)
-end
-
 function updateInventoryData()
     exports['m-ui']:setInterfaceData('inventory', 'itemsData', itemsData)
+    exports['m-ui']:setInterfaceData('inventory', 'shopData', insideShop)
     
     if trading then
         exports['m-ui']:setInterfaceData('inventory', 'trading', {otherName = getPlayerName(trading), myName = getPlayerName(localPlayer)})
@@ -45,6 +41,7 @@ function setInventoryVisible(visible)
     end
 
     inventoryVisible = visible
+    insideShop = false
 
     if not visible and isTimer(inventoryTimer) then
         killTimer(inventoryTimer)
@@ -67,6 +64,13 @@ function setInventoryVisible(visible)
             inventoryVisible = true
         end
     end
+end
+
+function toggleShopUI(visible, data)
+    if not getElementData(localPlayer, 'player:spawn') then return end
+
+    setInventoryVisible(visible)
+    insideShop = data
 end
 
 function toggleInventory()

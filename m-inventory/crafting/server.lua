@@ -23,6 +23,14 @@ addEventHandler('inventory:craftItem', root, function(hash, player, recipeId)
         return
     end
 
+    -- check if player has all items unequipped
+    local have, equippedItem = doesPlayerHaveItemsUnequipped(player, checkTable)
+    if not have then
+        local itemName = getItemName(equippedItem)
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Musisz zdjąć '..itemName})
+        return
+    end
+
     -- call callback
     local success, message = recipe.craft(player, recipe)
     if not success then

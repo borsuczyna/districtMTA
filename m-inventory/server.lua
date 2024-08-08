@@ -33,6 +33,22 @@ function doesPlayerHaveItems(player, items)
     return true
 end
 
+function doesPlayerHaveItemsUnequipped(player, items)
+    local inventory = getPlayerInventory(player)
+    for item, count in pairs(items) do
+        local have, itemData = checkIfPlayerHaveItem(inventory, player, item, count)
+        if not have then
+            return false, item
+        end
+
+        if itemData.metadata and itemData.metadata.equipped then
+            return false, item
+        end
+    end
+
+    return true
+end
+
 function getPlayerItemAmount(player, item)
     local have, item = doesPlayerHaveItem(player, item)
     if not have then return 0 end
@@ -76,7 +92,14 @@ function addPlayerItem(player, item, amount, metadata)
     end
 
     if amount <= 0 then return end
-    table.insert(inventory, {item = item, amount = amount, metadata = metadata or itemData.metadata, hash = generateHash()})
+
+    if not itemData.metadata then
+        table.insert(inventory, {item = item, amount = amount, metadata = metadata or itemData.metadata, hash = generateHash()})
+    else
+        for i = 1, amount do
+            table.insert(inventory, {item = item, amount = 1, metadata = metadata or itemData.metadata, hash = generateHash()})
+        end
+    end
     setElementData(player, 'player:inventory', inventory, false)
 end
 
@@ -123,6 +146,16 @@ function getPlayerItemByHash(player, hash)
     return false
 end
 
+function getPlayerItemRarityByHash(player, hash)
+    local item = getPlayerItemByHash(player, hash)
+    if not item then return end
+
+    local itemData = itemsData[item.item]
+    if not itemData then return end
+
+    return itemData.rarity
+end
+
 function getPlayerItemsByRegex(player, regex)
     local inventory = getPlayerInventory(player)
     local items = {}
@@ -151,7 +184,7 @@ function doesPlayerHaveAnyItemByRegexEquipped(player, regex)
     local inventory = getPlayerInventory(player)
     for i, v in ipairs(inventory) do
         if v.item:match(regex) and v.metadata and v.metadata.equipped then
-            return true
+            return true, v
         end
     end
 
@@ -186,10 +219,17 @@ function setItemMetadata(player, itemHash, key, value)
     end
 end
 
-addCommandHandler('testitem', function(player, cmd, name, count)
-    addPlayerItem(player, name or 'hotDog', tonumber(count) or 1)
-    exports['m-notis']:addNotification(player, 'success', 'xd', 'masz kurwo')
-end)
+function addItemProgress(player, itemHash, progress)
+    local inventory = getPlayerInventory(player)
+    for i, v in ipairs(inventory) do
+        if v.hash == itemHash then
+            if not v.metadata then return end
+            v.metadata.progress = math.min(v.metadata.progress + progress, 100)
+            setElementData(player, 'player:inventory', inventory, false)
+            return
+        end
+    end
+end
 
 addEventHandler('inventory:getInventory', root, function(hash, player)
     local uid = getElementData(player, 'player:uid')
@@ -227,6 +267,44 @@ addEventHandler('inventory:useItem', root, function(hash, player, itemHash)
     exports['m-ui']:respondToRequest(hash, {status = 'success', inventory = getPlayerInventory(player)})
 end)
 
--- test
-local randomplr = getRandomPlayer()
-setElementData(randomplr, 'player:inventory', fromJSON('[ [ { "hash": "KvEeTLMQXjJ14MTc", "metadata": { "progress": 27, "equipped": false }, "item": "fishingRod", "amount": 1 }, { "hash": "VdfxQYjidvb8Od4N", "item": "bait", "amount": 109 }, { "hash": "NcIHBd9hLdkOutOz", "item": "hotDog", "amount": 3 }, { "hash": "OFTT7Cwg4YCg1Vcz", "item": "wire", "amount": 13 }, { "hash": "ENUUp4XmIdGXRbTI", "metadata": { "progress": 100, "equipped": false }, "item": "fishingRod", "amount": 1 }, { "hash": "42XsyDdOaVUnjdPc", "item": "potion", "amount": 2 }, { "hash": "vRXB8NsD2egii4tx", "metadata": { "ammo": 30 }, "item": "m4", "amount": 1 } ] ]'))
+-- -- ADD TEST ITEMS
+-- local testItems = {
+--     'smallFry',
+-- 'orangeFlopper',
+-- 'slurpJellyfish',
+-- 'moltenSpicyFish',
+-- 'driftSpicyFish',
+-- 'greenFlopper',
+-- 'lbShieldFish',
+-- 'blueSlurpfish',
+-- 'southernSpicyFish',
+-- 'sbSpicyFish',
+-- 'peelyJellyfish',
+-- 'blueFlopper',
+-- 'bbShieldFish',
+-- 'yellowSlurpfish',
+-- 'blackSlurpfish',
+-- 'blackSmallFry',
+-- 'purpleJellyfish',
+-- 'wsSpicyFish',
+-- 'bsShieldFish',
+-- 'darkVanguardJellyfish',
+-- 'cuddleJellyfish',
+-- 'chumHopFlopper',
+-- 'atlanticHopFlopper',
+-- 'chinhookHopFlopper',
+-- 'cohoHopFlopper',
+-- 'divineHopFlopper',
+-- }
+
+-- for _,player in pairs(getElementsByType('player')) do
+--     setElementData(player, 'player:inventory', {})
+--     for _, item in pairs(testItems) do
+--         addPlayerItem(player, item, 5)
+--     end
+-- end
+
+addCommandHandler('testitem', function(player, cmd, name, count)
+    addPlayerItem(player, name or 'hotDog', tonumber(count) or 1)
+    exports['m-notis']:addNotification(player, 'success', 'xd', 'masz kurwo')
+end)

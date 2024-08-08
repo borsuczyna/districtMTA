@@ -15,7 +15,7 @@ end
 function createPotionItem()
     return {
         title = 'Sok z gumijagód',
-        description = 'Lśniący sok z gumijagód, który dodaje energii.',
+        description = 'Lśniący sok z gumijagód, który dodaje energii',
         category = 'food',
         icon = '/m-inventory/data/icons/potion.png',
         rarity = 'epic',

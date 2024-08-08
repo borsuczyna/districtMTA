@@ -33,17 +33,24 @@ local function toggleFishingRod(player, model, visible)
 end
 
 function onFishingRodUse(player, itemHash)
+    if getElementData(player, 'player:fishing') then
+        exports['m-notis']:addNotification(player, 'error', 'Wędka', 'Nie możesz teraz tego zrobić.')
+        return 0
+    end
+
     local item = getPlayerItem(player, itemHash)
     local itemData = getItemData(item)
 
     local equipped = item.metadata and item.metadata.equipped or false
-    if not equipped and doesPlayerHaveAnyItemByRegexEquipped(player, 'fishingRod%w+') then
+    local equippedOtherRod = doesPlayerHaveAnyItemByRegexEquipped(player, 'fishingRod%w+')
+    if not equipped and equippedOtherRod then
         exports['m-notis']:addNotification(player, 'error', 'Wędka', 'Posiadasz już założoną wędkę.')
         return 0
     end
 
     setItemMetadata(player, itemHash, 'equipped', not equipped)
-    exports['m-notis']:addNotification(player, 'info', 'Wędka', 'Wędka została ' .. (equipped and 'zdjęta.' or 'założona.'))
+    exports['m-notis']:addNotification(player, 'info', 'Wędka', 'Wędka została ' .. (equipped and 'zdjęta.' or 'założona.<br>Aby zacząć łowić ryby, kliknij <kbd class="keycap keycap-sm">LPM</kbd> nieopodal wody.'))
+    setElementData(player, 'player:equippedFishingRod', not equipped and itemHash or nil)
 
     local model = getFishingRodModel(itemData.rarity)
     toggleFishingRod(player, model, not equipped)

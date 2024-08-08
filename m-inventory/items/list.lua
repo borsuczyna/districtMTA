@@ -4,14 +4,64 @@ itemsData = {
     potion = createPotionItem(),
     bait = createBaitItem(),
     wire = createWireItem(),
-    fishingRod = createFishingRodItem('common'),
-    fishingRodUncommon = createFishingRodItem('uncommon'),
-    fishingRodRare = createFishingRodItem('rare'),
-    fishingRodEpic = createFishingRodItem('epic'),
-    fishingRodLegendary = createFishingRodItem('legendary'),
-    fishingRodMythic = createFishingRodItem('mythic'),
-    fishingRodExotic = createFishingRodItem('exotic'),
-    fishingRodDivine = createFishingRodItem('divine'),
+    
+    reefer10 = createReeferItem('uncommon', 10),
+    reefer30 = createReeferItem('rare', 30),
+    reefer60 = createReeferItem('epic', 60),
+
+    fishingRodCommon = createFishingRodItem('common', 'Wędka', 'Podstawowa wędka'),
+    fishingRodUncommon = createFishingRodItem('uncommon', 'Posklejana wędka', 'Wędka posklejana stalową linką'),
+    fishingRodRare = createFishingRodItem('rare', 'Umocniona wędka', 'Umocniona stalowa wędka'),
+    fishingRodEpic = createFishingRodItem('epic', 'Metalowa wędka', 'Wędka z wytrzymałego metalu'),
+    fishingRodLegendary = createFishingRodItem('legendary', 'Ulepszeona wędka', 'Posiada ulepszony kołowrotek'),
+    fishingRodMythic = createFishingRodItem('mythic', 'Mocna wędka', 'Wędka z dodatkowym uchwytem'),
+    fishingRodExotic = createFishingRodItem('exotic', 'Długa wędka', 'Bardzo długa wędka'),
+    fishingRodDivine = createFishingRodItem('divine', 'Mechaniczna wędka', 'Posiada automatyczny kołowrotek'),
+
+    -- 6 common
+    smallFry = createFishItem('common', 'Small Fry', 'Jasnoniebieska mini rybka', 'lb-small-fry'),
+    orangeFlopper = createFishItem('common', 'Orange Flopper', 'Pomarańczowa pospolita ryba', 'orange-flopper'),
+    slurpJellyfish = createFishItem('common', 'Slurp Jellyfish', 'Niebieska meduza', 'slurp-jellyfish'),
+    moltenSpicyFish = createFishItem('common', 'Spicy Fish', 'Wędrownik alpejski', 'molten-spicy-fish'),
+    driftSpicyFish = createFishItem('common', 'Spicy Fish', 'Wędrownik potokowy', 'drift-spicy-fish'),
+
+    -- 5 uncommon
+    greenFlopper = createFishItem('uncommon', 'Green Flopper', 'Zielona pospolita ryba', 'green-flopper'),
+    lbShieldFish = createFishItem('uncommon', 'Shield Fish', 'Napierak błękitny', 'lb-shield-fish'),
+    blueSlurpfish = createFishItem('uncommon', 'Slurp Fish', 'Niebieska oceanica', 'blue-slurpfish'),
+    southernSpicyFish = createFishItem('uncommon', 'Spicy Fish', 'Rzutnik południowy', 'southern-spicy-fish'),
+    sbSpicyFish = createFishItem('uncommon', 'Spicy Fish', 'Rzutnik północny', 'sb-spicy-fish'),
+    
+    -- 4 rare
+    peelyJellyfish = createFishItem('rare', 'Jellyfish', 'Jaskrawa meduza', 'peely-jellyfish'),
+    blueFlopper = createFishItem('rare', 'Blue Flopper', 'Niebieska pospolita ryba', 'blue-flopper'),
+    bbShieldFish = createFishItem('rare', 'Shield Fish', 'Napierak czarny', 'bb-shield-fish'),
+    yellowSlurpfish = createFishItem('rare', 'Slurp Fish', 'Złota owocnica', 'yellow-slurpfish'),
+    
+    -- 4 epic
+    blackSlurpfish = createFishItem('epic', 'Slurp Fish', 'Czarna owocnica', 'black-slurpfish'),
+    blackSmallFry = createFishItem('epic', 'Small Fry', 'Czarna mini rybka', 'black-small-fry'),
+    purpleJellyfish = createFishItem('epic', 'Jellyfish', 'Fioletowa meduza', 'purple-jellyfish'),
+    wsSpicyFish = createFishItem('epic', 'Spicy Fish', 'Wędrownik wodospadowy', 'ws-spicy-fish'),
+
+    -- 3 legendary
+    bsShieldFish = createFishItem('legendary', 'Shield Fish', 'Lśniący napierak', 'bs-shield-fish'),
+    darkVanguardJellyfish = createFishItem('legendary', 'Jellyfish', 'Ciemna meduza', 'dark-vanguard-jellyfish'),
+    cuddleJellyfish = createFishItem('legendary', 'Jellyfish', 'Meduza miłosna', 'cuddle-jellyfish'),
+
+    -- 2 mythic
+    chumHopFlopper = createFishItem('mythic', 'Hop Flopper', 'Skoczek chumowy', 'chum-hop-flopper'),
+    atlanticHopFlopper = createFishItem('mythic', 'Hop Flopper', 'Skoczek atlantycki', 'atlantic-hop-flopper'),
+
+    -- 2 exotic
+    chinhookHopFlopper = createFishItem('exotic', 'Hop Flopper', 'Skoczek chinhookowy', 'chinhook-hop-flopper'),
+    cohoHopFlopper = createFishItem('exotic', 'Hop Flopper', 'Skoczek cohowy', 'coho-hop-flopper'),
+
+    -- 1 divine
+    divineHopFlopper = createFishItem('divine', 'Hop Flopper', 'Skoczek boski', 'drift-hop-flopper'),
+
+    -- All fish inside one item, for example selling
+    allFish = createFishItem('common', 'Wszystkie ryby', 'Wszystkie typy ryb', 'lb-small-fry'),
 }
 
 function getItemName(item)
@@ -20,6 +70,14 @@ function getItemName(item)
     end
 
     return itemsData[item].title
+end
+
+function getItemIcon(item)
+    if type(item) == 'table' then
+        return itemsData[item.item].icon
+    end
+
+    return itemsData[item].icon
 end
 
 function getItemData(item)

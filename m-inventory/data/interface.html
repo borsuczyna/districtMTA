@@ -434,11 +434,11 @@
         }
 
         50% {
-            background-position: 200% 50%;
+            background-position: 100% 50%;
         }
 
         100% {
-            background-position: 0% 50%;
+            background-position: 200% 50%;
         }
     }
 
@@ -549,6 +549,99 @@
     </div>
 </div>
 
+<style>
+    #inventory-shops {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        color: #fff;
+        width: 30rem;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #inventory-shops .title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #ffffffee;
+    }
+
+    #inventory-shops .small-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #ffffffaa;
+    }
+
+    #inventory-shops .item-list {
+        max-height: 14rem;
+        overflow-y: auto;
+    }
+
+    #inventory-shops .item {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    #inventory-shops .row {
+        background: rgba(87, 87, 87, 0.1);
+        border-radius: 0.625rem;
+        padding-right: 0.5rem;
+        transition: 0.2s background;
+    }
+
+    #inventory-shops .row:has(.item):hover {
+        background: rgba(87, 87, 87, 0.2);
+    }
+
+    #inventory-shops .details-wrapper .details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s, 0.2s margin-top;
+    }
+
+    #inventory-shops .details-wrapper .arrow {
+        width: 1rem;
+        height: 1rem;
+        transition: 0.2s transform;
+    }
+    #inventory-shops .details-wrapper:has(.active) .arrow {
+        transform: rotate(90deg);
+    }
+
+    #inventory-shops .details-wrapper .details.active {
+        margin-top: 0.5rem;
+    }
+</style>
+
+<div id="inventory-shops" class="d-none nice-scroll">
+    <div class="d-flex flex-column">
+        <div class="title" id="shop-title"></div>
+        <div class="small-title" id="shop-description"></div>
+    </div>
+
+    <div class="small-title mt-3 mb-1">Sklep</div>
+    <div id="shop-items" class="item-list d-flex flex-column gap-2 pr-2"></div>
+
+    <div class="small-title mt-3 mb-1">Wybrane przedmioty</div>
+    <div id="selected-items" class="item-list d-flex flex-column gap-2 pr-2"></div>
+
+    <div class="d-flex justify-end mt-2">
+        <div class="label" id="total-price"></div>
+    </div>
+
+    <div class="mt-1 d-flex justify-center gap-1">
+        <div class="flat-button flat-button-small" onclick="inventory_buySelectedItems()">Potwierdź</div>
+        <div class="flat-button flat-button-small" onclick="inventory_setShopVisible(false)">Anuluj</div>
+    </div>
+</div>
+
 <div id="inventory-options"></div>
 <div id="inventory-tooltip">
     <div class="title"></div>
@@ -598,6 +691,7 @@
 
         inventory_itemsData = data;
         inventory_renderCrafting();
+        inventory_renderShopItems();
     });
 
     addEvent('inventory', 'interface:data:trading', (data) => {
@@ -619,8 +713,10 @@
     });
 
     addEvent('inventory', 'play-animation', async (appear) => {
-        if (!appear)
+        if (!appear) {
             inventory_toggleCrafting(false);
+            inventory_setShopVisible(false);
+        }
 
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#inventory #inventory-wrapper').style.opacity = appear ? '1' : '0';
@@ -637,9 +733,11 @@
         tasks.push(include('/m-inventory/data/categories.js'));
         tasks.push(include('/m-inventory/data/items.js'));
         tasks.push(include('/m-inventory/data/crafting.js'));
+        tasks.push(include('/m-inventory/data/shop.js'));
 
         await Promise.all(tasks);
         await new Promise(resolve => setTimeout(resolve, 100));
+
         finishIncludes('inventory');
         inventory_loadPossibleOptions();
         inventory_renderCategories();

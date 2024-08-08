@@ -38,14 +38,17 @@ window.inventory_addToOffer = async (hash) => {
     notis_addNotification('success', 'Sukces', 'Dodano przedmiot do oferty');
 }
 
-window.inventory_removeFromOfferTrade = async (item) => {
+window.inventory_removeFromOfferTrade = async (hash) => {
+    let item = inventory_getItemByHash(hash);
+    if (!item) return;
+
     let count = item.amount > 1 ? (await inventory_askForCount(item.amount)) : 1;
     if (count == null || count < 1) {
         notis_addNotification('error', 'Błąd', 'Nieprawidłowa ilość');
         return;
     }
 
-    let data = await mta.fetch('inventory', 'removeFromOffer', [item, count]);
+    let data = await mta.fetch('inventory', 'removeFromOffer', [hash, count]);
     if (data == null) {
         notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
         return;

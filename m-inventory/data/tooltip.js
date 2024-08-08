@@ -17,7 +17,10 @@ window.inventory_showTooltip = async (el) => {
         itemData = inventory_itemsData[itemKey];
     }
 
-    if (!itemData) return;
+    if (!itemData) {
+        console.error('Item data not found for hash:', itemHash);
+        return;
+    }
 
     let tooltip = document.querySelector('#inventory-tooltip');
     let parent = el.parentElement;
@@ -34,7 +37,7 @@ window.inventory_showTooltip = async (el) => {
 
     let defaultRenderTemplate = itemData.render ?? `{description}`;
     let renderedText = defaultRenderTemplate
-        .replace(/{description}/g, htmlEscape(itemData.description))
+        .replace(/{description}/g, htmlEscape(itemData.description).replace(/\n/g, '<br>'))
         .replace(/\{metadata\.(\w+)\}/g, (match, key) => {
             let value = item ? item.metadata : itemData.metadata;
             value = (value ?? {})[key] ?? '';
