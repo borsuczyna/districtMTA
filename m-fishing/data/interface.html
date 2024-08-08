@@ -1,0 +1,168 @@
+<style>
+    #fishing {
+        background-image: url('/m-fishing/data/target.png');
+        background-size: contain;
+        width: 8rem;
+        height: 8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #fishing #flopper-target {
+        width: 4.5rem;
+        height: 4.5rem;
+        /* using filter make it full white and black outline */
+        filter:
+            brightness(0)
+            invert(1)
+            drop-shadow(-0.1rem 0 0 #000)
+            drop-shadow(0.1rem 0 0 #000)
+            drop-shadow(0 0.1rem 0 #000)
+            drop-shadow(0 -0.1rem 0 #000);
+    }
+
+    #fishing #flopper {
+        --x: 50%;
+        --y: 50%;
+        width: 4.5rem;
+        height: 4.5rem;
+        position: absolute;
+        top: var(--x);
+        left: var(--y);
+        transform: translate(-50%, -50%);
+    }
+
+    #fishing #progress {
+        --progress: 0%;
+        position: absolute;
+        width: calc(100% - 0.3rem);
+        height: calc(100% - 0.3rem);
+        background: linear-gradient(0deg, rgba(0, 255, 0, 0.6) var(--progress), transparent var(--progress));
+        border-radius: 50%;
+        z-index: -1;
+    }
+</style>
+
+<div id="progress"></div>
+<img src="/m-fishing/data/flopper-outline.png" id="flopper-target">
+<img src="/m-fishing/data/flopper.png" id="flopper">
+
+<script>
+    let lastUpdate = Date.now();
+    let fishProgress = 15;
+    let finished = false;
+    let fishPosition = {
+        x: 50,
+        y: 50,
+        direction: Math.random() * 360,
+    };
+
+    function moveFlopperBy(x, y) {
+        if (isNaN(x) || isNaN(y) || finished)
+            return;
+        
+        fishPosition.x += y;
+        fishPosition.y += x;
+
+        if (isNaN(fishPosition.x) || isNaN(fishPosition.y))
+            fishPosition = { x: 50, y: 50, direction: Math.random() * 360 };
+        
+        // clamp
+        let dx = fishPosition.x - 50;
+        let dy = fishPosition.y - 50;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > 50) {
+            fishPosition.x = 50 + dx / distance * 50;
+            fishPosition.y = 50 + dy / distance * 50;
+        }
+
+        let flopper = document.querySelector('#fishing #flopper');
+
+        flopper.style.setProperty('--x', fishPosition.x + '%');
+        flopper.style.setProperty('--y', fishPosition.y + '%');
+    }
+
+    addEvent('fishing', 'update', () => {
+        if (finished)
+            return;
+
+        let dt = (Date.now() - lastUpdate) / 1000;
+        lastUpdate = Date.now();
+
+        fishPosition.direction += (Math.random() - 0.5) * 2000 * dt;
+        moveFlopperBy(
+            Math.cos(fishPosition.direction * Math.PI / 180) * 55 * Math.min(dt, 0.025),
+            Math.sin(fishPosition.direction * Math.PI / 180) * 55 * Math.min(dt, 0.025)
+        );
+
+        // get distance
+        let dx = fishPosition.x - 50;
+        let dy = fishPosition.y - 50;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        // if distance < 10, add progress
+        let progressColor = 'rgba(0, 255, 0, 0.6)';
+        if (distance < 30) {
+            fishProgress = Math.min(100, fishProgress + dt * 8);
+        } else {
+            fishProgress = Math.max(0, fishProgress - dt * 30);
+            progressColor = 'rgba(255, 0, 0, 0.6)';
+        }
+
+        let progress = document.querySelector('#fishing #progress');
+        progress.style.setProperty('--progress', Math.floor(fishProgress) + '%');
+        progress.style.background = `linear-gradient(0deg, ${progressColor} var(--progress), transparent var(--progress))`;
+
+        if (fishProgress >= 100) {
+            playAnimation(false);
+            mta.triggerEvent('fishing:finish', true);
+            finished = true;
+        } else if (fishProgress <= 0) {
+            playAnimation(false);
+            mta.triggerEvent('fishing:finish', false);
+            finished = true;
+        }
+    });
+
+    addEvent('fishing', 'mousemove', (e) => {
+        let target = document.getElementById('flopper-target');
+        let targetRect = target.getBoundingClientRect();
+
+        let dx, dy;
+        dx = e.clientX - (window.innerWidth / 2);
+        dy = e.clientY - (window.innerHeight / 2);
+
+        moveFlopperBy(dx / targetRect.width * 10, dy / targetRect.height * 10);
+    });
+
+    async function playAnimation(appear) {
+        if (appear) {
+            fishProgress = 15;
+            finished = false;
+            fishPosition = {
+                x: 50,
+                y: 50,
+                direction: Math.random() * 360,
+            };
+
+            lastUpdate = Date.now();
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#fishing').style.opacity = appear ? '1' : '0';
+        document.querySelector('#fishing').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    }
+
+    addEvent('fishing', 'play-animation', playAnimation);
+    addEvent('fishing', 'interface:data:icon', (icon) => {
+        document.querySelector('#fishing #flopper-target').src = icon;
+        document.querySelector('#fishing #flopper').src = icon;
+    });
+</script>
