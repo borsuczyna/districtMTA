@@ -119,6 +119,7 @@ addEventHandler('scooter:fold', resourceRoot, function()
 		warpPedIntoVehicle(client, rented)
 		setElementData(client, 'scooter:rented', rented)
 		setElementData(client, 'player:animation', false)
+		setElementData(rented, 'element:ghostmode', true)
 		setElementData(rented, 'scooter:owner', client)
 
 		exports['m-notis']:addNotification(client, 'success', 'Hulajnoga elektryczna', 'Hulajnoga została rozłożona, aby ją złożyć - zsiądź i naciśnij <kbd class="keycap keycap-sm">H</kbd>')

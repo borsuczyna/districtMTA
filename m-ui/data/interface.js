@@ -232,7 +232,6 @@ async function include(jsFile) {
     }
 }
 
-
 function finishIncludes(interface) {
     mta.triggerEvent('interface:includes-finish', interface);
 }

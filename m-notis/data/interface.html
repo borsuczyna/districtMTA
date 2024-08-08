@@ -163,7 +163,6 @@
     function notis_removeNotification(notification) {
         notification.classList.remove('appear');
         notification.classList.add('disappear');
-        setTimer('notis', notis_removeNotificationInternal, 500, notification);
     }
 
     window.notis_addNotification = (type, title, description, time = 5000) => {
@@ -182,6 +181,7 @@
 
         document.getElementById('notis-wrapper').appendChild(notification);
         setTimer('notis', notis_removeNotification, time, notification);
+        setTimer('notis', notis_removeNotificationInternal, time + 500, notification);
         notis_hudVisibilityChanged();
     }
 

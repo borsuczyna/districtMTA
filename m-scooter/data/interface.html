@@ -84,4 +84,8 @@ Hulajnoga automatycznie zniknie po minucie nieaktywności.</span>
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#scooter').style.opacity = appear ? '1' : '0';
     });
+
+    addEvent('scooter', 'interface:data:renting', (renting) => {
+        document.querySelector('#scooter #rent-button').innerText = renting ? 'Zwróć' : 'Wypożycz';
+    });
 </script>

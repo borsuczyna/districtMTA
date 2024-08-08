@@ -49,6 +49,7 @@ function updateTimers() {
     });
 
     timers = timers.filter(timer => Date.now() < timer.callTime);
+    triggerAllEvents('update');
 }
 
 window.addEventListener('mousedown', e => {

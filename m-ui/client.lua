@@ -8,11 +8,12 @@ local totalWidth = textWidth + 50/zoom + 20/zoom
 local visibleInterfaces = {}
 local singleInterfaces = {}
 
-addEvent('interfaceLoaded', true)
-addEvent('interfaceElement:load', true)
-addEvent('interface:load', true)
-addEvent('interface:visibilityChange', true)
-addEvent('interface:setClipboard', true)
+addEvent('interfaceLoaded')
+addEvent('interfaceElement:load')
+addEvent('interface:load')
+addEvent('interface:visibilityChange')
+addEvent('interface:setClipboard')
+addEvent('interface:getInclude')
 addEventHandler('interfaceLoaded', resourceRoot, function()
     uiLoaded = true
 end)
@@ -20,6 +21,11 @@ end)
 addCommandHandler('browserdebug', function()
     setDevelopmentMode(true, true)
     toggleBrowserDevTools(browser, true)
+end)
+
+addCommandHandler('mobileview', function()
+    setBrowserProperty(browser, 'mobile', not getBrowserProperty(browser, 'mobile') == '1' and '0' or '1')
+    outputConsole('Mobile view: '..(getBrowserProperty(browser, 'mobile') == '1' and 'enabled' or 'disabled'))
 end)
 
 function setInterfaceVisible(name, visible)
@@ -218,6 +224,16 @@ end)
 
 addEventHandler('interface:setClipboard', root, function(data)
     setClipboard(data)
+end)
+
+addEventHandler('interface:getInclude', root, function(name)
+    local path = ':' .. name:sub(2, #name)
+    print(path)
+    local file = fileOpen(path, true)
+    local content = fileRead(file, fileGetSize(file))
+    fileClose(file)
+
+    executeJavascript(('triggerEvent("main", "interface:getInclude", %q, `%s`)'):format(name, content:gsub('`', '\\`'):gsub('%${', '\\${'):gsub('\n', '\\n')))
 end)
 
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)

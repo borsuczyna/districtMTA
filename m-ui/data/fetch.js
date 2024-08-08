@@ -15,7 +15,7 @@ function makeButtonSpinner(button, spinner = true) {
 
 function isButtonSpinner(button) {
     if (button == undefined || typeof button === 'undefined' || button == null || typeof button === 'null') return false;
-    return htmlCache[button] !== undefined && button.innerHTML == spinnerSvg;
+    return button.innerHTML == spinnerSvg;
 }
 
 function generateHash(length = 32) {
