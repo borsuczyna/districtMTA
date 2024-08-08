@@ -6,6 +6,7 @@ local allowedCommands = {
     {'gp', 'm-core'},
     {'colsshow', 'm-jobs'},
     {'browserdebug', 'm-ui'},
+    {'mobileview', 'm-ui'},
     {'stat', 'rescpu'},
     {'trade', 'm-inventory'}
 }

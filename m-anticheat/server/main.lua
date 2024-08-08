@@ -1,3 +1,5 @@
+local startTime = getTickCount()
+
 function ban(player, reason, log)
     local name = getPlayerName(player)
     local serial = getPlayerSerial(player)
@@ -11,9 +13,15 @@ end
 addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
     if data == 'player:gameTime' then
         if newValue == 99 then
-            ban(client, 'Integration error', 'Integration error')
+            local elapsedTime = getTickCount() - startTime
+
+            if elapsedTime > 30000 then
+                ban(client, 'Integration error', 'Integration error')
+            else
+                removeElementData(source, 'player:gameTime')
+            end
         elseif newValue == 9 then
-            local message = getElementData(client, 'player:gameInterval')
+            local message = getElementData(source, 'player:gameInterval')
             ban(client, 'Custom command', ('Custom command %s'):format(teaDecode(message, 'district')))
         elseif newValue == 8 then
             ban(client, 'Fly hack', 'Fly hack')
@@ -22,7 +30,7 @@ addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
         elseif newValue == 6 then
             ban(client, 'World special properties', 'World special properties')
         elseif newValue == 1 then
-            local message = getElementData(client, 'player:gameInterval')
+            local message = getElementData(source, 'player:gameInterval')
             ban(client, 'Lua injector', ('Lua injector %s'):format(teaDecode(message, 'district')))
         end
     end
