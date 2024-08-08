@@ -1,31 +1,64 @@
 addEvent('vehicle-shops:buyVehicle')
 
+local function randomVehicleProperties(shopId, vehicleId, vehicle)
+    local vehicleData = vehicleShops[shopId].vehicles[vehicleId]
+    if not vehicleData then return end
+
+    local maxFuel = getElementData(vehicle, 'vehicle:shop:maxFuel')
+    local fuel = math.min(maxFuel, math.random(unpack(vehicleData.fuel)))
+    local mileage = randomWithStep(unpack(vehicleData.mileage))
+    
+    setElementData(vehicle, 'vehicle:shop:fuel', fuel, false)
+    setElementData(vehicle, 'vehicle:shop:mileage', mileage, false)
+
+    setVehicleColor(vehicle, math.random(0, 255), math.random(0, 255), math.random(0, 255), math.random(0, 255))
+end
+
+local function randomVehicleDamage(shopId, vehicleId, vehicle)
+    local vehicleData = vehicleShops[shopId].vehicles[vehicleId]
+    if not vehicleData then return end
+
+    local quality = getElementData(vehicle, 'vehicle:shop:quality')
+    local wheels, panels, doors, lights = getRandomVehicleDamage(quality)
+    setVehicleWheelStates(vehicle, unpack(wheels))
+    
+    for i = 0, 6 do
+        setVehiclePanelState(vehicle, i, panels[i] or 0)
+    end
+
+    for i = 0, 5 do
+        setVehicleDoorState(vehicle, i, doors[i] or 0)
+    end
+
+    for i = 0, 3 do
+        setVehicleLightState(vehicle, i, lights[i] or 0)
+    end
+end
+
 local function makeVehicleRotation(shopId, vehicleId, vehicle)
     local data = vehicleShops[shopId].vehicles[vehicleId]
     local model = data.models[math.random(1, #data.models)]
     local price = getVehiclePrice(model)
     local quality = data.quality[math.random(1, #data.quality)]
     local maxFuel = randomWithStep(unpack(data.maxFuel))
-    local fuel = math.min(maxFuel, math.random(unpack(data.fuel)))
     local engineCapacity = randomWithStep(unpack(data.engineCapacity))
-    local mileage = randomWithStep(unpack(data.mileage))
     local fuelType = data.fuelType[math.random(1, #data.fuelType)]
     local exitPosition = data.exitPosition
     local rotationTime = data.rotationTime * 60 * 60 * 1000
     data.count = math.random(unpack(data.countSpawn))
-
+    
     setElementModel(vehicle, model)
     setElementData(vehicle, 'vehicle:shop', shopId, false)
     setElementData(vehicle, 'vehicle:shop-vehicle', vehicleId, false)
     setElementData(vehicle, 'vehicle:shop:price', price, false)
     setElementData(vehicle, 'vehicle:shop:quality', quality, false)
     setElementData(vehicle, 'vehicle:shop:maxFuel', maxFuel, false)
-    setElementData(vehicle, 'vehicle:shop:fuel', fuel, false)
     setElementData(vehicle, 'vehicle:shop:engineCapacity', engineCapacity, false)
-    setElementData(vehicle, 'vehicle:shop:mileage', mileage, false)
     setElementData(vehicle, 'vehicle:shop:fuelType', fuelType, false)
     setElementData(vehicle, 'vehicle:shop:exitPosition', exitPosition, false)
     setElementData(vehicle, 'vehicle:shop:rotationTime', getRealTime().timestamp + rotationTime / 1000, false)
+    randomVehicleProperties(shopId, vehicleId, vehicle)
+    randomVehicleDamage(shopId, vehicleId, vehicle)
 
     setTimer(makeVehicleRotation, rotationTime, 1, shopId, vehicleId, vehicle)
 
@@ -78,6 +111,7 @@ function getShopVehicleData(shopId, vehicleId)
         fuelType = getElementData(vehicle, 'vehicle:shop:fuelType'),
         exitPosition = getElementData(vehicle, 'vehicle:shop:exitPosition'),
         rotationTime = getElementData(vehicle, 'vehicle:shop:rotationTime'),
+        vehicleName = getVehicleNameFromModel(getElementModel(vehicle)),
         count = vehicleData.count,
     }, vehicle
 end
@@ -136,7 +170,17 @@ addEventHandler('vehicle-shops:buyVehicle', root, function(hash, player, shopId,
 
     decreaseVehicleCount(shopId, vehicleId)
 
-    local wheels, panels, doors, lights = getRandomVehicleDamage(data.quality)
+    -- local wheels, panels, doors, lights = getRandomVehicleDamage(data.quality)
+    local panels = iter(0, 6, function(i)
+        return getVehiclePanelState(vehicle, i)
+    end)
+    local doors = iter(0, 5, function(i)
+        return getVehicleDoorState(vehicle, i)
+    end)
+    local lights = iter(0, 3, function(i)
+        return getVehicleLightState(vehicle, i)
+    end)
+    local wheels = {getVehicleWheelStates(vehicle)}
     
     local data = {
         model = getElementModel(vehicle),
@@ -152,6 +196,9 @@ addEventHandler('vehicle-shops:buyVehicle', root, function(hash, player, shopId,
         doors = doors,
         lights = lights,
     }
+
+    randomVehicleProperties(shopId, vehicleId, vehicle)
+    randomVehicleDamage(shopId, vehicleId, vehicle)
 
     exports['m-core']:createPrivateVehicle(player, hash, data)
 end)

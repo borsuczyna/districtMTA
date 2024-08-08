@@ -71,3 +71,11 @@ function getRandomVehicleDamage(quality)
 
     return wheels, panels, doors, lights
 end
+
+function iter(s, e, func)
+    local t = {}
+    for i = s, e do
+        table.insert(t, func(i))
+    end
+    return t
+end

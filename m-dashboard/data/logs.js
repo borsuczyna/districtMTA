@@ -10,6 +10,7 @@ let MONEY_LOG = {
     shop: 'Sklep',
     'daily reward': 'Nagroda dzienna',
     'daily task': 'Zadanie dziennie',
+    'vehicle-buy': 'Zakup pojazdu',
 }
 
 window.dashboard_renderLogs = (element, data, moneyHistory = false) => {
