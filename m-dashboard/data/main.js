@@ -33,7 +33,10 @@ window.dashboard_fetchData = async (tab) => {
     } else {
         switch (tab) {
             case 'logs':
-                dashboard_renderLogs(data.data);
+                dashboard_renderLogs(document.querySelector('#dashboard #tabs [tab="logs"]'), data.data);
+                break;
+            case 'money-logs':
+                dashboard_renderLogs(document.querySelector('#dashboard #tabs [tab="money-logs"]'), data.data, true);
                 break;
             case 'punishments':
                 dashboard_renderPunishments(data.data);
@@ -46,9 +49,6 @@ window.dashboard_fetchData = async (tab) => {
                 break;
             case 'achievements':
                 dashboard_renderAchievements(data.data);
-                break;
-            case 'logs':
-                dashboard_renderLogs(data.data);
                 break;
         }
     }

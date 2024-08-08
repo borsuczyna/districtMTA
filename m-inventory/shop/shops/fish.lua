@@ -45,7 +45,7 @@ function createFishShop(x, y, z)
         
         {category = 'Sprzedaż ryb', item = 'allFish', price = 'Zależy od towaru', priceCallback = function(item)
             for _, fish in pairs(fishPrices) do
-                if fish[1] == item then
+                if fish[1] == item.item then
                     return fish[2]
                 end
             end

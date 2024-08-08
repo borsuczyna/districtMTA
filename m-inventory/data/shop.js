@@ -76,7 +76,7 @@ window.inventory_renderShopItems = (element, items, myItems = false) => {
     for (let category in categories) {
         shopItemsHtml += Object.keys(categories).length > 1 ? `
             <div class="details-wrapper d-flex flex-column">
-                <summary class="d-flex gap-1 align-items-center" style="font-weight: 600; color: #ffffffdd;" onclick="inventory_toggleDetails(this.parentElement)" >
+                <summary class="d-flex gap-1 align-items-center" style="font-weight: 600; color: #ffffffcc;" onclick="inventory_toggleDetails(this.parentElement)" >
                     <div class="arrow">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                             <polyline points="9 18 15 12 9 6"></polyline>

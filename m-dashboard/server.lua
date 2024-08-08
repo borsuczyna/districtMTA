@@ -97,6 +97,9 @@ addEventHandler('dashboard:fetchData', resourceRoot, function(hash, player, data
     elseif data == 'logs' then
         query = 'SELECT * FROM `m-users-logs` WHERE player = ? ORDER BY uid DESC LIMIT 200'
         queryArgs = {uid}
+    elseif data == 'money-logs' then
+        query = 'SELECT * FROM `m-money-logs` WHERE player = ? ORDER BY uid DESC LIMIT 500'
+        queryArgs = {uid}
     end
 
     if not query then return end

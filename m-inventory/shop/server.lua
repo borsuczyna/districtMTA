@@ -64,6 +64,11 @@ addEventHandler('inventory:buyItems', root, function(hash, player, data)
         return
     end
 
+    if totalPrice == 0 then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie wybrano żadnych przedmiotów'})
+        return
+    end
+
     for i, item in ipairs(items.sell) do
         if not doesPlayerHaveItem(player, item.item, item.count) then
             -- exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie posiadasz wystarczająco przedmiotów ('..getItemName(item)..')'})
@@ -81,11 +86,14 @@ addEventHandler('inventory:buyItems', root, function(hash, player, data)
         end
     end
 
-    if totalPrice > 0 then
-        takePlayerMoney(player, totalPrice)
-    elseif totalPrice < 0 then
-        givePlayerMoney(player, math.abs(totalPrice))
-    end
+    -- if totalPrice > 0 then
+    --     takePlayerMoney(player, totalPrice)
+    -- elseif totalPrice < 0 then
+    --     givePlayerMoney(player, math.abs(totalPrice))
+    -- end
+
+    local details = (totalPrice > 0 and 'Zakup' or 'Sprzedaż') .. ' przedmiotów w sklepie '.. shopData.name .. ', ' .. shopData.description
+    exports['m-core']:givePlayerMoney(player, 'shop', details, -totalPrice)
 
     exports['m-ui']:respondToRequest(hash, {
         status = 'success',

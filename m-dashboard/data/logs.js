@@ -5,18 +5,26 @@ let USER_LOG = {
     3: 'Admin',
 };
 
-window.dashboard_renderLogs = (data) => {
+let MONEY_LOG = {
+    job: 'Praca',
+    shop: 'Sklep',
+    'daily reward': 'Nagroda dzienna',
+    'daily task': 'Zadanie dziennie',
+}
+
+window.dashboard_renderLogs = (element, data, moneyHistory = false) => {
     dataCache.logs = data;
 
-    document.querySelector('#dashboard #tabs [tab="logs"]').innerHTML = `
+    element.innerHTML = `
         <div class="nice-table-wrapper striped">
-            <table id="logs-table">
+            <table class="logs-table">
                 <thead>
                     <tr>
                         <th>Typ</th>
                         <th>Informacja</th>
-                        <th>Data</th>
-                        <th>Opcje</th>
+                        ${moneyHistory ? `<th>Kwota</th>
+                        <th>Data</th>` : `<th>Data</th>
+                        <th>Opcje</th>`}
                     </tr>
                 </thead>
                 <tbody>
@@ -27,29 +35,48 @@ window.dashboard_renderLogs = (data) => {
         <div class="d-none" id="logs-details"></div>
     `;
 
-    new DataTable(document.querySelector('#dashboard #tabs #logs-table'), {
+    let columns = [
+        { data: 'type', render: (data) => USER_LOG[data] ?? MONEY_LOG[data] ?? 'Nieznany' },
+        { data: moneyHistory ? 'details' : 'log' },
+    ];
+
+    // when moneyHistory swap 3 with 4
+    if (moneyHistory) {
+        columns.push({ data: moneyHistory ? 'money' : 'uid', render: (data) => {
+            if (parseInt(data) > 0) {
+                return `<span class="text-success">+$${data}</span>`;
+            } else {
+                return `<span class="text-danger">-$${Math.abs(data)}</span>`;
+            }
+        } });
+    }
+
+    columns.push({ data: 'date', render: (data, type) => {
+        if (type == 'display') {
+            return new Date(data).toLocaleString('pl-PL', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        return data;
+    } });
+
+    if (!moneyHistory) {
+        columns.push({ data: 'uid', render: (data) => {
+            return `<div class="d-flex gap-1">
+                <div class="flat-button flat-button-small" onclick="dashboard_getLogDetails(${data})">Szczegóły</div>
+            </div>`;
+        } });
+    }
+    
+    new DataTable(element.querySelector('.logs-table'), {
         ...defaultTableData,
         data: data,
-        columns: [
-            { data: 'type', render: (data) => USER_LOG[data] },
-            { data: 'log' },
-            { data: 'date', render: (data, type) => {
-                if (type == 'display') {
-                    return new Date(data).toLocaleString('pl-PL', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-                }
-
-                return data;
-            } },
-            { data: 'uid', render: (data) => {
-                return `<div class="d-flex gap-1">
-                    <div class="flat-button flat-button-small" onclick="dashboard_getLogDetails(${data})">Szczegóły</div>
-                </div>`;
-            } },
-        ],
-        order: [[2, 'desc']],
+        columns: columns,
+        order: [[moneyHistory ? 3 : 2, 'desc']],
         columnDefs: [
             { targets: [3], orderable: false, className: 'dt-right d-flex justify-end' }
-        ]
+        ],
+        // max 10 per page
+        pageLength: moneyHistory ? 18 : 10,
     });
 }
 
@@ -64,7 +91,7 @@ window.dashboard_getLogDetails = (id) => {
             <div class="info-body d-flex flex-column gap-1">
                 <div class="d-flex gap-1">
                     <div class="label">Typ:</div>
-                    <div>${USER_LOG[log.type]}</div>
+                    <div>${USER_LOG[log.type] ?? MONEY_LOG[log.type] ?? 'Nieznany'}</div>
                 </div>
                 <div class="d-flex gap-1 flex-column">
                     <div class="label">Szczegóły:</div>
