@@ -31,6 +31,7 @@ function toggleMovement(state)
     canMove = state
     if not state then
         setPedControlState(localPlayer, 'forwards', false)
+        setPedControlState(localPlayer, 'sprint', false)
         goToPosition = false
     end
 end
@@ -59,6 +60,7 @@ function updateMovement()
 
     if distance < 0.3 then
         setPedControlState(localPlayer, 'forwards', false)
+        setPedControlState(localPlayer, 'sprint', false)
         goToPosition[5] = true
         tryAction()
     else
@@ -73,6 +75,9 @@ function goToPositionClick(button, state, x, y, wx, wy, wz, element)
     if button ~= 'left' or state ~= 'down' or not wx then return end
 
     local px, py, pz = getElementPosition(localPlayer)
+    local upgrades = getElementData(localPlayer, 'player:job-upgrades-cache')
+
+    setPedControlState(localPlayer, 'sprint', not not table.find(upgrades, 'sprinter'))
     setPedControlState(localPlayer, 'forwards', true)
 
     local hit, hx, hy, hz = processLineOfSight(px, py, pz, wx, wy, pz, true, false, false, true, false, false, false, false, localPlayer, true)

@@ -89,7 +89,14 @@ function getLobbyTimeMultiplier(players)
 end
 
 function getPlayerCookMultiplier(player)
-    return 1
+    local baseMultiplier = 1
+    local upgrades = getElementData(player, "player:job-upgrades-cache") or {}
+   
+    if table.find(upgrades, 'kucharz') then
+        baseMultiplier = baseMultiplier + 0.1
+    end
+
+    return baseMultiplier
 end
 
 addEventHandler('jobs:startJob', root, function(job, hash, players)
