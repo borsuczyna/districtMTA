@@ -28,6 +28,9 @@ local function loadPrivateVehicle(data, player, position)
     local x, y, z = unpack(map(split(data.position, ','), tonumber))
     local rx, ry, rz = unpack(map(split(data.rotation, ','), tonumber))
     local fuel = data.fuel
+    local maxFuel = data.maxFuel
+    local fuelType = data.fuelType or 'petrol'
+    local engineCapacity = data.engineCapacity
     local mileage = data.mileage
     local health = data.health
     local color = map(split(data.color, ','), tonumber)
@@ -44,6 +47,9 @@ local function loadPrivateVehicle(data, player, position)
     vehicles[data.uid] = vehicle
 
     setElementData(vehicle, 'vehicle:fuel', tonumber(data.fuel))
+    setElementData(vehicle, 'vehicle:maxFuel', tonumber(data.maxFuel))
+    setElementData(vehicle, 'vehicle:fuelType', fuelType)
+    setElementData(vehicle, 'vehicle:engineCapacity', tonumber(data.engineCapacity))
     setElementData(vehicle, 'vehicle:mileage', tonumber(data.mileage))
     setElementHealth(vehicle, health)
     setVehicleColor(vehicle, unpack(color))
@@ -130,6 +136,9 @@ function buildSavePrivateVehicleQuery(vehicle)
     local uid = getElementData(vehicle, 'vehicle:uid')
     local lastDriver = getElementData(vehicle, 'vehicle:lastDriver')
     local fuel = getElementData(vehicle, 'vehicle:fuel')
+    local maxFuel = getElementData(vehicle, 'vehicle:maxFuel')
+    local fuelType = getElementData(vehicle, 'vehicle:fuelType')
+    local engineCapacity = getElementData(vehicle, 'vehicle:engineCapacity')
     local mileage = getElementData(vehicle, 'vehicle:mileage')
     local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
@@ -141,6 +150,9 @@ function buildSavePrivateVehicleQuery(vehicle)
     local saveData = {
         lastDriver = lastDriver,
         fuel = fuel,
+        maxFuel = maxFuel,
+        fuelType = fuelType,
+        engineCapacity = engineCapacity,
         mileage = mileage,
         health = health,
         position = table.concat({getElementPosition(vehicle)}, ','),
@@ -197,14 +209,14 @@ function saveAllPrivateVehicles()
     exports['m-logs']:sendLog('vehicles', 'info', 'Zapisano dane wszystkich pojazdów (' .. getTickCount() - startTime .. 'ms)')
 end
 
-function loadPrivateVehiclesResult(queryResult, player, hash)
+function loadPrivateVehiclesResult(queryResult, player, hash, message)
     local result = dbPoll(queryResult, 0)
 
     if hash then
         if #result == 0 then
             exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie udało się wyjąć pojazdu'})
         else
-            exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wyjęto pojazd z parkingu'})
+            exports['m-ui']:respondToRequest(hash, {status = 'success', message = message or 'Pomyślnie wyjęto pojazd z parkingu'})
         end
     end
 
@@ -325,6 +337,43 @@ function getPlayerVehicles(player, hash, parking, shared, group)
     end
 
     dbQuery(getPlayerVehiclesResult, {player, hash}, connection, query, unpack(queryArgs))
+end
+
+local function createPrivateVehicleResult(queryHandle, player, hash, position, rotation, message)
+    local result, numAffectedRows, lastInsertId = unpack(dbPoll(queryHandle, -1, true)[1] or {})
+    if not result or numAffectedRows == 0 then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie udało się kupić pojazdu'})
+        return
+    end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    dbQuery(loadPrivateVehiclesResult, {player, hash, message}, connection, 'SELECT * FROM `m-vehicles` WHERE `uid` = ?', lastInsertId)
+end
+
+function createPrivateVehicle(player, hash, data)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local x, y, z, rx, ry, rz = unpack(data.position)
+    local positionString = ('%s,%s,%s'):format(x, y, z)
+    local rotationString = ('%s,%s,%s'):format(rx, ry, rz)
+    local color = table.concat(data.color, ',')
+    local wheels = table.concat(data.wheels, ',')
+    local panels = table.concat(data.panels, ',')
+    local doors = table.concat(data.doors, ',')
+    local lights = table.concat(data.lights, ',')
+    
+    local query = [[
+        INSERT INTO `m-vehicles` (`model`, `position`, `rotation`, `fuel`, `maxFuel`, `engineCapacity`, `mileage`, `fuelType`, `color`, `wheels`, `panels`, `doors`, `lights`, `owner`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ]]
+    
+    dbQuery(createPrivateVehicleResult, {player, hash, Vector3(x, y, z), Vector3(rx, ry, rz), 'Pomyślnie zakupiono pojazd'}, connection, query, data.model, positionString, rotationString, data.fuel, data.maxFuel, data.engineCapacity, data.mileage, data.fuelType, color, wheels, panels, doors, lights, uid)
 end
 
 addEventHandler('onResourceStart', resourceRoot, loadPrivateVehicles)

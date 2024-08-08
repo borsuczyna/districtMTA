@@ -96,6 +96,7 @@
     <export function='disAllowVehicleAttach' type='server'/>
     <export function='putVehicleIntoParking' type='server'/>
     <export function='getVehicleFromParking' type='server'/>
+    <export function='createPrivateVehicle' type='server'/>
     <export function='getPlayerVehicles' type='server'/>
     
     <export function='premiumChatDiscord' http='true'/>
