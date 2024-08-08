@@ -73,7 +73,7 @@ window.dashboard_renderLogs = (element, data, moneyHistory = false) => {
         columns: columns,
         order: [[moneyHistory ? 3 : 2, 'desc']],
         columnDefs: [
-            { targets: [3], orderable: false, className: 'dt-right d-flex justify-end' }
+            { targets: [3], orderable: !!moneyHistory, className: 'dt-right d-flex justify-end' }
         ],
         // max 10 per page
         pageLength: moneyHistory ? 18 : 10,
