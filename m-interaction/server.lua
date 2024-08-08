@@ -20,6 +20,12 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
     local feedbackData = false
 
     if action == 'engine' then
+        local uid = getElementData(vehicle, 'vehicle:uid')
+        if uid and getElementData(vehicle, 'vehicle:fuel') <= 0 then
+            exports['m-notis']:addNotification(client, 'error', 'Interakcja', 'Brak paliwa w pojeździe')
+            return
+        end
+
         setVehicleEngineState(vehicle, not getVehicleEngineState(vehicle))
     elseif action == 'lights' then
         setVehicleOverrideLights(vehicle, getVehicleOverrideLights(vehicle) ~= 2 and 2 or 1)
