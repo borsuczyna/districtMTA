@@ -12,7 +12,7 @@ function premiumChatDiscord(name, message)
         end
     end
 
-    local fullMessage = ('#f5df38(Czat premium) #7289da(#ffffffDISCORD#7289da) #dddddd%s: #eeeeee%s'):format(name, message)
+    local fullMessage = ('#f5df38(Premium) #7289da(#ffffffDISCORD#7289da) #dddddd%s: #eeeeee%s'):format(name, message)
     outputChatBox(fullMessage, premiumPlayers, 255, 255, 255, true)
 end
 
@@ -49,7 +49,7 @@ function premiumChat(player, cmd, ...)
         end
     end
 
-    local fullMessage = ('#f5df38(Czat premium) %s(#ffffff%d%s) #dddddd%s: #eeeeee%s'):format(color, playerID, color, playerName, message)
+    local fullMessage = ('#f5df38(Premium) %s(#ffffff%d%s) #dddddd%s: #eeeeee%s'):format(color, playerID, color, playerName, message)
     outputChatBox(fullMessage, premiumPlayers, 255, 255, 255, true)
     exports['m-admins']:addLog('premium', fullMessage, {
         {'teleport', 'teleport-uid', playerUID}
