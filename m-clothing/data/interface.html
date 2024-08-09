@@ -12,7 +12,7 @@
         width: 30rem;
         padding: 1.25rem;
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
+        transform: translate(-50%, -50%) scale(0.8);
         transition: opacity 0.2s, transform 0.2s;
     }
 
@@ -154,6 +154,6 @@
     addEvent('clothing', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#clothing').style.opacity = appear ? '1' : '0';
-        document.querySelector('#clothing').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+        document.querySelector('#clothing').style.transform = appear ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(0.8)';
     });
 </script>
