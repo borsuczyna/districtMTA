@@ -94,7 +94,7 @@ addEventHandler('fishing:catchFish', resourceRoot, function(success)
         if not fishingRod then return end
 
         if math.random(1, 2) == 2 then
-            exports['m-inventory']:addItemProgress(player, fishingRod, 100)
+            exports['m-inventory']:addItemProgress(player, fishingRod, 1)
         end
     else
         exports['m-notis']:addNotification(player, 'error', 'Łowienie', 'Nie udało się złowić ryby.')
@@ -133,8 +133,7 @@ addEventHandler('fishing:start', resourceRoot, function()
 
     exports['m-inventory']:removePlayerItem(client, 'bait', 1)
     fishingRodHit(client)
-    -- setTimer(getFish, math.random(3000, 24000), 1, client, rarity)
-    setTimer(getFish, 1000, 1, client, rarity)
+    setTimer(getFish, math.random(3000, 24000), 1, client, rarity)
 end)
 
 addEventHandler('onResourceStart', resourceRoot, function()
