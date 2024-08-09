@@ -33,6 +33,7 @@ function updateScoreboardData()
         local organization = getElementData(player, 'player:organization') or ''
         local level = getElementData(player, 'player:level') or 0
         local status, statusColor = getPlayerStatus(player)
+        local duty = getElementData(player, 'player:rank') or false
 
         table.insert(data, {
             uid = uid,
@@ -43,7 +44,7 @@ function updateScoreboardData()
             status = status,
             statusColor = statusColor,
             level = level,
-            category = 'players',
+            category = duty and 'administration' or 'players',
             me = player == localPlayer
         })
     end
