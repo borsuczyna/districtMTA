@@ -101,6 +101,13 @@ function destroyInterfaceElement(name) {
     visibleInterfaces = visibleInterfaces.filter(i => i !== name);
     
     triggerAllEvents('interface:visible', name, false);
+
+    // find all variables with name_ prefix and remove them
+    for (let key in window) {
+        if (key.startsWith(name + '_')) {
+            delete window[key];
+        }
+    }
 }
 
 function setInterfaceData(interfaceName, key, value) {

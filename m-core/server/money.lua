@@ -8,4 +8,6 @@ function givePlayerMoney(player, type, details, amount)
     else
         takePlayerMoney(player, -amount)
     end
+
+    updatePlayerMoney(player)
 end

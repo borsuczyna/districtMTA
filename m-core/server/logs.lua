@@ -21,6 +21,10 @@ function addMoneyLog(player, type, details, amount)
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
+    addMoneyLogByUid(uid, type, details, amount)
+end
+
+function addMoneyLogByUid(uid, type, details, amount)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 

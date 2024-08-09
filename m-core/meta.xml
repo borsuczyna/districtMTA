@@ -56,6 +56,8 @@
     
     <export function='addUserLog' type='server'/>
     <export function='addMoneyLog' type='server'/>
+    <export function='addMoneyLogByUid' type='server'/>
+    <export function='givePlayerBankMoney' type='server'/>
     <export function='getLogType' type='server'/>
     
     <export function='createAccount' type='server'/>
@@ -79,6 +81,7 @@
     <export function='getNextLevelExp' type='shared'/>
     <export function='givePlayerExp' type='server'/>
     <export function='givePlayerMoney' type='server'/>
+    <export function='updatePlayerMoney' type='server'/>
     <export function='getVehicleByUid' type='server'/>
     <export function='getPlayerNameByUid' type='server'/>
     <export function='getPlayerDailyRewardDay' type='shared'/>

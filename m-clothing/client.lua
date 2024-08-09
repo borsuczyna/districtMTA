@@ -17,6 +17,9 @@ function showClothingInterface()
 end
 
 function setClothingUIVisible(visible)
+    if visible and exports['m-ui']:isAnySingleInterfaceVisible() then return end
+    exports['m-ui']:addSingleInterface('clothing')
+
     if clothingHideTimer and isTimer(clothingHideTimer) then
         killTimer(clothingHideTimer)
     end

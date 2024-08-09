@@ -44,6 +44,7 @@ function assignPlayerData(player, data)
     setPlayerName(player, data.username)
     setElementModel(player, data.skin)
     setPlayerMoney(player, data.money)
+    setElementData(player, 'player:bankMoney', data.bankMoney or 0)
     
     updatePlayerMute(player)
     updatePlayerLicense(player)
@@ -61,6 +62,7 @@ function buildSavePlayerQuery(player)
 
     local skin = getElementData(player, 'player:skin')
     local money = getPlayerMoney(player)
+    local bankMoney = getElementData(player, 'player:bankMoney')
     local time = getElementData(player, 'player:time')
     local afkTime = getElementData(player, 'player:afkTime')
     local inventory = getElementData(player, 'player:inventory') or {}
@@ -71,6 +73,7 @@ function buildSavePlayerQuery(player)
     local saveData = {
         skin = skin,
         money = money,
+        bankMoney = bankMoney,
         level = getElementData(player, 'player:level'),
         exp = getElementData(player, 'player:exp'),
         time = time,
@@ -88,6 +91,30 @@ function buildSavePlayerQuery(player)
     table.insert(values, uid)
 
     return query, values, uid
+end
+
+function updatePlayerMoney(player)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local money = getPlayerMoney(player)
+    local bankMoney = getElementData(player, 'player:bankMoney')
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    dbExec(connection, 'UPDATE `m-users` SET money = ?, bankMoney = ? WHERE uid = ?', money, bankMoney, uid)
+end
+
+function givePlayerBankMoney(uid, amount, log, logDesc)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    dbExec(connection, 'UPDATE `m-users` SET bankMoney = bankMoney + ? WHERE uid = ?', amount, uid)
+
+    if log then
+        addMoneyLogByUid(uid, log, logDesc, amount)
+    end
 end
 
 function savePlayerData(player, noLogs)
