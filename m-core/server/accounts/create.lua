@@ -1,3 +1,12 @@
+local function generateDiscordConnectionCode()
+    local code = ''
+    local chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    for i = 1, 8 do
+        code = code .. string.sub(chars, math.random(1, #chars), math.random(1, #chars))
+    end
+    return code
+end
+
 local function createAccountResult(queryResult, hash)
     local result = dbPoll(queryResult, 0)
     if result then
@@ -39,8 +48,8 @@ local function checkAccountExistsResult(queryResult, hash, data)
     end
 
     dbQuery(createAccountResult, {hash}, connection,
-    'INSERT INTO `m-users` (username, password, email, ip, serial) VALUES (?, ?, ?, ?, ?)',
-    data.username, data.password, data.email, data.ip, data.serial)
+    'INSERT INTO `m-users` (username, password, email, ip, serial, discordCode) VALUES (?, ?, ?, ?, ?, ?)',
+    data.username, data.password, data.email, data.ip, data.serial, generateDiscordConnectionCode())
 end
 
 local function createAccountInternal(data, hash)

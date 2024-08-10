@@ -2,7 +2,7 @@ local connection, settings;
 local settings = {
     host = 'localhost',
     user = 'root',
-    password = '',
+    password = 'sherlockholmesxd123',
     database = 'mtaserver',
     timeout = 10000,
 }

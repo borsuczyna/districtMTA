@@ -25,7 +25,7 @@ function getPlayerById(id)
     end
 end
 
-function `r(uid)
+function getPlayerByUid(uid)
     if not uid then return false end
     uid = tonumber(uid)
     
