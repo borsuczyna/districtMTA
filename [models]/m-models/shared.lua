@@ -320,6 +320,16 @@ models = {
 	    model = 1337,
         txd = 'fishing-rod',
     },
+    ['cj_bobo'] = {
+        custom = false,
+        type = 'object',
+        model = 2659,
+    },
+    ['gen_pol_vegas'] = {
+        custom = false,
+        type = 'object',
+        model = 14858,
+    },
 }
 
 function getModelsCount()

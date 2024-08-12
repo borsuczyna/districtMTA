@@ -6,6 +6,8 @@
     <export function='createCustomObject' type='shared'/>
     
     <!-- automatically added -->
+    <file src="data/decoded/gen_pol_vegas.txd"/>
+    <file src="data/decoded/cj_bobo.txd"/>
     <file src="data/decoded/int-1.dff"/>
     <file src="data/decoded/int-1.col"/>
     <file src="data/decoded/int-1.txd"/>
