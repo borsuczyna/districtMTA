@@ -11,6 +11,8 @@ let MONEY_LOG = {
     'daily reward': 'Nagroda dzienna',
     'daily task': 'Zadanie dziennie',
     'vehicle-buy': 'Zakup pojazdu',
+    transfer: 'Przelew',
+    license: 'Prawo jazdy',
 }
 
 window.dashboard_renderLogs = (element, data, moneyHistory = false) => {
