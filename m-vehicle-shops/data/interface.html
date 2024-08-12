@@ -58,7 +58,7 @@
     }
 </style>
 
-<div class="top">
+<div class="top" id="vehicle-name">
     Infernus
 </div>
 
@@ -171,6 +171,7 @@
         let element = document.getElementById('vehicle-shops');
         let rotationDate = new Date(data.rotationTime * 1000);
 
+        element.querySelector('#vehicle-name').innerText = data.name;
         element.querySelector('#fuel').innerText = `${data.fuel}L`;
         element.querySelector('#engine-capacity').innerText = data.engineCapacity.toFixed(1) + 'dm³';
         element.querySelector('#mileage').innerText = `${formatNumber(data.mileage)}km`;
@@ -216,7 +217,7 @@
     addEvent('vehicle-shops', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#vehicle-shops').style.opacity = appear ? '1' : '0';
-        document.querySelector('#vehicle-shops').style.transform = appear ? 'translate(-50%, 0%) scale(1)' : 'translate(-50%, 0%) scale(0.8)';
+        document.querySelector('#vehicle-shops').style.transform = appear ? 'translate(-50%, 0%) scale(0.9)' : 'translate(-50%, 0%) scale(0.8)';
     });
 
     addEvent('vehicle-shops', 'interface:data:shopData', (data) => {

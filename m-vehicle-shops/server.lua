@@ -100,6 +100,7 @@ function getShopVehicleData(shopId, vehicleId)
     if not vehicle then return end
 
     return {
+        name = getVehicleNameFromModel(getElementModel(vehicle)),
         shopId = shopId,
         vehicleId = vehicleId,
         price = getElementData(vehicle, 'vehicle:shop:price'),
