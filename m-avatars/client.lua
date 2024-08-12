@@ -38,6 +38,7 @@ addEventHandler('avatars:receivePlayerAvatar', root, function(uid, avatar)
     triggerEvent('avatars:onPlayerAvatarChange', root, player, avatars[uid])
 end)
 
+
 addEventHandler('onClientPlayerQuit', root, function()
     local uid = getElementData(source, 'player:uid')
     if not uid then return end
