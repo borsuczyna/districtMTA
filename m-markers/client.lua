@@ -30,7 +30,9 @@ function updateRenderTarget(marker, rt)
     -- dxDrawImage(100, 0, 200, 200, 'data/overlay.png', 0, 0, 0, tocolor(r, g, b, 255))
     -- dxDrawImage(100, 0, 200, 200, 'data/overlay.png', 0, 0, 0, tocolor(r, g, b, 100))
     dxSetBlendMode('blend')
-    dxDrawImage(100, 0, 200, 200, 'data/icons/' .. icon .. '.png')
+    if icon ~= 'none' then
+        dxDrawImage(100, 0, 200, 200, 'data/icons/' .. icon .. '.png')
+    end
     -- dxDrawImage(150, 50, 200, 100, 'data/icons/' .. icon .. '.png')
 
     dxDrawText(title, 200, 255, nil, nil, white, 1, getFont('Inter-Bold', 25), 'center', 'bottom')
@@ -75,6 +77,8 @@ function updateMarker(marker)
         dxSetShaderValue(markersData[marker].shader, 'isSquare', not not squareSize)
         setElementCollisionsEnabled(markersData[marker].object, false)
         engineApplyShaderToWorldTexture(markersData[marker].shader, '*', markersData[marker].object)
+        setElementInterior(markersData[marker].object, getElementInterior(marker))
+        setElementDimension(markersData[marker].object, getElementDimension(marker))
     end
 
     setMarkerColor(marker, r, g, b, 0)
@@ -106,7 +110,7 @@ function renderMarkers()
             local x, y, z = getElementPosition(k)
             local distance = getDistanceBetweenPoints3D(cx, cy, cz, x, y, z)
 
-            if distance < 40 then
+            if distance < 140 then
                 local model = getElementModel(v.object)
                 local isSquare = model == idSquare
 
