@@ -29,8 +29,18 @@ function updateF11Data()
     local data = {}
     local deleteBlips = {}
     local blips = getElementsByType('blip')
+    local myInterior = getElementInterior(localPlayer)
+    local thisInteriorBlips = {}
 
     for i, blip in ipairs(blips) do
+        local attachedTo = getElementAttachedTo(blip)
+        local interior = getElementInterior(attachedTo or blip)
+        if interior == myInterior then
+            table.insert(thisInteriorBlips, blip)
+        end
+    end
+
+    for i, blip in ipairs(thisInteriorBlips) do
         local blipId = tostring(blip)
         local x, y = getElementPosition(blip)
         local icon = getBlipIcon(blip)
