@@ -43,6 +43,7 @@ end
 function toggleCollisionBetweenElements(element, elements)
     local elementType = getElementType(element)
     if not table.find(elementTypes, elementType) then return end
+    if isElementLocal(element) then return end
     
     local ghostMode1 = getElementData(element, 'element:ghostmode') or isInsideGhostColShape(element)
 
