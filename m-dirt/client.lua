@@ -75,7 +75,7 @@ function setVehicleDirtLevel(vehicle, level)
 end
 
 addEventHandler('onClientElementStreamIn', root, function()
-    if getElementType(source) == 'vehicle' then
+    if getElementType(source) == 'vehicle' and not isElementLocal(source) then
 		if isValidDirtVehicle(source) then
 			if not grungeVehicles[source] or grungeVehicles[source] == nil then
 				triggerServerEvent('loadVehicleDirtServer', source, source)
