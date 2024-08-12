@@ -38,6 +38,10 @@ clothingShops = {
     {308.528, -510.919, 97.848, 1}
 }
 
+local blips = {
+    {2245.213, -1663.606, 15.477},
+}
+
 if localPlayer then
     for i, v in ipairs(clothingShops) do
         local x, y, z = v[1], v[2], v[3]
@@ -47,5 +51,9 @@ if localPlayer then
         setElementData(marker, 'marker:desc', 'Zmiana ubrania')
         addEventHandler('onClientMarkerHit', marker, clothingMarkerHit)
         addEventHandler('onClientMarkerLeave', marker, clothingMarkerLeave)
+    end
+else
+    for i, v in ipairs(blips) do
+        local blip = createBlip(v[1], v[2], v[3], 45, 2, 255, 255, 255, 255, 0, 9999.0)
     end
 end
