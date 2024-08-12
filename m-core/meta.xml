@@ -24,6 +24,8 @@
     <script src='server/daily-reward.lua' type='server'/>
     <script src='server/daily-tasks.lua' type='server'/>
     <script src='server/achievements.lua' type='server'/>
+    <script src='server/handling.lua' type='server'/>
+    <script src='server/license.lua' type='server'/>
     
     <!-- accounts -->
     <script src='server/accounts/main.lua' type='server'/>
@@ -101,6 +103,9 @@
     <export function='getVehicleFromParking' type='server'/>
     <export function='createPrivateVehicle' type='server'/>
     <export function='getPlayerVehicles' type='server'/>
+    <export function='addPlayerLicense' type='server'/>
+    <export function='removePlayerLicense' type='server'/>
+    <export function='doesPlayerHaveLicense' type='server'/>
     
     <export function='premiumChatDiscord' http='true'/>
 </meta>

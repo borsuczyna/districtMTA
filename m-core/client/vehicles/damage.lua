@@ -22,3 +22,11 @@ addEventHandler('onClientRender', root, function()
         end
     end
 end)
+
+function onClientPlayerDamage(attacker, weapon, bodypart, loss)
+    if (isElement(attacker) and getElementType(attacker) == 'vehicle') or (weapon == 49 or weapon == 55 or weapon == 63 or weapon == 50) then
+        cancelEvent()
+    end
+end
+
+addEventHandler('onClientPlayerDamage', root, onClientPlayerDamage)

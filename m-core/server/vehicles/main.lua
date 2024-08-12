@@ -39,6 +39,9 @@ local function loadPrivateVehicle(data, player, position)
     local doors = map(split(data.doors, ','), tonumber)
     local lights = map(split(data.lights, ','), tonumber)
     local wheelStates = map(split(data.wheels, ','), tonumber)
+    local frozen = data.frozen == 1
+    local engine = data.engine == 1
+    local lightsState = data.lightsState
     local tuning = map(split(data.tuning, ','), tonumber)
     local dirt = map(split(data.dirt, ','), tonumber)
 
@@ -55,6 +58,9 @@ local function loadPrivateVehicle(data, player, position)
     setVehicleColor(vehicle, unpack(color))
     setVehicleHeadLightColor(vehicle, color[13] or 255, color[14] or 255, color[15] or 255)
     setElementData(vehicle, 'vehicle:owner', data.owner)
+    setElementFrozen(vehicle, frozen)
+    setVehicleEngineState(vehicle, engine)
+    setVehicleOverrideLights(vehicle, lightsState)
 
     for i = 0, 6 do
         setVehiclePanelState(vehicle, i, panels[i + 1] or 0)
@@ -143,6 +149,9 @@ function buildSavePrivateVehicleQuery(vehicle)
     local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
     local tuning = getVehicleUpgrades(vehicle) or {}
+    local frozen = isElementFrozen(vehicle)
+    local engine = getVehicleEngineState(vehicle)
+    local lightsState = getVehicleOverrideLights(vehicle)
     local dirt = {exports['m-dirt']:getVehicleDirtLevel(vehicle), exports['m-dirt']:getVehicleDirtProgress(vehicle)}
     local r, g, b = getVehicleHeadLightColor(vehicle)
     table.insert(color, r); table.insert(color, g); table.insert(color, b)
@@ -154,7 +163,7 @@ function buildSavePrivateVehicleQuery(vehicle)
         fuelType = fuelType,
         engineCapacity = engineCapacity,
         mileage = mileage,
-        health = health,
+        health = math.max(health, 315),
         position = table.concat({getElementPosition(vehicle)}, ','),
         rotation = table.concat({getElementRotation(vehicle)}, ','),
         color = table.concat(color, ','),
@@ -168,6 +177,9 @@ function buildSavePrivateVehicleQuery(vehicle)
             return getVehicleLightState(vehicle, i)
         end), ','),
         wheels = table.concat({getVehicleWheelStates(vehicle)}, ','),
+        frozen = frozen and 1 or 0,
+        engine = engine and 1 or 0,
+        lightsState = lightsState,
         tuning = table.concat(tuning, ','),
         dirt = table.concat(dirt, ','),
     }
