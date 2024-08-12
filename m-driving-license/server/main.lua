@@ -4,7 +4,7 @@ addEvent('drivingLicense:finish')
 local playersThatPaid = {}
 local licenseCosts = {
     A = 1000,
-    B = 0,
+    B = 100,
     C = 2000,
 }
 

@@ -1,6 +1,7 @@
 local examElements = {}
 local defaultRoute = {
-    spawn = {1420.913, -1682.169, 13.271, 0.001, 0.000, 269.637},
+    vehicle = 546,
+    spawn = {1098.851, -1763.798, 13.074, 0.135, 359.976, 89.709},
     finish = {
         interior = 3,
         dimension = 0,
@@ -8,21 +9,61 @@ local defaultRoute = {
     },
     checkpoints = {
         -- {text, x, y, z, distance, angle, possible angle difference}
-        {'Wyjedź z placu', 1431.459, -1670.396, 13.116, 4},
-        {'Jedź prosto', 1431.604, -1652.124, 13.107, 4},
-        {'Zaparkuj równolegle między dwoma pojazdami', 1436.138, -1625.743, 13.271, 1, 0, 3},
+        {'Przygotuj się do jazdy i wyjedź z placu', 1109.877, -1743.222, 13.123, 4},
+        {'Na skrzyżowaniu skręć w prawo', 1160.351, -1743.208, 13.123, 4},
+        {false, 1173.066, -1790.062, 13.123, 4},
+        {'Na następnym skrzyżowaniu w lewo', 1173.006, -1837.625, 13.146, 4},
+        {'Jedź prosto a następnie w lewo', 1270.426, -1854.593, 13.107, 4},
+        {false, 1314.794, -1825.143, 13.107, 4},
+        {'Skręć w prawo do centrum', 1314.908, -1748.946, 13.107, 4},
+        {false, 1331.386, -1734.564, 13.109, 4},
+        {'Zaparkuj tyłem między dwoma pojazdami', 1349.470, -1752.868, 13.106, 1, 0, 3},
+        {'Wyjedź z parkingu', 1375.920, -1734.648, 13.107, 4},
+        {'Skręć w lewo', 1405.589, -1734.507, 13.115, 4},
+        {false, 1432.009, -1717.959, 13.105, 4},
+        {'Jedź cały czas prosto', 1436.677, -1545.793, 13.094, 4},
+        {false, 1456.704, -1461.117, 13.095, 4},
+        {'Skręć w prawo', 1513.038, -1443.213, 13.105, 4},
+        {'Zjedź do garażu podziemnego', 1530.776, -1475.571, 9.222, 4},
+        {'Zaparkuj równolegle między dwoma pojazdami', 1511.490, -1468.608, 9.211, 1, 0, 3},
+        {'Wyjedź z garażu i skręć w lewo', 1500.180, -1438.398, 13.107, 4},
+        {'Na skrzyżowaniu jedź prosto', 1471.379, -1438.451, 13.107, 4},
+        {false, 1374.523, -1392.915, 13.211, 4},
+        {false, 1282.934, -1393.108, 12.948, 4},
+        {'Przepuść pieszego', 1220.097, -1392.852, 12.972, 4},
+        {'Poczekaj aż pieszy przekroczy jezdnię', 1181.904, -1392.746, 12.973, 4},
+        {'Rozpędź pojazd i zatrzymaj się na poziomie sklepu z kasetami', 820.502, -1391.823, 13.186, 1, 90, 4},
+        {'Skręć w lewo', 792.757, -1467.501, 13.110, 4},
+        {'Na następnym skrzyżowaniu skręć w lewo', 770.106, -1570.638, 13.111, 4},
+        {false, 804.499, -1592.876, 13.115, 4},
+        {'Skręć w lewo', 900.257, -1574.501, 13.107, 4},
+        {'Jedź prosto', 1006.859, -1574.771, 13.118, 4},
+        {'Skręć w prawo', 1035.010, -1679.167, 13.107, 4},
+        {'Skręć w lewo', 1156.180, -1714.457, 13.410, 4},
+        {'Zaparkuj na parkingu', 1062.926, -1743.212, 13.186, 1, 90, 3},
     },
     callbacks = {
         [1] = function()
-            destroyExamElement('vehicle1')
-            destroyExamElement('vehicle2')
-            
-            examElements['vehicle1'] = createVehicle(401, 1436.277, -1619.992, 13.265, 0, 0, 0)
-            examElements['vehicle2'] = createVehicle(401, 1436.203, -1631.510, 13.271, 0, 0, 0)
+            examElements['vehicle1'] = createVehicle(546, 1346.561, -1752.832, 13.084, 0, 0, 180)
+            examElements['vehicle2'] = createVehicle(401, 1352.307, -1753.024, 13.139, 0, 0, 0)
+            examElements['vehicle3'] = createVehicle(478, 1511.502, -1462.269, 9.486, 0, 0, 0)
+            examElements['vehicle4'] = createVehicle(418, 1511.627, -1474.852, 9.593, 0, 0, 0)
 
             setElementFrozen(examElements['vehicle1'], true)
             setElementFrozen(examElements['vehicle2'], true)
-        end
+            setElementFrozen(examElements['vehicle3'], true)
+            setElementFrozen(examElements['vehicle4'], true)
+        end,
+        [22] = function() -- zmienic na 22
+            destroyExamElement('vehicle1')
+            destroyExamElement('vehicle2')
+            destroyExamElement('vehicle3')
+            destroyExamElement('vehicle4')
+
+            examElements['ped'] = createPed(7, 1213.806, -1385.974, 13.380, 180)
+            setPedControlState(examElements['ped'], 'walk', true)
+            setPedControlState(examElements['ped'], 'forwards', true)
+        end,
     }
 }
 
@@ -86,3 +127,8 @@ addEventHandler('onClientResourceStart', resourceRoot, function()
         addEventHandler('onClientMarkerLeave', marker, onClientMarkerLeave)
     end
 end)
+
+if not localPlayer then
+    local blip = createBlip(1113.683, -1835.972, 16.600, 52, 2, 255, 0, 0, 255, 0, 9999)
+    setElementData(blip, 'blip:hoverText', 'Ośrodek szkolenia kierowców')
+end

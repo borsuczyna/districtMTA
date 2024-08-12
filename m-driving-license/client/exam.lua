@@ -5,6 +5,7 @@ local examVehicle = false
 local examData = false
 local examCheckpoint = 0
 local examMarker = false
+local examBlip = false
 
 local function insideMarkerCheck()
     if not examMarker or not isElement(examMarker) then return end
@@ -38,6 +39,10 @@ function nextCheckpoint()
     if examMarker and isElement(examMarker) then
         destroyElement(examMarker)
     end
+
+    if examBlip and isElement(examBlip) then
+        destroyElement(examBlip)
+    end
     
     examCheckpoint = examCheckpoint + 1
 
@@ -54,12 +59,15 @@ function nextCheckpoint()
 
     local text, x, y, z = unpack(checkpoint)
     local marker = createMarker(x, y, z - 0.8, 'cylinder', 3.5, 255, 0, 0, 0)
+    examBlip = createBlipAttachedTo(marker, 41, 2, 255, 0, 0, 255, 0, 9999.0, localPlayer)
     setElementData(marker, 'marker:icon', 'none')
     setElementData(marker, 'marker:title', '')
-    setElementData(marker, 'marker:desc', #text < 30 and text or '')
+    setElementData(marker, 'marker:desc', '')
 
     if text and #text > 0 then
         setSmallText(text)
+    else
+        setSmallInfoUIVisible(false)
     end
 
     examMarker = marker
@@ -77,6 +85,10 @@ end)
 function finishExam(success, fromServer)
     if examMarker and isElement(examMarker) then
         destroyElement(examMarker)
+    end
+
+    if examBlip and isElement(examBlip) then
+        destroyElement(examBlip)
     end
 
     if examVehicle and isElement(examVehicle) then

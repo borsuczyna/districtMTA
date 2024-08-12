@@ -1,11 +1,16 @@
 addEvent('drivingLicense:finishExam', true)
 
 local vehicles = {}
+local peds = {}
 local doingExams = {}
 
 local function destroyExamVehicle(player)
     if isElement(vehicles[player]) then
         destroyElement(vehicles[player])
+    end
+
+    if isElement(peds[player]) then
+        destroyElement(peds[player])
     end
 end
 
@@ -17,12 +22,16 @@ function startExam(player, category)
     destroyExamVehicle(player)
 
     local exam = examsData[category]
-    local vehicle = createVehicle(546, exam.spawn[1], exam.spawn[2], exam.spawn[3], exam.spawn[4], exam.spawn[5], exam.spawn[6])
+    local vehicle = createVehicle(exam.vehicle, exam.spawn[1], exam.spawn[2], exam.spawn[3], exam.spawn[4], exam.spawn[5], exam.spawn[6])
+    local ped = createPed(8, 0, 0, 0)
     warpPedIntoVehicle(player, vehicle)
+    warpPedIntoVehicle(ped, vehicle, 1)
     setElementData(vehicle, 'vehicle:engineCapacity', 0.0)
     setElementData(vehicle, 'element:ghostmode', true)
     setElementInterior(player, 0)
+    setElementFrozen(vehicle, true)
     vehicles[player] = vehicle
+    peds[player] = ped
 
     triggerClientEvent(player, 'drivingLicense:startExam', resourceRoot, category, vehicle)
     doingExams[player] = category
@@ -33,6 +42,7 @@ function stopExam(player)
 end
 
 local function teleportBack(player, position, dimension, interior)
+    removePedFromVehicle(player)
     setElementPosition(player, unpack(position))
     setElementDimension(player, dimension)
     setElementInterior(player, interior)
@@ -59,7 +69,8 @@ addEventHandler('drivingLicense:finishExam', resourceRoot, function(passed)
     destroyExamVehicle(client)
     doingExams[client] = nil
 
-    setTimer(teleportBack, 1000, 1, client, exam.finish.position, exam.finish.dimension, exam.finish.interior)
+    teleportBack(client, exam.finish.position, exam.finish.dimension, exam.finish.interior)
+    -- setTimer(teleportBack, 1000, 1, client, exam.finish.position, exam.finish.dimension, exam.finish.interior)
 end)
 
 addEventHandler('onVehicleStartExit', root, function(ped, seat)
@@ -96,7 +107,8 @@ addEventHandler('onVehicleDamage', root, function()
             doingExams[player] = nil
             exports['m-notis']:addNotification(player, 'error', 'Egzamin', 'Zniszczyłeś pojazd egzaminacyjny.')
             triggerClientEvent(player, 'drivingLicense:finishExam', resourceRoot, false, true)
-            setTimer(teleportBack, 1000, 1, player, exam.finish.position, exam.finish.dimension, exam.finish.interior)
+            -- setTimer(teleportBack, 1000, 1, player, exam.finish.position, exam.finish.dimension, exam.finish.interior)
+            teleportBack(player, exam.finish.position, exam.finish.dimension, exam.finish.interior)
             break
         end
     end
