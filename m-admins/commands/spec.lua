@@ -17,7 +17,7 @@ addCommandHandler('spec', function(player, cmd, playerToFind, ...)
     setCameraTarget(player, foundPlayer)
 end)
 
-addCommandHandler('unspec', function(player)
+addCommandHandler('specoff', function(player)
     if not getElementData(player, 'player:uid') then return end
     if not doesPlayerHavePermission(player, 'command:spec') then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie posiadasz uprawnień')
