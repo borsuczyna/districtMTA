@@ -95,7 +95,8 @@ function redeemDailyReward(player, hash)
         return false
     end
 
-    dbQuery(redeemDailyRewardResult, {player, hash}, connection, 'UPDATE `m-users` SET `dailyRewardRedeem` = NOW() + INTERVAL 1 DAY, `dailyRewardDay` = `dailyRewardDay` + 1 WHERE `uid` = ?', uid)
+    local day = getPlayerDailyRewardDay(player) + 1
+    dbQuery(redeemDailyRewardResult, {player, hash}, connection, 'UPDATE `m-users` SET `dailyRewardRedeem` = NOW() + INTERVAL 1 DAY, `dailyRewardDay` = ? WHERE `uid` = ?', day, uid)
 end
 
 function getPlayerLast10DailyRewardsResult(queryResult, player)
