@@ -9,10 +9,12 @@ local lockedElementDatas = {
     'player:time', 'player:session', 'player:achievements', 
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
     'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
-    'player:equippedFishingRod', 'player:bankMoney',
+    'player:equippedFishingRod', 'player:bankMoney', 'player:licenses',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
-    'vehicle:additionalSeats', 'vehicle:job',
+    'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
+    'vehicle:fuelType', 'vehicle:mileage', 'vehicle:maxFuel', 'vehicle:fuel',
+    'vehicle:lastDriver', 
 
     'element:model', 'element:ghostmode',
     'blip:hoverText', 'redirected',

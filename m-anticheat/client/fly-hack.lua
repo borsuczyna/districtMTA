@@ -13,7 +13,7 @@ function checkFlyHack()
         lastPos = playerPos
         lastInterior = actualInterior
         lastDimension = actualDimension
-    elseif gameType == 'fall' and not isPedOnGround(localPlayer) and not isElementInWater(localPlayer) and not isPedInVehicle(localPlayer) and not doesPedHaveJetPack(localPlayer) then 
+    elseif gameType == 'fall' and not isPedOnGround(localPlayer) and not isElementInWater(localPlayer) and not isPedInVehicle(localPlayer) and not isPedWearingJetpack(localPlayer) then 
         local groundPos = getGroundPosition(playerPos)
         local dist = (playerPos.z - groundPos)
         local distT = #(playerPos - lastPos)
@@ -36,7 +36,12 @@ function checkFlyHack()
             setElementData(localPlayer, 'player:gameTime', 8)
             crashPlayer()
         end 
-    end 
+    end
+
+    if isPedWearingJetpack(localPlayer) and not exports['m-admins']:doesPlayerHavePermission(localPlayer, 'command:jetpack') then
+        setElementData(localPlayer, 'player:gameTime', 8)
+        crashPlayer()
+    end
 end
 
 setTimer(checkFlyHack, 3000, 0)

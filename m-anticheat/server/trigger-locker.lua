@@ -18,8 +18,8 @@ function isPlayerTriggerLocked(player)
     return getElementData(player, 'player:triggerLocked')
 end
 
-function onPlayerTriggerInvalidEvent()
-    ban(source, 'Trigger invalid event', 'Trigger invalid event')
+function onPlayerTriggerInvalidEvent(eventName, isAdded, isRemote)
+    ban(source, 'Trigger invalid event', ('Trigger invalid event (**%s**, **%s**, **%s**)'):format(eventName, isAdded, isRemote))
 end
 
 addEventHandler('onPlayerTriggerInvalidEvent', root, onPlayerTriggerInvalidEvent)
