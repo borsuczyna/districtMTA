@@ -41,6 +41,19 @@ function updateRenderTarget(marker, rt)
     dxSetRenderTarget()
 end
 
+function assignLOD(element)
+    local lod = createObject(getElementModel(element),0, 0 ,0, 0, 0, 0, true)
+    setElementDimension(lod,getElementDimension(element))
+    setElementPosition(lod, getElementPosition(element))
+    setElementRotation(lod, getElementRotation(element))
+    setElementCollisionsEnabled(lod,false)
+    setLowLODElement(element,lod)
+    setElementData(lod,'element:model',getElementData(element,'element:model'))
+    attachElements(lod,element)
+    setObjectScale(lod, getObjectScale(element))
+    return lod
+end
+
 function updateMarker(marker)
     local r, g, b = getMarkerColor(marker)
 
@@ -79,6 +92,9 @@ function updateMarker(marker)
         engineApplyShaderToWorldTexture(markersData[marker].shader, '*', markersData[marker].object)
         setElementInterior(markersData[marker].object, getElementInterior(marker))
         setElementDimension(markersData[marker].object, getElementDimension(marker))
+        local lod = assignLOD(markersData[marker].object)
+        engineApplyShaderToWorldTexture(markersData[marker].shader, '*', lod)
+        markersData[marker].lod = lod
     end
 
     setMarkerColor(marker, r, g, b, 0)
@@ -87,6 +103,7 @@ end
 function unloadMarker(marker)
     if markersData[marker] then
         destroyElement(markersData[marker].object)
+        destroyElement(markersData[marker].lod)
         destroyElement(markersData[marker].shader)
         destroyElement(markersData[marker].rt)
         markersData[marker] = nil

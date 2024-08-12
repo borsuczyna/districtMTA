@@ -86,6 +86,7 @@ end
 
 function createVehicleShop(shopId, shop)
     shop.blip = createBlip(shop.position[1], shop.position[2], shop.position[3], 55, 2, 255, 0, 0, 255, 0, 9999)
+    setElementData(shop.blip, 'blip:hoverText', 'Salon samochodowy')
 
     for vehicleId, rotation in ipairs(shop.vehicles) do
         createVehicleRotation(shopId, vehicleId, rotation)

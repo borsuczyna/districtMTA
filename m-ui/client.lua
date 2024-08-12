@@ -238,6 +238,16 @@ end)
 
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)
 
+function clearCacheForResource(resource)
+    if not uiLoaded or not browser then return end
+    executeBrowserJavascript(browser, ('clearCacheForResource(%q)'):format(resource))
+end
+
+addEventHandler('onClientResourceStop', root, function(resource)
+    if not uiLoaded or not browser then return end
+    clearCacheForResource(getResourceName(resource))
+end)
+
 setTimer(function()
     local functions = {'loadInterface', 'createWindow', 'setPlayerNametags', 'getRandomPlayers'}
     

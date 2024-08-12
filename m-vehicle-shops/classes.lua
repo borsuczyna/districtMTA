@@ -53,7 +53,7 @@ function getRandomVehicleDamage(quality)
     end
 
     if quality == 0 then
-        wheels = getRandomDamage({0, 0, 1, 2}, 4)
+        wheels = getRandomDamage({0, 0, 1}, 4)
         panels = getRandomDamage({0, 1, 2, 3}, 7)
         doors = getRandomDamage({0, 0, 0, 2}, 6)
         lights = getRandomDamage({0, 0, 0, 1}, 4)

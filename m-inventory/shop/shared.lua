@@ -38,7 +38,8 @@ function createShop(index, data)
         addEventHandler('onClientMarkerHit', marker, hitShopMarker)
         addEventHandler('onClientMarkerLeave', marker, leaveShopMarker)
     else
-        blip = createBlip(x, y, z, 52, 2, 255, 100, 0, 255, 0, 9999.0)
+        blip = createBlip(x, y, z, 57, 2, 255, 100, 0, 255, 0, 9999.0)
+        setElementData(blip, 'blip:hoverText', data.name)
     end
 end
 

@@ -1,5 +1,6 @@
 let loadedInterfaces = [];
 let visibleInterfaces = [];
+let filesCache = {};
 
 function getInterfaceElement(name) {
     let element = document.getElementById(name);
@@ -12,6 +13,14 @@ function getInterfaceElement(name) {
     }
 
     return element;
+}
+
+function clearCacheForResource(resourceName) {
+    for (let key in filesCache) {
+        if (key.startsWith(resourceName) || key.startsWith('/' + resourceName) || key.startsWith(`../../${resourceName}`)) {
+            delete filesCache[key];
+        }
+    }
 }
 
 function executeElementScripts(element) {
@@ -33,10 +42,25 @@ function executeElementScripts(element) {
     }
 }
 
+async function getFileContent(path) {
+    if (filesCache[path]) {
+        return filesCache[path];
+    }
+
+    let response = await fetch(path);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch file: ${response.statusText}`);
+    }
+    let content = await response.text();
+    filesCache[path] = content;
+    return content;
+}
+
 async function loadInterfaceElement(name) {
     try {
-        let code = await fetch(`interface/${name}.html`);
-        let html = await code.text();
+        // let code = await fetch(`interface/${name}.html`);
+        // let html = await code.text();
+        let html = await getFileContent(`interface/${name}.html`);
         let element = getInterfaceElement(name);
         element.innerHTML = html;
         executeElementScripts(element);
@@ -51,8 +75,9 @@ async function loadInterfaceElement(name) {
 
 async function loadInterfaceElementFromFile(name, path) {
     try {
-        let code = await fetch(`/${path}`);
-        let html = await code.text();
+        // let code = await fetch(`/${path}`);
+        // let html = await code.text();
+        let html = await getFileContent(`/${path}`);
         let element = getInterfaceElement(name);
         element.innerHTML = html;
         executeElementScripts(element);
@@ -218,11 +243,12 @@ function copyErrorHash(hash) {
 
 async function include(jsFile) {
     try {
-        let response = await fetch(jsFile);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch script: ${response.statusText}`);
-        }
-        let js = await response.text();
+        // let response = await fetch(jsFile);
+        // if (!response.ok) {
+        //     throw new Error(`Failed to fetch script: ${response.statusText}`);
+        // }
+        // let js = await response.text();
+        let js = await getFileContent(jsFile);
 
         try {
             let func = new Function(js);
