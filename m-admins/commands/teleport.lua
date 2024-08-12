@@ -37,7 +37,12 @@ addCommandHandler('tt', function(player, cmd, ...)
     end
 
     local x, y, z = getElementPosition(foundPlayer)
+    local interior = getElementInterior(foundPlayer)
+    local dimension = getElementDimension(foundPlayer)
+
     setElementPosition(player, x, y + 0.5, z)
+    setElementInterior(player, interior)
+    setElementDimension(player, dimension)
 end)
 
 addCommandHandler('th', function(player, cmd, ...)
@@ -79,7 +84,12 @@ addCommandHandler('th', function(player, cmd, ...)
     end
 
     local x, y, z = getElementPosition(player)
+    local interior = getElementInterior(player)
+    local dimension = getElementDimension(player)
+
     setElementPosition(foundPlayer, x, y + 0.5, z)
+    setElementInterior(foundPlayer, interior)
+    setElementDimension(foundPlayer, dimension)
 end)
 
 addCommandHandler('vtt', function(player, cmd, id)

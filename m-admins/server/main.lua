@@ -21,6 +21,18 @@ local function dutyResponse(queryResult, player, serial)
     triggerClientEvent(player, 'admin:toggleReports', resourceRoot)
 end
 
+function getActiveAdminsWithRank(rank)
+    local admins = {}
+
+    for i, player in ipairs(getElementsByType('player')) do
+        if getElementData(player, 'player:rank') == rank then
+            table.insert(admins, player)
+        end
+    end
+
+    return admins
+end
+
 addCommandHandler('duty', function(player)
     local serial = getPlayerSerial(player)
 

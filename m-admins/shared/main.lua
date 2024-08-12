@@ -116,6 +116,10 @@ function getRankColor(rank)
     return unpack(ranks[rank].color)
 end
 
+function rgbToHex(r, g, b)
+    return string.format("#%02X%02X%02X", r, g, b)
+end
+
 function getRankPermissions(rank)
     return ranks[rank].permissions
 end
