@@ -44,6 +44,8 @@ end
 function renderRadar()
     if not getElementData(localPlayer, 'player:spawn') then return end
     if not radarVisible then return end
+    local interior = getElementInterior(localPlayer)
+    if interior ~= 0 then return end
 
     local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
     local zoom = zoomOriginal * ( 28 / interfaceSize )

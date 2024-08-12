@@ -127,12 +127,16 @@ addEventHandler('onClientVehicleEnter', root, function(player, seat)
 	if customAnims[getElementModel(source)] and not playersWithAnimations[player] then
 		loadAnimations(player, getElementModel(source))
 	end
+
+	setPedCanBeKnockedOffBike(player, not (getElementModel(source) == 448))
 end)
 
 addEventHandler('onClientVehicleExit', root, function(player, seat)
 	if customAnims[getElementModel(source)] and playersWithAnimations[player] then
 		restoreAnimations(player)
 	end
+
+	setPedCanBeKnockedOffBike(player, true)
 end)
 
 addEventHandler('onClientVehicleStartEnter', root, function(player, seat)
