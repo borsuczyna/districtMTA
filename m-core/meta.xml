@@ -14,6 +14,7 @@
     <script src='server/id.lua' type='server'/>
     <script src='server/logs.lua' type='server'/>
     <script src='server/chat.lua' type='server'/>
+    <script src='server/afk.lua' type='server'/>
     <script src='server/antyspam.lua' type='server'/>
     <script src='server/whitelist.lua' type='server'/>
     <script src='server/premium.lua' type='server'/>

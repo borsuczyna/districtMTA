@@ -21,7 +21,7 @@ function getPlayerSessionTime(player)
 end
 
 function updatePlayerTime(player)
-    for i, player in pairs(getElementsByType('player')) do
+    for _, player in pairs(getElementsByType('player')) do
         local onlineTime = getPlayerOnlineTime(player)
         local sessionTime = getPlayerSessionTime(player)
 

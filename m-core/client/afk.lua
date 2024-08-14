@@ -1,29 +1,28 @@
-addEventHandler('onClientMinimize', root, function()
-    setElementData(localPlayer, 'player:afk', true)
-    createTrayNotification("Zminimalizowano grę, został tobie nadany status AFK.", "warning", false)
-end)
+local lastActivityTime = getTickCount()
 
-addEventHandler('onClientRestore', root, function()
+function resetPlayerAFK()
     local afk = getElementData(localPlayer, 'player:afk')
     if not afk then return end
 
+    lastActivityTime = getTickCount()
     setElementData(localPlayer, 'player:afk', false)
+end
+
+addEventHandler('onClientKey', root, function(button, press)
+    if press then
+        resetPlayerAFK()
+    end
 end)
 
-function setPlayerAFKTime(time)
-    setElementData(localPlayer, 'player:afkTime', time)
+function checkAFKStatus()
+    local currentTime = getTickCount()
+    local idleTime = (currentTime - lastActivityTime) / 60000
+
+    if idleTime >= 1 then
+        setElementData(localPlayer, 'player:afk', true)
+    else
+        resetPlayerAFK()
+    end
 end
 
-function getPlayerAFKTime()
-    return getElementData(localPlayer, 'player:afkTime') or 0
-end
-
-function updatePlayerAFKTime()
-    local afk = getElementData(localPlayer, 'player:afk')
-    if not afk then return end
-
-    local afkTime = getElementData(localPlayer, 'player:afkTime') or 0
-    setPlayerAFKTime(afkTime + 1)
-end
-
-setTimer(updatePlayerAFKTime, 60000, 0)
+setTimer(checkAFKStatus, 60000, 0)

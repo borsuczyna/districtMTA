@@ -39,6 +39,10 @@ function assignPlayerData(player, data)
 
     -- settings
     local settings = fromJSON(data.settings)
+
+    setElementData(player, 'player:interfaceBlur', settings.interfaceBlur)
+    triggerClientEvent(player, 'interface:setInterfaceBlur', root, settings.interfaceBlur)
+
     setElementData(player, 'player:interfaceSize', settings.interfaceSize)
     triggerClientEvent(player, 'interface:setRemSize', root, settings.interfaceSize)
 
@@ -69,6 +73,7 @@ function buildSavePlayerQuery(player)
     local inventory = getElementData(player, 'player:inventory') or {}
     local licenses = table.concat(getElementData(player, 'player:licenses') or {}, ',')
     local settings = {
+        interfaceBlur = getElementData(player, 'player:interfaceBlur') or 0,
         interfaceSize = getElementData(player, 'player:interfaceSize') or 8
     }
 
