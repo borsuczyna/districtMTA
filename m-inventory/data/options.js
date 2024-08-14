@@ -1,6 +1,7 @@
 let hideOptionsTimer = null;
 let useItem = false;
 let waiting = false;
+let waitingForCount = false;
 let prevHtml = '';
 let possibleOptions = {};
 
@@ -57,6 +58,7 @@ window.inventory_askForCount = async (max = 9999) => {
     let optionsEl = document.querySelector('#inventory-options');
     prevHtml = optionsEl.innerHTML;
 
+    waitingForCount = true;
     optionsEl.style.padding = '0.25rem';
     optionsEl.innerHTML = `
         <input type="number" id="count" class="input" placeholder="Ilość" min="1" max="${max}" />
@@ -67,6 +69,7 @@ window.inventory_askForCount = async (max = 9999) => {
         window.inventory_askForCountSubmit = (value) => {
             optionsEl.style.padding = '';
             optionsEl.innerHTML = prevHtml;
+            waitingForCount = false;
             inventory_hideOptions();
             resolve(value ? parseInt(value) : 0);
         }
@@ -109,6 +112,10 @@ window.inventory_hideOptions = () => {
     hideOptionsTimer = setTimeout(() => {
         optionsEl.style.display = 'none';
     }, 200);
+
+    if (waitingForCount) {
+        window.inventory_askForCountSubmit();
+    }
 }
 
 window.inventory_optionClick = async (action, button) => {

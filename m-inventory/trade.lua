@@ -208,6 +208,11 @@ addEventHandler('inventory:acceptTrading', root, function(hash, player)
     else
         trades[player].acceptedTime = false
         trades[tradeWith].acceptedTime = false
+
+        if tradeTimers[player] and isTimer(tradeTimers[player]) then
+            killTimer(tradeTimers[player])
+            tradeTimers[player] = nil
+        end
     end
 
     updateTrade(player, tradeWith)

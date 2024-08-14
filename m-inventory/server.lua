@@ -57,6 +57,7 @@ function getPlayerItemAmount(player, item)
 end
 
 function clone(t)
+    if not t then return end
     return fromJSON(toJSON(t))
 end
 
