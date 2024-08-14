@@ -27,5 +27,5 @@ addEventHandler('houses:toggleDoorLock', resourceRoot, function(hash, player, ho
     end
 
     dbExec(connection, 'UPDATE `m-houses` SET `locked` = ? WHERE `uid` = ?', house.locked and 1 or 0, houseUid)
-    exports['m-ui']:respondToRequest(hash, {status = 'success', message = house.locked and 'Zamknięto drzwi' or 'Otwarto drzwi'})
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = house.locked and 'Zamknięto drzwi' or 'Otworzono drzwi'})
 end)

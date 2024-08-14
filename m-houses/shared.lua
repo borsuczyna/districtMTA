@@ -41,6 +41,15 @@ function table.find(t, value)
     return false
 end
 
+function table.findCallback(t, func)
+    for i, v in ipairs(t) do
+        if func(v) then
+            return v, i
+        end
+    end
+    return false
+end
+
 function iter(s, e, func)
     local t = {}
     for i = s, e do
@@ -74,6 +83,29 @@ function getRelativeInteriorPosition(object, x, y, z, rx, ry, rz)
     return x, y, z, rx, ry, rz
 end
 
+function applyInverseRotation ( x,y,z, rx,ry,rz )
+    -- Degress to radians
+    local DEG2RAD = (math.pi * 2) / 360
+    rx = rx * DEG2RAD
+    ry = ry * DEG2RAD
+    rz = rz * DEG2RAD
+
+    -- unrotate each axis
+    local tempY = y
+    y =  math.cos ( rx ) * tempY + math.sin ( rx ) * z
+    z = -math.sin ( rx ) * tempY + math.cos ( rx ) * z
+
+    local tempX = x
+    x =  math.cos ( ry ) * tempX - math.sin ( ry ) * z
+    z =  math.sin ( ry ) * tempX + math.cos ( ry ) * z
+
+    tempX = x
+    x =  math.cos ( rz ) * tempX + math.sin ( rz ) * y
+    y = -math.sin ( rz ) * tempX + math.cos ( rz ) * y
+
+    return x, y, z
+end
+
 function table.filter(t, func)
     local new_table = {}
     for i, v in ipairs(t) do
@@ -82,4 +114,30 @@ function table.filter(t, func)
         end
     end
     return new_table
+end
+
+function isMouseInPosition(x, y, width, height)
+    if isCursorShowing() then
+        local mx, my = getCursorPosition()
+        if not sx or not sy then
+            sx, sy = guiGetScreenSize()
+        end
+        mx, my = mx * sx, my * sy
+        return mx >= x and mx <= x + width and my >= y and my <= y + height
+    end
+    return false
+end
+
+function isEventHandlerAdded( sEventName, pElementAttachedTo, func )
+    if type( sEventName ) == 'string' and isElement( pElementAttachedTo ) and type( func ) == 'function' then
+        local aAttachedFunctions = getEventHandlers( sEventName, pElementAttachedTo )
+        if type( aAttachedFunctions ) == 'table' and #aAttachedFunctions > 0 then
+            for i, v in ipairs( aAttachedFunctions ) do
+                if v == func then
+                    return true
+                end
+            end
+        end
+    end
+    return false
 end

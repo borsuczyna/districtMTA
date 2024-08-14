@@ -10,7 +10,7 @@ local lockedElementDatas = {
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
     'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
     'player:equippedFishingRod', 'player:bankMoney', 'player:licenses', 'marker:title', 'marker:desc', 'marker:house',
-    'player:house', 
+    'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',

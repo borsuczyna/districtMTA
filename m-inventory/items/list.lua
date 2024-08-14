@@ -64,6 +64,11 @@ itemsData = {
     allFish = createFishItem('common', 'Wszystkie ryby', 'Wszystkie typy ryb', 'lb-small-fry'),
 }
 
+-- furnitures
+for _,data in pairs(furnitures) do
+    itemsData[data.item] = createFurnitureItem(data.name, data.description, data.icon, data.rarity)
+end
+
 function getItemName(item)
     if type(item) == 'table' then
         return itemsData[item.item].title

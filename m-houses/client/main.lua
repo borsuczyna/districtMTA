@@ -30,6 +30,7 @@ addEventHandler('houses:getData', resourceRoot, function(data)
     if not interiorData then return end
 
     data.interiorData = interiorData
+    data.furnitureData = exports['m-inventory']:getFurnitures()
     setHousesUIVisible(true, data)
 end)
 

@@ -70,6 +70,7 @@ local function loadHouse(data)
         ownerName = data.ownerName,
         furnitured = data.furnitured == 1,
         locked = data.locked == 1,
+        furniture = getHouseFurniture(id)
     }
 
     houses[id].marker = createHouseMarker(id)
@@ -146,11 +147,20 @@ addEventHandler('houses:getData', resourceRoot, function(uid)
         isRented = data.isRented,
         furnitured = data.furnitured,
         locked = data.locked,
+        furniture = data.furniture
     })
 end)
 
-setTimer(function()
+function updateHouseRents()
     for id, data in pairs(houses) do
         updateHouseRent(id)
     end
-end, 60000, 0)
+end
+
+setTimer(updateHouseRents, 60000, 0)
+
+addEventHandler('onResourceStart', resourceRoot, function()
+    for i, player in ipairs(getElementsByType('player')) do
+        removeElementData(player, 'player:house')
+    end
+end)

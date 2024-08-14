@@ -3,6 +3,7 @@
     <script src='interiors.lua' type='shared' cache='false'/>
 
     <script src='client/interface.lua' type='client' cache='false'/>
+    <script src='client/furniture-editor.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
     <script src='client/interior.lua' type='client' cache='false'/>
     
@@ -11,14 +12,28 @@
     <script src='server/events/enter.lua' type='server'/>
     <script src='server/events/tenants.lua' type='server'/>
     <script src='server/events/bell.lua' type='server'/>
+    <script src='server/events/furniture.lua' type='server'/>
     <script src='server/interior.lua' type='server'/>
     <script src='server/main.lua' type='server'/>
+
+    <script src='server/furniture/positions.lua' type='server'/>
+    <script src='server/furniture/house.lua' type='server'/>
+    <script src='server/furniture/main.lua' type='server'/>
 
     <file src='data/main.js'/>
     <file src='data/rent.js'/>
     <file src='data/options.js'/>
+    <file src='data/furniture.js'/>
     <file src='data/interface.html'/>
     <file src='data/doorbell.wav'/>
+    <file src='data/furniture.png'/>
+    <file src='data/remove.png'/>
+    <file src='data/check.png'/>
+    <file src='data/dot.png'/>
+    <file src='data/rotate.png'/>
+    <file src='data/position.png'/>
+
+    <export function='useFurniture' type='server'/>
 
     <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

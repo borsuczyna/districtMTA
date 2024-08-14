@@ -28,17 +28,23 @@ end)
 
 addEventHandler('jobs:burger:startJob', resourceRoot, function(hash)
     showInteriorLoading(true)
+    fetchServerTick()
 end)
 
 addEventHandler('jobs:burger:finishJob', resourceRoot, function(hash)
     showInteriorLoading(false)
 end)
 
-addEventHandler('onClientResourceStart', resourceRoot, function()
+function fetchServerTick()
     triggerServerEvent('jobs:burger:getServerTick', resourceRoot)
+end
+
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    getServerTick()
 end)
 
 addEventHandler('jobs:burger:serverTickResponse', resourceRoot, function(tick)
+    print('Server tick: '..tick)
     serverTick.clientStart = getTickCount()
     serverTick.serverStart = tick
 end)

@@ -48,7 +48,7 @@ function renderRadar()
     if interior ~= 0 then return end
 
     local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
-    local zoom = zoomOriginal * ( 28 / interfaceSize )
+    local zoom = zoomOriginal * ( 25 / interfaceSize )
     radarSettings.size = 470/zoom
 
     local px, py, pz = getElementPosition(getCameraTarget() or localPlayer)

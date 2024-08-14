@@ -1,5 +1,7 @@
 addEvent('houses:loadInterior', true)
 addEvent('houses:ringBell', true)
+addEvent('houses:updateFurniture', true)
+addEvent('houses:removeFurniture', true)
 
 local interior = false
 
@@ -9,7 +11,37 @@ local function destroyHouseInterior()
     destroyElement(interior.mainObject)
     destroyElement(interior.marker)
 
+    if interior.furniture then
+        for i, data in ipairs(interior.furniture) do
+            if data.object and isElement(data.object) then
+                destroyElement(data.object)
+            end
+        end
+    end
+
     interior = false
+end
+
+local function loadFurnitureObject(data)
+    if data.object and isElement(data.object) then
+        destroyElement(data.object)
+    end
+
+    local spawn = map(split(data.position, ','), tonumber)
+    spawn = {getRelativeInteriorPosition(interior.mainObject, spawn[1], spawn[2], spawn[3], spawn[4], spawn[5], spawn[6])}
+
+    local object = createObject(data.model, unpack(spawn))
+    setElementDimension(object, interior.dimension)
+
+    data.object = object
+end
+
+local function loadFurniture()
+    if not interior.furniture then return end
+
+    for i, data in ipairs(interior.furniture) do
+        loadFurnitureObject(data)
+    end
 end
 
 local function loadInterior(data)
@@ -25,6 +57,8 @@ local function loadInterior(data)
 
     interior = {
         mainObject = mainObject,
+        furniture = data.furniture,
+        dimension = data.dimension
     }
 
     local spawn = {getRelativeInteriorPosition(mainObject, interiorData.enter[1], interiorData.enter[2], interiorData.enter[3], 0, 0, interiorData.enter[4])}
@@ -37,8 +71,20 @@ local function loadInterior(data)
     setElementData(marker, 'marker:title', 'Dom')
     setElementData(marker, 'marker:desc', 'Wyjście z domu')
     setElementData(marker, 'marker:house', data.dimension)
+    
+    loadFurniture()
 
     interior.marker = marker
+end
+
+function getFurnitureData(id)
+    return table.findCallback(interior.furniture, function(furniture)
+        return furniture.uid == id
+    end)
+end
+
+function getInteriorFurniture()
+    return interior.furniture
 end
 
 addEventHandler('houses:loadInterior', resourceRoot, loadInterior)
@@ -49,4 +95,31 @@ addEventHandler('houses:ringBell', resourceRoot, function(position, player)
     setSoundMinDistance(sound, 4)
     setSoundMaxDistance(sound, 30)
     exports['m-notis']:addNotification('info', 'Dzwonek do drzwi', 'Gracz ' .. getPlayerName(player) .. ' dzwoni do drzwi')
+end)
+
+addEventHandler('houses:updateFurniture', resourceRoot, function(furniture)
+    if not interior then return end
+
+    local furnitureData, index = getFurnitureData(furniture.uid)
+    
+    if index then
+        interior.furniture[index] = furniture
+        loadFurnitureObject(furniture)
+    else
+        table.insert(interior.furniture, furniture)
+        loadFurnitureObject(furniture)
+    end
+end)
+
+addEventHandler('houses:removeFurniture', resourceRoot, function(uid)
+    if not interior then return end
+
+    local furnitureData, index = getFurnitureData(uid)
+    if not index then return end
+
+    if furnitureData.object and isElement(furnitureData.object) then
+        destroyElement(furnitureData.object)
+    end
+
+    table.remove(interior.furniture, index)
 end)

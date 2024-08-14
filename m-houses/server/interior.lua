@@ -4,6 +4,7 @@ function sendPlayerInterior(player, houseData)
     triggerClientEvent(player, 'houses:loadInterior', resourceRoot, {
         dimension = houseData.uid,
         interior = houseData.interior,
+        furniture = houseData.furniture,
     })
 
     setElementDimension(player, houseData.uid)
@@ -21,6 +22,7 @@ function leaveHouse(player, houseData)
     setElementDimension(player, 0)
     removeElementData(player, 'player:house')
     setElementPosition(player, x, y, z)
+    setPlayerFurnitureEditMode(player, false)
 end
 
 function enterHouse(player, houseUid)
@@ -32,6 +34,7 @@ function enterHouse(player, houseUid)
     if isInside then
         exports['m-loading']:setLoadingVisible(player, true, 'Wczytywanie...', 1000)
         setTimer(leaveHouse, 600, 1, player, houseData)
+        stopFurniture(player)
     else
         exports['m-loading']:setLoadingVisible(player, true, 'Wczytywanie interioru...', 1000)
         setTimer(sendPlayerInterior, 600, 1, player, houseData)

@@ -15,6 +15,10 @@ let categories = {
         name: 'Broń',
         icon: inventory_icons.weapon,
     },
+    'furniture': {
+        name: 'Meble',
+        icon: inventory_icons.furniture,
+    },
     'trade': {
         name: 'Wymiana',
         icon: inventory_icons.trade,
@@ -32,9 +36,11 @@ window.inventory_renderCategories = (element) => {
     categoriesEl.innerHTML = '';
     for (let i = 0; i < categoriesKeys.length; i++) {
         let category = categoriesKeys[i];
+        let data = categories[category];
         if ((category == 'trade' || category == 'craft') && element != null) continue;
-        categoriesEl.innerHTML += `<div class="category ${i == 0 ? 'active' : ''}" onclick="inventory_setCategory(this)" key="${categoriesKeys[i]}">
-            ${categories[categoriesKeys[i]].icon}
+
+        categoriesEl.innerHTML += `<div class="category ${i == 0 ? 'active' : ''}" data-tooltip="${data.name}" onclick="inventory_setCategory(this)" key="${categoriesKeys[i]}">
+            ${data.icon}
         </div>`;
     }
 }
