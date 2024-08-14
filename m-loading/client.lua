@@ -4,6 +4,7 @@ local loadingTimer
 
 addEvent('interface:load', true)
 addEvent('interfaceLoaded', true)
+addEvent('loading:setVisible', true)
 
 function noChat()
     showChat(false)
@@ -82,4 +83,8 @@ end)
 
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('loading')
+end)
+
+addEventHandler('loading:setVisible', resourceRoot, function(visible, text, time)
+    setLoadingVisible(visible, text, time)
 end)
