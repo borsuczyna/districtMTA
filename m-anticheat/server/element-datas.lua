@@ -6,10 +6,11 @@ local lockedElementDatas = {
     'player:mute', 'player:muteAdmin', 'player:muteReason',
     'player:takenLicense', 'player:takenLicenseAdmin', 'player:takenLicenseReason',
     'player:triggerLocked', 'player:dailyRewardDay', 'player:dailyRewardRedeem',
-    'player:time', 'player:session', 'player:achievements', 
+    'player:afkTime', 'player:time', 'player:session', 'player:achievements', 
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
     'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
-    'player:equippedFishingRod', 'player:bankMoney', 'player:licenses',
+    'player:equippedFishingRod', 'player:bankMoney', 'player:licenses', 'marker:title', 'marker:desc', 'marker:house',
+    'player:house', 
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
