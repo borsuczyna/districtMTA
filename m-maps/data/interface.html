@@ -28,25 +28,7 @@
     .__maps-map-blip-right {
         transform: translate(0, -50%);
     }
-
-    #__maps-map-tooltip {
-        position: fixed;
-        z-index: 1000;
-        pointer-events: none;
-        background: rgba(21, 21, 21, 0.8);
-        border: 1px solid #272727;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        white-space: nowrap;
-        transform: translate(-50%, -100%);
-        text-align: center;
-        transition: opacity 0.2s;
-    }
 </style>
-
-<div id="__maps-map-tooltip" style="opacity: 0;"></div>
 
 <script>
     let maps = [];
@@ -231,7 +213,7 @@
         if (data.rotation !== undefined) blip.rotation = data.rotation;
         if (data.size !== undefined) blip.size = data.size;
         if (data.priority !== undefined) blip.priority = data.priority;
-        if (data.hoverTooltip !== undefined) blip.element.dataset.mapTooltip = data.hoverTooltip;
+        if (data.hoverTooltip !== undefined) blip.element.dataset.tooltip = data.hoverTooltip;
         if (data.icon !== undefined) blip.element.src = data.icon;
 
         requestMapUpdate(map);
@@ -247,7 +229,7 @@
         blip.style.height = `${data.size}px`;
         blip.classList.add('__maps-map-blip');
         if (data.priority) blip.style.zIndex = data.priority;
-        if (data.hoverTooltip) blip.dataset.mapTooltip = data.hoverTooltip;
+        if (data.hoverTooltip) blip.dataset.tooltip = data.hoverTooltip;
         if (data.class) blip.className += ` ${data.class}`;
         if (data.position) blip.classList.add(`__maps-map-blip-${data.position}`);
         if (data.specialKey) blip.dataset.specialKey = data.specialKey;
@@ -398,44 +380,4 @@
 
         updateMap(map);
     });
-
-    function updateMapTooltips(event) {
-        let tooltip = document.getElementById('__maps-map-tooltip');
-
-        // get items that have tooltips
-        let items = document.querySelectorAll('[data-map-tooltip]');
-        if (!items.length) {
-            tooltip.style.opacity = 0;
-            return;
-        }
-
-        // find which item is hovered
-        let hoveredItem = null;
-        for (let i = 0; i < items.length; i++) {
-            let item = items[i];
-            if (item.matches(':hover')) {
-                hoveredItem = item;
-                break;
-            }
-        }
-
-        // if no item is hovered, hide tooltip
-        if (!hoveredItem) {
-            tooltip.style.opacity = 0;
-            return;
-        }
-
-        // get item position
-        let itemRect = hoveredItem.getBoundingClientRect();
-        let itemX = itemRect.left + itemRect.width / 2;
-        let itemY = `calc(${itemRect.top}px - 0.5rem)`;
-
-        // set tooltip text
-        tooltip.innerHTML = hoveredItem.dataset.mapTooltip;
-        tooltip.style.opacity = 1;
-        tooltip.style.left = `${itemX}px`;
-        tooltip.style.top = itemY;
-    }
-
-    addEvent('maps', 'mousemove', updateMapTooltips);
 </script>
