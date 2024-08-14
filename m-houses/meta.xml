@@ -1,0 +1,19 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='interiors.lua' type='shared' cache='false'/>
+
+    <script src='client/interface.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/interior.lua' type='client' cache='false'/>
+    
+    <script src='server/events/door.lua' type='server'/>
+    <script src='server/events/rent.lua' type='server'/>
+    <script src='server/events/enter.lua' type='server'/>
+    <script src='server/interior.lua' type='server'/>
+    <script src='server/main.lua' type='server'/>
+
+    <file src='data/main.js'/>
+    <file src='data/rent.js'/>
+    <file src='data/options.js'/>
+    <file src='data/interface.html'/>
+</meta>
