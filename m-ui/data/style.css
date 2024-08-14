@@ -6,6 +6,7 @@
 @import url('nice-table.css');
 @import url('scroll.css');
 @import url('charts.css');
+@import url('tooltip.css');
 
 @font-face {
     font-family: 'Inter';
@@ -27,6 +28,10 @@ body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     overflow: hidden;
+}
+
+::selection {
+    background: #95959592;
 }
 
 .error-hash {

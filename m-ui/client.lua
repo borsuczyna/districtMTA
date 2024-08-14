@@ -78,6 +78,14 @@ end
 addEvent('interface:setRemSize', true)
 addEventHandler('interface:setRemSize', root, setRemSize)
 
+function setBlurQualityLevel(quality)
+    if not uiLoaded or not browser or not quality then return end
+    setBlurQuality(quality)
+end
+
+addEvent('interface:setInterfaceBlur', true)
+addEventHandler('interface:setInterfaceBlur', root, setBlurQualityLevel)
+
 function loadInterfaceElement(name)
     if not uiLoaded or not browser then return end
     executeBrowserJavascript(browser, ('loadInterfaceElement(%q)'):format(name))
@@ -207,6 +215,7 @@ function initializeInterface()
     addEventHandler('onClientKey', root, scrollInterface)
 
     browser = createBrowser(sx, sy, true, true)
+    setBlurShaderEnabled(true, browser)
     addEventHandler('onClientBrowserCreated', browser, function()
         loadBrowserURL(browser, 'http://mta/local/data/main.html')
     end)

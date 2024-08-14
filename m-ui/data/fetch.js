@@ -11,11 +11,12 @@ function makeButtonSpinner(button, spinner = true) {
     }
 
     if (html) button.innerHTML = html;
+    button.classList.toggle('button-spinner', spinner, !spinner);
 }
 
 function isButtonSpinner(button) {
     if (button == undefined || typeof button === 'undefined' || button == null || typeof button === 'null') return false;
-    return button.innerHTML == spinnerSvg;
+    return button.classList.contains('button-spinner');
 }
 
 function generateHash(length = 32) {
