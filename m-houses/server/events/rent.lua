@@ -1,12 +1,12 @@
 local function rentHouseForPlayer(player, houseUid, days, cost)
-    local limited, time = isPlayerRateLimited(player)
-    if limited then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = ('Zbyt szybko wykonujesz akcje, odczekaj %s sekund.'):format(time)})
+    days = tonumber(days)
+    if days % 1 ~= 0 then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nieprawidłowa ilość dni.'})
         return
     end
 
     local uid = getElementData(player, 'player:uid')
-    if not uid then return end
+    if not uid then return print(1) end
 
     local house = houses[houseUid]
     if not house then return end
@@ -18,6 +18,10 @@ local function rentHouseForPlayer(player, houseUid, days, cost)
     end
 
     local endRentTime = getRealTime().timestamp + days * 24 * 60 * 60
+    if house.owner then
+        endRentTime = house.rentDate.timestamp + days * 24 * 60 * 60
+    end
+    
     dbExec(connection, 'UPDATE `m-houses` SET `owner` = ?, `rentDate` = FROM_UNIXTIME(?) WHERE `uid` = ?', uid, endRentTime, houseUid)
 
     takePlayerMoney(player, cost)
@@ -33,7 +37,17 @@ end
 
 addEvent('houses:rentHouse')
 addEventHandler('houses:rentHouse', resourceRoot, function(hash, player, houseUid, days)
+    local limited, time = isPlayerRateLimited(player)
+    if limited then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = ('Zbyt szybko wykonujesz akcje, odczekaj %s sekund.'):format(time)})
+        return
+    end
+
     days = tonumber(days)
+    if days % 1 ~= 0 then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nieprawidłowa ilość dni.'})
+        return
+    end
 
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
@@ -41,7 +55,7 @@ addEventHandler('houses:rentHouse', resourceRoot, function(hash, player, houseUi
     local house = houses[houseUid]
     if not house then return end
 
-    if house.owner then
+    if house.owner and house.owner ~= uid then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Ten dom jest już wynajęty.'})
         return
     end
@@ -58,6 +72,10 @@ addEventHandler('houses:rentHouse', resourceRoot, function(hash, player, houseUi
     end
 
     local endRentTime = getRealTime().timestamp + days * 24 * 60 * 60
+    if house.owner then
+        endRentTime = house.rentDate.timestamp + days * 24 * 60 * 60
+    end
+
     if endRentTime > getRealTime().timestamp + 60 * 24 * 60 * 60 then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie można wynająć domu na więcej niż 60 dni.'})
         return
@@ -69,4 +87,41 @@ addEventHandler('houses:rentHouse', resourceRoot, function(hash, player, houseUi
     end
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wynajęto dom na ' .. days .. ' dni za $' .. formatNumber(cost) .. '.'})
+end)
+
+addEvent('houses:cancelRentHouse')
+addEventHandler('houses:cancelRentHouse', resourceRoot, function(hash, player, houseUid)
+    local limited, time = isPlayerRateLimited(player)
+    if limited then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = ('Zbyt szybko wykonujesz akcje, odczekaj %s sekund.'):format(time)})
+        return
+    end
+
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    local house = houses[houseUid]
+    if not house then return end
+
+    if not house.owner or house.owner ~= uid then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie wynajmujesz tego domu.'})
+        return
+    end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Wystąpił błąd podczas anulowania wynajmu domu.'})
+        return
+    end
+
+    dbExec(connection, 'UPDATE `m-houses` SET `owner` = NULL, `rentDate` = "1970-01-01 00:00:00" WHERE `uid` = ?', houseUid)
+
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Anulowano wynajem domu.'})
+
+    house.owner = nil
+    house.ownerName = nil
+    house.rentDate = getRealTime(0)
+    house.sharedPlayers = {}
+    house.sharedPlayerNames = {}
+    updateHouseRent(houseUid)
 end)

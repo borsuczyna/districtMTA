@@ -73,3 +73,13 @@ function getRelativeInteriorPosition(object, x, y, z, rx, ry, rz)
 
     return x, y, z, rx, ry, rz
 end
+
+function table.filter(t, func)
+    local new_table = {}
+    for i, v in ipairs(t) do
+        if func(v) then
+            table.insert(new_table, v)
+        end
+    end
+    return new_table
+end

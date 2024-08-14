@@ -41,3 +41,13 @@ end
 for k,v in pairs(getElementsByType('player')) do
     setElementDimension(v, 0)
 end
+
+function getPlayersInHouse(houseId)
+    local players = {}
+    for k,v in pairs(getElementsByType('player')) do
+        if getElementData(v, 'player:house') == houseId then
+            table.insert(players, v)
+        end
+    end
+    return players
+end

@@ -12,7 +12,8 @@ addEventHandler('houses:toggleDoorLock', resourceRoot, function(hash, player, ho
     local house = houses[houseUid]
     if not house then return end
 
-    if house.owner ~= uid then
+    local canChange = house.owner == uid or table.find(house.sharedPlayers, uid)
+    if not canChange then 
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie jesteś właścicielem tego domu.'})
         return
     end

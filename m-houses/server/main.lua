@@ -61,6 +61,10 @@ local function loadHouse(data)
         streetNumber = data.streetNumber,
         streetName = streetName .. ' ' .. data.streetNumber,
         sharedPlayers = map(split(data.sharedPlayers, ','), tonumber),
+        sharedPlayerNames = data.sharedPlayerNames == false and {} or map(split(data.sharedPlayerNames, ';'), function(v)
+            local split = split(v, ',')
+            return {name = split[1], uid = tonumber(split[2])}
+        end),
         rentDate = getRealTime(data.rentDateTimestamp),
         owner = data.owner,
         ownerName = data.ownerName,
@@ -90,13 +94,20 @@ local function loadHouses()
         SELECT
             `m-houses`.*,
             UNIX_TIMESTAMP(`rentDate`) AS `rentDateTimestamp`,
-            `m-users`.`username` AS `ownerName`
+            `m-users`.`username` AS `ownerName`,
+            GROUP_CONCAT(CONCAT(`sharedUsers`.`username`, ',', `sharedUsers`.`uid`) SEPARATOR ';') AS `sharedPlayerNames`
         FROM
             `m-houses`
         LEFT JOIN
             `m-users`
         ON
             `m-houses`.`owner` = `m-users`.`uid`
+        LEFT JOIN 
+            `m-users` AS `sharedUsers`
+        ON
+            FIND_IN_SET(`sharedUsers`.`uid`, `m-houses`.`sharedPlayers`) > 0
+        GROUP BY
+            `m-houses`.`uid`
     ]]
     dbQuery(loadHousesResult, connection, query)
 end
@@ -130,6 +141,7 @@ addEventHandler('houses:getData', resourceRoot, function(uid)
         isInside = isInside,
         garages = 0, -- @TODO garages
         sharedPlayers = data.sharedPlayers,
+        sharedPlayerNames = data.sharedPlayerNames,
         rentDate = data.rentDate,
         isRented = data.isRented,
         furnitured = data.furnitured,

@@ -1,4 +1,5 @@
 addEvent('houses:loadInterior', true)
+addEvent('houses:ringBell', true)
 
 local interior = false
 
@@ -41,3 +42,11 @@ local function loadInterior(data)
 end
 
 addEventHandler('houses:loadInterior', resourceRoot, loadInterior)
+
+addEventHandler('houses:ringBell', resourceRoot, function(position, player)
+    local sound = playSound3D('data/doorbell.wav', unpack(position))
+    setElementDimension(sound, getElementDimension(localPlayer))
+    setSoundMinDistance(sound, 4)
+    setSoundMaxDistance(sound, 30)
+    exports['m-notis']:addNotification('info', 'Dzwonek do drzwi', 'Gracz ' .. getPlayerName(player) .. ' dzwoni do drzwi')
+end)

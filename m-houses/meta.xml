@@ -9,6 +9,8 @@
     <script src='server/events/door.lua' type='server'/>
     <script src='server/events/rent.lua' type='server'/>
     <script src='server/events/enter.lua' type='server'/>
+    <script src='server/events/tenants.lua' type='server'/>
+    <script src='server/events/bell.lua' type='server'/>
     <script src='server/interior.lua' type='server'/>
     <script src='server/main.lua' type='server'/>
 
@@ -16,4 +18,7 @@
     <file src='data/rent.js'/>
     <file src='data/options.js'/>
     <file src='data/interface.html'/>
+    <file src='data/doorbell.wav'/>
+
+    <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

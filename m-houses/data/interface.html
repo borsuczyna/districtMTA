@@ -94,9 +94,16 @@
         overflow: hidden;
     }
 
+    #houses #icons {
+        max-width: 20rem;
+        overflow-x: auto;
+    }
+
     #houses .icon {
         width: 2.8rem;
         height: 2.8rem;
+        min-width: 2.8rem;
+        min-height: 2.8rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -156,6 +163,48 @@
     #houses .input::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
+    }
+
+    #houses #edit-tenants {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(26, 26, 26, 0.8);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        backdrop-filter: blur(0.625rem);
+        box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s;
+    }
+
+    #houses #edit-tenants .list {
+        max-height: 20rem;
+        overflow-y: auto;
+        gap: 0.4rem;
+        min-width: 14rem;
+    }
+
+    #houses #edit-tenants .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0.6rem;
+        background: rgba(62, 62, 62, 0.5);
+        border: 0.0625rem solid rgba(71, 71, 71, 0.6);
+        border-radius: 0.375rem;
+    }
+
+    #houses #edit-tenants .item svg {
+        width: 0.7rem;
+        height: 0.7rem;
+        fill: #fefefeb0;
     }
 </style>
 
@@ -227,7 +276,7 @@
             <div class="d-flex flex-column gap-1" style="flex: 1;">
                 <div id="house-map"></div>
                 <div class="d-flex justify-between mt-2">
-                    <div class="d-flex gap-2" id="icons"></div>
+                    <div class="d-flex gap-2 nice-scroll" id="icons"></div>
                 </div>
             </div>
         </div>
@@ -243,6 +292,21 @@
     <div class="d-flex gap-1 mt-2">
         <div class="nice-button flat-button-small" style="flex: 1;" onclick="houses_confirmRentHouse(this)" id="rent-house-time-button">Wynajmij</div>
         <div class="flat-button flat-button-small" style="flex: 1;" onclick="houses_appearRentHouseTime(false)">Anuluj</div>
+    </div>
+</div>
+
+<div id="edit-tenants">
+    <div class="description">
+        Dodaj lub usuń lokatorów
+    </div>
+
+    <div class="d-flex flex-column mt-2 list"></div>
+
+    <input type="text" class="input mt-3" style="height: 0.6rem;" placeholder="Nazwa lub ID lokatora" id="new-tenant-name">
+    
+    <div class="d-flex gap-1 mt-2">
+        <div class="nice-button flat-button-small" style="flex: 1;" onclick="window.houses_addTenant(this)">Dodaj</div>
+        <div class="flat-button flat-button-small" style="flex: 1;" onclick="window.houses_appearEditTenants(false)">Anuluj</div>
     </div>
 </div>
 

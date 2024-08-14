@@ -31,6 +31,7 @@ function setHousesUIVisible(visible, data)
     end
 
     showCursor(visible, false)
+    guiSetInputMode(visible and 'no_binds' or 'allow_binds')
 
     if not housesUILoaded and visible then
         showHousesInterface()
@@ -65,3 +66,5 @@ end)
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('houses')
 end)
+
+guiSetInputMode('allow_binds')
