@@ -40,10 +40,10 @@ function assignPlayerData(player, data)
     -- settings
     local settings = fromJSON(data.settings)
 
-    setElementData(player, 'player:interfaceBlur', settings.interfaceBlur)
+    setElementData(player, 'player:interfaceBlur', settings.interfaceBlur or 0.4)
     triggerClientEvent(player, 'interface:setInterfaceBlur', root, settings.interfaceBlur)
 
-    setElementData(player, 'player:interfaceSize', settings.interfaceSize)
+    setElementData(player, 'player:interfaceSize', settings.interfaceSize or 14)
     triggerClientEvent(player, 'interface:setRemSize', root, settings.interfaceSize)
 
     setPlayerName(player, data.username)
