@@ -31,6 +31,9 @@ function updateDashboardData()
         ['block-premium-chat'] = {
             value = getElementData(localPlayer, 'player:blockedPremiumChat')
         },
+        ['interface-blur'] = {
+            value = getElementData(localPlayer, 'player:interfaceBlur')
+        },
         ['interface-size'] = {
             value = getElementData(localPlayer, 'player:interfaceSize')
         }
@@ -147,6 +150,9 @@ addEventHandler('dashboard:setSetting', root, function(setting, value, input)
         setElementData(localPlayer, 'player:hiddenNametags', boolValue)
     elseif setting == 'block-premium-chat' then
         setElementData(localPlayer, 'player:blockedPremiumChat', boolValue)
+    elseif setting == 'interface-blur' then
+        setElementData(localPlayer, 'player:interfaceBlur', value)
+        exports['m-ui']:setBlurQuality(value)
     elseif setting == 'interface-size' then
         setElementData(localPlayer, 'player:interfaceSize', value)
     end

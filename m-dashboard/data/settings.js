@@ -26,6 +26,14 @@ let settings = [
     },
     {
         type: 'range',
+        name: 'interface-blur',
+        text: 'Jakość rozmycia interfejsu',
+        min: 0,
+        max: 0.4,
+        step: 0.05,
+    },
+    {
+        type: 'range',
         name: 'interface-size',
         text: 'Rozmiar interfejsu',
         min: 8,
