@@ -1,4 +1,5 @@
-addEvent('houses:removeFurniture', true)
+addEvent('houses:removeFurniture', true) -- args: id
+addEvent('houses:saveFurniture', true) -- args: id, x, y, z, rx, ry, rz
 
 function getHouseRelativePosition(houseId, x, y, z, rx, ry, rz)
     local data = houses[houseId]
@@ -81,11 +82,22 @@ function removeHouseFurniture(id)
     local uid = getElementData(client, 'player:uid')
     if not uid then return end
 
+    local limited, time = isPlayerRateLimited(client)
+    if limited then
+        exports['m-notis']:addNotification(client, 'error', 'Edycja mebli', ('Zbyt szybko wykonujesz akcje, odczekaj %s sekund.'):format(time))
+        return
+    end
+
     local houseId = getElementData(client, 'player:house')
     if not houseId then return end
 
     local houseData = houses[houseId]
     if not houseData then return end
+
+    if houseData.owner ~= uid then
+        exports['m-notis']:addNotification(client, 'error', 'Edycja mebli', 'Nie jesteś właścicielem tego domu.')
+        return
+    end
 
     local furniture = table.findCallback(houseData.furniture, function(furniture)
         return furniture.uid == id
@@ -114,4 +126,96 @@ function removeHouseFurniture(id)
     end
 end
 
+function saveHouseFurniture(id, x, y, z, rx, ry, rz)
+    if not client then return end
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+    local uid = getElementData(client, 'player:uid')
+    if not uid then return end
+
+    local limited, time = isPlayerRateLimited(client)
+    if limited then
+        exports['m-notis']:addNotification(client, 'error', 'Edycja mebli', ('Zbyt szybko wykonujesz akcje, odczekaj %s sekund.'):format(time))
+        return
+    end
+
+    local houseId = getElementData(client, 'player:house')
+    if not houseId then return end
+
+    local houseData = houses[houseId]
+    if not houseData then return end
+
+    if houseData.owner ~= uid then
+        exports['m-notis']:addNotification(client, 'error', 'Edycja mebli', 'Nie jesteś właścicielem tego domu.')
+        return
+    end
+
+    local furniture = table.findCallback(houseData.furniture, function(furniture)
+        return furniture.uid == id
+    end)
+    if not furniture then return end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local position = table.concat({convertPositionToHousePosition(houseId, x, y, z, rx, ry, rz)}, ',')
+    local query = dbQuery(connection, 'UPDATE `m-furniture` SET `position` = ? WHERE `uid` = ?', position, id)
+    local result, num_affected_rows = dbPoll(query, -1)
+    if num_affected_rows == 0 then return end
+
+    furniture.position = position
+
+    local players = getPlayersInHouse(houseId)
+    if not players or #players == 0 then return end
+
+    triggerClientEvent(players, 'houses:updateFurniture', resourceRoot, furniture)
+end
+
+function removeAllHouseFurniture(houseId)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local itemsToGive = {}
+    for _, furniture in ipairs(houses[houseId].furniture) do
+        if furniture.owner and furniture.item then
+            if not itemsToGive[furniture.owner] then
+                itemsToGive[furniture.owner] = {}
+            end
+
+            table.insert(itemsToGive[furniture.owner], furniture.item)
+        end
+    end
+
+    for owner, items in pairs(itemsToGive) do
+        exports['m-inventory']:addPlayerItemsOffline(owner, items)
+    end
+
+    local query = dbQuery(connection, 'DELETE FROM `m-furniture` WHERE `houseId` = ?', houseId)
+    local result, num_affected_rows = dbPoll(query, -1)
+    if num_affected_rows == 0 then return end
+
+    houses[houseId].furniture = {}
+end
+
+function addDefaultHouseFurniture(uid)
+    local furniture = getInteriorDefaultFurniture(uid)
+    if not furniture or #furniture == 0 then return end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+    
+    for _, data in ipairs(furniture) do
+        local query = 'INSERT INTO `m-furniture` (`houseId`, `model`, `position`) VALUES (?, ?, ?)'
+        dbExec(connection, query, uid, data.model, data.position)
+    end
+
+    local houseData = houses[uid]
+    if not houseData then return end
+
+    local query = dbQuery(connection, 'SELECT * FROM `m-furniture` WHERE `houseId` = ?', uid)
+    local result = dbPoll(query, -1)
+
+    houseData.furniture = result
+end
+
 addEventHandler('houses:removeFurniture', resourceRoot, removeHouseFurniture)
+addEventHandler('houses:saveFurniture', resourceRoot, saveHouseFurniture)

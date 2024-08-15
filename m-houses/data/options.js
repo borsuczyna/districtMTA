@@ -79,3 +79,23 @@ window.houses_ringBell = async function(button) {
         notis_addNotification(data.status, 'Dzwonek', data.message);
     }
 }
+
+window.houses_kickGuests = async function(button) {
+    if (isButtonSpinner(button) || waiting) return;
+    waiting = true;
+
+    let houseData = houses_getHouseData();
+    if (!houseData) return;
+
+    makeButtonSpinner(button);
+    let data = await mta.fetch('houses', 'kickGuests', houseData.uid);
+    makeButtonSpinner(button, false);
+    waiting = false;
+
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        return;
+    } else {
+        notis_addNotification(data.status, 'Wyrzucanie', data.message);
+    }
+}

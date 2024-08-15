@@ -12,6 +12,7 @@
     <script src='server/events/enter.lua' type='server'/>
     <script src='server/events/tenants.lua' type='server'/>
     <script src='server/events/bell.lua' type='server'/>
+    <script src='server/events/kick.lua' type='server'/>
     <script src='server/events/furniture.lua' type='server'/>
     <script src='server/interior.lua' type='server'/>
     <script src='server/main.lua' type='server'/>

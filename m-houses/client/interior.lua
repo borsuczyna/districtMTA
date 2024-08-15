@@ -103,11 +103,16 @@ addEventHandler('houses:updateFurniture', resourceRoot, function(furniture)
     local furnitureData, index = getFurnitureData(furniture.uid)
     
     if index then
-        interior.furniture[index] = furniture
-        loadFurnitureObject(furniture)
+        furnitureData.model = furniture.model
+        furnitureData.position = furniture.position
+        furnitureData.rotation = furniture.rotation
+
+        loadFurnitureObject(furnitureData)
+        print('update', furniture.uid, getTickCount())
     else
         table.insert(interior.furniture, furniture)
         loadFurnitureObject(furniture)
+        print('add', furniture.uid, getTickCount())
     end
 end)
 

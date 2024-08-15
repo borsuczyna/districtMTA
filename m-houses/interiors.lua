@@ -9,5 +9,9 @@ houseInteriors = {
 
         model = 'int-1',
         enter = {2, -1, 0.95, 0},
+
+        defaultFurniture = {
+            {model = 2525, position = {3.5, 12.3, 0, 0, 0, 0}},
+        }
     }
 }

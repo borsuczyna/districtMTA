@@ -59,8 +59,6 @@ local function drawEditLine(axis, x2, y2, z2, color)
             local movedDistance = distanceNotAbsolute(changedX, changedY) / (editing.editMode == 'rotation' and 2.5 or 100)
 
             local tx, ty, tz = getPositionFromElementOffset(editing.furniture.object, x2 * movedDistance, y2 * movedDistance, z2 * movedDistance)
-            -- local x, y, z = getElementPosition(editing.furniture.object)
-            -- setElementPosition(editing.furniture.object, tx, ty, tz)
 
             if editing.editMode == 'position' then
                 local tx, ty, tz = getPositionFromElementOffset(editing.furniture.object, x2 * movedDistance, y2 * movedDistance, z2 * movedDistance)
@@ -113,7 +111,9 @@ local function clickFurniture(data)
     if not px or not py then return end
 
     local icons = {
-        {'data/furniture.png'},
+        {'data/furniture.png', function()
+            editing.furniture = data
+        end},
         {'data/remove.png', function()
             triggerServerEvent('houses:removeFurniture', resourceRoot, data.uid)
         end}
@@ -121,7 +121,14 @@ local function clickFurniture(data)
 
     if editing.furniture and editing.furniture.uid == data.uid then
         icons = {
-            {'data/check.png'},
+            {'data/check.png', function()
+                local x, y, z = getElementPosition(editing.furniture.object)
+                local rx, ry, rz = getElementRotation(editing.furniture.object)
+                triggerServerEvent('houses:saveFurniture', resourceRoot, data.uid, x, y, z, rx, ry, rz)
+
+                setElementCollisionsEnabled(editing.furniture.object, true)
+                editing.furniture = false
+            end},
             {editing.editMode == 'position' and 'data/rotate.png' or 'data/position.png', function()
                 editing.editMode = editing.editMode == 'position' and 'rotation' or 'position'
             end},

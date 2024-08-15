@@ -30,8 +30,6 @@ addEventHandler('houses:editFurnitures', resourceRoot, function(hash, player)
 end)
 
 function setPlayerFurnitureEditMode(player, state, furnitureId)
-    -- if getElementData(player, 'player:editingFurnitures') == state then return end
-
     setElementData(player, 'player:editingFurnitures', state, false)
     triggerClientEvent(player, 'houses:setFurnitureEditMode', resourceRoot, state, furnitureId)
 end

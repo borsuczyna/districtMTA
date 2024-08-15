@@ -72,8 +72,10 @@ addEventHandler('houses:rentHouse', resourceRoot, function(hash, player, houseUi
     end
 
     local endRentTime = getRealTime().timestamp + days * 24 * 60 * 60
+    local isNewRent = true
     if house.owner then
         endRentTime = house.rentDate.timestamp + days * 24 * 60 * 60
+        isNewRent = false
     end
 
     if endRentTime > getRealTime().timestamp + 60 * 24 * 60 * 60 then
@@ -87,6 +89,11 @@ addEventHandler('houses:rentHouse', resourceRoot, function(hash, player, houseUi
     end
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wynajęto dom na ' .. days .. ' dni za $' .. formatNumber(cost) .. '.'})
+
+    if isNewRent then
+        removePlayersFromHouse(houseUid)
+        addDefaultHouseFurniture(houseUid)
+    end
 end)
 
 addEvent('houses:cancelRentHouse')
@@ -117,6 +124,8 @@ addEventHandler('houses:cancelRentHouse', resourceRoot, function(hash, player, h
     dbExec(connection, 'UPDATE `m-houses` SET `owner` = NULL, `rentDate` = "1970-01-01 00:00:00" WHERE `uid` = ?', houseUid)
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Anulowano wynajem domu.'})
+    removePlayersFromHouse(houseUid)
+    removeAllHouseFurniture(houseUid)
 
     house.owner = nil
     house.ownerName = nil

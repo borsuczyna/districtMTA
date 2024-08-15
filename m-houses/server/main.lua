@@ -31,10 +31,21 @@ function updateHouseRent(id)
     local data = houses[id]
     if not data then return end
 
+    local wasRented = data.isRented
     local isRented = (not isPastDate(data.rentDate) and data.owner)
     data.isRented = isRented
     
     if not isRented then
+        if wasRented and data.owner then
+            removePlayersFromHouse(id)
+            removeAllHouseFurniture(id)
+            
+            local player = exports['m-core']:getPlayerByUid(data.owner)
+            if player then
+                exports['m-notis']:addNotification(player, 'warning', 'Dom', ('Twój dom w %s wygasł.<br>Meble zostały ci zwrócone.'):format(data.streetName))
+            end
+        end
+        
         data.owner = nil
         data.ownerName = nil
     end
@@ -70,7 +81,8 @@ local function loadHouse(data)
         ownerName = data.ownerName,
         furnitured = data.furnitured == 1,
         locked = data.locked == 1,
-        furniture = getHouseFurniture(id)
+        furniture = getHouseFurniture(id),
+        isRented = true
     }
 
     houses[id].marker = createHouseMarker(id)

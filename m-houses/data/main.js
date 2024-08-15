@@ -31,6 +31,12 @@ let houseIcons = {
 };
 let houseOptions = [
     {
+        name: (houseData) => 'Obejrzyj mieszkanie',
+        condition: (houseData) => !houseData.isInside && houseData.ownerName == undefined,
+        icon: houseIcons.door,
+        callback: 'houses_enterHouse'
+    },
+    {
         name: (houseData) => houseData.locked ? 'Otwórz drzwi' : 'Zamknij drzwi',
         condition: (houseData) => houseData.canEnter && houseData.ownerName != undefined,
         icon: houseIcons.door,
@@ -59,6 +65,12 @@ let houseOptions = [
         condition: (houseData) => houseData.isYou && houseData.ownerName != undefined,
         icon: houseIcons.furniture,
         callback: 'houses_furnitureMenu'
+    },
+    {
+        name: (houseData) => 'Wyrzuć gości',
+        condition: (houseData) => houseData.isYou && houseData.ownerName != undefined,
+        icon: houseIcons.group,
+        callback: 'houses_kickGuests'
     }
 ];
 
@@ -97,10 +109,10 @@ function setHouseData(data) {
             ((data.canEnter || !data.locked) ? 'Wejdź' : 'Zadzwoń dzwonkiem'))
         );
     } else {
-        document.querySelector('#houses #furnitured').innerText = data.interiorData.furnitured ? 'Z wyposażeniem' : 'Bez wyposażenia';
+        document.querySelector('#houses #furnitured').innerText = data.furnitured ? 'Z wyposażeniem' : 'Bez wyposażenia';
         document.querySelector('#houses #owner').parentElement.style.display = 'none';
         document.querySelector('#houses #rent-to').parentElement.style.display = 'none';
-        document.querySelector('#houses #main-button').innerText = 'Wynajmij';
+        document.querySelector('#houses #main-button').innerText = data.isInside ? 'Wyjdź' : 'Wynajmij';
     }
 
     houses_renderHouseOptions();
@@ -131,9 +143,11 @@ window.houses_renderHouseOptions = function() {
 }
 
 window.houses_useMainButton = function(button) {
-    if (houseData.ownerName == undefined) {
+    if (houseData.isInside) {
+        houses_enterHouse(button);
+    } else if (houseData.ownerName == undefined) {
         houses_openRentHouse();
-    } else if (houseData.isInside || houseData.isYou || houseData.canEnter || !houseData.locked) {
+    } else if (houseData.isYou || houseData.canEnter || !houseData.locked) {
         houses_enterHouse(button);
     } else {
         houses_ringBell();
@@ -158,7 +172,8 @@ function loadHouseMap() {
         y: 0,
         limitBounds: true,
         bounds: { x: 400, y: 400 },
-        texture: 'map.png?v1.01'
+        texture: 'map-dark.png?v1.01',
+        background: 'rgba(255, 255, 255, 0.05)',
     });
 }
 

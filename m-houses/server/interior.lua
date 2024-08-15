@@ -1,10 +1,31 @@
+function getInteriorDefaultFurniture(houseId)
+    local houseData = houses[houseId]
+    if not houseData then return end
+
+    if not houseData.furnitured then
+        return {}
+    end
+
+    local interiorData = houseInteriors[houseData.interior[1]]
+    local defaultFurniture = {}
+
+    for k,v in pairs(interiorData.defaultFurniture) do
+        table.insert(defaultFurniture, {
+            model = v.model,
+            position = table.concat(v.position, ','),
+        })
+    end
+
+    return defaultFurniture
+end
+
 function sendPlayerInterior(player, houseData)
     if not isElement(player) then return end
 
     triggerClientEvent(player, 'houses:loadInterior', resourceRoot, {
         dimension = houseData.uid,
         interior = houseData.interior,
-        furniture = houseData.furniture,
+        furniture = houseData.owner and houseData.furniture or getInteriorDefaultFurniture(houseData.uid),
     })
 
     setElementDimension(player, houseData.uid)
@@ -53,4 +74,22 @@ function getPlayersInHouse(houseId)
         end
     end
     return players
+end
+
+function removePlayersFromHouse(houseId, ignoredPlayer)
+    local allPlayers = getPlayersInHouse(houseId)
+    local players = {}
+
+    for k,v in pairs(players) do
+        if v ~= ignoredPlayer then
+            table.insert(players, v)
+        end
+    end
+
+    exports['m-notis']:addNotification(players, 'warning', 'Dom', 'Zostałeś wyrzucony z domu.')
+
+    for k,v in pairs(players) do
+        exports['m-loading']:setLoadingVisible(v, true, 'Wczytywanie...', 1000)
+        setTimer(leaveHouse, 600, 1, v, houses[houseId])
+    end
 end
