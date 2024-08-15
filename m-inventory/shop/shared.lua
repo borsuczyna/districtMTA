@@ -45,6 +45,7 @@ end
 
 shopList = {
     createFishShop(823.530, -1920.196, 12.867),
+    createFurnitureShop('toilet', 'Toalety', 2071.926, -1735.802, 13.547),
 }
 
 for i, shop in ipairs(shopList) do

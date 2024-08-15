@@ -7,6 +7,10 @@ window.inventory_setShopVisible = async (appear) => {
     await new Promise(resolve => setTimeout(resolve, 100));
     element.style.opacity = appear ? '1' : '0';
     element.style.transform = appear ? 'translate(-50%, -50%)' : 'translate(-50%, -50%) scale(0.8)';
+    if (!appear) await new Promise(resolve => setTimeout(resolve, 300));
+
+    if (!document.body.contains(element)) return;
+    element.classList.toggle('d-none', !appear);
 }
 
 async function setShopData(data) {

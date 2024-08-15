@@ -121,7 +121,8 @@ window.dashboard_vehicleDetails = function(id, data) {
             y: position[1],
             limitBounds: true,
             bounds: { x: 1400, y: 1400 },
-            texture: 'map-transparent.png?v1.01'
+            background: 'rgba(255, 255, 255, 0.04)',
+            texture: 'map-dark.png?v1.01'
         });
 
         createMapBlip({

@@ -6,6 +6,7 @@
 
     <file src='data/interface.html'/>
     <file src='data/map.png'/>
+    <file src='data/map-dark.png'/>
     <file src='data/map-transparent.png'/>
     <file src='data/marker.png'/>
     <file src='data/blips/job.png'/>

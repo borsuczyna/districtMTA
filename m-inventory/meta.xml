@@ -27,6 +27,7 @@
 
     <!-- shops -->
     <script src='shop/shops/fish.lua' type='shared' cache='false'/>
+    <script src='shop/shops/furniture.lua' type='shared' cache='false'/>
     
     <script src='shop/shared.lua' type='shared' cache='false'/>
     <script src='shop/server.lua' type='server'/>
@@ -89,6 +90,9 @@
 
     <!-- furniture -->
     <file src='data/icons/furniture/toilet-1.png'/>
+    <file src='data/icons/furniture/toilet-2.png'/>
+    <file src='data/icons/furniture/toilet-3.png'/>
+    <file src='data/icons/furniture/soap-1.png'/>
 
     <export function='doesPlayerHaveItem' type='server'/>
     <export function='doesPlayerHaveItems' type='server'/>
@@ -104,6 +108,9 @@
     <export function='matchItems' type='server'/>
     <export function='doesPlayerHaveAnyItemByRegexEquipped' type='server'/>
     <export function='getPlayerItem' type='server'/>
+    <export function='getPlayerItemsOffline' type='server'/>
+    <export function='setPlayerItemsOffline' type='server'/>
+    <export function='addPlayerItemsOffline' type='server'/>
     <export function='getItemMetadata' type='server'/>
     <export function='setItemMetadata' type='server'/>
     <export function='addItemProgress' type='server'/>

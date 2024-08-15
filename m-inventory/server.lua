@@ -61,8 +61,7 @@ function clone(t)
     return fromJSON(toJSON(t))
 end
 
-function addPlayerItem(player, item, amount, metadata)
-    local inventory = getPlayerInventory(player)
+function addInventoryItem(inventory, item, amount, metadata)
     local itemData = itemsData[item]
     if not itemData then return end
 
@@ -74,8 +73,7 @@ function addPlayerItem(player, item, amount, metadata)
                     table.remove(inventory, i)
                 end
 
-                setElementData(player, 'player:inventory', inventory, false)
-                return
+                return inventory
             end
         end
     elseif amount <= 0 then
@@ -92,11 +90,10 @@ function addPlayerItem(player, item, amount, metadata)
             end
         end
 
-        setElementData(player, 'player:inventory', inventory, false)
-        return
+        return inventory
     end
 
-    if amount <= 0 then return end
+    if amount <= 0 then return inventory end
 
     if not itemData.metadata then
         table.insert(inventory, {item = item, amount = amount, metadata = clone(metadata or itemData.metadata), hash = generateHash()})
@@ -105,7 +102,47 @@ function addPlayerItem(player, item, amount, metadata)
             table.insert(inventory, {item = item, amount = 1, metadata = clone(metadata or itemData.metadata), hash = generateHash()})
         end
     end
+
+    return inventory
+end
+
+function addPlayerItem(player, item, amount, metadata)
+    local inventory = getPlayerInventory(player)
+    inventory = addInventoryItem(inventory, item, amount, metadata)
     setElementData(player, 'player:inventory', inventory, false)
+end
+
+function getPlayerItemsOffline(uid)
+    local data = exports['m-mysql']:query('SELECT `inventory` FROM `m-users` WHERE `uid` = ?', uid)
+    if not data or not data[1] then return {} end
+
+    return fromJSON(data[1].inventory)
+end
+
+function setPlayerItemsOffline(uid, items)
+    exports['m-mysql']:query('UPDATE `m-users` SET `inventory` = ? WHERE `uid` = ?', toJSON(items), uid)
+end
+
+function addPlayerItemsOffline(uid, items)
+    local player = exports['m-core']:getPlayerByUid(uid)
+    if player then
+        local playerItems = getPlayerInventory(player)
+
+        for _, item in pairs(items) do
+            playerItems = addInventoryItem(playerItems, item, 1)
+        end
+
+        setElementData(player, 'player:inventory', playerItems, false)
+        return
+    end
+
+    local playerItems = getPlayerItemsOffline(uid)
+
+    for _, item in pairs(items) do
+        playerItems = addInventoryItem(playerItems, item, 1)
+    end
+
+    setPlayerItemsOffline(uid, playerItems)
 end
 
 function transferItem(playerA, playerB, itemHash, amount)
