@@ -3,6 +3,7 @@
     <script src='interiors.lua' type='shared' cache='false'/>
 
     <script src='client/interface.lua' type='client' cache='false'/>
+    <script src='client/textures.lua' type='client' cache='false'/>
     <script src='client/furniture-editor.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
     <script src='client/interior.lua' type='client' cache='false'/>
@@ -14,25 +15,36 @@
     <script src='server/events/bell.lua' type='server'/>
     <script src='server/events/kick.lua' type='server'/>
     <script src='server/events/furniture.lua' type='server'/>
+    <script src='server/events/texture.lua' type='server'/>
     <script src='server/interior.lua' type='server'/>
     <script src='server/main.lua' type='server'/>
 
     <script src='server/furniture/positions.lua' type='server'/>
     <script src='server/furniture/house.lua' type='server'/>
     <script src='server/furniture/main.lua' type='server'/>
+    
+    <script src='server/textures/main.lua' type='server'/>
 
     <file src='data/main.js'/>
     <file src='data/rent.js'/>
     <file src='data/options.js'/>
     <file src='data/furniture.js'/>
+    <file src='data/textures.js'/>
     <file src='data/interface.html'/>
     <file src='data/doorbell.wav'/>
-    <file src='data/furniture.png'/>
-    <file src='data/remove.png'/>
-    <file src='data/check.png'/>
-    <file src='data/dot.png'/>
-    <file src='data/rotate.png'/>
-    <file src='data/position.png'/>
+    <file src='data/shader.fx'/>
+
+    <file src='data/textures/furniture.png'/>
+    <file src='data/textures/remove.png'/>
+    <file src='data/textures/check.png'/>
+    <file src='data/textures/dot.png'/>
+    <file src='data/textures/rotate.png'/>
+    <file src='data/textures/position.png'/>
+    <file src='data/textures/close.png'/>
+    
+    <file src='data/textures/interior/a.png'/>
+    <file src='data/textures/interior/b.png'/>
+    <file src='data/textures/interior/c.png'/>
 
     <export function='useFurniture' type='server'/>
 

@@ -114,3 +114,7 @@ function useFurniture(player, itemHash, furniture)
     exports['m-inventory']:setItemMetadata(player, itemHash, 'equipped', not equipped)
     startFurniture(player, itemHash, furniture)
 end
+
+addEventHandler('onPlayerQuit', root, function()
+    destroyPlayerFurnitureObject(source)
+end)

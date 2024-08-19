@@ -10,6 +10,7 @@ local function destroyHouseInterior()
 
     destroyElement(interior.mainObject)
     destroyElement(interior.marker)
+    destroyInteriorTextures()
 
     if interior.furniture then
         for i, data in ipairs(interior.furniture) do
@@ -58,8 +59,11 @@ local function loadInterior(data)
     interior = {
         mainObject = mainObject,
         furniture = data.furniture,
-        dimension = data.dimension
+        dimension = data.dimension,
+        interiorData = interiorData
     }
+
+    loadInteriorTextures(interiorData, mainObject, data.textures)
 
     local spawn = {getRelativeInteriorPosition(mainObject, interiorData.enter[1], interiorData.enter[2], interiorData.enter[3], 0, 0, interiorData.enter[4])}
     setElementPosition(localPlayer, spawn[1], spawn[2], spawn[3])
@@ -77,6 +81,12 @@ local function loadInterior(data)
     interior.marker = marker
 end
 
+function resetInteriorTextures()
+    if not interior then return end
+
+    loadInteriorTextures(interior.interiorData, interior.mainObject, {})
+end
+
 function getFurnitureData(id)
     return table.findCallback(interior.furniture, function(furniture)
         return furniture.uid == id
@@ -85,6 +95,14 @@ end
 
 function getInteriorFurniture()
     return interior.furniture
+end
+
+function getInteriorObject()
+    return interior.mainObject
+end
+
+function getInteriorData()
+    return interior.interiorData
 end
 
 addEventHandler('houses:loadInterior', resourceRoot, loadInterior)

@@ -252,6 +252,32 @@ function clearCacheForResource(resource)
     executeBrowserJavascript(browser, ('clearCacheForResource(%q)'):format(resource))
 end
 
+local cursorType = 'auto'
+
+function checkCursorChanged()
+    if not uiLoaded or not browser then return end
+    
+    local title = getBrowserTitle(browser)
+    if title ~= cursorType then
+        cursorType = title
+    end
+end
+
+function renderCustomCursor()
+    if not isCursorShowing() then return end
+    checkCursorChanged()
+
+    local cx, cy = getCursorPosition()
+    if not cx or not cy then cx, cy = 0, 0 end
+    cx, cy = cx*sx, cy*sy
+
+    if cursorType == 'pointer' then
+        dxDrawRectangle(cx - 10, cy - 10, 20, 20, tocolor(255, 255, 255, 255))
+    end
+end
+
+addEventHandler('onClientRender', root, renderCustomCursor, true, 'low-9999')
+
 addEventHandler('onClientResourceStop', root, function(resource)
     if not uiLoaded or not browser then return end
     clearCacheForResource(getResourceName(resource))

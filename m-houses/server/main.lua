@@ -82,6 +82,7 @@ local function loadHouse(data)
         furnitured = data.furnitured == 1,
         locked = data.locked == 1,
         furniture = getHouseFurniture(id),
+        textures = getHouseTextures(id),
         isRented = true
     }
 
@@ -159,7 +160,9 @@ addEventHandler('houses:getData', resourceRoot, function(uid)
         isRented = data.isRented,
         furnitured = data.furnitured,
         locked = data.locked,
-        furniture = data.furniture
+        furniture = data.furniture,
+        textures = data.textures,
+        possibleTextures = interiorTextures
     })
 end)
 

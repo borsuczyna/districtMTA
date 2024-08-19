@@ -29,3 +29,14 @@ function generateHash(length = 16) {
     }
     return hash;
 }
+
+let lastCursorStyle = '';
+
+document.addEventListener('mousemove', (event) => {
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    const cursorStyle = window.getComputedStyle(element).cursor;
+
+    if (cursorStyle !== lastCursorStyle) {
+        document.title = cursorStyle;
+    }
+});

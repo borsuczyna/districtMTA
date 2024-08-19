@@ -1,28 +1,28 @@
 let waiting = false;
 
 window.houses_hideRentHouseInner = function(button) {
-    document.querySelector('#rent-house-time').style.display = 'none';
+    document.querySelector('#houses #rent-house-time').style.display = 'none';
 }
 
 window.houses_appearRentHouseTime = async function(appear) {
-    document.querySelector('#rent-house-time').style.display = 'block';
+    document.querySelector('#houses #rent-house-time').style.display = 'block';
     await new Promise(resolve => setTimeout(resolve, 100));
-    document.querySelector('#rent-house-time').style.opacity = appear ? '1' : '0';
+    document.querySelector('#houses #rent-house-time').style.opacity = appear ? '1' : '0';
     if (!appear) setTimer('houses', houses_hideRentHouseInner, 200);
 }
 
 window.houses_hideTenantInner = function(button) {
-    document.querySelector('#edit-tenants').style.display = 'none';
+    document.querySelector('#houses #edit-tenants').style.display = 'none';
 }
 
 window.houses_appearEditTenants = async function(appear) {
     let houseData = houses_getHouseData();
     if (!houseData) return;
 
-    document.querySelector('#edit-tenants').style.display = 'block';
+    document.querySelector('#houses #edit-tenants').style.display = 'block';
     await new Promise(resolve => setTimeout(resolve, 100));
-    document.querySelector('#edit-tenants').style.opacity = appear ? '1' : '0';
-    document.querySelector('#edit-tenants .description').innerText = `Dodaj lub usuń lokatorów (max ${houseData.interiorData.maxTenants})`;
+    document.querySelector('#houses #edit-tenants').style.opacity = appear ? '1' : '0';
+    document.querySelector('#houses #edit-tenants .description').innerText = `Dodaj lub usuń lokatorów (max ${houseData.interiorData.maxTenants})`;
     if (!appear) setTimer('houses', houses_hideTenantInner, 200);
 }
 

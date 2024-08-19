@@ -19,6 +19,14 @@ function getInteriorDefaultFurniture(houseId)
     return defaultFurniture
 end
 
+function getInteriorTextureNames(houseId)
+    local houseData = houses[houseId]
+    if not houseData then return end
+
+    local interiorData = houseInteriors[houseData.interior[1]]
+    return interiorData.textureNames
+end
+
 function sendPlayerInterior(player, houseData)
     if not isElement(player) then return end
 
@@ -26,6 +34,7 @@ function sendPlayerInterior(player, houseData)
         dimension = houseData.uid,
         interior = houseData.interior,
         furniture = houseData.owner and houseData.furniture or getInteriorDefaultFurniture(houseData.uid),
+        textures = houseData.textures,
     })
 
     setElementDimension(player, houseData.uid)

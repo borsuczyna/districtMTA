@@ -11,7 +11,7 @@ local function drawDot(x, y, z, color)
     if not px or not py then return end
 
     local x, y, w, h = px - 15/zoom, py - 15/zoom, 30/zoom, 30/zoom
-    dxDrawImage(x, y, w, h, 'data/dot.png', 0, 0, 0, color)
+    dxDrawImage(x, y, w, h, 'data/textures/dot.png', 0, 0, 0, color)
     return isMouseInPosition(x, y, w, h)
 end
 
@@ -89,9 +89,9 @@ local function drawFurniture(data)
 
     if not px or not py then return end
     
-    local icons = {'data/furniture.png', 'data/remove.png'}
+    local icons = {'data/textures/furniture.png', 'data/textures/remove.png'}
     if isEditing then
-        icons = {'data/check.png', editing.editMode == 'position' and 'data/rotate.png' or 'data/position.png', 'data/remove.png'}
+        icons = {'data/textures/check.png', editing.editMode == 'position' and 'data/textures/rotate.png' or 'data/textures/position.png', 'data/textures/remove.png'}
     end
 
     local width = 95/zoom * #icons
@@ -111,17 +111,17 @@ local function clickFurniture(data)
     if not px or not py then return end
 
     local icons = {
-        {'data/furniture.png', function()
+        {'data/textures/furniture.png', function()
             editing.furniture = data
         end},
-        {'data/remove.png', function()
+        {'data/textures/remove.png', function()
             triggerServerEvent('houses:removeFurniture', resourceRoot, data.uid)
         end}
     }
 
     if editing.furniture and editing.furniture.uid == data.uid then
         icons = {
-            {'data/check.png', function()
+            {'data/textures/check.png', function()
                 local x, y, z = getElementPosition(editing.furniture.object)
                 local rx, ry, rz = getElementRotation(editing.furniture.object)
                 triggerServerEvent('houses:saveFurniture', resourceRoot, data.uid, x, y, z, rx, ry, rz)
@@ -129,10 +129,10 @@ local function clickFurniture(data)
                 setElementCollisionsEnabled(editing.furniture.object, true)
                 editing.furniture = false
             end},
-            {editing.editMode == 'position' and 'data/rotate.png' or 'data/position.png', function()
+            {editing.editMode == 'position' and 'data/textures/rotate.png' or 'data/textures/position.png', function()
                 editing.editMode = editing.editMode == 'position' and 'rotation' or 'position'
             end},
-            {'data/remove.png', function()
+            {'data/textures/remove.png', function()
                 triggerServerEvent('houses:removeFurniture', resourceRoot, data.uid)
             end}
         }
