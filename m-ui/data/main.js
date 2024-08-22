@@ -1,13 +1,10 @@
+let lastCursorStyle = '';
+let lastCursorPos = { x: 0, y: 0 };
+window.cursorVisible = false;
+
 addEventListener('load', () => {
     mta.triggerEvent('interfaceLoaded');
 });
-
-// addEventListener('keydown', (e) => {
-//     if ((e.key.toLowerCase() === 'q' || e.key.toLowerCase() === 'e')) {
-//         // e.preventDefault();
-//         changeRemSize(e.key.toLowerCase() === 'q' ? -1 : 1);
-//     }
-// });
 
 function setRemSize(size) {
     size = Math.max(Math.min(size, 22), 8);
@@ -30,13 +27,25 @@ function generateHash(length = 16) {
     return hash;
 }
 
-let lastCursorStyle = '';
+function setCursorVisible(visible) {
+    window.cursorVisible = visible;
+}
 
-document.addEventListener('mousemove', (event) => {
-    const element = document.elementFromPoint(event.clientX, event.clientY);
+function updateBrowserTitle() {
+    const element = document.elementFromPoint(lastCursorPos.x, lastCursorPos.y);
     const cursorStyle = window.getComputedStyle(element).cursor;
 
-    if (cursorStyle !== lastCursorStyle) {
-        document.title = cursorStyle;
-    }
+    document.title = JSON.stringify({
+        c: cursorStyle,
+        al: getControllerAxis(0),
+        ar: getControllerAxis(1),
+        b: new Array(18).fill(0).map((_, i) => getControllerButton(i)),
+    });
+}
+
+document.addEventListener('mousemove', (event) => {
+    lastCursorPos.x = event.clientX;
+    lastCursorPos.y = event.clientY;
+
+    updateBrowserTitle();
 });

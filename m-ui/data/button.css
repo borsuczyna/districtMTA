@@ -11,6 +11,7 @@
     text-shadow: 0.063rem 0.063rem 0.125rem rgba(0, 0, 0, 0.4);
     background-size: 200% 200%;
     background-position: 0% 50%;
+    cursor: pointer;
     transition: background-position 0.5s;
 }
 

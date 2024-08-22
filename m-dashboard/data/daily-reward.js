@@ -13,7 +13,7 @@ function updateTimeLeft(card, date) {
 
     if (timeLeft <= 1) {
         button.innerText = 'Odbierz';
-        button.onclick = () => dashboard_redeemDailyReward(button);
+        button.setAttribute('onclick', 'dashboard_redeemDailyReward(this);');
         return;
     } else {
         let hours = Math.floor(timeLeft / 1000 / 60 / 60);

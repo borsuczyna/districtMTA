@@ -11,6 +11,7 @@ local lockedElementDatas = {
     'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
     'player:equippedFishingRod', 'player:bankMoney', 'player:licenses', 'marker:title', 'marker:desc', 'marker:house',
     'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
+    'controller',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
@@ -24,7 +25,8 @@ local lockedElementDatas = {
 local selfElementDatas = {
     'player:afk', 'player:gameTime', 'player:gameInterval', 'player:blockedDMs', 'player:blockedDMsReason',
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
-    'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing'
+    'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing',
+    'player:controllerMode',
 }
 
 local selfVehicleElementDatas = {

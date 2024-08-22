@@ -45,6 +45,9 @@ function assignPlayerData(player, data)
 
     setElementData(player, 'player:interfaceSize', settings.interfaceSize or 14)
     triggerClientEvent(player, 'interface:setRemSize', root, settings.interfaceSize)
+    
+    -- setElementData(player, 'player:controllerMode', settings.controllerMode or false)
+    -- triggerClientEvent(player, 'interface:setControllerMode', root, settings.controllerMode)
 
     setPlayerName(player, data.username)
     setElementModel(player, data.skin)
@@ -74,7 +77,8 @@ function buildSavePlayerQuery(player)
     local licenses = table.concat(getElementData(player, 'player:licenses') or {}, ',')
     local settings = {
         interfaceBlur = getElementData(player, 'player:interfaceBlur') or 0,
-        interfaceSize = getElementData(player, 'player:interfaceSize') or 8
+        interfaceSize = getElementData(player, 'player:interfaceSize') or 8,
+        -- controllerMode = getElementData(player, 'player:controllerMode') or false
     }
 
     local saveData = {

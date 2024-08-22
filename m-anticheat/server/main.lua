@@ -32,6 +32,7 @@ addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
         elseif newValue == 1 then
             local message = getElementData(source, 'player:gameInterval')
             ban(client, 'Lua injector', ('Lua injector %s'):format(teaDecode(message, 'district')))
+            print('eldata nadana')
         end
     end
 end)

@@ -78,8 +78,14 @@ function toggleInventory()
     setInventoryVisible(not inventoryVisible)
 end
 
+function controllerButtonPressed(button)
+    if button ~= 9 then return end
+    toggleInventory()
+end
+
 addEventHandler('onClientResourceStart', resourceRoot, function()
     bindKey('i', 'down', toggleInventory)
+    addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
 
     addEventHandler('interfaceLoaded', root, function()
         inventoryLoaded = false

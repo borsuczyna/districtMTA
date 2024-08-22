@@ -157,8 +157,8 @@ window.inventory_optionClick = async (action, button) => {
 
 window.inventory_setOptionsPosition = (event) => {
     let optionsEl = document.querySelector('#inventory-options');
-    let x = event.clientX;
-    let y = event.clientY;
+    let x = cursorPosition.x;
+    let y = cursorPosition.y;
 
     optionsEl.style.left = x + 'px';
     optionsEl.style.top = y + 'px';

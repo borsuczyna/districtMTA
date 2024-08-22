@@ -7,13 +7,22 @@ local textWidth = dxGetTextWidth('Trwa ładowanie interfejsu...', 1, font)
 local totalWidth = textWidth + 50/zoom + 20/zoom
 local visibleInterfaces = {}
 local singleInterfaces = {}
+local lastCursorPos = {0, 0}
+local cursorType = 'auto'
+local lastCursorShown = false
 
+addEvent('cursor:setPosition', true)
+addEvent('cursor:move', true)
+addEvent('cursor:click', true)
+addEvent('onClientClick', true)
 addEvent('interfaceLoaded')
 addEvent('interfaceElement:load')
 addEvent('interface:load')
 addEvent('interface:visibilityChange')
 addEvent('interface:setClipboard')
 addEvent('interface:getInclude')
+addEvent('interface:setInterfaceBlur', true)
+addEvent('interface:setControllerMode', true)
 addEventHandler('interfaceLoaded', resourceRoot, function()
     uiLoaded = true
 end)
@@ -83,8 +92,11 @@ function setBlurQualityLevel(quality)
     setBlurQuality(quality)
 end
 
-addEvent('interface:setInterfaceBlur', true)
 addEventHandler('interface:setInterfaceBlur', root, setBlurQualityLevel)
+
+addEventHandler('interface:setControllerMode', root, function(mode)
+    executeBrowserJavascript(browser, ('setCurrentControllerMode(%s)'):format(mode and 'true' or 'false'))
+end)
 
 function loadInterfaceElement(name)
     if not uiLoaded or not browser then return end
@@ -179,6 +191,13 @@ function renderInterface()
         local cx, cy = getCursorPosition()
         if not cx or not cy then cx, cy = 0, 0 end
         cx, cy = cx*sx, cy*sy
+        
+        local changedDistance = getDistanceBetweenPoints2D(lastCursorPos[1], lastCursorPos[2], cx, cy)
+        if changedDistance > 5 and cursorType == 'controller' then
+            cursorType = 'auto'
+        end
+
+        lastCursorPos = {cx, cy}
         injectBrowserMouseMove(browser, cx, cy)
 
         focusBrowser(isCursorShowing() and browser or nil)
@@ -235,16 +254,6 @@ addEventHandler('interface:setClipboard', root, function(data)
     setClipboard(data)
 end)
 
-addEventHandler('interface:getInclude', root, function(name)
-    local path = ':' .. name:sub(2, #name)
-    print(path)
-    local file = fileOpen(path, true)
-    local content = fileRead(file, fileGetSize(file))
-    fileClose(file)
-
-    executeJavascript(('triggerEvent("main", "interface:getInclude", %q, `%s`)'):format(name, content:gsub('`', '\\`'):gsub('%${', '\\${'):gsub('\n', '\\n')))
-end)
-
 addEventHandler('onClientResourceStart', resourceRoot, initializeInterface)
 
 function clearCacheForResource(resource)
@@ -252,27 +261,46 @@ function clearCacheForResource(resource)
     executeBrowserJavascript(browser, ('clearCacheForResource(%q)'):format(resource))
 end
 
-local cursorType = 'auto'
-
 function checkCursorChanged()
     if not uiLoaded or not browser then return end
     
     local title = getBrowserTitle(browser)
-    if title ~= cursorType then
-        cursorType = title
+    if title:sub(1, 1) ~= '{' then return end
+
+    local data = (fromJSON(title) or {})
+    
+    if data.c ~= cursorType and cursorType ~= 'controller' then
+        cursorType = data.c
     end
+
+    if getDistanceBetweenPoints2D(data.al.x, data.al.y, 0, 0) > 0.1 or getDistanceBetweenPoints2D(data.ar.x, data.ar.y, 0, 0) > 0.1 then
+        cursorType = 'controller'
+    end
+
+    updateController(data.al, data.ar, data.b)
 end
 
 function renderCustomCursor()
-    if not isCursorShowing() then return end
+    local cursorShown = isCursorShowing()
+    if cursorShown ~= lastCursorShown then
+        lastCursorShown = cursorShown
+        executeBrowserJavascript(browser, ('setCursorVisible(%s)'):format(cursorShown and 'true' or 'false'))
+    end
+
     checkCursorChanged()
+    if not isCursorShowing() then return end
 
     local cx, cy = getCursorPosition()
     if not cx or not cy then cx, cy = 0, 0 end
     cx, cy = cx*sx, cy*sy
 
-    if cursorType == 'pointer' then
-        dxDrawRectangle(cx - 10, cy - 10, 20, 20, tocolor(255, 255, 255, 255))
+    setCursorAlpha(0)
+    if cursorType == 'controller' then
+        dxDrawImage(cx - 23/zoom, cy - 23/zoom, 46/zoom, 46/zoom, 'data/images/cursor-controller.png', 0, 0, 0, white, true)
+    elseif cursorType == 'pointer' then
+        dxDrawImage(cx - 7/zoom, cy, 25/zoom, 25/zoom, 'data/images/cursor-pointer.png', 0, 0, 0, white, true)
+    else
+        dxDrawImage(cx, cy, 20/zoom, 20/zoom, 'data/images/cursor-default.png', 0, 0, 0, white, true)
     end
 end
 
@@ -281,6 +309,41 @@ addEventHandler('onClientRender', root, renderCustomCursor, true, 'low-9999')
 addEventHandler('onClientResourceStop', root, function(resource)
     if not uiLoaded or not browser then return end
     clearCacheForResource(getResourceName(resource))
+end)
+
+addEventHandler('cursor:setPosition', root, function(x, y)
+    if not isCursorShowing() then return end
+    setCursorPosition(x, y)
+    cursorType = 'controller'
+    lastCursorPos = {x, y}
+end)
+
+addEventHandler('cursor:move', root, function(x, y)
+    if not isCursorShowing() then return end
+    local cx, cy = getCursorPosition()
+    cx, cy = cx * sx, cy * sy
+    cx, cy = cx + x * 20, cy + y * 20
+
+    setCursorPosition(cx, cy)
+    cursorType = 'controller'
+    lastCursorPos = {cx, cy}
+end)
+
+function triggerClickEvent(button, state, cx, cy)
+    local wx, wy, wz = getWorldFromScreenPosition(cx, cy, 10)
+    local camX, camY, camZ = getCameraMatrix()
+    local hit, hitX, hitY, hitZ, element = processLineOfSight(camX, camY, camZ, wx, wy, wz, true, true, true, true, true, false, false, false, nil, true)
+    triggerEvent('onClientClick', root, button, state, cx, cy, wx, wy, wz, element)
+end
+
+addEventHandler('cursor:click', root, function(button)
+    if not isCursorShowing() then return end
+    local cx, cy = getCursorPosition()
+    cx, cy = cx * sx, cy * sy
+
+    button = button or 'left'
+    triggerClickEvent(button, 'down', cx, cy)
+    setTimer(triggerClickEvent, 50, 1, button, 'up', cx, cy)
 end)
 
 setTimer(function()

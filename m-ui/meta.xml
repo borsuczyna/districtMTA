@@ -1,6 +1,7 @@
 <meta>
     <download_priority_group>9998</download_priority_group>
     <script src='blur.lua' type='client' cache='false'/>
+    <script src='controller.lua' type='client' cache='false'/>
     <script src='client.lua' type='client' cache='false'/>
     <script src='fonts.lua' type='client' cache='false'/>
     <script src='server.lua' type='server'/>
@@ -28,10 +29,14 @@
     <file src='data/nice-table.js'/>
     <file src='data/nice-table.css'/>
     <file src='data/tooltips.js'/>
+    <file src='data/controller.js'/>
     <file src='data/tooltip.css'/>
     
     <file src='data/images/background.png'/>
     <file src='data/images/spinner.png'/>
+    <file src='data/images/cursor-default.png'/>
+    <file src='data/images/cursor-pointer.png'/>
+    <file src='data/images/cursor-controller.png'/>
 
     <file src='data/fonts/Inter-Black.ttf'/>
     <file src='data/fonts/Inter-Bold.ttf'/>
@@ -64,4 +69,5 @@
     <export function='getFont' type='client'/>
     <export function='respondToRequest' type='server'/>
     <export function='setBlurQuality' type='client'/>
+    <export function='getControllerButton' type='client'/>
 </meta>

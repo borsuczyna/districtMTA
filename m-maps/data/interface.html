@@ -312,6 +312,37 @@
         updateMap(map);
     }
 
+    window.getMapPosition = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        return { x: map.x, y: map.y };
+    }
+
+    window.setMapPosition = (element, x, y) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.x = x;
+        map.y = y;
+        updateMap(map);
+    }
+
+    window.getMapZoom = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        return map.zoom;
+    }
+
+    window.setMapZoom = (element, zoom) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.zoom = zoom;
+        updateMap(map);
+    }
+
     addEvent('maps', 'mousedown', (event) => {
         let map = maps.find(map => map.element === event.target.parentElement);
         if (!map) return;
@@ -379,5 +410,41 @@
         event.preventDefault();
 
         updateMap(map);
+    });
+
+    addEvent('maps', 'update', async () => {
+        if (!cursorVisible) return;
+
+        // get map under cursor
+        let map = document.elementFromPoint(cursorPosition.x, cursorPosition.y);
+        if (!map) return;
+
+        map = map.closest('.__maps-map');
+        if (!map) return;
+
+        let mapData = maps.find(mapData => mapData.element === map);
+        if (!mapData) return;
+
+        // changing position using controller
+        let axis = getControllerAxis(0);
+        let distance = Math.sqrt(axis.x ** 2 + axis.y ** 2);
+        if (distance >= 0.1) {
+            let position = getMapPosition(map);
+            position.x += axis.x * 60 / mapData.zoom;
+            position.y -= axis.y * 60 / mapData.zoom;
+
+            setMapPosition(map, position.x, position.y);
+        }
+
+        // zooming using controller
+        axis = getControllerAxis(1);
+        distance = Math.sqrt(axis.x ** 2 + axis.y ** 2);
+        if (distance >= 0.1) {
+            let zoom = getMapZoom(map);
+            zoom -= axis.y * 0.1;
+            zoom = Math.min(mapData.maxZoom, Math.max(mapData.minZoom, zoom));
+
+            setMapZoom(map, zoom);
+        }
     });
 </script>

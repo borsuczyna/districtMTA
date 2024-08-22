@@ -36,7 +36,10 @@ function updateDashboardData()
         },
         ['interface-size'] = {
             value = getElementData(localPlayer, 'player:interfaceSize')
-        }
+        },
+        -- ['controller-mode'] = {
+        --     value = getElementData(localPlayer, 'player:controllerMode')
+        -- }
     }
 
     local level = getElementData(localPlayer, 'player:level') or 1
@@ -125,8 +128,14 @@ function toggleDashboard()
     setDashboardVisible(not dashboardVisible)
 end
 
+function controllerButtonPressed(button)
+    if button ~= 10 then return end
+    toggleDashboard()
+end
+
 addEventHandler('onClientResourceStart', resourceRoot, function()
     bindKey('f5', 'down', toggleDashboard)
+    addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
 
     addEventHandler('interfaceLoaded', root, function()
         dashboardLoaded = false
@@ -155,6 +164,8 @@ addEventHandler('dashboard:setSetting', root, function(setting, value, input)
         exports['m-ui']:setBlurQuality(value)
     elseif setting == 'interface-size' then
         setElementData(localPlayer, 'player:interfaceSize', value)
+    elseif setting == 'controller-mode' then
+        setElementData(localPlayer, 'player:controllerMode', boolValue)
     end
 end)
 

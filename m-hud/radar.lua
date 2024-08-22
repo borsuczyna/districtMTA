@@ -18,7 +18,7 @@ end)
 
 local textures = {
     dxCreateTexture('data/images/blur_mask.png'),
-	dxCreateTexture('data/images/world.png'),
+	dxCreateTexture(':m-maps/data/map-dark.png'),
 	dxCreateTexture('data/images/bg.png'),
 	dxCreateTexture('data/images/overlay.png'),
 	dxCreateTexture('data/images/blur_mask.png'),

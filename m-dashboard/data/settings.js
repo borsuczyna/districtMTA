@@ -19,6 +19,12 @@ let settings = [
         name: 'hide-hud',
         text: 'Ukryj HUD'
     },
+    // {
+    //     type: 'switch',
+    //     name: 'controller-mode',
+    //     text: 'Tryb przeskakiwania kontrolera',
+    //     norender: true
+    // },
     {
         type: 'switch',
         name: 'hide-nametags',
@@ -39,7 +45,7 @@ let settings = [
         min: 8,
         max: 22,
         step: 1,
-    }
+    },
 ];
 
 function renderSettings() {
@@ -50,19 +56,21 @@ function renderSettings() {
     settings.forEach(setting => {
         switch (setting.type) {
             case 'switch':
-                rows.innerHTML += `
-                    <div data-setting="${setting.name}">
-                        <div class="switch-box" id="${setting.name}" onclick="dashboard_switchSetting(this)" tabindex="0" onkeydown="if (event.key === 'Enter' || event.key === ' ') dashboard_switchSetting(this)">
-                            <div class="switch">
-                                <div class="inner"></div>
+                if (!setting.norender) {
+                    rows.innerHTML += `
+                        <div data-setting="${setting.name}">
+                            <div class="switch-box" id="${setting.name}" onclick="dashboard_switchSetting(this)" tabindex="0" onkeydown="if (event.key === 'Enter' || event.key === ' ') dashboard_switchSetting(this)">
+                                <div class="switch">
+                                    <div class="inner"></div>
+                                </div>
+                                <div class="label">
+                                    ${setting.text}
+                                </div>
                             </div>
-                            <div class="label">
-                                ${setting.text}
-                            </div>
+                            ${setting.input ? `<input type="${setting.input.type}" class="input mt-2 mb-2 d-none" id="reason" placeholder="${setting.input.placeholder}" maxlength="${setting.input.maxlength}" onchange="dashboard_sendSetting('${setting.name}')"/>` : ''}
                         </div>
-                        ${setting.input ? `<input type="${setting.input.type}" class="input mt-2 mb-2 d-none" id="reason" placeholder="${setting.input.placeholder}" maxlength="${setting.input.maxlength}" onchange="dashboard_sendSetting('${setting.name}')"/>` : ''}
-                    </div>
-                `;
+                    `;
+                }
                 break;
             case 'range':
                 rows.innerHTML += `
@@ -79,7 +87,7 @@ function renderSettings() {
                         </div>
                     </div>
                 `;
-                ranges.push(`#dashboard #settings #range-${setting.name}`);
+                ranges.push(`#dashboard #range-${setting.name}`);
                 break;
         }
 
@@ -103,7 +111,7 @@ window.dashboard_switchSetting = function(item) {
 
 window.dashboard_setSetting = function(setting, value) {
     let settingData = settings.find(s => s.name === setting);
-    let item = document.querySelector(`#dashboard #settings [data-setting="${setting}"] .switch-box`);
+    let item = document.querySelector(`#dashboard [data-setting="${setting}"] .switch-box`);
 
     if (settingData.type === 'switch') {
         item.classList.toggle('switched', value.value);
@@ -113,7 +121,7 @@ window.dashboard_setSetting = function(setting, value) {
             item.nextElementSibling.value = value.input;
         }
     } else if (settingData.type === 'range') {
-        let range = document.querySelector(`#dashboard #settings #range-${setting}`);
+        let range = document.querySelector(`#dashboard #range-${setting}`);
         setRangeInput(range, value.value);
     }
 }
@@ -122,7 +130,7 @@ window.dashboard_sendSetting = function(setting) {
     let settingData = settings.find(s => s.name === setting);
 
     if (settingData.type === 'switch') {
-        let item = document.querySelector(`#dashboard #settings [data-setting="${setting}"] .switch-box`);
+        let item = document.querySelector(`#dashboard [data-setting="${setting}"] .switch-box`);
         let switched = item.classList.contains('switched');
         let input = item.nextElementSibling;
 
@@ -131,8 +139,12 @@ window.dashboard_sendSetting = function(setting) {
         } else {
             mta.triggerEvent('dashboard:setSetting', setting, switched);
         }
+
+        if (setting == 'controller-mode') {
+            setCurrentControllerMode(switched);
+        }
     } else if (settingData.type === 'range') {
-        let range = document.querySelector(`#dashboard #settings #range-${setting}`);
+        let range = document.querySelector(`#dashboard #range-${setting}`);
         let value = range?.dataset.value;
 
         mta.triggerEvent('dashboard:setSetting', setting, value);

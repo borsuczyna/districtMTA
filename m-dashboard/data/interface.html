@@ -107,6 +107,7 @@
         background: rgba(255, 180, 98, 0.1);
         padding-left: 1.1rem;
         color: #ffffff;
+        cursor: default;
     }
 
     #dashboard #list .item::before {
@@ -599,6 +600,19 @@
         filter: blur(0);
     }
 
+    #dashboard #controller-preview {
+        width: 34rem;
+    }
+
+    #dashboard #controller-text .item {
+        display: flex;
+        flex-grow: 1;
+        padding: 0.3rem;
+        background: rgba(54, 54, 54, 0.1);
+        border: 1px solid rgba(54, 54, 54, 0.4);
+        border-radius: 0.2rem;
+    }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;
@@ -652,6 +666,7 @@
             <div class="item" tab="punishments" onclick="dashboard_fetchData('punishments'); dashboard_changeTab(this)">Kary</div>
             <div class="item" tab="logs" onclick="dashboard_fetchData('logs'); dashboard_changeTab(this)">Logi</div>
             <div class="item" tab="money-logs" onclick="dashboard_fetchData('money-logs'); dashboard_changeTab(this)">Historia pieniędzy</div>
+            <div class="item" tab="controller" onclick="dashboard_changeTab(this)">Kontroler</div>
             <div class="item" tab="settings" onclick="dashboard_changeTab(this)">Ustawienia</div>
         </div>
     </div>
@@ -760,6 +775,42 @@
                 <span class="mt-3">Ładowanie...</span>
             </div>
         </div>
+        <div class="tab" tab="controller" id="controller">
+            <div class="d-flex justify-center mt-4">
+                <svg viewBox="0 0 731 556" fill="none" id="controller-preview">
+                    <path d="M485.475 127.5C506.869 127.5 522.331 127.5 523.975 127.5C529.475 127.5 531.975 127.5 534.475 122C536.475 117.6 539.642 116.5 540.975 116.5C543.146 116.5 545.493 116.5 547.975 116.5M547.975 116.5C576.924 116.5 624.264 116.5 626.475 116.5C627.292 116.5 628.22 116.426 629.279 116.429M547.975 116.5L546.475 106.5C551.142 104 566.175 99 588.975 99C611.775 99 625.808 104 629.975 106.5L629.279 116.429M629.279 116.429C632.111 116.437 635.881 116.997 640.975 121C647.975 126.5 658.975 149 664.975 157C670.975 165 692.975 213 715.475 324C737.975 447 736.975 527 675.975 549.5C627.175 567.5 592.642 529.666 581.475 508.5C570.142 477.166 546.775 412.4 543.975 404C540.475 393.5 540.475 389.5 533.475 389.5C523.475 389.5 506.975 409 478.475 409C455.675 409 437.642 396 431.475 389.5H365.975H299.475C293.308 396 275.275 409 252.475 409C223.975 409 207.475 389.5 197.475 389.5C190.475 389.5 190.475 393.5 186.975 404C184.175 412.4 160.808 477.166 149.475 508.5C138.308 529.666 103.775 567.5 54.975 549.5C-6.02502 527 -7.02503 447 15.475 324C37.975 213 59.975 165 65.975 157C71.975 149 82.975 126.5 89.975 121C95.069 116.997 98.8391 116.437 101.671 116.429M245.475 127.5C224.081 127.5 208.619 127.5 206.975 127.5C201.475 127.5 198.975 127.5 196.475 122C194.475 117.6 191.308 116.5 189.975 116.5C187.804 116.5 185.457 116.5 182.975 116.5M182.975 116.5C154.026 116.5 106.685 116.5 104.475 116.5C103.658 116.5 102.73 116.426 101.671 116.429M182.975 116.5L184.475 106.5C179.808 104 164.775 99 141.975 99C119.175 99 105.142 104 100.975 106.5L101.671 116.429M310 336C310 369.689 282.689 397 249 397C215.311 397 188 369.689 188 336C188 302.311 215.311 275 249 275C282.689 275 310 302.311 310 336ZM544 336C544 369.689 516.689 397 483 397C449.311 397 422 369.689 422 336C422 302.311 449.311 275 483 275C516.689 275 544 302.311 544 336ZM671 231C671 276.287 634.287 313 589 313C543.713 313 507 276.287 507 231C507 185.713 543.713 149 589 149C634.287 149 671 185.713 671 231ZM224 231C224 276.287 187.287 313 142 313C96.7127 313 60 276.287 60 231C60 185.713 96.7127 149 142 149C187.287 149 224 185.713 224 231Z" stroke="white" stroke-opacity="0.8" stroke-opacity="0.8" stroke-width="3" />
+                    <path d="M293 336C293 360.301 273.301 380 249 380C224.699 380 205 360.301 205 336C205 311.699 224.699 292 249 292C273.301 292 293 311.699 293 336Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="Axis1" />
+                    <path d="M526 336C526 360.301 506.301 380 482 380C457.699 380 438 360.301 438 336C438 311.699 457.699 292 482 292C506.301 292 526 311.699 526 336Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="Axis2" />
+                    <circle cx="590.5" cy="272.5" r="17.5" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="B0" />
+                    <circle cx="632.5" cy="230.5" r="17.5" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="B1" />
+                    <circle cx="548.5" cy="230.5" r="17.5" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="B2" />
+                    <circle cx="590.5" cy="189.5" r="17.5" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="B3" />
+                    <path d="M164 77C164 84.874 158.5 88 142 88C125.5 88 120 85.5484 120 77C120 68.4516 124.125 66 142 66C159.875 66 164 69.126 164 77Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B4" />
+                    <path d="M612 77C612 84.874 606.5 88 590 88C573.5 88 568 85.5484 568 77C568 68.4516 572.125 66 590 66C607.875 66 612 69.126 612 77Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B5" />
+                    <path d="M164 42.6027C164 50.7611 158.5 54 142 54C125.5 54 120 51.4599 120 42.6027C120 33.7456 124.125 2 142 2C159.875 2 164 34.4444 164 42.6027Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B6" />
+                    <path d="M612 42.6027C612 50.7611 606.5 54 590 54C573.5 54 568 51.4599 568 42.6027C568 33.7456 572.125 2 590 2C607.875 2 612 34.4444 612 42.6027Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B7" />
+                    <path d="M219.974 172C214.108 172 211.779 168 211.779 156C211.779 144 213.606 140 219.974 140C226.343 140 228.17 143 228.17 156C228.17 169 225.841 172 219.974 172Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B8" />
+                    <path d="M510.974 172C516.841 172 519.17 168 519.17 156C519.17 144 517.343 140 510.974 140C504.606 140 502.779 143 502.779 156C502.779 169 505.108 172 510.974 172Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B9" />
+                    <path d="M160.5 204L142 221L125 204L125 172L160.5 172L160.5 204Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B12"/>
+                    <path d="M124.475 258.5L142.975 241.5L159.975 258.5V290.5H124.475V258.5Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B13"/>
+                    <path d="M115 214L132 232.5L115 249.5L83 249.5L83 214L115 214Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B14"/>
+                    <path d="M170 249.5L153 231L170 214L202 214L202 249.5L170 249.5Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B15"/>
+                    <path d="M383 335.5C383 345.165 375.165 353 365.5 353C355.835 353 348 345.165 348 335.5C348 325.835 355.835 318 365.5 318C375.165 318 383 325.835 383 335.5Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="4" id="B16"/>
+                    <path d="M365.5 127.5H485V244.5C485 247.333 483.3 253 476.5 253H365.5H253.5C246.7 253 245 247.333 245 244.5V127.5H365.5Z" fill="#FFFFFF00" stroke="white" stroke-opacity="0.8" stroke-width="3" id="B17"/>
+                </svg>
+            </div>
+
+            <!-- <div data-setting="controller-mode" class="mt-4">
+                <div class="switch-box" id="controller-mode" onclick="dashboard_switchSetting(this)" tabindex="0" onkeydown="if (event.key === 'Enter' || event.key === ' ') dashboard_switchSetting(this)">
+                    <div class="switch">
+                        <div class="inner"></div>
+                    </div>
+                    <div class="label">
+                        Tryb przeskakiwania interfejsu
+                    </div>
+                </div>
+            </div> -->
+        </div>
         <div class="tab" tab="settings" id="settings">
             <h2>Ustawienia</h2>
             
@@ -781,6 +832,7 @@
         tasks.push(include('/m-dashboard/data/info.js'));
         tasks.push(include('/m-dashboard/data/achievements.js'));
         tasks.push(include('/m-dashboard/data/logs.js'));
+        tasks.push(include('/m-dashboard/data/controller.js'));
 
         await Promise.all(tasks);
         await new Promise(resolve => setTimeout(resolve, 100));

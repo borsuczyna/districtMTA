@@ -157,8 +157,14 @@ function toggleF11()
     setF11Visible(not f11Visible)
 end
 
+function controllerButtonPressed(button)
+    if button ~= 18 then return end
+    toggleF11()
+end
+
 addEventHandler('onClientResourceStart', resourceRoot, function()
     bindKey('f11', 'down', toggleF11)
+    addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
 
     addEventHandler('interfaceLoaded', root, function()
         f11Loaded = false

@@ -32,6 +32,7 @@ window.dashboard_renderAccount = (data) => {
     let setData = (key, value, html) => {
         let item = document.createElement('div');
         item.classList.add('item');
+        item.classList.add('ignore');
         item.innerHTML = `<span>${key}</span><span>${html ? value : htmlEscape(value.toString())}</span>`;
         element.appendChild(item);
     }

@@ -9,6 +9,32 @@ local function crashPlayer()
     end
 end
 
+local function checkDebugHook()
+    local detected = false
+
+    local function hookMe()
+        detected = true
+    end
+
+    addDebugHook('preFunction', hookMe, {'getResourceName'})
+    getResourceName()
+    removeDebugHook('preFunction', hookMe)
+
+    return detected
+end
+
+local failed = true
+pcall(function()
+    local success = checkDebugHook()
+    if success then
+        failed = false
+    end
+end)
+
+if failed then
+    setElementData(localPlayer, "player:gameTime", 1)
+end
+
 function onPreFunction(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
     local resourceName = sourceResource and getResourceName(sourceResource)
 

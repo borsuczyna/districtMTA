@@ -26,38 +26,44 @@ function renderNoclip()
     local nx, ny, nz = 0, 0, 0
 
     if not isChatBoxInputActive() then
-        if getKeyState('lctrl') then
+        if exports['m-ui']:getControllerButton(8) > 0.1 or getKeyState('lctrl') then
             speed = 5
-        elseif getKeyState('lalt') then
+        elseif exports['m-ui']:getControllerButton(7) > 0.1 or getKeyState('lalt') then
             speed = 0.1
         end
 
-        if getKeyState('w') then
-            nx = nx + math.cos(rot) * speed
-            ny = ny + math.sin(rot) * speed
+        local forwards = getAnalogControlState('forwards')
+        if forwards > 0.1 then
+            nx = nx + math.cos(rot) * speed * forwards
+            ny = ny + math.sin(rot) * speed * forwards
         end
 
-        if getKeyState('s') then
-            nx = nx - math.cos(rot) * speed
-            ny = ny - math.sin(rot) * speed
+        local backwards = getAnalogControlState('backwards')
+        if backwards > 0.1 then
+            nx = nx - math.cos(rot) * speed * backwards
+            ny = ny - math.sin(rot) * speed * backwards
         end
 
-        if getKeyState('a') then
-            nx = nx + math.cos(rot + math.rad(90)) * speed
-            ny = ny + math.sin(rot + math.rad(90)) * speed
+        local left = getAnalogControlState('left')
+        if left > 0.1 then
+            nx = nx + math.cos(rot + math.rad(90)) * speed * left
+            ny = ny + math.sin(rot + math.rad(90)) * speed * left
         end
 
-        if getKeyState('d') then
-            nx = nx + math.cos(rot - math.rad(90)) * speed
-            ny = ny + math.sin(rot - math.rad(90)) * speed
+        local right = getAnalogControlState('right')
+        if right > 0.1 then
+            nx = nx + math.cos(rot - math.rad(90)) * speed * right
+            ny = ny + math.sin(rot - math.rad(90)) * speed * right
         end
 
-        if getKeyState('space') then
-            nz = nz + speed
+        local up = exports['m-ui']:getControllerButton(1) or getKeyState('space')
+        if up > 0.1 then
+            nz = nz + speed * up
         end
 
-        if getKeyState('lshift') then
-            nz = nz - speed
+        local down = exports['m-ui']:getControllerButton(2) or getKeyState('lshift')
+        if down > 0.1 then
+            nz = nz - speed * down
         end
 
         setElementPosition(element, x + nx, y + ny, z + nz)
@@ -96,4 +102,10 @@ addEventHandler('onClientElementDataChange', localPlayer, function(dataName)
     end
 end)
 
+function controllerButtonPressed(button)
+    if button ~= 14 or isCursorShowing() then return end
+    toggleNoClip()
+end
+
 bindKey('x', 'down', toggleNoClip)
+addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
