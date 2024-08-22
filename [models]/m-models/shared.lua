@@ -5,6 +5,28 @@ models = {
         type = 'object',
         model = 1337,
     },
+    ['int-2'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'int-2-3',
+    },
+    ['int-3'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'int-2-3',
+    },
+    ['int-4'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['int-5'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
     ['spawn-ls'] = {
         custom = false,
         type = 'object',

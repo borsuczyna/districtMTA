@@ -11,6 +11,17 @@
     <file src="data/decoded/int-1.dff"/>
     <file src="data/decoded/int-1.col"/>
     <file src="data/decoded/int-1.txd"/>
+    <file src="data/decoded/int-2-3.txd"/>
+    <file src="data/decoded/int-2.dff"/>
+    <file src="data/decoded/int-2.col"/>
+    <file src="data/decoded/int-3.dff"/>
+    <file src="data/decoded/int-3.col"/>
+    <file src="data/decoded/int-4.dff"/>
+    <file src="data/decoded/int-4.col"/>
+    <file src="data/decoded/int-4.txd"/>
+    <file src="data/decoded/int-5.dff"/>
+    <file src="data/decoded/int-5.col"/>
+    <file src="data/decoded/int-5.txd"/>
     <file src="data/decoded/spawn-ls.dff"/>
     <file src="data/decoded/spawn-ls.col"/>
     <file src="data/decoded/spawn-ls.txd"/>
