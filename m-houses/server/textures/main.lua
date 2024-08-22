@@ -9,7 +9,7 @@ function getHouseTextures(houseId)
 end
 
 function removeAllHouseTextures(houseId)
-    local data = houses[id]
+    local data = houses[houseId]
     if not data then return end
 
     data.textures = {}

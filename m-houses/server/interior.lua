@@ -89,10 +89,14 @@ function removePlayersFromHouse(houseId, ignoredPlayer)
     local allPlayers = getPlayersInHouse(houseId)
     local players = {}
 
-    for k,v in pairs(players) do
-        if v ~= ignoredPlayer then
-            table.insert(players, v)
+    if ignoredPlayer then
+        for k,v in pairs(allPlayers) do
+            if v ~= ignoredPlayer then
+                table.insert(players, v)
+            end
         end
+    else
+        players = allPlayers
     end
 
     exports['m-notis']:addNotification(players, 'warning', 'Dom', 'Zostałeś wyrzucony z domu.')

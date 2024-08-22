@@ -20,11 +20,13 @@ local function createHouseMarker(id)
 
     local color = (data.owner) and {255, 0, 0, 0} or {0, 255, 0, 0}
     local marker = createMarker(data.position[1], data.position[2], data.position[3] - 1, 'cylinder', 1, unpack(color))
+    local blip = createBlipAttachedTo(marker, data.owner and 47 or 46, 2, 255, 255, 255, 255, 0, 9999)
     setElementData(marker, 'marker:title', 'Dom')
     setElementData(marker, 'marker:desc', data.name)
     setElementData(marker, 'marker:house', id)
+    setElementData(blip, 'blip:hoverText', data.streetName)
 
-    return marker
+    return marker, blip
 end
 
 function updateHouseRent(id)
@@ -52,7 +54,8 @@ function updateHouseRent(id)
     end
 
     destroyElement(data.marker)
-    data.marker = createHouseMarker(id)
+    destroyElement(data.blip)
+    data.marker, data.blip = createHouseMarker(id)
 end
 
 local function loadHouse(data)
@@ -64,7 +67,6 @@ local function loadHouse(data)
 
     houses[id] = {
         uid = id,
-        marker = marker,
         name = data.name,
         interior = map(split(data.interior, ','), tonumber),
         position = position,
@@ -87,7 +89,7 @@ local function loadHouse(data)
         isRented = true
     }
 
-    houses[id].marker = createHouseMarker(id)
+    houses[id].marker, houses[id].blip = createHouseMarker(id)
 
     updateHouseRent(id)
 end

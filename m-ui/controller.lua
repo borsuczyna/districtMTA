@@ -52,7 +52,7 @@ function getControllerButton(button)
 end
 
 function updateMovement()
-    if isCursorShowing() then return end
+    if isCursorShowing() or not isUsingController() then return end
 
     local inVehicle = getPedOccupiedVehicle(localPlayer)
 

@@ -84,20 +84,22 @@ function renderRadar()
         local size = blipIcon == 0 and 36/zoom or 45/zoom
         local visible = getBlipVisibleDistance(v)
 
-        if not (bx == 0 and by == 0 and blipIcon == 0) then
-            if fileExists('data/images/blips/'..blipIcon..'.png') then
-                local distance = getDistanceBetweenPoints2D(x, y, bx, by)
-                if distance <= visible then
-                    local dist = math.min(distance/1.3/zoom, radarW/2)
-                    if (visible == 9999 and dist < radarW/2) or visible ~= 9999 then
-                        local angle = findRotation(x, y, bx, by)
-                        angle = angle - cz + 180
-                        local x, y = getPointFromDistanceRotation(radarX + radarW/2, radarY + radarH/2, dist, angle)
-                        dxDrawImage(x - size/2, y - (size*1.15)/2, size, size*1.15, 'data/images/blips/'..blipIcon..'.png')
+        if not (blipIcon == 46 or blipIcon == 47) or getKeyState('k') then
+            if not (bx == 0 and by == 0 and blipIcon == 0) then
+                if fileExists('data/images/blips/'..blipIcon..'.png') then
+                    local distance = getDistanceBetweenPoints2D(x, y, bx, by)
+                    if distance <= visible then
+                        local dist = math.min(distance/1.3/zoom, radarW/2)
+                        if (visible == 9999 and dist < radarW/2) or visible ~= 9999 then
+                            local angle = findRotation(x, y, bx, by)
+                            angle = angle - cz + 180
+                            local x, y = getPointFromDistanceRotation(radarX + radarW/2, radarY + radarH/2, dist, angle)
+                            dxDrawImage(x - size/2, y - (size*1.15)/2, size, size*1.15, 'data/images/blips/'..blipIcon..'.png')
+                        end
                     end
                 end
-            end
-        end 
+            end 
+        end
     end
 
     for k,v in pairs(blips) do

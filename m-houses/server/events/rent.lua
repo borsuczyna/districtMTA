@@ -127,6 +127,7 @@ addEventHandler('houses:cancelRentHouse', resourceRoot, function(hash, player, h
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Anulowano wynajem domu.'})
     removePlayersFromHouse(houseUid)
     removeAllHouseFurniture(houseUid)
+    removeAllHouseTextures(houseUid)
 
     house.owner = nil
     house.ownerName = nil

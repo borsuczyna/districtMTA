@@ -115,6 +115,11 @@ window.houses_resetTextures = async (button) => {
         return;
     } else {
         notis_addNotification(data.status, 'Wystrój wnętrza', data.message);
+
+        if (data.status == 'success') {
+            houseData.textures = [];
+            houses_renderTexturesList(houseData.interiorData.textureNames, houseData.textures, houseData.possibleTextures);
+        }
     }
 }
 

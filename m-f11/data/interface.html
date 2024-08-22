@@ -129,6 +129,10 @@
         width: 2rem !important;
         height: 2rem !important;
     }
+
+    #f11:not(.showHouses) .blip.house {
+        display: none;
+    }
 </style>
 
 <div id="legend" class="nice-scroll">
@@ -222,7 +226,6 @@
 
     let legend = {
         40: ['Praca dorywcza', 'job'],
-        // 43: ['Pojazd pracy', 'job'],
         41: ['Cel', 'all'],
         42: ['Wypożyczalnia hulajnóg', 'services'],
         44: ['Przechowalnia pojazdów', 'services'],
@@ -232,6 +235,8 @@
         56: ['Łowisko', 'job'],
         57: ['Sklep', 'services'],
         45: ['Sklep z ciuchami', 'services'],
+        46: ['Wolny dom', 'houses'],
+        47: ['Zajęty dom', 'houses'],
     };
 
     function renderColors() {
@@ -354,13 +359,15 @@
         });
 
         if (!updated) {
+            let isHouseBlip = blip.icon === 46 || blip.icon === 47;
+            
             createMapBlip({
                 element: document.querySelector('#f11 #map'),
                 icon: `/m-hud/data/images/blips/${blip.icon}.png?${startTick}`,
                 size: 15,
                 x: blip.x,
                 y: blip.y,
-                class: 'blip',
+                class: 'blip' + (isHouseBlip ? ' house' : ''),
                 specialKey: `${blip.icon}-${i}`,
                 id: blip.id,
                 priority: blipPriority[blip.icon] || 5,
@@ -480,6 +487,18 @@
             });
         }
     });
+
+    addEvent('f11', 'keydown', (event) => {
+        if (event.key !== 'k') return;
+
+        document.querySelector('#f11').classList.toggle('showHouses', true);
+    })
+
+    addEvent('f11', 'keyup', (event) => {
+        if (event.key !== 'k') return;
+
+        document.querySelector('#f11').classList.toggle('showHouses', false);
+    })
 
     addEvent('f11', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));

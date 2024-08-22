@@ -196,6 +196,7 @@ addEvent('houses', 'play-animation', async (appear) => {
         houses_appearRentHouseTime(false);
         houses_appearEditTenants(false);
         houses_appearFurnitureMenu(false);
+        houses_appearTexturesMenu(false);
     }
 
     await new Promise(resolve => setTimeout(resolve, 100));

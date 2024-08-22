@@ -219,3 +219,16 @@ end
 
 addEventHandler('houses:removeFurniture', resourceRoot, removeHouseFurniture)
 addEventHandler('houses:saveFurniture', resourceRoot, saveHouseFurniture)
+
+addCommandHandler('hgp', function(plr)
+    local houseId = getElementData(plr, 'player:house')
+    if not houseId then return end
+
+    local x, y, z = getElementPosition(plr)
+    local rx, ry, rz = getElementRotation(plr)
+    x, y, z, rx, ry, rz = convertPositionToHousePosition(houseId, x, y, z, rx, ry, rz)
+
+    local code = ('{%.2f, %.2f, %.2f, %.2f, %.2f, %.2f}'):format(x, y, z, rx, ry, rz)
+    outputChatBox(code, plr)
+    triggerClientEvent(plr, 'interface:setClipboard', root, code)
+end)
