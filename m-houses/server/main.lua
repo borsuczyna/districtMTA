@@ -39,6 +39,7 @@ function updateHouseRent(id)
         if wasRented and data.owner then
             removePlayersFromHouse(id)
             removeAllHouseFurniture(id)
+            removeAllHouseTextures(id)
             
             local player = exports['m-core']:getPlayerByUid(data.owner)
             if player then

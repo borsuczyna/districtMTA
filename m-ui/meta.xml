@@ -70,4 +70,5 @@
     <export function='respondToRequest' type='server'/>
     <export function='setBlurQuality' type='client'/>
     <export function='getControllerButton' type='client'/>
+    <export function='setCursorAlpha' type='client'/>
 </meta>

@@ -9,6 +9,7 @@ local visibleInterfaces = {}
 local singleInterfaces = {}
 local lastCursorPos = {0, 0}
 local cursorType = 'auto'
+local cursorAlpha = 255
 local lastCursorShown = false
 
 addEvent('cursor:setPosition', true)
@@ -57,6 +58,11 @@ function isAnySingleInterfaceVisible()
     end
 
     return false
+end
+
+local _setCursorAlpha = setCursorAlpha
+function setCursorAlpha(alpha)
+    cursorAlpha = alpha
 end
 
 function addSingleInterface(name)
@@ -299,13 +305,13 @@ function renderCustomCursor()
     if not cx or not cy then cx, cy = 0, 0 end
     cx, cy = cx*sx, cy*sy
 
-    setCursorAlpha(0)
+    _setCursorAlpha(0)
     if cursorType == 'controller' then
-        dxDrawImage(cx - 23/zoom, cy - 23/zoom, 46/zoom, 46/zoom, 'data/images/cursor-controller.png', 0, 0, 0, white, true)
+        dxDrawImage(cx - 23/zoom, cy - 23/zoom, 46/zoom, 46/zoom, 'data/images/cursor-controller.png', 0, 0, 0, tocolor(255, 255, 255, cursorAlpha), true)
     elseif cursorType == 'pointer' then
-        dxDrawImage(cx - 7/zoom, cy, 25/zoom, 25/zoom, 'data/images/cursor-pointer.png', 0, 0, 0, white, true)
+        dxDrawImage(cx - 7/zoom, cy, 25/zoom, 25/zoom, 'data/images/cursor-pointer.png', 0, 0, 0, tocolor(255, 255, 255, cursorAlpha), true)
     else
-        dxDrawImage(cx, cy, 20/zoom, 20/zoom, 'data/images/cursor-default.png', 0, 0, 0, white, true)
+        dxDrawImage(cx, cy, 20/zoom, 20/zoom, 'data/images/cursor-default.png', 0, 0, 0, tocolor(255, 255, 255, cursorAlpha), true)
     end
 end
 

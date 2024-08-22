@@ -24,7 +24,8 @@ local function rentHouseForPlayer(player, houseUid, days, cost)
     
     dbExec(connection, 'UPDATE `m-houses` SET `owner` = ?, `rentDate` = FROM_UNIXTIME(?) WHERE `uid` = ?', uid, endRentTime, houseUid)
 
-    takePlayerMoney(player, cost)
+    -- takePlayerMoney(player, cost)
+    exports['m-core']:givePlayerMoney(player, 'house', 'Wynajem domu ' .. house.streetName .. ' na ' .. days .. ' dni', -cost)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wynajęto dom na ' .. days .. ' dni za $' .. formatNumber(cost) .. '.'})
 
     house.owner = uid

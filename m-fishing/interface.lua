@@ -34,7 +34,7 @@ function setFishingUIVisible(visible, icon)
     end
 
     showCursor(visible)
-    setCursorAlpha(visible and 0 or 255)
+    exports['m-ui']:setCursorAlpha(visible and 0 or 255)
     _G[visible and 'addEventHandler' or 'removeEventHandler']('onClientRender', root, renderFishingUI)
 
     if not fishingUILoaded and visible then

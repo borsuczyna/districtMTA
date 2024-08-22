@@ -56,14 +56,14 @@ function renderNoclip()
             ny = ny + math.sin(rot - math.rad(90)) * speed * right
         end
 
-        local up = exports['m-ui']:getControllerButton(1) or getKeyState('space')
-        if up > 0.1 then
-            nz = nz + speed * up
+        local up = (exports['m-ui']:getControllerButton(1) or 0) > 0.1 or getKeyState('space')
+        if up then
+            nz = nz + speed
         end
 
-        local down = exports['m-ui']:getControllerButton(2) or getKeyState('lshift')
-        if down > 0.1 then
-            nz = nz - speed * down
+        local down = (exports['m-ui']:getControllerButton(2) or 0) > 0.1 or getKeyState('lshift')
+        if down then
+            nz = nz - speed
         end
 
         setElementPosition(element, x + nx, y + ny, z + nz)

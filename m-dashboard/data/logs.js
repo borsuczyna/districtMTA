@@ -13,6 +13,7 @@ let MONEY_LOG = {
     'vehicle-buy': 'Zakup pojazdu',
     transfer: 'Przelew',
     license: 'Prawo jazdy',
+    house: 'Mieszkanie',
 }
 
 window.dashboard_renderLogs = (element, data, moneyHistory = false) => {

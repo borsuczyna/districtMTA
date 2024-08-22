@@ -52,6 +52,7 @@
         --rarity-color: #bebebe;
         --rarity-color-dark: #bebebe;
         aspect-ratio: 1/1;
+        cursor: pointer;
     }
 
     #inventory .item img {
@@ -160,6 +161,7 @@
         height: 2rem;
         transition: 0.2s;
         color: #ffffff73;
+        cursor: pointer;
     }
     
     #inventory .category svg {
@@ -176,6 +178,7 @@
         background: rgba(135, 135, 135, 0.3);
         border: 0.0625rem solid rgba(54, 54, 54, 0.45);
         color: #ffffff;
+        cursor: default;
     }
 
     #inventory #inventory-tooltip {
@@ -279,6 +282,11 @@
         align-items: center;
         color: #ffffffbb;
         transition: 0.1s;
+        cursor: pointer;
+    }
+
+    #inventory #inventory-options .option.empty {
+        cursor: default;
     }
 
     #inventory #inventory-options .option:hover {
