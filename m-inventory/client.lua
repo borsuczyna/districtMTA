@@ -79,8 +79,9 @@ function toggleInventory()
 end
 
 function controllerButtonPressed(button)
-    if button ~= 9 then return end
-    toggleInventory()
+    if (button == 13 and not inventoryVisible and not isCursorShowing()) or (button == 2 and inventoryVisible) then
+        toggleInventory()
+    end
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()

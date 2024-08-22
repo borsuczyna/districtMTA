@@ -69,8 +69,36 @@ function updateMovement()
         
         -- crouch on square
         setControlState('crouch', getControllerButton(3) >= 0.5)
-    end
 
+        -- arrow right for entering as passenger
+        if getControllerButton(16) >= 0.5 then
+            local vehicle = getNearestVehicle(localPlayer, 5)
+            if vehicle then
+                setPedEnterVehicle(localPlayer, vehicle, true)
+            end
+        end
+    end
+    
     -- entering vehicle on triangle
     setControlState('enter_exit', getControllerButton(4) >= 0.5)
+end
+
+function getNearestVehicle(player, maxDistance)
+    local x, y, z = getElementPosition(player)
+    local vehicles = getElementsByType('vehicle')
+
+    local nearestVehicle = nil
+    local nearestDistance = maxDistance or math.huge
+
+    for i, vehicle in ipairs(vehicles) do
+        local vx, vy, vz = getElementPosition(vehicle)
+        local distance = getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)
+
+        if distance < nearestDistance then
+            nearestVehicle = vehicle
+            nearestDistance = distance
+        end
+    end
+
+    return nearestVehicle
 end

@@ -129,8 +129,9 @@ function toggleDashboard()
 end
 
 function controllerButtonPressed(button)
-    if button ~= 10 then return end
-    toggleDashboard()
+    if (button == 10) or (button == 2 and dashboardVisible) then
+        toggleDashboard()
+    end
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()

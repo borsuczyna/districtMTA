@@ -43,3 +43,9 @@ addEvent('dashboard', 'onControllerButtonChange', (button, value) => {
     buttonElement.style.fill = `rgba(255, 255, 255, ${value})`;
     buttonElement.dataset.value = value;
 });
+
+addEvent('dashboard', 'onControllerConnected', (name) => {
+    document.querySelector('#dashboard #controller-name').innerHTML = name;
+});
+
+document.querySelector('#dashboard #controller-name').innerHTML = controllerName ?? 'Nie wykryto kontrolera';

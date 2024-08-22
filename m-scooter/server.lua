@@ -88,7 +88,7 @@ addEventHandler('scooter:rent', resourceRoot, function(hash, player)
 		exports['m-pattach']:attach(vehicle, player, 23, 0, 0, 0, 20, 0, 50)
 		setElementData(player, 'scooter:rented', vehicle)
 		setElementData(player, 'player:animation', 'scooter-carry')
-		exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wypożyczono hulajnogę elektryczną, naciśnij <kbd class="keycap keycap-sm">H</kbd> aby ją rozłożyć', renting = true})
+		exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wypożyczono hulajnogę elektryczną, naciśnij <kbd class="keycap keycap-sm">H</kbd><div class="controller-button small circle"></div> aby ją rozłożyć', renting = true})
 	end
 end)
 
@@ -122,7 +122,7 @@ addEventHandler('scooter:fold', resourceRoot, function()
 		setElementData(rented, 'element:ghostmode', true)
 		setElementData(rented, 'scooter:owner', client)
 
-		exports['m-notis']:addNotification(client, 'success', 'Hulajnoga elektryczna', 'Hulajnoga została rozłożona, aby ją złożyć - zsiądź i naciśnij <kbd class="keycap keycap-sm">H</kbd>')
+		exports['m-notis']:addNotification(client, 'success', 'Hulajnoga elektryczna', 'Hulajnoga została rozłożona, aby ją złożyć - zsiądź i naciśnij <kbd class="keycap keycap-sm">H</kbd><div class="controller-button small circle"></div>')
 	else
 		foldVehicle(client, rented)
 	end
@@ -130,7 +130,7 @@ end)
 
 addEventHandler('onPlayerVehicleExit', root, function(vehicle)
     if getElementData(vehicle, 'scooter:owner') ~= source then return end
-    exports['m-notis']:addNotification(source, 'warning', 'Wynajem hulajnogi', 'Hulajnoga zostanie zwrócona po minucie nieaktywności, naciśnij <kbd class="keycap keycap-sm">H</kbd> aby ją złożyć')
+    exports['m-notis']:addNotification(source, 'warning', 'Wynajem hulajnogi', 'Hulajnoga zostanie zwrócona po minucie nieaktywności, naciśnij <kbd class="keycap keycap-sm">H</kbd><div class="controller-button small circle"></div> aby ją złożyć')
 
 	timers[source] = setTimer(destroyScooter, 60000, 1, source)
 end)

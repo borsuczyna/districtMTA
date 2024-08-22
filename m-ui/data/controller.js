@@ -1,4 +1,6 @@
 let controllerMode = false;
+let controllerName = null;
+let usingController = false;
 let controller = {
     axes : [
         {x: 0, y: 0},
@@ -32,6 +34,9 @@ let elementSearch = [
     '.categories .category',
     '.recipe .item',
     '.hoverable',
+    '#spawn-categories .item',
+    '.category-items.active .spawn',
+    '.nice-input input',
 ];
 
 let clickParents = [
@@ -45,6 +50,16 @@ function setCurrentControllerMode(mode) {
 function isCursorOverMap() {
     let overElement = document.elementFromPoint(cursorPosition.x, cursorPosition.y);
     return overElement?.closest('.__maps-map') !== null;
+}
+
+function setUsingController(value) {
+    usingController = value;
+    
+    if (usingController) {
+        document.body.classList.add('controller');
+    } else {
+        document.body.classList.remove('controller');
+    }
 }
 
 function updateControllers() {
@@ -66,13 +81,19 @@ function updateControllers() {
     for (let i = 0; i < controller.axes.length; i++) {
         if (controller.axes[i].x !== lastAxes[i].x || controller.axes[i].y !== lastAxes[i].y) {
             triggerAllEvents('onControllerAxisChange', i, controller.axes[i].x, controller.axes[i].y);
+
+            let distance = Math.sqrt(Math.pow(controller.axes[i].x, 2) + Math.pow(controller.axes[i].y, 2));
+            if (distance > 0.1) {
+                setUsingController(true);
+            }
         }
     }
 
     for (let i = 0; i < controller.buttons.length; i++) {
         if (controller.buttons[i] !== lastButtons[i]) {
             triggerAllEvents('onControllerButtonChange', i, controller.buttons[i]);
-        
+            setUsingController(true);
+
             // on arrow buttons trigger onControllerAxisHoldDrop
             let isArrowButton = i >= 12 && i <= 15;
             let lastButton = lastButtons[i] > 0.5;
@@ -110,11 +131,30 @@ function updateControllers() {
         if (distance > 0.1) {
             mta.triggerEvent('cursor:move', axis.x, axis.y);
         }
+
+        // on second axis scroll element that is hovered
+        if (Math.abs(controller.axes[1].y) < 0.1) return;
+
+        let overElement = document.elementFromPoint(cursorPosition.x, cursorPosition.y);
+        if (overElement && overElement.closest('.__maps-map')) return;
+        let scrollableParent = overElement;
+        while (scrollableParent && scrollableParent.scrollHeight <= scrollableParent.clientHeight) {
+            scrollableParent = scrollableParent.parentElement;
+        }
+
+        let tag = scrollableParent?.tagName.toLowerCase();
+        if (tag === 'body' || tag === 'html') return;
+        if (scrollableParent && scrollableParent.scrollHeight > scrollableParent.clientHeight) {
+            let scrollAmount = controller.axes[1].y * 10;
+            scrollableParent.scrollTop += scrollAmount;
+        }
     }
 }
 
 window.addEventListener('gamepadconnected', function(e) {
     notis_addNotification('info', 'Nowy kontroler', `Kontroler ${e.gamepad.id} został wykryty!`);
+    controllerName = e.gamepad.id;
+    triggerAllEvents('onControllerConnected', e.gamepad.id);
 });
 
 function getControllerAxis(axis) {

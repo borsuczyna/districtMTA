@@ -107,6 +107,14 @@ function useInteraction(key, state)
     end
 end
 
+function useInteractionController(button)
+    if button == 15 or button == 16 then
+        changeOption(button == 15)
+    elseif button == 1 then
+        useOption()
+    end
+end
+
 function getInteractionOptions()
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if not vehicle then return {} end
@@ -227,6 +235,7 @@ function setInteractionVisible(visible)
     end
 
     _G[visible and 'addEventHandler' or 'removeEventHandler']('onClientKey', root, useInteraction)
+    _G[visible and 'addEventHandler' or 'removeEventHandler']('controller:buttonPressed', root, useInteractionController)
     toggleControl('chatbox', not visible)
 
     if not interactionLoaded and visible then
@@ -257,8 +266,22 @@ function toggleInteraction(key, state)
     setInteractionVisible(state == 'down')
 end
 
+function controllerButtonPressed(button)
+    if (button == 5 and not interactionVisible) then
+        toggleInteraction('lshift', 'down')
+    end
+end
+
+function controllerButtonReleased(button)
+    if (button == 5 and interactionVisible) then
+        toggleInteraction('lshift', 'up')
+    end
+end
+
 addEventHandler('onClientResourceStart', resourceRoot, function()
     bindKey('lshift', 'both', toggleInteraction)
+    addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
+    addEventHandler('controller:buttonReleased', root, controllerButtonReleased)
 
     addEventHandler('interfaceLoaded', root, function()
         interactionLoaded = false

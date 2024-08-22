@@ -32,11 +32,6 @@ addCommandHandler('browserdebug', function()
     toggleBrowserDevTools(browser, true)
 end)
 
-addCommandHandler('mobileview', function()
-    setBrowserProperty(browser, 'mobile', not getBrowserProperty(browser, 'mobile') == '1' and '0' or '1')
-    outputConsole('Mobile view: '..(getBrowserProperty(browser, 'mobile') == '1' and 'enabled' or 'disabled'))
-end)
-
 function setInterfaceVisible(name, visible)
     if not uiLoaded or not browser then return end
     executeBrowserJavascript(browser, ('setInterfaceVisible(%q, %s)'):format(name, tostring(visible)))
@@ -184,6 +179,15 @@ function isLoaded()
     return uiLoaded
 end
 
+function setUsingController(usingController)
+    if not uiLoaded or not browser then return end
+    executeBrowserJavascript(browser, ('setUsingController(%s)'):format(usingController and 'true' or 'false'))
+end
+
+function isUsingController()
+    return cursorType == 'controller'
+end
+
 function renderInterface()
     if uiLoaded then
         dxDrawImage(0, 0, sx, sy, browser, 0, 0, 0, tocolor(255, 255, 255, 255), false)
@@ -193,8 +197,9 @@ function renderInterface()
         cx, cy = cx*sx, cy*sy
         
         local changedDistance = getDistanceBetweenPoints2D(lastCursorPos[1], lastCursorPos[2], cx, cy)
-        if changedDistance > 5 and cursorType == 'controller' then
+        if changedDistance > 5 and not (cx == 0 and cy == 0) and cursorType == 'controller' then
             cursorType = 'auto'
+            setUsingController(false)
         end
 
         lastCursorPos = {cx, cy}

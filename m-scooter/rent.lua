@@ -8,7 +8,7 @@ addEventHandler('onClientColShapeLeave', resourceRoot, function(element)
     setScooterUIVisible(false)
 end)
 
-bindKey('H', 'down', function()
+local function toggleScooterFold()
     local rented = getElementData(localPlayer, 'scooter:rented')
     if not rented or not isElement(rented) then return end
     if not isPedOnGround(localPlayer) then return end
@@ -18,6 +18,16 @@ bindKey('H', 'down', function()
     elseif not getPedOccupiedVehicle(localPlayer) and getDistanceBetweenPoints3D(Vector3(getElementPosition(rented)), Vector3(getElementPosition(localPlayer))) < 2 then
         triggerServerEvent('scooter:fold', resourceRoot)
     end
+end
+
+bindKey('H', 'down', toggleScooterFold)
+addEventHandler('controller:buttonPressed', root, function(button)
+    if button == 2 then toggleScooterFold() end
+    if button == 1 then toggleScooterJump('lctrl', 'down') end
+end)
+
+addEventHandler('controller:buttonReleased', root, function(button)
+    if button == 1 then toggleScooterJump('lctrl', 'up') end
 end)
 
 addEventHandler('onClientVehicleStartEnter', root, function(player, seat)

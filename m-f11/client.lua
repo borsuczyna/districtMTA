@@ -158,8 +158,9 @@ function toggleF11()
 end
 
 function controllerButtonPressed(button)
-    if button ~= 18 then return end
-    toggleF11()
+    if (button == 18) or (button == 2 and f11Visible) then
+        toggleF11()
+    end
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()

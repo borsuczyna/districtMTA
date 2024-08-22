@@ -142,8 +142,15 @@ function toggleScoreboard()
     setScoreboardVisible(not scoreboardVisible)
 end
 
+function controllerButtonPressed(button)
+    if (button == 15 and not scoreboardVisible and not isCursorShowing()) or (button == 2 and scoreboardVisible) then
+        toggleScoreboard()
+    end
+end
+
 addEventHandler('onClientResourceStart', resourceRoot, function()
     bindKey('tab', 'down', toggleScoreboard)
+    addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
 
     addEventHandler('interfaceLoaded', root, function()
         scoreboardLoaded = false

@@ -71,8 +71,15 @@ function toggleHelper()
     setHelperVisible(not helperVisible)
 end
 
+function controllerButtonPressed(button)
+    if (button == 9 and not helperVisible) or (button == 2 and helperVisible) then
+        toggleHelper()
+    end
+end
+
 addEventHandler('onClientResourceStart', resourceRoot, function()
     bindKey('f1', 'down', toggleHelper)
+    addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
 
     addEventHandler('interfaceLoaded', root, function()
         helperLoaded = false
