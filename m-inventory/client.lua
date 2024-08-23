@@ -96,6 +96,8 @@ end)
 
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('inventory')
+    exports['m-intro']:hideIntro('inventory')
+    exports['m-intro']:hideIntro('inventory-shops')
 end)
 
 addEventHandler('trade:show', root, function(otherPlayer)

@@ -11,6 +11,12 @@ window.inventory_setShopVisible = async (appear) => {
 
     if (!document.body.contains(element)) return;
     element.classList.toggle('d-none', !appear);
+
+    if (appear) {
+        inventory_showShopsIntro();
+    } else {
+        intro_hideIntro('inventory-shops');
+    }
 }
 
 async function setShopData(data) {
@@ -135,6 +141,17 @@ window.inventory_renderShopItems = (element, items, myItems = false) => {
     element.previousElementSibling.classList.toggle('d-none', shopItemsHtml.length === 0);
 
     element.innerHTML = shopItemsHtml;
+}
+
+window.inventory_shop_getCategories = () => {
+    let categories = [];
+    for (let item of inventory_shopData.items) {
+        if (!categories.includes(item.category)) {
+            categories.push(item.category);
+        }
+    }
+
+    return categories;
 }
 
 addEvent('inventory', 'interface:data:shopData', (data) => {

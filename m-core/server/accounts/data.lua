@@ -27,7 +27,8 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
     setElementData(player, 'player:avatar', data.avatar)
     setElementData(player, 'player:licenses', split(data.licenses, ','))
-    -- setElementData(player, 'player:inventory', playerInventory, false)
+    setElementData(player, 'player:knownIntros', split(data.knownIntros, ','), false)
+    triggerClientEvent(player, 'intro:setKnownIntros', root, split(data.knownIntros, ','))
     assignPlayerInventory(player, data.inventory)
 
     -- check if difference between now and dailyRewardRedeem is less than 24 hours, if so show notification that streak is lost
@@ -75,6 +76,7 @@ function buildSavePlayerQuery(player)
     local afkTime = getElementData(player, 'player:afkTime')
     local inventory = getElementData(player, 'player:inventory') or {}
     local licenses = table.concat(getElementData(player, 'player:licenses') or {}, ',')
+    local knownIntros = table.concat(getElementData(player, 'player:knownIntros') or {}, ',')
     local settings = {
         interfaceBlur = getElementData(player, 'player:interfaceBlur') or 0,
         interfaceSize = getElementData(player, 'player:interfaceSize') or 8,
@@ -91,7 +93,8 @@ function buildSavePlayerQuery(player)
         afkTime = afkTime,
         settings = toJSON(settings),
         inventory = toJSON(inventory),
-        licenses = licenses
+        licenses = licenses,
+        knownIntros = knownIntros,
     }
 
     local query = 'UPDATE `m-users` SET ' .. table.concat(mapk(saveData, function(value, key)

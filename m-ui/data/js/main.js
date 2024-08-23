@@ -50,3 +50,24 @@ document.addEventListener('mousemove', (event) => {
 
     updateBrowserTitle();
 });
+
+async function waitForAnimationFinish(element, maxTime = 1000) {
+    const computedStyle = window.getComputedStyle(element);
+    const transitionDuration = parseFloat(computedStyle.transitionDuration) * 1000;
+    const animationDuration = parseFloat(computedStyle.animationDuration) * 1000;
+    const duration = Math.max(transitionDuration, animationDuration);
+    const playing = computedStyle.animationPlayState === 'running';
+    if (duration > 0 && playing) {
+        return new Promise(resolve => {
+            let resolved = false;
+            const listener = (e) => {
+                if (resolved) return;
+                element.removeEventListener('transitionend', listener);
+                resolve();
+                resolved = true;
+            };
+            element.addEventListener('transitionend', listener);
+            setTimeout(listener, maxTime);
+        });
+    }
+}

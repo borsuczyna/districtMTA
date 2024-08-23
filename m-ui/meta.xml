@@ -9,28 +9,29 @@
     <file src='data/blurH.fx'/>
     <file src='data/blurV.fx'/>
     <file src='data/main.html'/>
-    <file src='data/main.js'/>
-    <file src='data/event.js'/>
-    <file src='data/interface.js'/>
-    <file src='data/variables.js'/>
-    <file src='data/fetch.js'/>
-    <file src='data/style.css'/>
-    <file src='data/switch.css'/>
-    <file src='data/input.css'/>
-    <file src='data/range.css'/>
-    <file src='data/range.js'/>
-    <file src='data/button.css'/>
-    <file src='data/tables.css'/>
-    <file src='data/tables.js'/>
-    <file src='data/jquery.js'/>
-    <file src='data/charts.js'/>
-    <file src='data/charts.css'/>
-    <file src='data/scroll.css'/>
-    <file src='data/nice-table.js'/>
-    <file src='data/nice-table.css'/>
-    <file src='data/tooltips.js'/>
-    <file src='data/controller.js'/>
-    <file src='data/tooltip.css'/>
+    <file src='data/js/main.js'/>
+    <file src='data/js/event.js'/>
+    <file src='data/js/interface.js'/>
+    <file src='data/js/variables.js'/>
+    <file src='data/js/fetch.js'/>
+    <file src='data/js/range.js'/>
+    <file src='data/js/tables.js'/>
+    <file src='data/js/jquery.js'/>
+    <file src='data/js/charts.js'/>
+    <file src='data/js/nice-table.js'/>
+    <file src='data/js/tooltips.js'/>
+    <file src='data/js/controller.js'/>
+
+    <file src='data/css/style.css'/>
+    <file src='data/css/switch.css'/>
+    <file src='data/css/input.css'/>
+    <file src='data/css/range.css'/>
+    <file src='data/css/button.css'/>
+    <file src='data/css/tables.css'/>
+    <file src='data/css/charts.css'/>
+    <file src='data/css/scroll.css'/>
+    <file src='data/css/nice-table.css'/>
+    <file src='data/css/tooltip.css'/>
     
     <file src='data/images/background.png'/>
     <file src='data/images/spinner.png'/>
@@ -38,18 +39,18 @@
     <file src='data/images/cursor-pointer.png'/>
     <file src='data/images/cursor-controller.png'/>
 
-    <file src='data/fonts/Inter-Black.ttf'/>
-    <file src='data/fonts/Inter-Bold.ttf'/>
-    <file src='data/fonts/Inter-ExtraBold.ttf'/>
-    <file src='data/fonts/Inter-ExtraLight.ttf'/>
-    <file src='data/fonts/Inter-Light.ttf'/>
-    <file src='data/fonts/Inter-Medium.ttf'/>
-    <file src='data/fonts/Inter-Regular.ttf'/>
-    <file src='data/fonts/Inter-SemiBold.ttf'/>
-    <file src='data/fonts/Inter-Thin.ttf'/>
-    <file src='data/fonts/Inter.ttf'/>
-    <file src='data/fonts/Exo2.ttf'/>
-    <file src='data/fonts/DigitalNumbers-Regular.ttf'/>
+    <file src='data/css/fonts/Inter-Black.ttf'/>
+    <file src='data/css/fonts/Inter-Bold.ttf'/>
+    <file src='data/css/fonts/Inter-ExtraBold.ttf'/>
+    <file src='data/css/fonts/Inter-ExtraLight.ttf'/>
+    <file src='data/css/fonts/Inter-Light.ttf'/>
+    <file src='data/css/fonts/Inter-Medium.ttf'/>
+    <file src='data/css/fonts/Inter-Regular.ttf'/>
+    <file src='data/css/fonts/Inter-SemiBold.ttf'/>
+    <file src='data/css/fonts/Inter-Thin.ttf'/>
+    <file src='data/css/fonts/Inter.ttf'/>
+    <file src='data/css/fonts/Exo2.ttf'/>
+    <file src='data/css/fonts/DigitalNumbers-Regular.ttf'/>
 
     <export function='isLoaded' type='client'/>
     <export function='setInterfaceVisible' type='client'/>

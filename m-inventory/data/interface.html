@@ -617,6 +617,10 @@
         transition: max-height 0.4s, 0.2s margin-top;
     }
 
+    #inventory-shops .details-wrapper summary {
+        cursor: pointer;
+    }
+
     #inventory-shops .details-wrapper .arrow {
         width: 1rem;
         height: 1rem;
@@ -738,6 +742,13 @@
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#inventory #inventory-wrapper').style.opacity = appear ? '1' : '0';
         document.querySelector('#inventory #inventory-wrapper').style.transform = appear ? 'translateY(-50%)' : 'translateY(-50%) scale(0.8)';
+    
+        if (appear) {
+            inventory_showIntro();
+        } else {
+            intro_hideIntro('inventory');
+            intro_hideIntro('inventory-shops');
+        }
     });
 
     async function loadIncludes() {
@@ -761,6 +772,105 @@
         inventory_renderItems();
         inventory_loadItems();
         // inventory_toggleCrafting(true);
+    }
+
+    window.inventory_showIntro = () => {
+        if (intro_isIntroKnown('inventory') || intro_isVisible()) return;
+        console.log('show intro');  
+
+        intro_startIntro('inventory', [
+            {
+                title: 'Ekwipunek',
+                content: 'Tutaj znajdziesz wszystkie swoje przedmioty',
+                element: document.querySelector('#inventory #inventory-wrapper'),
+                waitForAnimationFinish: true,
+            },
+            // categories
+            {
+                title: 'Kategorie',
+                content: 'W tym miejscu znajdziesz kategorie przedmiotów',
+                element: document.querySelector('#inventory .categories'),
+            },
+            // trade
+            {
+                title: 'Handel',
+                content: 'W kategorii handlu możesz wymieniać się przedmiotami z innymi graczami',
+                element: document.querySelector('#inventory #inventory-wrapper'),
+                onShow: async () => {
+                    inventory_goToCategory('trade');
+                },
+            },
+            // crafting
+            {
+                title: 'Crafting',
+                content: 'W kategorii crafting możesz tworzyć przedmioty z innych',
+                element: document.querySelector('#inventory #inventory-crafting'),
+                waitForAnimationFinish: true,
+                onShow: async () => {
+                    if (!inventory_isCraftingOpen()) {
+                        inventory_goToCategory('craft');
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                },
+            },
+        ]);
+    }
+
+    window.inventory_showShopsIntro = () => {
+        if (intro_isIntroKnown('inventory-shops') || intro_isVisible()) return;     
+
+        intro_startIntro('inventory-shops', [
+            {
+                title: 'Sklepy',
+                content: 'Znajdujesz się w sklepie, tutaj możesz kupować przedmioty których potrzebujesz',
+                element: document.querySelector('#inventory #inventory-shops'),
+                waitForAnimationFinish: true,
+            },
+            // categories
+            {
+                title: 'Kategorie',
+                content: 'W tym miejscu znajdziesz kategorie przedmiotów',
+                condition: () => {
+                    let categories = inventory_shop_getCategories();
+                    return categories.length > 1;
+                },
+                element: document.querySelector('#inventory #shop-items'),
+            },
+            // categories
+            {
+                title: 'Przedmioty',
+                content: 'Po otwarciu kategorii znajdziesz przedmioty które możesz kupić lub sprzedać',
+                condition: () => {
+                    let categories = inventory_shop_getCategories();
+                    return categories.length > 1;
+                },
+                onShow: async () => {
+                    let element = document.querySelector('#inventory #shop-items .details-wrapper');
+                    let isOpen = element.querySelector('.details').classList.contains('active');
+                    if (!isOpen) {
+                        element.querySelector('summary').click();
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                },
+                element: document.querySelector('#inventory #shop-items .details'),
+            },
+            // default items
+            {
+                title: 'Przedmioty',
+                content: 'Tutaj znajdziesz przedmioty które możesz kupić lub sprzedać',
+                condition: () => {
+                    let categories = inventory_shop_getCategories();
+                    return categories.length == 1;
+                },
+                element: document.querySelector('#inventory #shop-items'),
+            },
+            // price
+            {
+                title: 'Cena',
+                content: 'Po dodaniu przedmiotu do koszyka zobaczysz jego poniżej',
+                element: document.querySelector('#inventory #total-price'),
+            },
+        ]);
     }
 
     loadIncludes();

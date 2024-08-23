@@ -67,3 +67,14 @@ window.inventory_setCategory = function (el) {
         inventory_renderCrafting();
     }
 }
+
+window.inventory_goToCategory = function (category) {
+    let currentCategory = document.querySelector('#inventory #inventory-wrapper .categories .category.active').getAttribute('key');
+    if (currentCategory == category) return;
+
+    let categoriesEl = document.querySelector('#inventory #inventory-wrapper .categories');
+    let categoryEl = categoriesEl.querySelector(`.category[key="${category}"]`);
+    if (categoryEl == null) return;
+
+    inventory_setCategory(categoryEl);
+}

@@ -34,7 +34,10 @@ function startJob(job, players, minPlayers)
     end
 
     exports['m-notis']:addNotification(players, 'info', 'Informacja', 'Praca została rozpoczęta')
-    triggerEvent('jobs:startJob', root, job, hash, players)
+    local success = triggerEvent('jobs:startJob', root, job, hash, players)
+    if not success then
+        destroyJobLobby(getLobbyByHash(hash))
+    end
 end
 
 function findElementByHash(array, hash)

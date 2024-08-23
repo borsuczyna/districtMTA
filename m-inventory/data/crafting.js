@@ -54,6 +54,12 @@ function renderCraftingRecipe(recipe, recipeId) {
     return html;
 }
 
+window.inventory_isCraftingOpen = () => {
+    let opacity = document.querySelector('#inventory #inventory-crafting').style.opacity;
+    if (!opacity) return false;
+    return opacity === '1';
+}
+
 window.inventory_renderCrafting = () => {
     if (inventory_craftingRecipes.length === 0) return;
     if (inventory_itemsData.length === 0) return;

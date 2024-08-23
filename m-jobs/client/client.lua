@@ -100,6 +100,7 @@ end)
 
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('jobs')
+    exports['m-intro']:hideIntro('jobs')
 end)
 
 function updateAvatar(uid, avatar)

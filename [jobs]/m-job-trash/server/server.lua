@@ -23,6 +23,14 @@ end
 addEventHandler('jobs:startJob', root, function(job, hash, players)
     if job ~= 'trash' then return end
 
+    for k,v in pairs(players) do
+        if not exports['m-core']:doesPlayerHaveLicense(v, 'C') then
+            exports['m-notis']:addNotification(players, 'error', 'Brak licencji', ('Gracz %s nie posiada kat. C'):format(htmlEscape(getPlayerName(v))))
+            cancelEvent()
+            return
+        end
+    end
+
     local vehicle = createVehicle(408, settings.vehicleSpawn, settings.vehicleSpawnRot)
     setElementData(vehicle, 'vehicle:job', {players = players, hash = hash})
     setElementData(vehicle, 'element:ghostmode', true)

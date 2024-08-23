@@ -78,5 +78,8 @@ addEvent('jobs', 'play-animation', async (appear) => {
         document.querySelector('#jobs #lobby-wrapper').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
         document.querySelector('#jobs #my-lobby-wrapper').style.opacity = appear ? '1' : '0';
         document.querySelector('#jobs #my-lobby-wrapper').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+        intro_hideIntro('jobs');
+    } else {
+        jobs_showIntro();
     }
 });

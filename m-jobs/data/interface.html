@@ -317,7 +317,7 @@
 
 <div id="jobs-wrapper">
     <div class="d-flex flex-column gap-3">
-        <div class="bg-gray p-3 pb-2 rounded-2 h-100 position-relative">
+        <div class="bg-gray p-3 pb-2 rounded-2 h-100 position-relative" id="job-details">
             <div class="background"></div>
             <div class="inner" style="height: 12rem; width: 32rem;">
                 <div class="d-flex flex-column justify-between h-100">
@@ -354,14 +354,14 @@
                                 </div>
                                 Wymagany poziom
                             </div>
-                            <span id="coop" class="d-none">Praca kooperacyjna</span>
+                            <span id="coop" class="d-none"></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="bg-gray rounded-2">
+        <div class="bg-gray rounded-2" id="job-earnings-history">
             <div class="header mt-3 mb-1">Historia zarobku</div>
             <div id="chart" class="mt-2 rounded-2" style="overflow: hidden; height: 140px;">
                 <div class="d-flex flex-column justify-center align-items-center justify-center h-100">
@@ -371,14 +371,14 @@
         </div>
     </div>
     <div class="d-flex flex-column gap-3">
-        <div class="bg-gray p-3 rounded-2 d-flex flex-column align-items-center">
+        <div class="bg-gray p-3 rounded-2 d-flex flex-column align-items-center" id="job-top-players">
             <div class="d-flex gap-3 top-list justify-center" id="top-players" style="width: 21rem; height: 9rem;">
                 <div class="d-flex flex-column justify-center align-items-center justify-center w-100 h-100">
                     <svg style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_6kVp{transform-origin:center;animation:spinner_irSm .75s infinite linear}@keyframes spinner_irSm{100%{transform:rotate(360deg)}}</style><path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z" class="spinner_6kVp" fill="currentColor"/></svg>
                 </div>
             </div>
         </div>
-        <div class="bg-gray p-2 rounded-2 h-100 d-flex flex-column align-items-center">
+        <div class="bg-gray p-2 rounded-2 h-100 d-flex flex-column align-items-center" id="job-upgrades">
             <div class="header">Ulepszenia</div>
             <span class="small-text">Punkty ulepszeń: <span id="upgrade-points">-</span></span>
             <div class="upgrades-wrapper w-100 nice-scroll" style="width: 21rem;">
@@ -500,6 +500,51 @@
 
         await Promise.all(tasks);
         finishIncludes('jobs');
+    }
+
+    window.jobs_showIntro = () => {
+        if (intro_isIntroKnown('jobs') || intro_isVisible()) return;
+        
+        intro_startIntro('jobs', [
+            {
+                title: 'Praca dorywcza',
+                content: 'Witaj w pracy! Tutaj możesz zarabiać pieniądze wykonując różne prace',
+                element: document.querySelector('#jobs #jobs-wrapper'),
+                onShow: async () => {
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                },
+            },
+            // job-details
+            {
+                title: 'Szczegóły pracy',
+                content: 'Tutaj znajdziesz informacje o pracy, którą możesz wykonywać',
+                element: document.querySelector('#jobs #job-details'),
+            },
+            // job-earnings-history
+            {
+                title: 'Historia zarobku',
+                content: 'W tym miejscu znajdziesz historię swojego zarobku',
+                element: document.querySelector('#jobs #job-earnings-history'),
+            },
+            // job-top-players
+            {
+                title: 'Top gracze',
+                content: 'Ten ranking pokazuje najlepszych graczy w tej pracy',
+                element: document.querySelector('#jobs #job-top-players'),
+            },
+            // job-upgrades
+            {
+                title: 'Ulepszenia',
+                content: 'Tutaj znajdziesz ulepszenia, które możesz kupić za punkty ulepszeń',
+                element: document.querySelector('#jobs #job-upgrades'),
+            },
+            // start button
+            {
+                title: 'Rozpocznij pracę',
+                content: 'Wszystko gotowe? Możesz rozpocząć pracę!',
+                element: document.querySelector('#jobs #start-job-main'),
+            },
+        ]);
     }
 
     loadIncludes();
