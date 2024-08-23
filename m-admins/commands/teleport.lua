@@ -17,7 +17,7 @@ addCommandHandler('tt', function(player, cmd, ...)
         return
     end
 
-    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
+    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano do gracza %s'):format(htmlEscape(getPlayerName(foundPlayer))))
 
     local vehicle = getPedOccupiedVehicle(foundPlayer)
     if vehicle then
@@ -64,7 +64,7 @@ addCommandHandler('th', function(player, cmd, ...)
         return
     end
 
-    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano gracza %s do Ciebie'):format(getPlayerName(foundPlayer)))
+    exports['m-notis']:addNotification(player, 'success', 'Teleportacja', ('Teleportowano gracza %s do Ciebie'):format(htmlEscape(getPlayerName(foundPlayer))))
 
     local vehicle = getPedOccupiedVehicle(player)
     if vehicle then

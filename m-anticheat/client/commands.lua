@@ -8,7 +8,8 @@ local allowedCommands = {
     {'browserdebug', 'm-ui'},
     {'mobileview', 'm-ui'},
     {'stat', 'rescpu'},
-    {'trade', 'm-inventory'}
+    {'trade', 'm-inventory'},
+    {'createhouse', 'm-house-create'},
 }
 
 function checkCommandHandlers()

@@ -94,7 +94,7 @@ addEventHandler('logs:iconClick', root, function(icon, ...)
             return
         end
     
-        exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(getPlayerName(foundPlayer)))
+        exports['m-notis']:addNotification('success', 'Teleportacja', ('Teleportowano do gracza %s'):format(htmlEscape(getPlayerName(foundPlayer))))
         
         local x, y, z = getElementPosition(foundPlayer)
         setElementPosition(localPlayer, x, y + 0.5, z)

@@ -90,8 +90,8 @@ addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
         
         table.remove(reports, index)
         exports['m-notis']:addNotification(client, 'success', 'Zgłoszenie', 'Zgłoszenie zostało zaakceptowane')
-        exports['m-notis']:addNotification(report.reporter, 'success', 'Zgłoszenie', ('Twoje zgłoszenie zostało zaakceptowane przez %s'):format(getPlayerName(client)))
-        exports['m-logs']:sendLog('reports', 'success', ('Gracz `%s` zaakceptował zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
+        exports['m-notis']:addNotification(report.reporter, 'success', 'Zgłoszenie', ('Twoje zgłoszenie zostało zaakceptowane przez %s'):format(htmlEscape(getPlayerName(client))))
+        exports['m-logs']:sendLog('reports', 'success', ('Gracz `%s` zaakceptował zgłoszenie na gracza `%s` z powodem: `%s`'):format(htmlEscape(getPlayerName(client)), htmlEscape(getPlayerName(report.target)), report.reason))
 
         local admins = {}
 
@@ -111,7 +111,7 @@ addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)
         
         table.remove(reports, index)
         exports['m-notis']:addNotification(client, 'success', 'Zgłoszenie', 'Zgłoszenie zostało odrzucone')
-        exports['m-notis']:addNotification(report.reporter, 'error', 'Zgłoszenie', ('Twoje zgłoszenie zostało odrzucone przez %s'):format(getPlayerName(client)))
+        exports['m-notis']:addNotification(report.reporter, 'error', 'Zgłoszenie', ('Twoje zgłoszenie zostało odrzucone przez %s'):format(htmlEscape(getPlayerName(client))))
         exports['m-logs']:sendLog('reports', 'error', ('Gracz `%s` odrzucił zgłoszenie na gracza `%s` z powodem: `%s`'):format(getPlayerName(client), getPlayerName(report.target), report.reason))
 
         local admins = {}
@@ -129,7 +129,7 @@ end)
 
 addEventHandler('reports:requestReportsList', resourceRoot, function()
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end __i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `reports:requestReportsList` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end

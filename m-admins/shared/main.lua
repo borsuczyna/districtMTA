@@ -133,3 +133,9 @@ function doesPlayerHavePermission(player, permission)
     local permissions = getRankPermissions(playerRank)
     return table.find(permissions, permission)
 end
+
+function htmlEscape(s)
+    return s:gsub('[<>&"]', function(c)
+        return c == '<' and '&lt;' or c == '>' and '&gt;' or c == '&' and '&amp;' or '&quot;'
+    end)
+end
