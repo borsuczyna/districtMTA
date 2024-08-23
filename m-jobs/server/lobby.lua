@@ -161,7 +161,7 @@ end)
 
 addEventHandler('jobs:quitLobby', resourceRoot, function()
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `jobs:quitLobby` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end
@@ -174,7 +174,7 @@ end)
 
 addEventHandler('jobs:joinLobby', resourceRoot, function(ownerUid)
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `jobs:joinLobby` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end
@@ -226,7 +226,7 @@ end)
 
 addEventHandler('jobs:kickFromLobby', resourceRoot, function(uid)
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `jobs:kickFromLobby` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end
@@ -268,7 +268,7 @@ end)
 
 addEventHandler('jobs:startJobI', resourceRoot, function(job)
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `jobs:startJobI` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end

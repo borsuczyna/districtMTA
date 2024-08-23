@@ -132,6 +132,12 @@ end
 addEventHandler('onResourceStart', resourceRoot, loadHouses)
 
 addEventHandler('houses:getData', resourceRoot, function(uid)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `houses:getData` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+    
     if not client then return end
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
@@ -181,4 +187,38 @@ addEventHandler('onResourceStart', resourceRoot, function()
     for i, player in ipairs(getElementsByType('player')) do
         removeElementData(player, 'player:house')
     end
+end)
+
+addEvent('house:create', true)
+addEventHandler('house:create', root, function(data)
+    data = fromJSON(data)
+    -- {"name":"test","interior":"2","enter":"1197.16, -2068.30, 69.01","interiorPos":"1197.16, -2068.30, 69.01, 0.00","furnitured":false,"price":"45","number":"5"}
+
+    -- dont do any security checks here, they are done in the client side
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = [[
+        INSERT INTO
+            `m-houses`
+        SET
+            `name` = ?,
+            `interior` = ?,
+            `position` = ?,
+            `price` = ?,
+            `streetNumber` = ?,
+            `furnitured` = ?,
+            `locked` = 0
+        VALUES
+            (?, ?, ?, ?, ?, ?, 0)
+    ]]
+
+    local x, y, z = unpack(map(split(data.enter, ','), tonumber))
+    local position = table.concat({x, y, z}, ',')
+    local interior = tonumber(data.interior)
+    local price = tonumber(data.price)
+    local streetNumber = tonumber(data.number)
+    local furnitured = data.furnitured and 1 or 0
+
+    dbExec(connection, query, data.name, interior, position, price, streetNumber, data.name, interior, position, price, streetNumber, furnitured)
 end)
