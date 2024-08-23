@@ -112,7 +112,8 @@ function setHouseData(data) {
     document.querySelector('#houses #street').innerText = data.streetName;
     document.querySelector('#houses #beds').innerText = data.interiorData.bedrooms;
     document.querySelector('#houses #garages').innerText = data.garages;
-    
+    document.querySelector('#houses .preview').src = `/m-houses/data/previews/${data.interior[0]}.png`;
+
     if (data.owner != undefined) {
         document.querySelector('#houses #furnitured').parentElement.style.display = 'none';
         document.querySelector('#houses #owner').innerText = data.ownerName;

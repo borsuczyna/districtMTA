@@ -60,8 +60,8 @@ addCommandHandler('accept', function(player, command, id)
     setElementData(player, 'player:trade', trade.player2)
     setElementData(trade.player2, 'player:trade', player)
 
-    exports['m-notis']:addNotification(player, 'info', 'Wymiana', ('Zaakceptowałeś zaproszenie do wymiany od gracza %s'):format(getPlayerName(trade.player2)))
-    exports['m-notis']:addNotification(trade.player2, 'info', 'Wymiana', ('Gracz %s zaakceptował zaproszenie do wymiany'):format(getPlayerName(player)))
+    exports['m-notis']:addNotification(player, 'info', 'Wymiana', ('Zaakceptowałeś zaproszenie do wymiany od gracza %s'):format(htmlEscape(getPlayerName(trade.player2))))
+    exports['m-notis']:addNotification(trade.player2, 'info', 'Wymiana', ('Gracz %s zaakceptował zaproszenie do wymiany'):format(htmlEscape(getPlayerName(player))))
 
     pendingTrades[id] = nil
     trades[player] = {
@@ -259,7 +259,7 @@ function tradeWith(player, foundPlayer)
     timeouts[player] = getTickCount()
 
     exports['m-notis']:addNotification(player, 'info', 'Wymiana', 'Zaproszenie do wymiany zostało wysłane')
-    exports['m-notis']:addNotification(foundPlayer, 'info', 'Wymiana', ('Otrzymałeś zaproszenie do wymiany od gracza %s, wpisz /accept %d aby zaakceptować'):format(getPlayerName(player), id))
+    exports['m-notis']:addNotification(foundPlayer, 'info', 'Wymiana', ('Otrzymałeś zaproszenie do wymiany od gracza %s, wpisz /accept %d aby zaakceptować'):format(htmlEscape(getPlayerName(player)), id))
     return true
 end
 
@@ -390,3 +390,9 @@ addEventHandler('onPlayerQuit', root, function()
         pendingTrades[id] = nil
     end
 end)
+
+function htmlEscape(s)
+    return s:gsub('[<>&"]', function(c)
+        return c == '<' and '&lt;' or c == '>' and '&gt;' or c == '&' and '&amp;' or '&quot;'
+    end)
+end

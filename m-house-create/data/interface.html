@@ -1,0 +1,136 @@
+<style>
+    #house-create {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        padding: 0.7rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #house-create h2 {
+        font-size: 1.5rem;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<h2>Tworzenie domku</h2>
+<!-- input name -->
+<div>
+    <label for="name mt-3">Nazwa domku</label>
+    <input class="simple-input" type="text" id="name" placeholder="Nazwa domku">
+</div>
+<div class="d-flex gap-2 mt-2">
+    <div class="nice-button button-sm" onclick="houseCreate_changeInterior(-1)">-</div>
+    <select id="interior" class="w-100"></select>
+    <div class="nice-button button-sm" onclick="houseCreate_changeInterior(1)">+</div>
+</div>
+<!-- enter pos -->
+<div class="d-flex gap-2 mt-2">
+    <div id="enter">0,0,0</div>
+    <div class="nice-button button-sm" onclick="houseCreate_setPosition('enter')">Ustaw wejście</div>
+</div>
+<!-- interior pos -->
+<div class="d-flex gap-2 mt-2">
+    <div id="interior-pos">0,0,0,0</div>
+    <div class="nice-button button-sm" onclick="houseCreate_setPosition('interior-pos')">Ustaw interior</div>
+    <div class="nice-button button-sm" onclick="houseCreate_rotate45Degrees()">Obróć o 45 stopni</div>
+</div>
+<!-- checkbox: furnitured -->
+<div class="mt-2 mb-2">
+    <label for="furnitured">Mieszkanie umeblowane</label>
+    <input type="checkbox" id="furnitured" placeholder="Mieszkanie umeblowane">
+</div>
+<!-- input price per day, default 45 -->
+<div>
+    <label for="price mt-3">Cena za dzień</label>
+    <input class="simple-input" type="number" id="price" value="45" placeholder="Cena za dzień">
+</div>
+<!-- street number -->
+<div>
+    <label for="number mt-3">Numer domu</label>
+    <input class="simple-input" type="number" id="number" placeholder="Numer domu">
+</div>
+
+<div class="mt-4 d-flex justify-end gap-2">
+    <div class="nice-button button-sm" onclick="houseCreate_create()">Stwórz</div>
+    <div class="nice-button button-sm" onclick="mta.triggerEvent('house-create:close')">Anuluj</div>
+</div>
+
+<script>
+    window.houseCreate_changeInterior = (value) => {
+        const interior = document.querySelector('#house-create #interior');
+        let options = interior.querySelectorAll('option');
+        let index = Array.from(options).findIndex(option => option.selected);
+
+        index += value;
+        if (index < 0) index = options.length - 1;
+        if (index >= options.length) index = 0;
+
+        options[index].selected = true;
+    }
+
+    window.houseCreate_setPosition = (type) => {
+        mta.triggerEvent('house-create:setPosition', type);
+    }
+
+    window.houseCreate_rotate45Degrees = () => {
+        let interiorPos = document.querySelector('#house-create #interior-pos').innerHTML.split(',');
+        interiorPos[3] = ((parseFloat(interiorPos[3]) + 45) % 360).toFixed(2);
+        document.querySelector('#house-create #interior-pos').innerHTML = interiorPos.join(',');
+    }
+
+    window.houseCreate_create = () => {
+        const name = document.querySelector('#house-create #name').value;
+        const interior = document.querySelector('#house-create #interior').value;
+        const enter = document.querySelector('#house-create #enter').innerHTML;
+        const interiorPos = document.querySelector('#house-create #interior-pos').innerHTML;
+        const furnitured = document.querySelector('#house-create #furnitured').checked;
+        const price = document.querySelector('#house-create #price').value;
+        const number = document.querySelector('#house-create #number').value;
+
+        mta.triggerEvent('house-create:create', JSON.stringify({
+            name,
+            interior,
+            enter,
+            interiorPos,
+            furnitured,
+            price,
+            number
+        }));
+    }
+
+    function setInteriors(interiors) {
+        let interior = document.querySelector('#house-create #interior');
+        interior.innerHTML = interiors.map((interior, index) => `<option value="${index + 1}">(${index + 1}) ${interior.description}</option>`).join('');
+    }
+
+    addEvent('house-create', 'interface:data:interiors', async (data) => {
+        setInteriors(data[0]);
+    });
+
+    addEvent('house-create', 'interface:data:position', async (data) => {
+        let position = document.querySelector(`#house-create #${data[0].type}`);
+        let current = position.innerHTML.split(',');
+
+        if (current.length === 4) {
+            position.innerHTML = `${data[0].x.toFixed(2)}, ${data[0].y.toFixed(2)}, ${data[0].z.toFixed(2)}, ${data[0].rz.toFixed(2)}`;
+        } else {
+            position.innerHTML = `${data[0].x.toFixed(2)}, ${data[0].y.toFixed(2)}, ${data[0].z.toFixed(2)}`;
+        }
+    });
+
+    addEvent('house-create', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#house-create').style.opacity = appear ? '1' : '0';
+        document.querySelector('#house-create').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+</script>

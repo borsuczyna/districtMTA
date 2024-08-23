@@ -34,6 +34,12 @@
     <file src='data/doorbell.wav'/>
     <file src='data/shader.fx'/>
 
+    <file src='data/previews/1.png'/>
+    <file src='data/previews/2.png'/>
+    <file src='data/previews/3.png'/>
+    <file src='data/previews/4.png'/>
+    <file src='data/previews/5.png'/>
+
     <file src='data/textures/furniture.png'/>
     <file src='data/textures/remove.png'/>
     <file src='data/textures/check.png'/>

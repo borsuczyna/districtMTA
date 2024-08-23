@@ -347,14 +347,13 @@ function triggerClickEvent(button, state, cx, cy)
     triggerEvent('onClientClick', root, button, state, cx, cy, wx, wy, wz, element)
 end
 
-addEventHandler('cursor:click', root, function(button)
+addEventHandler('cursor:click', root, function(button, state)
     if not isCursorShowing() then return end
     local cx, cy = getCursorPosition()
     cx, cy = cx * sx, cy * sy
 
     button = button or 'left'
-    triggerClickEvent(button, 'down', cx, cy)
-    setTimer(triggerClickEvent, 50, 1, button, 'up', cx, cy)
+    triggerClickEvent(button, state == '1' and 'down' or 'up', cx, cy)
 end)
 
 setTimer(function()

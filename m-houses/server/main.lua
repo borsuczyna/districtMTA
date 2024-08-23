@@ -94,19 +94,7 @@ local function loadHouse(data)
     updateHouseRent(id)
 end
 
-local function loadHousesResult(queryHandle)
-    local result = dbPoll(queryHandle, 0)
-    if not result then return end
-
-    for i, data in ipairs(result) do
-        loadHouse(data)
-    end
-end
-
-local function loadHouses()
-    local connection = exports['m-mysql']:getConnection()
-    if not connection then return end
-
+local function buildGetHouseQuery(id)
     local query = [[
         SELECT
             `m-houses`.*,
@@ -123,9 +111,46 @@ local function loadHouses()
             `m-users` AS `sharedUsers`
         ON
             FIND_IN_SET(`sharedUsers`.`uid`, `m-houses`.`sharedPlayers`) > 0
-        GROUP BY
-            `m-houses`.`uid`
     ]]
+
+    if id then
+        query = query .. ' WHERE `m-houses`.`uid` = ' .. id
+    end
+
+    query = query .. ' GROUP BY `m-houses`.`uid`'
+
+    return query
+end
+
+local function loadHouseFromDatabase(id)
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = buildGetHouseQuery(id)
+    dbQuery(function(queryHandle)
+        local result = dbPoll(queryHandle, 0)
+        if not result then return end
+
+        for i, data in ipairs(result) do
+            loadHouse(data)
+        end
+    end, connection, query, id)
+end
+
+local function loadHousesResult(queryHandle)
+    local result = dbPoll(queryHandle, 0)
+    if not result then return end
+
+    for i, data in ipairs(result) do
+        loadHouse(data)
+    end
+end
+
+local function loadHouses()
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = buildGetHouseQuery()
     dbQuery(loadHousesResult, connection, query)
 end
 
@@ -133,7 +158,7 @@ addEventHandler('onResourceStart', resourceRoot, loadHouses)
 
 addEventHandler('houses:getData', resourceRoot, function(uid)
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end __i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `houses:getData` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end
@@ -209,16 +234,14 @@ addEventHandler('house:create', root, function(data)
             `streetNumber` = ?,
             `furnitured` = ?,
             `locked` = 0
-        VALUES
-            (?, ?, ?, ?, ?, ?, 0)
     ]]
 
     local x, y, z = unpack(map(split(data.enter, ','), tonumber))
     local position = table.concat({x, y, z}, ',')
-    local interior = tonumber(data.interior)
-    local price = tonumber(data.price)
-    local streetNumber = tonumber(data.number)
-    local furnitured = data.furnitured and 1 or 0
+    local interior = data.interior .. ',' .. table.concat(map(split(data.interiorPos, ','), tonumber), ',')
+    local query = dbQuery(connection, query, data.name, interior, position, data.price, data.number, data.furnitured and 1 or 0)
+    local result, numAffectedRows, lastInsertId = dbPoll(query, -1)
+    if not result then return end
 
-    dbExec(connection, query, data.name, interior, position, price, streetNumber, data.name, interior, position, price, streetNumber, furnitured)
+    loadHouseFromDatabase(lastInsertId)
 end)

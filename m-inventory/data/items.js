@@ -29,7 +29,7 @@ window.inventory_getItemByHash = (hash) => {
 window.inventory_renderItem = (item, itemData) => {
     return `
     <div
-        class="item ${itemData.rarity}"
+        class="item hoverable ${itemData.rarity}"
         ${item.hash ? `data-inventory-item="${item.hash}"` : `data-inventory-item-data="${item.item}"`}
         ${item.crafting ? `data-crafting="${item.crafting}"` : ''}
         onmouseover="inventory_showTooltip(this)"

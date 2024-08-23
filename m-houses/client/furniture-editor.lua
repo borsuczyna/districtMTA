@@ -5,6 +5,7 @@ local holdingAxis = false
 local sx, sy = guiGetScreenSize()
 local zoomOriginal = sx < 2048 and math.min(2.2, 2048/sx) or 1
 local zoom = 1
+local cursorDown = false
 
 local function drawDot(x, y, z, color)
     local px, py = getScreenFromWorldPosition(x, y, z)
@@ -41,7 +42,7 @@ local function drawEditLine(axis, x2, y2, z2, color)
     local distance = math.max(0.01, getDistanceBetweenPoints2D(px, py, ptx, pty))
     xDiff, yDiff = xDiff / distance, yDiff / distance
 
-    if getKeyState('mouse1') then
+    if cursorDown then
         if inside and not holdingAxis then
             holdingAxis = {
                 axis = axis,
@@ -170,6 +171,9 @@ local function renderFurnitureEditor()
 end
 
 local function clickFurnitureEditor(button, state)
+    if button == 'left' then
+        cursorDown = state == 'down'
+    end
     if button ~= 'left' or state ~= 'down' then return end
 
     local furniture = getInteriorFurniture()
@@ -182,7 +186,7 @@ end
 
 addEventHandler('houses:setFurnitureEditMode', resourceRoot, function(state, furnitureUid)
     if source ~= resourceRoot then
-        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end __i = __i + 1 end; __args = __args:sub(1, -2)
         local banMessage = ('Tried to trigger `houses:setFurnitureEditMode` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
         return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
     end

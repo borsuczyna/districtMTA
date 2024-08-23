@@ -112,7 +112,7 @@ addEventHandler('houses:ringBell', resourceRoot, function(position, player)
     setElementDimension(sound, getElementDimension(localPlayer))
     setSoundMinDistance(sound, 4)
     setSoundMaxDistance(sound, 30)
-    exports['m-notis']:addNotification('info', 'Dzwonek do drzwi', 'Gracz ' .. getPlayerName(player) .. ' dzwoni do drzwi')
+    exports['m-notis']:addNotification('info', 'Dzwonek do drzwi', 'Gracz ' .. htmlEscape(getPlayerName(player)) .. ' dzwoni do drzwi')
 end)
 
 addEventHandler('houses:updateFurniture', resourceRoot, function(furniture)

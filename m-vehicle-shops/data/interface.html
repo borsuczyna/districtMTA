@@ -104,7 +104,10 @@
     
     <div class="info d-flex flex-column mt-2 gap-1 align-items-center">
         <span id="price">Cena: $100,000</span>
-        <div class="flat-button flat-button-small" onclick="vehicleShops_buyVehicle(this)">Zakup pojazd</div>
+        <div class="d-flex gap-1">
+            <div class="flat-button flat-button-small" onclick="vehicleShops_buyVehicle(this)">Zakup pojazd</div>
+            <div class="flat-button flat-button-small" onclick="mta.triggerEvent('vehicle-shop:close')">Zamknij</div>
+        </div>
     </div>
 </div>
 

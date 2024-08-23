@@ -37,6 +37,10 @@ let elementSearch = [
     '#spawn-categories .item',
     '.category-items.active .spawn',
     '.nice-input input',
+    '#icons .icon',
+    '.texture-list .item',
+    '#shop-items summary',
+    '.details-wrapper .item',
 ];
 
 let clickParents = [
@@ -199,9 +203,28 @@ addEvent('ui', 'onControllerAxisHoldDrop', (axisId, axis, time, isArrow) => {
 
         // ignore elements that are not visible or x + w <= 0 or y + h <= 0
         valid = valid && rect.width > 0 && rect.height > 0;
+        if (!valid) return { element, valid, distance: 0 };
 
-        // let distance = distance2d(rect.left, rect.top, cursorPosition.x, cursorPosition.y);
-        let distance = distance2d(rect.left + rect.width / 2, rect.top + rect.height / 2, cursorPosition.x, cursorPosition.y);
+        // check if ANY parent width or height is 0
+        let parent = element;
+        while (parent) {
+            let parentRect = parent.getBoundingClientRect();
+            if (parentRect.width <= 0 || parentRect.height <= 0) {
+                valid = false;
+                return { element, valid, distance: 0 };
+            }
+            parent = parent.parentElement;
+        }
+
+        let xDistance = Math.min(Math.abs(rect.left - cursorPosition.x), Math.abs(rect.right - cursorPosition.x));
+        let yDistance = Math.min(Math.abs(rect.top - cursorPosition.y), Math.abs(rect.bottom - cursorPosition.y));
+        if (axis == 'x' || axis == '-x') {
+            yDistance *= 0.5;
+        } else {
+            xDistance *= 0.5;
+        }
+
+        let distance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
         return { element, valid, distance };
     }).filter(({ valid }) => valid);
 
@@ -238,6 +261,8 @@ addEvent('ui', 'onControllerAxisHoldDrop', (axisId, axis, time, isArrow) => {
         y = rect.top + rect.height / 2;
 
         mta.triggerEvent('cursor:setPosition', x, y);
+        // print what snapped on
+        console.log(closestElement.element);
     }
 });
 
@@ -286,9 +311,9 @@ function getZIndex(element) {
 }
 
 addEvent('ui', 'onControllerButtonChange', (button, value) => {
-    if (button != 0 || value != 1 || isCursorOverMap()) return;
+    if (button != 0 || isCursorOverMap()) return;
 
-    mta.triggerEvent('cursor:click');
+    mta.triggerEvent('cursor:click', 'left', value == 1);
 });
 
 function distance2d(x1, y1, x2, y2) {

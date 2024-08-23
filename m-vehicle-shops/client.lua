@@ -1,4 +1,5 @@
 addEvent('vehicle-shop:show', true)
+addEvent('vehicle-shop:close', true)
 
 local vehicleShopsUILoaded, vehicleShopsUIVisible, vehicleShopsHideTimer, vehicleShopsData = false, false, false, false
 
@@ -56,6 +57,11 @@ end
 addEventHandler('vehicle-shop:show', resourceRoot, function(data)
     setVehicleShopsUIVisible(true)
     vehicleShopsData = data
+end)
+
+addEventHandler('vehicle-shop:close', root, function()
+    setVehicleShopsUIVisible(false)
+    vehicleShopsData = false
 end)
 
 addEventHandler('onClientColShapeLeave', root, function(element, matchingDimension)
