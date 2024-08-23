@@ -107,6 +107,10 @@ addEventHandler('jobs:burger:pedEnter', resourceRoot, function(lobby, hash)
 end)
 
 addEventHandler('jobs:burger:pedLeave', resourceRoot, function(lobby, hash)
+    if client then
+        if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (jobs:burger:pedLeave)')
+    end
     exports['m-jobs']:destroyLobbyPed(lobby, hash)
 end)
 
@@ -224,9 +228,23 @@ function clickNpc(client, hash)
 end
 
 addEventHandler('jobs:burger:addRandomNpc', resourceRoot, function(lobby)
-    -- i zrob petle na graczy, jak 1 gracz bedzie miec ulepszenie to czas * 0.9
-    -- jak 3 graczy to czas * 0.7
-    -- ale max jak moze byc to 0.4 daj
+    if client then
+        if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (jobs:burer:addRandomNpc)')
+    end
+    local randomTime = math.random(unpack(settings.npcSpawnInterval))
+    local timeMultiplier = 1
+
+    local players = exports['m-jobs']:getLobbyPlayers(lobby)
+    for _, player in pairs(players) do
+        local upgrades = getElementData(player, "player:job-upgrades-cache") or {}
+    
+        if table.find(upgrades, 'natlok') then
+            timeMultiplier = timeMultiplier - 0.1
+        end
+    end
+
+    randomTime = randomTime * math.max(0.4, timeMultiplier)
 
     addLobbyNpc(lobby)
     exports['m-jobs']:setLobbyTimer(lobby, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))

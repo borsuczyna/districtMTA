@@ -52,6 +52,12 @@ addEventHandler('onResourceStart', resourceRoot, function()
 end)
 
 addEventHandler('enter:interior', resourceRoot, function(id)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `enter:interior` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     local enter = enters[id]

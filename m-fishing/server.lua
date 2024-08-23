@@ -73,6 +73,12 @@ local function getFish(player, rarity)
 end
 
 addEventHandler('fishing:catchFish', resourceRoot, function(success)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `fishing:catchFish` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     local player = client
     
     local fishData = catchFishMinigames[player]
@@ -108,6 +114,12 @@ addEventHandler('fishing:catchFish', resourceRoot, function(success)
 end)
 
 addEventHandler('fishing:start', resourceRoot, function()
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `fishing:start` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+    
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     if getElementData(client, 'player:fishing') then return end

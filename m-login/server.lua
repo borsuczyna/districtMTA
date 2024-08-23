@@ -85,6 +85,12 @@ addEventHandler('login:register', resourceRoot, function(hash, player, email, lo
 end)
 
 addEventHandler('login:spawn', resourceRoot, function(category, index)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `login:spawn` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
     if not getElementData(client, 'player:logged') or not getElementData(client, 'player:uid') or getElementData(client, 'player:spawn') then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn without being logged in/while being already spawned')

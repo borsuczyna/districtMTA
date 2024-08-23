@@ -181,6 +181,12 @@ local function clickFurnitureEditor(button, state)
 end
 
 addEventHandler('houses:setFurnitureEditMode', resourceRoot, function(state, furnitureUid)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `houses:setFurnitureEditMode` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+    
     local furniture = false
     if state and furnitureUid then
         furniture = getFurnitureData(furnitureUid)

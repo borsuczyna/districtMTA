@@ -47,6 +47,7 @@
     <file src='data/textures/interior/c.png'/>
 
     <export function='useFurniture' type='server'/>
+    <export function='getInteriors' type='shared'/>
 
     <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

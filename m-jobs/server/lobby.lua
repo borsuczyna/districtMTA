@@ -160,6 +160,12 @@ addEventHandler('jobs:createLobby', resourceRoot, function(hash, client, job)
 end)
 
 addEventHandler('jobs:quitLobby', resourceRoot, function()
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `jobs:quitLobby` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     quitLobby(client)
@@ -167,6 +173,12 @@ addEventHandler('jobs:quitLobby', resourceRoot, function()
 end)
 
 addEventHandler('jobs:joinLobby', resourceRoot, function(ownerUid)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `jobs:joinLobby` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     local owner = exports['m-core']:getPlayerByUid(ownerUid)
@@ -213,6 +225,12 @@ addEventHandler('jobs:joinLobby', resourceRoot, function(ownerUid)
 end)
 
 addEventHandler('jobs:kickFromLobby', resourceRoot, function(uid)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `jobs:kickFromLobby` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     local player = exports['m-core']:getPlayerByUid(uid)
@@ -249,6 +267,12 @@ addEventHandler('jobs:kickFromLobby', resourceRoot, function(uid)
 end)
 
 addEventHandler('jobs:startJobI', resourceRoot, function(job)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end i__i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `jobs:startJobI` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
 
     local jobData = jobs[job]
@@ -281,13 +305,6 @@ addEventHandler('jobs:startJobI', resourceRoot, function(job)
 
         startJob(job, lobby.players, jobData.minLobbySize)
         closeLobby(client, true, lobby.players)
-    end
-end)
-
-addEventHandler('jobs:startJob', resourceRoot, function()
-    if client then
-        if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to start job from client')
     end
 end)
 

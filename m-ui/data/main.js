@@ -33,7 +33,7 @@ function setCursorVisible(visible) {
 
 function updateBrowserTitle() {
     const element = document.elementFromPoint(lastCursorPos.x, lastCursorPos.y);
-    const cursorStyle = window.getComputedStyle(element).cursor;
+    const cursorStyle = getComputedStyle(element).cursor;
 
     document.title = JSON.stringify({
         c: cursorStyle,

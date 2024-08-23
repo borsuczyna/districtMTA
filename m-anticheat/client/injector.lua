@@ -32,6 +32,7 @@ pcall(function()
 end)
 
 if failed then
+    setElementData(localPlayer, "player:gameInterval", teaEncode('Anty addDebugHook', 'district'))
     setElementData(localPlayer, "player:gameTime", 1)
 end
 

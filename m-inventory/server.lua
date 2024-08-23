@@ -309,43 +309,7 @@ addEventHandler('inventory:useItem', root, function(hash, player, itemHash)
     exports['m-ui']:respondToRequest(hash, {status = 'success', inventory = getPlayerInventory(player)})
 end)
 
--- -- ADD TEST ITEMS
--- local testItems = {
---     'smallFry',
--- 'orangeFlopper',
--- 'slurpJellyfish',
--- 'moltenSpicyFish',
--- 'driftSpicyFish',
--- 'greenFlopper',
--- 'lbShieldFish',
--- 'blueSlurpfish',
--- 'southernSpicyFish',
--- 'sbSpicyFish',
--- 'peelyJellyfish',
--- 'blueFlopper',
--- 'bbShieldFish',
--- 'yellowSlurpfish',
--- 'blackSlurpfish',
--- 'blackSmallFry',
--- 'purpleJellyfish',
--- 'wsSpicyFish',
--- 'bsShieldFish',
--- 'darkVanguardJellyfish',
--- 'cuddleJellyfish',
--- 'chumHopFlopper',
--- 'atlanticHopFlopper',
--- 'chinhookHopFlopper',
--- 'cohoHopFlopper',
--- 'divineHopFlopper',
--- }
-
--- for _,player in pairs(getElementsByType('player')) do
---     setElementData(player, 'player:inventory', {})
---     for _, item in pairs(testItems) do
---         addPlayerItem(player, item, 5)
---     end
--- end
-
+-- TODO: remove
 addCommandHandler('testitem', function(player, cmd, name, count)
     addPlayerItem(player, name or 'hotDog', tonumber(count) or 1)
     exports['m-notis']:addNotification(player, 'success', 'xd', 'masz kurwo')

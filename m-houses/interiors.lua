@@ -122,3 +122,7 @@ interiorTextures = {
     {name = 'B test', texture = 'b', type = 'floor'},
     {name = 'C test', texture = 'c', type = 'wall'},
 }
+
+function getInteriors()
+    return houseInteriors
+end
