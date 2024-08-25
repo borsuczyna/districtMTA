@@ -33,7 +33,7 @@ local function toggleFishingRod(player, model, visible)
 end
 
 function onFishingRodUse(player, itemHash)
-    if getElementData(player, 'player:fishing') then
+    if getElementData(player, 'player:fishing') or getElementData(player, 'player:job') then
         exports['m-notis']:addNotification(player, 'error', 'Wędka', 'Nie możesz teraz tego zrobić.')
         return 0
     end
