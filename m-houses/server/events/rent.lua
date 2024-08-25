@@ -125,9 +125,16 @@ addEventHandler('houses:cancelRentHouse', resourceRoot, function(hash, player, h
     dbExec(connection, 'UPDATE `m-houses` SET `owner` = NULL, `rentDate` = "1970-01-01 00:00:00" WHERE `uid` = ?', houseUid)
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Anulowano wynajem domu.'})
+    exports['m-logs']:sendLog('houses', 'info', ('Gracz %s anulował wynajem domu %s'):format(getPlayerName(player), house.streetName))
     removePlayersFromHouse(houseUid)
     removeAllHouseFurniture(houseUid)
     removeAllHouseTextures(houseUid)
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = 'UPDATE `m-houses` SET `owner` = NULL, `sharedPlayers` = NULL WHERE `uid` = ?'
+    dbExec(connection, query, houseUid)
 
     house.owner = nil
     house.ownerName = nil
