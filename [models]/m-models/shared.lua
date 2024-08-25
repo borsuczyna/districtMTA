@@ -27,6 +27,11 @@ models = {
         type = 'object',
         model = 1337,
     },
+    ['int-6'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
     ['spawn-ls'] = {
         custom = false,
         type = 'object',

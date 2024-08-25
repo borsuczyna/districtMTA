@@ -1,4 +1,5 @@
 addEventHandler('onVehicleDamage', root, function(loss)
+    if not source or not isElement(source) or getElementType(source) ~= 'vehicle' then return end
     local health = getElementHealth(source)
     local matrix = getElementMatrix(source)
     local newHealth = health - loss

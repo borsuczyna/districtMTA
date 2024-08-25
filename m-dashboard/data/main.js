@@ -50,6 +50,9 @@ window.dashboard_fetchData = async (tab) => {
             case 'achievements':
                 dashboard_renderAchievements(data.data);
                 break;
+            case 'discord':
+                dashboard_renderDiscord(data.data[0]);
+                break;
         }
     }
 }

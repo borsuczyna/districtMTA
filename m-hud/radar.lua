@@ -25,8 +25,8 @@ local textures = {
 }
 
 local fonts = {
-	dxCreateFont(':m-ui/data/fonts/Inter-Medium.ttf', 23/zoomOriginal, false, 'proof'),
-	dxCreateFont(':m-ui/data/fonts/Inter-Medium.ttf', 18/zoomOriginal, false, 'proof'),
+	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 23/zoomOriginal, false, 'proof'),
+	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 18/zoomOriginal, false, 'proof'),
 }
 
 function findRotation( x1, y1, x2, y2 ) 

@@ -89,3 +89,12 @@ addEventHandler('onClientPreRender', root, function()
     updateDumpingObject()
     updateJobVehicle()
 end)
+
+addEventHandler('jobs:tryStartJob', root, function(job)
+    if job ~= 'trash' then return end
+
+    if not exports['m-core']:doesPlayerHaveLicense(localPlayer, 'C') then
+        exports['m-notis']:addNotification('error', 'Praca', 'Nie posiadasz prawa jazdy kategorii C.')
+        cancelEvent()
+    end
+end)

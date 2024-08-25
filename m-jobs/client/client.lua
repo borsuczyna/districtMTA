@@ -7,9 +7,18 @@ addEvent('interfaceLoaded', true)
 addEvent('jobs:getPlayerJobDataResult', true)
 addEvent('avatars:onPlayerAvatarChange', true)
 addEvent('jobs:getPlayerIncomeHistoryResult', true)
+addEvent('jobs:checkJobAvailability', true)
+addEvent('jobs:tryStartJob', true)
 addEvent('jobs:jobStarted', true)
 addEvent('jobs:startJob', true)
 addEvent('jobs:endJob', true)
+
+addEventHandler('jobs:checkJobAvailability', root, function()
+    local success = triggerEvent('jobs:tryStartJob', root, jobGui)
+    if not success then return end
+
+    exports['m-ui']:triggerInterfaceEvent('jobs', 'load-lobby-screen', jobName)
+end)
 
 function updateJobsData()
     local data = jobs[jobGui]
@@ -79,7 +88,7 @@ function showJobGui(jobName)
         exports['m-notis']:addNotification('error', 'Praca', 'Nie możesz rozpocząć pracy mając wypożyczoną hulajnogę')
         return
     end
-    
+
     if not jobs[jobName] then return end
     if jobsVisible then return end
 

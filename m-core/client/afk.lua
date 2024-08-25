@@ -5,6 +5,7 @@ function resetPlayerAFK()
     if not afk then return end
 
     lastActivityTime = getTickCount()
+    showCursor(false)
     setElementData(localPlayer, 'player:afk', false)
 end
 
@@ -12,6 +13,15 @@ addEventHandler('onClientKey', root, function(button, press)
     if press then
         resetPlayerAFK()
     end
+end)
+
+addEventHandler('onClientMinimize', root, function()
+    setElementData(localPlayer, 'player:afk', true)
+    showCursor(true, false)
+end)
+
+addEventHandler('onClientRestore', root, function()
+    resetPlayerAFK()
 end)
 
 function checkAFKStatus()

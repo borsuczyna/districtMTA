@@ -8,6 +8,7 @@
 
     <file src='data/blurH.fx'/>
     <file src='data/blurV.fx'/>
+    <file src='data/mask.fx'/>
     <file src='data/main.html'/>
     <file src='data/js/main.js'/>
     <file src='data/js/event.js'/>

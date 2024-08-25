@@ -3,7 +3,7 @@ let waiting = false;
 
 window.jobs_startJob = (button) => {
     if (jobs_getLobbySize() > 1) {
-        jobs_showLobbyScreen();
+        mta.triggerEvent('jobs:checkJobAvailability');
     } else {
         jobs_startJobRequest(button);
     }

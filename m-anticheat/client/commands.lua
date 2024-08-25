@@ -10,6 +10,8 @@ local allowedCommands = {
     {'stat', 'rescpu'},
     {'trade', 'm-inventory'},
     {'createhouse', 'm-house-create'},
+    {'record', 'm-record'},
+    {'play', 'm-record'},
 }
 
 function checkCommandHandlers()

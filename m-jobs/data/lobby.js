@@ -299,3 +299,7 @@ addEvent('jobs', 'job-started', (success) => {
     waiting = false;
     if (waitingButton) waitingButton.innerHTML = preHTML;
 });
+
+addEvent('jobs', 'load-lobby-screen', () => {
+    jobs_showLobbyScreen();
+});

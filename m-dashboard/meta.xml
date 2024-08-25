@@ -13,4 +13,5 @@
     <file src='data/info.js'/>
     <file src='data/achievements.js'/>
     <file src='data/controller.js'/>
+    <file src='data/discord.js'/>
 </meta>

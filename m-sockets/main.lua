@@ -1,5 +1,6 @@
 if sockOpen == nil then
     exports['m-logs']:sendLog('general', 'error', 'Nie znaleziono modułu socketów')
+    outputDebugString('Nie znaleziono modułu socketów')
     return
 end
 

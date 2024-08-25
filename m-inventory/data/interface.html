@@ -776,14 +776,12 @@
 
     window.inventory_showIntro = () => {
         if (intro_isIntroKnown('inventory') || intro_isVisible()) return;
-        console.log('show intro');  
 
         intro_startIntro('inventory', [
             {
                 title: 'Ekwipunek',
                 content: 'Tutaj znajdziesz wszystkie swoje przedmioty',
                 element: document.querySelector('#inventory #inventory-wrapper'),
-                waitForAnimationFinish: true,
             },
             // categories
             {
@@ -805,11 +803,10 @@
                 title: 'Crafting',
                 content: 'W kategorii crafting możesz tworzyć przedmioty z innych',
                 element: document.querySelector('#inventory #inventory-crafting'),
-                waitForAnimationFinish: true,
                 onShow: async () => {
                     if (!inventory_isCraftingOpen()) {
                         inventory_goToCategory('craft');
-                        await new Promise(resolve => setTimeout(resolve, 300));
+                        await new Promise(resolve => setTimeout(resolve, 100));
                     }
                 },
             },
@@ -824,7 +821,6 @@
                 title: 'Sklepy',
                 content: 'Znajdujesz się w sklepie, tutaj możesz kupować przedmioty których potrzebujesz',
                 element: document.querySelector('#inventory #inventory-shops'),
-                waitForAnimationFinish: true,
             },
             // categories
             {

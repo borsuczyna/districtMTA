@@ -2,7 +2,19 @@ local sx, sy = guiGetScreenSize()
 local font = exports['m-ui']:getFont('Inter-Medium', 12)
 local noclipEnabled = false
 
-function renderNoclip()    
+local function max(...)
+    local max = 0
+    local args = {...}
+    for i = 1, #args do
+        if tonumber(args[i]) and tonumber(args[i]) > max then
+            max = tonumber(args[i])
+        end
+    end
+
+    return max
+end
+
+local function renderNoclip()    
     local element = localPlayer
     local vehicle = getPedOccupiedVehicle(element)
     if vehicle then
@@ -32,25 +44,25 @@ function renderNoclip()
             speed = 0.1
         end
 
-        local forwards = getAnalogControlState('forwards')
+        local forwards = max(getAnalogControlState('forwards'), getAnalogControlState('accelerate'), (getKeyState('w') and 1))
         if forwards > 0.1 then
             nx = nx + math.cos(rot) * speed * forwards
             ny = ny + math.sin(rot) * speed * forwards
         end
 
-        local backwards = getAnalogControlState('backwards')
+        local backwards = max(getAnalogControlState('backwards'), getAnalogControlState('brake_reverse'), (getKeyState('s') and 1))
         if backwards > 0.1 then
             nx = nx - math.cos(rot) * speed * backwards
             ny = ny - math.sin(rot) * speed * backwards
         end
 
-        local left = getAnalogControlState('left')
+        local left = max(getAnalogControlState('left'), getAnalogControlState('vehicle_left'), (getKeyState('a') and 1))
         if left > 0.1 then
             nx = nx + math.cos(rot + math.rad(90)) * speed * left
             ny = ny + math.sin(rot + math.rad(90)) * speed * left
         end
 
-        local right = getAnalogControlState('right')
+        local right = max(getAnalogControlState('right'), getAnalogControlState('vehicle_right'), (getKeyState('d') and 1))
         if right > 0.1 then
             nx = nx + math.cos(rot - math.rad(90)) * speed * right
             ny = ny + math.sin(rot - math.rad(90)) * speed * right

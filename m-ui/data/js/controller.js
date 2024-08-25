@@ -206,15 +206,15 @@ addEvent('ui', 'onControllerAxisHoldDrop', (axisId, axis, time, isArrow) => {
         if (!valid) return { element, valid, distance: 0 };
 
         // check if ANY parent width or height is 0
-        let parent = element;
-        while (parent) {
-            let parentRect = parent.getBoundingClientRect();
-            if (parentRect.width <= 0 || parentRect.height <= 0) {
-                valid = false;
-                return { element, valid, distance: 0 };
-            }
-            parent = parent.parentElement;
-        }
+        // let parent = element;
+        // while (parent) {
+        //     let parentRect = parent.getBoundingClientRect();
+        //     if (parentRect.width <= 0 || parentRect.height <= 0) {
+        //         valid = false;
+        //         return { element, valid, distance: 0 };
+        //     }
+        //     parent = parent.parentElement;
+        // }
 
         let xDistance = Math.min(Math.abs(rect.left - cursorPosition.x), Math.abs(rect.right - cursorPosition.x));
         let yDistance = Math.min(Math.abs(rect.top - cursorPosition.y), Math.abs(rect.bottom - cursorPosition.y));
