@@ -189,6 +189,7 @@
 
 <script>
     let currentBlips = [];
+    let currentAreas = [];
     let firstRender = true;
     let activeBlip = false;
     let startTick = Date.now();
@@ -376,6 +377,36 @@
         }
     }
 
+    f11_updateArea = (area) => {
+        let mapElement = document.querySelector('#f11 #map');
+        let updated = updateAreaById(mapElement, area.id, {
+            color: area.color,
+            x: area.x,
+            y: area.y,
+            width: area.width,
+            height: area.height,
+            border: area.border,
+            borderWidth: area.borderWidth,
+            roundness: area.roundness,
+        });
+
+        if (!updated) {
+            createMapArea({
+                element: mapElement,
+                x: area.x,
+                y: area.y,
+                width: area.width,
+                height: area.height,
+                class: 'mapArea',
+                priority: 0,
+                color: area.color,
+                border: area.border,
+                borderWidth: area.borderWidth,
+                roundness: area.roundness
+            });
+        }
+    }
+
     f11_renderBlips = () => {
         // destroyAllMapBlips(document.querySelector('#f11 #map'));
         renderLegend();
@@ -383,6 +414,14 @@
         for (let i = 0; i < currentBlips.length; i++) {
             let blip = currentBlips[i];
             f11_updateBlip(blip, i);
+        }
+    }
+
+    f11_renderAreas = () => {
+        // destroyAllMapAreas(document.querySelector('#f11 #map'));
+
+        for (let area of currentAreas) {
+            f11_updateArea(area);
         }
     }
 
@@ -426,6 +465,20 @@
         texture: 'map-dark.png?v1.01',
     });
 
+    // createMapArea({
+    //     element: document.querySelector('#f11 #map'),
+    //     x: 0,
+    //     y: 0,
+    //     width: 1400,
+    //     height: 1400,
+    //     class: 'mapArea',
+    //     priority: 0,
+    //     color: [255, 0, 0, 0.3],
+    //     border: [255, 0, 0, 0.3],
+    //     borderWidth: '0.1875rem',
+    //     roundness: 20
+    // });
+
     addEvent('f11', 'interface:data:updateBlips', async (blips) => {
         blips = blips[0];
 
@@ -455,6 +508,43 @@
             }
 
             destroyBlipById(mapElement, blip);
+        }
+    });
+
+    addEvent('f11', 'interface:data:updateAreas', async (areas) => {
+        areas = areas[0];
+
+        for (let area of areas) {
+            let areaData = currentAreas.find(a => a.id === area.id);
+            if (areaData) {
+                areaData.x = area.x;
+                areaData.y = area.y;
+                areaData.width = area.width;
+                areaData.height = area.height;
+                areaData.color = area.color;
+                areaData.border = area.border;
+                areaData.borderWidth = area.borderWidth;
+                areaData.roundness = area.roundness;
+            } else {
+                currentAreas.push(area);
+            }
+        }
+
+        f11_renderAreas();
+    });
+
+    addEvent('f11', 'interface:data:deleteAreas', async (areas) => {
+        areas = areas[0];
+        let mapElement = document.querySelector('#f11 #map');
+
+        for (let area of areas) {
+            let areaData = currentAreas.find(a => a.id === area);
+            if (areaData) {
+                let index = currentAreas.indexOf(areaData);
+                currentAreas.splice(index, 1);
+            }
+
+            destroyAreaById(mapElement, area);
         }
     });
 

@@ -1,5 +1,6 @@
 local f11Loaded, f11Visible, f11Timer = false, false, false
 local lastBlips = {}
+local lastAreas = {}
 
 function table.find(t, callback)
     for k,v in pairs(t) do
@@ -26,6 +27,7 @@ function getBlipHoverText(blip)
 end
 
 function updateF11Data()
+    -- blips
     local data = {}
     local deleteBlips = {}
     local blips = getElementsByType('blip')
@@ -78,6 +80,70 @@ function updateF11Data()
 
     for i, blipId in ipairs(deleteBlips) do
         lastBlips[blipId] = nil
+    end
+
+    -- areas
+    local areasData = {}
+    local deleteAreas = {}
+    local areas = getElementsByType('radararea')
+    local myInterior = getElementInterior(localPlayer)
+    local thisInteriorAreas = {}
+
+    for i, area in ipairs(areas) do
+        local interior = getElementInterior(area)
+        if interior == myInterior then
+            table.insert(thisInteriorAreas, area)
+        end
+    end
+
+    for i, area in ipairs(thisInteriorAreas) do
+        local areaId = tostring(area)
+        local x, y = getElementPosition(area)
+        local width, height = getRadarAreaSize(area)
+        local lastSendData = lastAreas[areaId]
+        local color = { getRadarAreaColor(area) }
+        color[4] = color[4] / 255
+
+        if not lastSendData or lastSendData.x ~= x or lastSendData.y ~= y or lastSendData.width ~= width or lastSendData.height ~= height or toJSON(lastSendData.color) ~= toJSON(color) then
+            table.insert(areasData, {
+                x = x,
+                y = y,
+                width = width,
+                height = height,
+                color = color,
+                id = areaId,
+            })
+
+            lastAreas[areaId] = {
+                x = x,
+                y = y,
+                width = width,
+                height = height,
+                color = color,
+            }
+        end
+    end
+
+    for areaId in pairs(lastAreas) do
+        local found = table.find(areas, function(v)
+            local id = tostring(v)
+            return id == areaId
+        end)
+
+        if not found then
+            table.insert(deleteAreas, areaId)
+        end
+    end
+
+    for i, areaId in ipairs(deleteAreas) do
+        lastAreas[areaId] = nil
+    end
+
+    if #areasData > 0 then
+        exports['m-ui']:setInterfaceData('f11', 'updateAreas', areasData)
+    end
+    if #deleteAreas > 0 then
+        exports['m-ui']:setInterfaceData('f11', 'deleteAreas', deleteAreas)
     end
 
     if #data > 0 then

@@ -28,6 +28,10 @@
     .__maps-map-blip-right {
         transform: translate(0, -50%);
     }
+
+    .__maps-map-area {
+        position: absolute;
+    }
 </style>
 
 <script>
@@ -83,6 +87,19 @@
             blip.element.style.width = `${blip.size * map.zoom}px`;
             blip.element.style.height = `${blip.size * map.zoom}px`;
             blip.element.style.transform = `translate(-50%, -50%) rotate(${-blip.rotation}deg)`;
+        });
+
+        // update areas
+        map.areas.forEach(area => {
+            let areaX = mapCenterX + area.x / 6000 * mapSize;
+            let areaY = mapCenterY - area.y / 6000 * mapSize;
+            let areaWidth = area.width / 6000 * mapSize;
+            let areaHeight = area.height / 6000 * mapSize;
+
+            area.element.style.left = `${areaX}px`;
+            area.element.style.top = `${areaY}px`;
+            area.element.style.width = `${areaWidth}px`;
+            area.element.style.height = `${areaHeight}px`;
         });
 
         // update smooth movement
@@ -179,17 +196,24 @@
             bounds: data.bounds ?? { x: 0, y: 0 },
             holding: false,
             blips: [],
+            areas: [],
         };
 
         maps.push(map);
 
-        // requestAnimationFrame(updateMap.bind(null, map));
         requestMapUpdate(map);
 
         data.blips?.forEach(blipData => {
             createMapBlip({
                 element: element,
                 ...blipData,
+            });
+        });
+
+        data.areas?.forEach(areaData => {
+            createMapArea({
+                element: element,
+                ...areaData,
             });
         });
     }
@@ -280,6 +304,86 @@
 
         blip.element.remove();
         map.blips.splice(map.blips.indexOf(blip), 1);
+    }
+
+    window.createMapArea = (data) => {
+        let element = data.element;
+
+        let color = data.color ? data.color.r ? [data.color.r, data.color.g, data.color.b, data.color.a ?? 0.4] : [data.color[0], data.color[1], data.color[2], data.color[3] ?? 0.4] : [255, 255, 255, 0.4];
+        let border = data.border ? data.border.r ? [data.border.r, data.border.g, data.border.b, data.border.a ?? 1] : [data.border[0], data.border[1], data.border[2], data.border[3] ?? 1] : [0, 0, 0, 1];
+
+        let area = document.createElement('div');
+        area.style.position = 'absolute';
+        area.classList.add('__maps-map-area');
+        area.style.backgroundColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
+        if (data.border) area.style.border = `${data.borderWidth ? (typeof data.border === 'number' ? `${data.border}px` : data.border) : '1px'} solid rgba(${border[0]}, ${border[1]}, ${border[2]}, ${border[3]})`;
+        if (data.roundness) area.style.borderRadius = typeof data.roundness === 'number' ? `${data.roundness}px` : data.roundness;
+        if (data.class) area.className = data.class;
+        if (data.hoverTooltip) area.dataset.tooltip = data.hoverTooltip;
+        if (data.specialKey) area.dataset.specialKey = data.specialKey;
+        if (data.id) area.dataset.id = data.id;
+        element.appendChild(area);
+
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let areaData = {
+            element: area,
+            x: data.x,
+            y: data.y,
+            width: data.width,
+            height: data.height,
+        };
+
+        if (data.onclick) {
+            area.addEventListener('click', data.onclick.bind(null, areaData));
+            map.holding = false;
+        }
+
+        map.areas.push(areaData);
+
+        // requestAnimationFrame(updateMap.bind(null, map));
+        requestMapUpdate(map);
+    }
+
+    window.destroyAllMapAreas = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.areas.forEach(area => {
+            area.element.remove();
+        });
+
+        map.areas = [];
+    }
+
+    window.destroyAreaById = (element, id) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let area = map.areas.find(area => area.id === id);
+        if (!area) return;
+
+        area.element.remove();
+        map.areas.splice(map.areas.indexOf(area), 1);
+    }
+
+    window.updateAreaById = (element, id, data) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return false;
+
+        let area = map.areas.find(area => area.id === id);
+        if (!area) return false;
+
+        if (data.x !== undefined) area.x = data.x;
+        if (data.y !== undefined) area.y = data.y;
+        if (data.width !== undefined) area.width = data.width;
+        if (data.height !== undefined) area.height = data.height;
+        if (data.hoverTooltip !== undefined) area.element.dataset.tooltip = data.hoverTooltip;
+        if (data.class !== undefined) area.element.className = data.class;
+
+        requestMapUpdate(map);
+        return true;
     }
 
     window.destroyMap = (element) => {

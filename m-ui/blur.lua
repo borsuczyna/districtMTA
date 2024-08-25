@@ -3,6 +3,14 @@ local zoomOriginal = sx < 2048 and math.min(2.2, 2048/sx) or 1
 local blurQuality = 0.4
 local lastBlurQuality = 0
 local blurShaderH, blurShaderV, screenSource, maskRenderTarget, shaderRenderTarget, maskTexture;
+local radarVisible = false
+
+addEvent('interface:visibilityChange', true)
+addEventHandler('interface:visibilityChange', root, function(name, visible)
+	if name == 'hud' then
+		radarVisible = visible
+	end
+end)
 
 local function renderblurShaderH()
     if not blurShaderH then return end
@@ -16,13 +24,18 @@ local function renderblurShaderH()
     
     dxSetRenderTarget(maskRenderTarget, true)
     dxDrawImage(0, 0, sx, sy, maskTexture, 0, 0, 0, 0xFF000000)
+    
+    local interior = getElementInterior(localPlayer)
+    local dimension = getElementDimension(localPlayer)
 
-    local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
-    if interfaceSize and tonumber(interfaceSize) then
-        local zoom = zoomOriginal * ( 25 / interfaceSize )
-        local radarSize = 470/zoom
-        local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSize - 45/zoom, radarSize, radarSize
-        dxDrawCircle(radarX + radarW/2, radarY + radarH/2, radarW/2, 0, 360, 0xFF000000)
+    if getElementData(localPlayer, 'player:spawn') and radarVisible and interior == 0 and dimension == 0 then
+        local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
+        if interfaceSize and tonumber(interfaceSize) then
+            local zoom = zoomOriginal * ( 25 / interfaceSize )
+            local radarSize = 470/zoom
+            local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSize - 45/zoom, radarSize, radarSize
+            dxDrawCircle(radarX + radarW/2, radarY + radarH/2, radarW/2, 0, 360, 0xFF000000)
+        end
     end
     dxSetRenderTarget()
 
