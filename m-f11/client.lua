@@ -101,17 +101,28 @@ function updateF11Data()
         local x, y = getElementPosition(area)
         local width, height = getRadarAreaSize(area)
         local lastSendData = lastAreas[areaId]
+        local hoverTooltip = getElementData(area, 'area:hoverText')
+        local className = getElementData(area, 'area:className')
         local color = { getRadarAreaColor(area) }
         color[4] = color[4] / 255
 
-        if not lastSendData or lastSendData.x ~= x or lastSendData.y ~= y or lastSendData.width ~= width or lastSendData.height ~= height or toJSON(lastSendData.color) ~= toJSON(color) then
+        if not lastSendData or lastSendData.x ~= x or
+            lastSendData.y ~= y or
+            lastSendData.width ~= width or
+            lastSendData.height ~= height or
+            toJSON(lastSendData.color) ~= toJSON(color) or
+            lastSendData.hoverTooltip ~= hoverTooltip or
+            lastSendData.className ~= className
+        then
             table.insert(areasData, {
                 x = x,
-                y = y,
+                y = y+height,
                 width = width,
                 height = height,
                 color = color,
                 id = areaId,
+                hoverTooltip = hoverTooltip,
+                className = className,
             })
 
             lastAreas[areaId] = {
@@ -120,6 +131,8 @@ function updateF11Data()
                 width = width,
                 height = height,
                 color = color,
+                hoverTooltip = hoverTooltip,
+                className = className,
             }
         end
     end
@@ -175,6 +188,7 @@ addEventHandler('interface:load', root, function(name)
         exports['m-ui']:setInterfaceData('f11', 'position', { x = x, y = y })
         f11Loaded = true
         lastBlips = {}
+        lastAreas = {}
         updateF11Data()
         f11Timer = setTimer(updateF11Data, 10, 0)
     end

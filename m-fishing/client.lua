@@ -11,6 +11,7 @@ addEventHandler('fishing:catchFish', resourceRoot, function(icon)
     setFishingUIVisible(true, icon)
 end)
 
+setPlayerHudComponentVisible('radar', true)
 bindKey('mouse1', 'down', function()
     if isCursorShowing() then return end
     

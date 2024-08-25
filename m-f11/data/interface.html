@@ -133,6 +133,12 @@
     #f11:not(.showHouses) .blip.house {
         display: none;
     }
+
+    #f11 .fishing-area {
+        border-radius: 100%;
+        background: rgba(50, 100, 255, 0.4) !important;
+        border: 0.125rem solid rgba(50, 100, 255, 0.2);
+    }
 </style>
 
 <div id="legend" class="nice-scroll">
@@ -372,7 +378,7 @@
                 specialKey: `${blip.icon}-${i}`,
                 id: blip.id,
                 priority: blipPriority[blip.icon] || 5,
-                hoverTooltip: blip.hoverTooltip || false
+                hoverTooltip: blip.hoverTooltip || false,
             });
         }
     }
@@ -385,9 +391,11 @@
             y: area.y,
             width: area.width,
             height: area.height,
+            class: area.className,
             border: area.border,
             borderWidth: area.borderWidth,
             roundness: area.roundness,
+            hoverTooltip: area.hoverTooltip || false
         });
 
         if (!updated) {
@@ -397,12 +405,13 @@
                 y: area.y,
                 width: area.width,
                 height: area.height,
-                class: 'mapArea',
+                class: area.className,
                 priority: 0,
                 color: area.color,
                 border: area.border,
                 borderWidth: area.borderWidth,
-                roundness: area.roundness
+                roundness: area.roundness,
+                hoverTooltip: area.hoverTooltip || false
             });
         }
     }

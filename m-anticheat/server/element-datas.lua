@@ -19,7 +19,7 @@ local lockedElementDatas = {
     'vehicle:lastDriver', 
 
     'element:model', 'element:ghostmode',
-    'blip:hoverText', 'redirected',
+    'blip:hoverText', 'redirected', 'area:hoverText', 'area:className',
 }
 
 local selfElementDatas = {

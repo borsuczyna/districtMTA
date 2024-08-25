@@ -448,7 +448,7 @@
     }
 
     addEvent('maps', 'mousedown', (event) => {
-        let map = maps.find(map => map.element === event.target.parentElement);
+        let map = maps.find(map => map.element === event.target.parentElement || map.element === event.target);
         if (!map) return;
 
         map.holding = true;
@@ -491,7 +491,7 @@
     });
 
     addEvent('maps', 'wheel', (event) => {
-        let map = maps.find(map => map.element === event.target.parentElement);
+        let map = maps.find(map => map.element === event.target.parentElement || map.element === event.target);
         if (!map) return;
 
         let delta = -event.deltaY / 100;

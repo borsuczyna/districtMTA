@@ -37,7 +37,7 @@ local rarityFishes = {
     }
 }
 
-local function getRandomFish(rarity)
+local function getRandomFish(rarity, classMore)
     local possibleFishes = {'wire'}
 
     local insertFishes = function(fishes)
@@ -46,9 +46,17 @@ local function getRandomFish(rarity)
         end
     end
 
+    local breakOnNext = false
     for i, fishData in ipairs(rarityFishes) do
         insertFishes(fishData.items)
-        if fishData.rarity == rarity then break end
+        if breakOnNext then break end
+        if fishData.rarity == rarity then
+            if classMore then
+                breakOnNext = true
+            else
+                break
+            end
+        end
     end
 
     return possibleFishes[math.random(1, #possibleFishes)]
@@ -61,7 +69,7 @@ function fishingRodHit(player)
 end
 
 local function getFish(player, rarity)
-    local fish = getRandomFish(rarity)
+    local fish = getRandomFish(rarity, isPlayerInFishingArea(player))
     if not fish then return end
 
     local icon = exports['m-inventory']:getItemIcon(fish)
