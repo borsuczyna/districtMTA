@@ -115,6 +115,34 @@ houseInteriors = {
             {name = 'Sufit kuchni', texture = 'INT_1_SUFIT_KUCHNIA', type = 'floor'},
         }
     },
+    [6] = {
+        description = 'Duże mieszkanie z basenem i dużą sypialnią z widokiem na miasto oraz łazienką.',
+        bedrooms = 1,
+        maxTenants = 4,
+
+        model = 'int-6',
+        enter = {-6.93, -1.42, -0.66, -90},
+
+        defaultFurniture = {},
+
+        textureNames = {
+            {name = 'Ściany dużego pokoju', texture = 'INT_1_SCIANA_POKOJ_DUZY', type = 'wall'},
+            {name = 'Podłoga w dużym pokoju', texture = 'INT_1_PODLOGA_DUZY_POKOJ', type = 'floor'},
+            {name = 'Sufit dużego pokoju', texture = 'INT_1_SUFIT_DUZY_POKOJ', type = 'floor'},
+            {name = 'Ściany małego pokoju', texture = 'INT_1_SCIANA_POKOJ_MALY', type = 'wall'},
+            {name = 'Sufit małego pokoju', texture = 'INT_1_SUFIT_MALY_POKOJ', type = 'floor'},
+            {name = 'Podłoga w małym pokoju', texture = 'INT_1_PODLOGA_MALY_POKOJ', type = 'floor'},
+            {name = 'Ściany łazienki', texture = 'INT_1_SCIANA_LAZIENKA', type = 'wall'},
+            {name = 'Podłoga w łazience', texture = 'INT_1_PODLOGA_LAZIENKA', type = 'floor'},
+            {name = 'Sufit łazienki', texture = 'INT_1_SUFIT_LAZIENKA', type = 'floor'},
+            {name = 'Ściany przedpokoju', texture = 'INT_1_SCIANA_PRZEDPOKOJ', type = 'wall'},
+            {name = 'Podłoga w przedpokoju', texture = 'INT_1_PODLOGA_PRZEDPOKOJ', type = 'floor'},
+            {name = 'Sufit przedpokoju', texture = 'INT_1_SUFIT_PRZEDPOKOJ', type = 'floor'},
+            {name = 'Ściany kuchni', texture = 'INT_1_SCIANA_KUCHNIA', type = 'wall'},
+            {name = 'Podłoga w kuchni', texture = 'INT_1_PODLOGA_KUCHNIA', type = 'floor'},
+            {name = 'Sufit kuchni', texture = 'INT_1_SUFIT_KUCHNIA', type = 'floor'},
+        }
+    },
 }
 
 interiorTextures = {

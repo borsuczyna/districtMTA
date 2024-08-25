@@ -199,6 +199,9 @@ function removeAllHouseFurniture(houseId)
 
     for owner, items in pairs(itemsToGive) do
         exports['m-inventory']:addPlayerItemsOffline(owner, items)
+        
+        local items = '`' .. table.concat(items, '`, `') .. '`'
+        exports['m-logs']:sendLog('houses', 'info', ('Meble z domu %d zostały zwrócone do gracza %d: %s'):format(houseId, owner, items))
     end
 
     local query = dbQuery(connection, 'DELETE FROM `m-furniture` WHERE `houseId` = ?', houseId)

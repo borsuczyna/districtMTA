@@ -39,9 +39,16 @@ function updateHouseRent(id)
     
     if not isRented then
         if wasRented and data.owner then
+            exports['m-logs']:sendLog('houses', 'info', ('Dom %s wygasł (uid: %d) - właściciel: %s'):format(data.streetName, id, data.ownerName))
             removePlayersFromHouse(id)
             removeAllHouseFurniture(id)
             removeAllHouseTextures(id)
+
+            local connection = exports['m-mysql']:getConnection()
+            if not connection then return end
+
+            local query = 'UPDATE `m-houses` SET `owner` = NULL, `sharedPlayers` = NULL WHERE `uid` = ' .. id
+            dbExec(connection, query)
             
             local player = exports['m-core']:getPlayerByUid(data.owner)
             if player then
