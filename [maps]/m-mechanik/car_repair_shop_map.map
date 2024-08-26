@@ -1,0 +1,4 @@
+<map edf:definitions="editor_main">
+    <removeWorldObject id="removeWorldObject (BillBd2) (1)" radius="16.84787" interior="-1" model="1267" lodModel="1261" posX="2062.0313" posY="-1826.6406" posZ="19.99219" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
+    <removeWorldObject id="removeWorldObject (laespraydoor1) (1)" radius="4.9156308" interior="-1" model="5422" lodModel="0" posX="2071.4766" posY="-1831.4219" posZ="14.5625" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
+</map>

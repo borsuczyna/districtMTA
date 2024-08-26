@@ -94,57 +94,61 @@
     </div>
 </div>
 
-<div class="nice-table-wrapper striped" style="width: auto;">
-    <table id="mechanic-table">
-        <thead>
-            <tr>
-                <th>Element</th>
-                <th>Cena</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+<div id="mechanic-loading" class="pt-3 pb-4 d-flex justify-center align-items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+    Wczytywanie...
 </div>
 
-<div class="nice-table-wrapper striped" style="width: auto;">
-    <table id="mechanic-selected-table">
-        <thead>
-            <tr>
-                <th>Element</th>
-                <th>Cena</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+<div id="mechanic-data" class="d-none">
+    <div class="nice-table-wrapper striped" style="width: auto;">
+        <table id="mechanic-table">
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Cena</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="d-flex justify-between mt-1 mb-1">
+        <div>Podsumowanie:</div>
+        <div id="total">0$ / 0 sek.</div>
+    </div>
 
-<div class="d-flex justify-between">
-    <div>Podsumowanie:</div>
-    <div>732$ / 32 sek.</div>
+    <div class="d-flex justify-center gap-2">
+        <div class="flat-button flat-button-small" id="repair-button" onclick="mechanic_repairVehicle(this)">Napraw</div>
+        <div class="flat-button flat-button-small" onclick="mta.triggerEvent('mechanic:hide')">Anuluj</div>
+    </div>
 </div>
 
 <script>
     let waiting = false;
+    let selectedParts = [];
+    let currentParts = [];
+    let mechanicTableElement;
 
     function formatNumber(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     function loadParts(data) {
-        let clothesTable = document.querySelector('#mechanic #mechanic-table');
+        let mechanicTable = document.querySelector('#mechanic #mechanic-table');
+        currentParts = data;
 
-        new DataTable(clothesTable, {
+        let currentPage = mechanicTableElement ? mechanicTableElement.page.info().page : 0;
+
+        mechanicTableElement = new DataTable(mechanicTable, {
             ...defaultTableData,
             destroy: true,
             data: data,
             columns: [
-                { data: 'model' },
-                { data: 'price' },
-                { data: 'model', render: (data) => `<div class="d-flex justify-end"><div style="width: 4rem;" class="flat-button flat-button-small">Napraw</div></div>` }
+                { data: 'name' },
+                { data: 'price', render: (data) => `$${formatNumber(data)}` },
+                { data: 'name', render: (data, type, row, meta) => `<div class="d-flex justify-end"><div style="width: 4rem;" class="flat-button flat-button-small" onclick="mechanic_toggleRepair('${data}')">${selectedParts.includes(data) ? 'Usuń' : 'Napraw'}</div></div>` }
             ],
             order: [[0, 'asc']],
             columnDefs: [
@@ -153,49 +157,51 @@
             ],
             pageLength: 7
         });
+
+        document.querySelector('#mechanic #mechanic-loading').classList.add('d-none');
+        document.querySelector('#mechanic #mechanic-data').classList.remove('d-none');
+        updateTotal();
+        
+        mechanicTableElement.page(currentPage).draw('page');
     }
 
-    function setSelectedParts(data) {
-        let clothesTable = document.querySelector('#mechanic #mechanic-selected-table');
-
-        new DataTable(clothesTable, {
-            ...defaultTableData,
-            destroy: true,
-            data: data,
-            columns: [
-                { data: 'model' },
-                { data: 'price', render: (data) => `${formatNumber(data)}$` },
-                { data: 'model', render: (data) => `<div class="d-flex justify-end"><div style="width: 4rem;" class="flat-button flat-button-small">Usuń</div></div>` }
-            ],
-            order: [[0, 'asc']],
-            columnDefs: [
-                { targets: [0], className: 'text-start' },
-                { targets: [2], orderable: false, className: 'text-end' }
-            ],
-            pageLength: 7
-        });
+    window.mechanic_toggleRepair = function(part) {
+        selectedParts = selectedParts.includes(part) ? selectedParts.filter(p => p !== part) : [...selectedParts, part];
+        loadParts(currentParts);
     }
 
-    addEvent('mechanic', 'interface:data:clothes', (data) => {
+    window.mechanic_repairVehicle = function(button) {
+        if (waiting) return;
+        if (selectedParts.length === 0) {
+            notis_addNotification('warning', 'Stanowisko naprawcze', 'Nie wybrano żadnych części do naprawy.');
+            return;
+        }
+
+        waiting = true;
+
+        makeButtonSpinner(button);
+        mta.triggerEvent('mechanic:repair', selectedParts.join(','));
+    }
+
+    function updateTotal() {
+        let totalPrice = selectedParts.reduce((acc, part) => acc + currentParts.find(p => p.name === part).price, 0);
+        let totalTime = selectedParts.reduce((acc, part) => acc + currentParts.find(p => p.name === part).time, 0);
+
+        document.querySelector('#mechanic #total').innerText = `$${formatNumber(totalPrice)} / ${totalTime} sek.`;
+    }
+
+    addEvent('mechanic', 'interface:data:repairs', (data) => {
         loadParts(data[0]);
     });
 
+    addEvent('mechanic', 'response', async (success) => {
+        let button = document.querySelector('#mechanic #repair-button');
+        makeButtonSpinner(button, false);
+    });
+    
     addEvent('mechanic', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#mechanic').style.opacity = appear ? '1' : '0';
         document.querySelector('#mechanic').style.transform = appear ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(0.8)';
     });
-
-    // debug
-    loadParts([
-        { model: 'model1', price: 40 },
-        { model: 'model2', price: 40 },
-        { model: 'model3', price: 40 },
-        { model: 'model4', price: 40 },
-        { model: 'model5', price: 40 },
-        { model: 'model6', price: 40 },
-        { model: 'model7', price: 40 },
-        { model: 'model8', price: 40 },
-        { model: 'model9', price: 40 },
-    ]);
 </script>

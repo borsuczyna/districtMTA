@@ -1,6 +1,7 @@
 local elementTypes = {'player', 'vehicle', 'ped'}
 local ghostColShapes = {
-    -- createColSphere(1443.021, 389.348, 18.742, 5),
+    -- vehicle shops exit
+    createColSphere(1139.445, -2036.923, 68.738, 10)
 }
 
 function table.find(t, value)

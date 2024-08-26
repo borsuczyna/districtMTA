@@ -138,7 +138,7 @@ function renderMarkers()
                     setElementRotation(v.object, 0, 0, rz+0.5)
                 end
 
-                dxDrawMaterialLine3D(x, y, z + 1.45 + floatZ, x, y, z + 0.8 + floatZ, v.rt, 0.9, tocolor(255, 255, 255))
+                dxDrawMaterialLine3D(x, y, z + 1.45 + floatZ, x, y, z + 0.8 + floatZ, v.rt, 0.9, tocolor(255, 255, 255), 'prefx')
                 
                 if math.abs(groundZ-z) < 2 then
                     local squareSize = getElementData(k, 'marker:square')
@@ -148,11 +148,11 @@ function renderMarkers()
                     end
 
                     local r, g, b = v.r, v.g, v.b
-                    dxDrawMaterialLine3D(x+0.8*squareSize[1], y, groundZ, x-0.8*squareSize[1], y, groundZ, markerGroundTexture, 1.6*squareSize[2], tocolor(r, g, b), x, y, groundZ + 0.5)
+                    dxDrawMaterialLine3D(x+0.8*squareSize[1], y, groundZ, x-0.8*squareSize[1], y, groundZ, markerGroundTexture, 1.6*squareSize[2], tocolor(r, g, b), 'prefx', x, y, groundZ + 0.5)
                     
                     groundZ = groundZ + 0.01
                     local r, g, b = v.r2, v.g2, v.b2
-                    dxDrawMaterialLine3D(x+0.5*squareSize[1], y, groundZ, x-0.5*squareSize[1], y, groundZ, markerGroundTexture, squareSize[2], tocolor(r, g, b, a), x, y, groundZ + 0.5)
+                    dxDrawMaterialLine3D(x+0.5*squareSize[1], y, groundZ, x-0.5*squareSize[1], y, groundZ, markerGroundTexture, squareSize[2], tocolor(r, g, b, a), 'prefx', x, y, groundZ + 0.5)
                 end
             end
         end

@@ -153,7 +153,8 @@ addEventHandler('fishing:start', resourceRoot, function()
 
     exports['m-inventory']:removePlayerItem(client, 'bait', 1)
     fishingRodHit(client)
-    setTimer(getFish, math.random(3000, 24000), 1, client, rarity)
+    local time = math.random(3000, 24000) * (isPlayerInFishingArea(client) and 0.7 or 1)
+    setTimer(getFish, time, 1, client, rarity)
 end)
 
 addEventHandler('onResourceStart', resourceRoot, function()

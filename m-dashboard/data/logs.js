@@ -14,6 +14,7 @@ let MONEY_LOG = {
     transfer: 'Przelew',
     license: 'Prawo jazdy',
     house: 'Mieszkanie',
+    repair: 'Naprawa pojazdu',
 }
 
 window.dashboard_renderLogs = (element, data, moneyHistory = false) => {

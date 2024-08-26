@@ -64,6 +64,16 @@
     <file src="data/decoded/fishing-rod-x.dff"/>
     <file src="data/decoded/fishing-rod-d.dff"/>
     <file src="data/decoded/fishing-rod.txd"/>
+    <file src="data/decoded/5521_banner_removed.col"/>
+    <file src="data/decoded/5521_banner_removed.dff"/>
+    <file src="data/decoded/car_repair_shop.col"/>
+    <file src="data/decoded/car_repair_shop.dff"/>
+    <file src="data/decoded/car_repair_shop.txd"/>
+    <file src="data/decoded/car_repair_shop_lod.dff"/>
+    <file src="data/decoded/car_repair_shop_lod.txd"/>
+    <file src="data/decoded/ufo.col"/>
+    <file src="data/decoded/ufo.dff"/>
+    <file src="data/decoded/ufo.txd"/>
 
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>

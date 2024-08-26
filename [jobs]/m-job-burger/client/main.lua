@@ -40,11 +40,10 @@ function fetchServerTick()
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    getServerTick()
+    fetchServerTick()
 end)
 
 addEventHandler('jobs:burger:serverTickResponse', resourceRoot, function(tick)
-    print('Server tick: '..tick)
     serverTick.clientStart = getTickCount()
     serverTick.serverStart = tick
 end)

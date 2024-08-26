@@ -357,6 +357,26 @@ models = {
         type = 'object',
         model = 14858,
     },
+    ['car_repair_shop'] = {
+        custom = false,
+        type = 'object',
+        model = 5532,
+    },
+    ['car_repair_shop_lod'] = {
+        custom = false,
+        type = 'object',
+        model = 5527,
+    },
+    ['5521_banner_removed'] = {
+        custom = false,
+        type = 'object',
+        model = 5521,
+    },
+    ['ufo'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
 }
 
 function getModelsCount()
