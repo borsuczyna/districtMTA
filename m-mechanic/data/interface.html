@@ -1,0 +1,201 @@
+<style>
+    #mechanic {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 30rem;
+        padding: 1.25rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #mechanic h2 {
+        margin: 0;
+        margin-bottom: 1.25rem;
+    }
+
+    #mechanic .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+        transform: translateY(-0.425rem);
+    }
+
+    #mechanic .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #mechanic .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #mechanic .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+
+    #mechanic .nice-table-wrapper {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    .text-start {
+        text-align: start !important;
+    }
+</style>
+
+<div class="d-flex justify-between">
+    <h2>Mechanik</h2>
+    <div class="d-flex logo justify-end">
+        <span>
+            <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+            <span class="gradient-text text-glow">MTA</span>
+        </span>
+        <img src="/m-login/data/logo.png" style="width: 3rem;"/>
+    </div>
+</div>
+
+<div class="nice-table-wrapper striped" style="width: auto;">
+    <table id="mechanic-table">
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>Cena</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div class="nice-table-wrapper striped" style="width: auto;">
+    <table id="mechanic-selected-table">
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>Cena</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-between">
+    <div>Podsumowanie:</div>
+    <div>732$ / 32 sek.</div>
+</div>
+
+<script>
+    let waiting = false;
+
+    function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function loadParts(data) {
+        let clothesTable = document.querySelector('#mechanic #mechanic-table');
+
+        new DataTable(clothesTable, {
+            ...defaultTableData,
+            destroy: true,
+            data: data,
+            columns: [
+                { data: 'model' },
+                { data: 'price' },
+                { data: 'model', render: (data) => `<div class="d-flex justify-end"><div style="width: 4rem;" class="flat-button flat-button-small">Napraw</div></div>` }
+            ],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: [0], className: 'text-start' },
+                { targets: [2], orderable: false, className: 'text-end' }
+            ],
+            pageLength: 7
+        });
+    }
+
+    function setSelectedParts(data) {
+        let clothesTable = document.querySelector('#mechanic #mechanic-selected-table');
+
+        new DataTable(clothesTable, {
+            ...defaultTableData,
+            destroy: true,
+            data: data,
+            columns: [
+                { data: 'model' },
+                { data: 'price', render: (data) => `${formatNumber(data)}$` },
+                { data: 'model', render: (data) => `<div class="d-flex justify-end"><div style="width: 4rem;" class="flat-button flat-button-small">Usuń</div></div>` }
+            ],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: [0], className: 'text-start' },
+                { targets: [2], orderable: false, className: 'text-end' }
+            ],
+            pageLength: 7
+        });
+    }
+
+    addEvent('mechanic', 'interface:data:clothes', (data) => {
+        loadParts(data[0]);
+    });
+
+    addEvent('mechanic', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#mechanic').style.opacity = appear ? '1' : '0';
+        document.querySelector('#mechanic').style.transform = appear ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(0.8)';
+    });
+
+    // debug
+    loadParts([
+        { model: 'model1', price: 40 },
+        { model: 'model2', price: 40 },
+        { model: 'model3', price: 40 },
+        { model: 'model4', price: 40 },
+        { model: 'model5', price: 40 },
+        { model: 'model6', price: 40 },
+        { model: 'model7', price: 40 },
+        { model: 'model8', price: 40 },
+        { model: 'model9', price: 40 },
+    ]);
+</script>

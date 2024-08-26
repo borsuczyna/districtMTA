@@ -126,7 +126,7 @@ body {
 }
 
 .text-end {
-    text-align: end !important;
+    text-align: right !important;
 }
 
 .bg-primary {
