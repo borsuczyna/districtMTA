@@ -34,6 +34,24 @@
     <file src="data/decoded/cablecar.col"/>
     <file src="data/decoded/cablecar.dff"/>
     <file src="data/decoded/cablecar.txd"/>
+    <file src="data/decoded/couriera.dff"/>
+    <file src="data/decoded/couriera.txd"/>
+    <file src="data/decoded/courierb.dff"/>
+    <file src="data/decoded/courierb.txd"/>
+    <file src="data/decoded/cart.col"/>
+    <file src="data/decoded/cart.dff"/>
+    <file src="data/decoded/cart.txd"/>
+    <file src="data/decoded/box.txd"/>
+    <file src="data/decoded/apples.col"/>
+    <file src="data/decoded/apples.dff"/>
+    <file src="data/decoded/bananas.col"/>
+    <file src="data/decoded/bananas.dff"/>
+    <file src="data/decoded/lemons.col"/>
+    <file src="data/decoded/lemons.dff"/>
+    <file src="data/decoded/pears.col"/>
+    <file src="data/decoded/pears.dff"/>
+    <file src="data/decoded/courierb.dff"/>
+    <file src="data/decoded/courierb.txd"/>
     <file src="data/decoded/railway-station.col"/>
     <file src="data/decoded/railway-station.dff"/>
     <file src="data/decoded/railway-station.txd"/>
@@ -74,6 +92,11 @@
     <file src="data/decoded/ufo.col"/>
     <file src="data/decoded/ufo.dff"/>
     <file src="data/decoded/ufo.txd"/>
+    <file src="data/decoded/ufo2.col"/>
+    <file src="data/decoded/ufo2.dff"/>
+    <file src="data/decoded/5131.col"/>
+    <file src="data/decoded/5131.dff"/>
+    <file src="data/decoded/3761.dff"/>
 
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>

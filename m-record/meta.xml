@@ -2,5 +2,6 @@
     <script src='shared.lua' type='client' cache='false'/>
     <script src='record.lua' type='client' cache='false'/>
     <script src='play.lua' type='client' cache='false'/>
+    <script src='camera.lua' type='client' cache='false'/>
     <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
 </meta>

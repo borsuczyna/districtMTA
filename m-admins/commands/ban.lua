@@ -17,6 +17,13 @@ addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
         return
     end
 
+    local playerRank = getElementData(player, 'player:rank')
+    local foundPlayerRank = getElementData(foundPlayer, 'player:rank')
+    if foundPlayerRank and playerRank and foundPlayerRank >= playerRank then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz zbanować gracza o wyższej lub tej samej randze')
+        return
+    end
+
     local timePattern = '(%d+)([dhms])'
     local timeValue, unit = time:match(timePattern)
     if not unit then
@@ -57,6 +64,13 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
+        return
+    end
+
+    local playerRank = getElementData(player, 'player:rank')
+    local foundPlayerRank = getElementData(foundPlayer, 'player:rank')
+    if foundPlayerRank and playerRank and foundPlayerRank >= playerRank then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz zbanować gracza o wyższej lub tej samej randze')
         return
     end
 

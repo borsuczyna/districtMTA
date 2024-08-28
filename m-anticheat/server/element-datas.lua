@@ -11,6 +11,7 @@ local lockedElementDatas = {
     'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
     'player:equippedFishingRod', 'player:bankMoney', 'player:licenses', 'marker:title', 'marker:desc', 'marker:house',
     'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
+    'player:holdingPackage',
     'controller',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
@@ -20,6 +21,9 @@ local lockedElementDatas = {
 
     'element:model', 'element:ghostmode',
     'blip:hoverText', 'redirected', 'area:hoverText', 'area:className',
+
+    'repair:colShape', 'repair:marker', 'repair:state', 'repair:data', 'repair:render', 
+    'repair:vehicle', 'repair:time', 'vehicle:repairing', 
 }
 
 local selfElementDatas = {

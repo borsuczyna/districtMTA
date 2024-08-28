@@ -1,0 +1,176 @@
+<style>
+    #stations {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translate(-50%, 0%) scale(0.9);
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #stations-wrapper {
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid #36363673;
+        border-radius: 0.625rem;
+        font-weight: bold;
+        padding: 0.85rem;
+        text-align: center;
+        color: #fff;
+    }
+
+    #stations .progress-bar {
+        position: relative;
+        width: 100%;
+        height: 2.2rem;
+        background: rgba(90, 90, 90, 0.615);
+        border-radius: 0.25rem;
+    }
+
+    #stations .progress {
+        height: 100%;
+        background: linear-gradient(90deg, #ffab48 0.01%, #fc8c5b 100%);
+        border-radius: 0.25rem;
+        transition: width 0.4s;
+        /* box-shadow: 0 0 2rem 2rem #ffaa4845; */
+    }
+
+    #stations .progress-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 0.75rem;
+        text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(0, 0, 0, 0.7);
+        z-index: 1;
+    }
+
+    #stations .fuel-type {
+        background: rgba(76, 76, 76, 0.338);
+        border: 0.125rem solid rgba(52, 52, 52, 0.45);
+        border-radius: 0.25rem;
+        padding: 0.7rem;
+        flex: 1;
+        display: flex;
+        gap: 0.1rem;
+        justify-content: center;
+        align-items: end;
+        transition: background 0.2s, border 0.2s;
+        cursor: pointer;
+    }
+
+    #stations .fuel-type .name {
+        font-size: 0.9rem;
+        color: #d7d7d7;
+    }
+
+    #stations .fuel-type .price {
+        font-size: 0.75rem;
+        color: rgb(172, 172, 172);
+    }
+
+    #stations .fuel-type.active {
+        background: rgba(76, 76, 76, 0.568);
+        border: 0.125rem solid rgba(88, 88, 88, 0.45);
+        cursor: default;
+    }
+
+    #stations #info-text {
+        color: #dcdcdc;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+</style>
+
+<div class="d-flex flex-column">
+    <h2 id="info-text">Przytrzymaj spację, aby zatankować paliwo</h2>
+    <div id="stations-wrapper">
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex gap-2" id="fuels"></div>
+        
+            <div class="progress-bar" style="width: 25rem;">
+                <div class="progress-text">35/75L</div>
+                <div class="progress" style="width: 60%;"></div>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <div class="nice-button button-sm" style="flex: 1;">Potwierdź</div>
+                <div class="flat-button flat-button-small" style="flex: 1;">Anuluj</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let fuelData = [];
+    let currentFuel = null;
+    let holdingSpace = false;
+
+    function setFuelData(data) {
+        fuelData = data;
+        
+        let fuelsElement = document.querySelector('#stations #fuels');
+        fuelsElement.innerHTML = data.fuels.map(fuel => `
+            <div class="fuel-type" onclick="stations_selectFuel('${fuel.name}')">
+                <div class="name">${fuel.name}</div>
+                <div class="price">$${fuel.price}/L</div>
+            </div>
+        `).join('');
+
+        stations_selectFuel(data.fuels[0].name);
+    }
+
+    window.stations_selectFuel = (fuelName) => {
+        let fuelsElement = document.querySelector('#stations #fuels');
+        fuelsElement.querySelectorAll('.fuel-type').forEach(fuelElement => {
+            let name = fuelElement.querySelector('.name').innerText;
+            fuelElement.classList.toggle('active', name === fuelName);
+        });
+
+        currentFuel = fuelData.fuels.find(fuel => fuel.name === fuelName);
+        stations_updateProgress();
+    }
+
+    window.stations_updateProgress = () => {
+        let progressElement = document.querySelector('#stations .progress');
+        let progressTextElement = document.querySelector('#stations .progress-text');
+
+        let progress = currentFuel.amount / currentFuel.max * 100;
+        progressElement.style.width = `${progress}%`;
+        progressTextElement.innerText = `${currentFuel.amount}/${currentFuel.max}L`;
+    }
+
+    addEvent('stations', 'keydown', (e) => {
+        console.log(e.code);
+        if (e.code === 'Space' && !holdingSpace) {
+            holdingSpace = true;
+        }
+    });
+
+    addEvent('stations', 'keyup', (e) => {
+        if (e.code === 'Space' && holdingSpace) {
+            holdingSpace = false;
+            currentFuel.amount += 1;
+        }
+    });
+
+    addEvent('stations', 'update', () => {
+        if (holdingSpace) {
+            currentFuel.amount += 1;
+            stations_updateProgress();
+        }
+    });
+
+    addEvent('stations', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#stations').style.opacity = appear ? '1' : '0';
+        document.querySelector('#stations').style.transform = appear ? 'translate(-50%, 0%) scale(1)' : 'translate(-50%, 0%) scale(0.9)';
+    });
+
+    setFuelData({
+        fuels: [
+            { name: 'Benzyna', price: 2, amount: 15, max: 75 },
+            { name: 'LPG', price: 1, amount: 35, max: 75 }
+        ]
+    });
+</script>

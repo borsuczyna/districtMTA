@@ -16,6 +16,8 @@ window.dashboard_renderDiscord = (data) => {
             <br>
             <h2 class="mb-1" style="font-weight: 400;">Kod do wpisania: <a href="#" style="font-weight: 600;" onclick="dashboard_copyDiscordCode('${data.discordCode}')">${data.discordCode}</a></h2>
         `;
+    } else {
+        // tutaj zrob
     }
 }
 

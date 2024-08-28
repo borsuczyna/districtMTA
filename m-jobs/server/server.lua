@@ -166,7 +166,7 @@ function giveUpgradePoints(player, amount)
     if not job then return end
     if not jobs[job] then return end
 
-    dbExec(connection, 'UPDATE `m-jobs-data` SET upgradePoints = upgradePoints + ? WHERE user = ? AND job = ?', amount, uid, job)
+    dbExec(connection, 'INSERT INTO `m-jobs-data` (user, job, upgradePoints) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE upgradePoints = upgradePoints + ?', uid, job, amount, amount)
 end
 
 function giveTopPoints(player, amount)
@@ -180,7 +180,7 @@ function giveTopPoints(player, amount)
     if not job then return end
     if not jobs[job] then return end
 
-    dbExec(connection, 'UPDATE `m-jobs-data` SET points = points + ? WHERE user = ? AND job = ?', amount, uid, job)
+    dbExec(connection, 'INSERT INTO `m-jobs-data` (user, job, points) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE points = points + ?', uid, job, amount, amount)
 end
 
 function getPlayerJobUpgrades(player, job)

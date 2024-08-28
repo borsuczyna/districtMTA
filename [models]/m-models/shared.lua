@@ -377,6 +377,59 @@ models = {
         type = 'object',
         model = 1337,
     },
+    ['ufo2'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'ufo',
+    },
+    ['courierb'] = {
+        custom = false,
+        type = 'vehicle',
+        model = 413,
+    },
+    ['couriera'] = {
+        custom = false,
+        type = 'vehicle',
+        model = 499,
+    },
+    ['cart'] = {
+        custom = true,
+        type = 'object',
+        model = 1337
+    },
+    ['apples'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'box'
+    },
+    ['bananas'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'box'
+    },
+    ['pears'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'box'
+    },
+    ['lemons'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'box'
+    },
+    ['5131'] = {
+        type = 'object',
+        model = 5131,
+    },
+    ['3761'] = {
+        type = 'object',
+        model = 3761,
+    },
 }
 
 function getModelsCount()

@@ -1,4 +1,4 @@
-local gameMode = 'RPG + Prace'
+local gameMode = 'RPG + Fabuła'
 local fpsLimit = 75
 
 function updateRealTime()

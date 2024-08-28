@@ -4,7 +4,7 @@ local function stopPlayback(index)
     local playback = playing[index]
     if not playback then return end
 
-    destroyElement(playback.ped)
+    -- destroyElement(playback.ped)
     playing[index] = nil
 
     outputChatBox("Playback have finished", 255, 0, 0)
@@ -38,10 +38,27 @@ local function setPlaybackNextFrame(index)
             outputChatBox("Entering vehicle " .. snapshot.vehicle)
             playback.enteringVehicle = snapshot.vehicle
         end
+    elseif snapshot.type == 'exit' then
+        setPedExitVehicle(playback.ped)
+        outputChatBox("Exiting vehicle")
+        playback.exitVehicle = true
     else
         if playback.enteringVehicle and not getPedOccupiedVehicle(playback.ped) then
             outputChatBox("Waiting to enter vehicle", 255, 0, 0)
             setPedEnterVehicle(playback.ped, getVehicleByIndex(index, playback.enteringVehicle))
+
+            if snapshot.insideVehicle then
+                warpPedIntoVehicle(playback.ped, getVehicleByIndex(index, snapshot.insideVehicle))
+                playback.enteringVehicle = nil
+            end
+        elseif playback.exitVehicle and getPedOccupiedVehicle(playback.ped) then
+            outputChatBox("Waiting to exit vehicle", 255, 0, 0)
+            setPedExitVehicle(playback.ped)
+
+            if not snapshot.insideVehicle then
+                removePedFromVehicle(playback.ped)
+                playback.exitVehicle = nil
+            end
         else
             for _, control in ipairs(controlTable) do
                 setPedControlState(playback.ped, control, table.find(snapshot.controls, control) ~= nil)
@@ -63,6 +80,10 @@ local function setPlaybackNextFrame(index)
 
                 if snapshot.aimTarget then
                     setPedAimTarget(playback.ped, unpack(snapshot.aimTarget))
+                end
+
+                if snapshot.animation then
+                    setPedAnimation(playback.ped, snapshot.animation[1], snapshot.animation[2], unpack(snapshot.animation[3]))
                 end
             end
         end
@@ -142,6 +163,26 @@ local function createPlaybackVehicle(index, data)
     local vehicle = createVehicle(data.model, 0, 0, 0)
     setElementMatrix(vehicle, unpack(data.matrix))
 
+    for i = 0, 6 do
+        setVehiclePanelState(vehicle, i, data.panels[i + 1] or 0)
+    end
+
+    for i = 0, 5 do
+        setVehicleDoorState(vehicle, i, data.doors[i + 1] or 0)
+    end
+
+    for i = 0, 3 do
+        setVehicleLightState(vehicle, i, data.lights[i + 1] or 0)
+    end
+
+    setVehicleWheelStates(vehicle, unpack(data.wheels))
+
+    for _, tuning in pairs(data.upgrades) do
+        addVehicleUpgrade(vehicle, tuning)
+    end
+
+    setElementHealth(vehicle, data.health or 1000)
+
     local data = {
         vehicle = vehicle,
         data = data.data,
@@ -167,6 +208,8 @@ local function startPlayback(name)
     fileClose(file)
 
     local ped = createPed(data.model, 0, 0, 0)
+    setElementInterior(ped, getElementInterior(localPlayer))
+    setElementDimension(ped, getElementDimension(localPlayer))
     setElementMatrix(ped, unpack(data.matrix))
 
     for _, weapon in ipairs(data.weapons) do
@@ -194,12 +237,15 @@ local function startPlayback(name)
     outputChatBox("Playback started", 0, 255, 0)
 end
 
-local function startPlaybackCommand(cmd, name)
+function startPlaybackCommand(cmd, name)
     if not name or #name == 0 then
         return print("Syntax: /play <name>")
     end
 
-    startPlayback(name)
+    -- startPlayback(name)
+    for _, playback in pairs(split(name, ",")) do
+        startPlayback(playback)
+    end
 end
 
 addEventHandler('onClientPedsProcessed', root, updatePlaybacks)

@@ -12,6 +12,14 @@ addCommandHandler('k', function(player, cmd, playerToFind, ...)
         return
     end
 
+    local playerRank = getElementData(player, 'player:rank')
+    local foundPlayerRank = getElementData(foundPlayer, 'player:rank')
+
+    if foundPlayerRank and playerRank and foundPlayerRank >= playerRank then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie możesz wyrzucić gracza o wyższej lub tej samej randze')
+        return
+    end
+
     local playerName = getPlayerName(player)
     local foundPlayerName = getPlayerName(foundPlayer)
 

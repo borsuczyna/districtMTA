@@ -5,7 +5,7 @@ addEvent('jobs:trash:dumpTrash')
 local hitTime = {}
 
 local function setPlayerOnHitCooldown(player)
-    hitTime[player] = getTickCount() + 1500
+    hitTime[player] = getTickCount() + 500
 end
 
 local function isPlayerOnHitCooldown(player)

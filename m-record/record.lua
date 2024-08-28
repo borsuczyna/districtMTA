@@ -58,6 +58,18 @@ function getRecordingVehicle(vehicle)
         matrix = {getElementMatrix(vehicle)},
         velocity = {getElementVelocity(vehicle)},
         angularVelocity = {getElementAngularVelocity(vehicle)},
+        panels = iter(0, 6, function(i)
+            return getVehiclePanelState(vehicle, i)
+        end),
+        doors = iter(0, 5, function(i)
+            return getVehicleDoorState(vehicle, i)
+        end),
+        lights = iter(0, 3, function(i)
+            return getVehicleLightState(vehicle, i)
+        end),
+        wheels = {getVehicleWheelStates(vehicle)},
+        upgrades = getVehicleUpgrades(vehicle),
+        health = getElementHealth(vehicle),
         data = {},
     }
 
@@ -87,12 +99,18 @@ local function createSnapshot()
             tick = getTickCount() - recording.tick,
         }
     else
+        local animation = {getPedAnimation(localPlayer)}
+        if animation[1] == false then
+            animation = false
+        end
+
         snapshot = {
             matrix = {getElementMatrix(localPlayer)},
             controls = getPedControlStates(localPlayer),
             rotation = rotation[3],
             weaponSlot = getPedWeaponSlot(localPlayer),
             aimTarget = getPedControlState(localPlayer, "aim_weapon") and aimTarget or false,
+            animation = animation,
             type = "onfoot",
             tick = getTickCount() - recording.tick,
         }
@@ -154,12 +172,18 @@ local function checkSnapshotIsNeeded()
     else
         local lastAimTarget = lastSnapshot.aimTarget
         local currentAimTarget = getPedControlState(localPlayer, "aim_weapon") and {getPedTargetEnd(localPlayer)} or false
+        local lastAnimation = lastSnapshot.animation
+        local currentAnimation = {getPedAnimation(localPlayer)}
+        if currentAnimation[1] == false then
+            currentAnimation = false
+        end
       
         local aimTargetChanged = (not lastAimTarget and currentAimTarget) or (lastAimTarget and not currentAimTarget) or Vector3Comparator(lastAimTarget, currentAimTarget)
         local weaponChanged = lastSnapshot.weaponSlot ~= getPedWeaponSlot(localPlayer)
         local rotationChanged = ('%.1f'):format(lastSnapshot.rotation) ~= ('%.1f'):format(({getElementRotation(localPlayer)})[3])
+        local animationChanged = toJSON(lastAnimation) ~= toJSON(currentAnimation)
 
-        snapshotRequired = controlsChanged or weaponChanged or (aimTargetChanged and timeElapsed > settings.snapshotInterval) or (rotationChanged and timeElapsed > settings.snapshotInterval)
+        snapshotRequired = controlsChanged or weaponChanged or (aimTargetChanged and timeElapsed > settings.snapshotInterval) or (rotationChanged and timeElapsed > settings.snapshotInterval) or animationChanged
     end
 
     if snapshotRequired then

@@ -81,7 +81,21 @@ function loadModel(name, data)
 end
 
 function getCustomModel(name)
-    return models[name].newModel
+    local data = models[name]
+    if not data then 
+        return false
+    end
+
+    return data.newModel
+end
+
+function getOriginalModel(name)
+    local data = models[name]
+    if not data then 
+        return false
+    end
+
+    return data.model
 end
 
 function updateQueue()
@@ -170,3 +184,16 @@ function updateCustomModels(elements)
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, loadModels)
+
+-- on resource stop if element has element:model restore original model
+addEventHandler('onClientResourceStop', resourceRoot, function()
+    for i, element in ipairs(getElementsByType('object')) do
+        local model = getElementData(element, 'element:model')
+        if model then
+            local originalModel = getOriginalModel(model)
+            if originalModel then
+                setElementModel(element, originalModel)
+            end
+        end
+    end
+end)

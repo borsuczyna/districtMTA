@@ -11,13 +11,16 @@ function addPlayerRank(player, rank)
     local playerName = getPlayerName(player)
     local playerSerial = getPlayerSerial(player)
 
+    local playerUID = getElementData(player, 'player:uid')
+    if not playerUID then return end
+
     if rank > 0 and ranks[rank] then
         local existingPlayer = exports['m-mysql']:query('SELECT * FROM `m-admins` WHERE `serial` = ?', playerSerial)
 
         if existingPlayer and #existingPlayer > 0 then
-            exports['m-mysql']:query('UPDATE `m-admins` SET `rank` = ? WHERE `serial` = ?', rank, playerSerial)
+            exports['m-mysql']:query('UPDATE `m-admins` SET `rank` = ?, `playerUid` = ? WHERE `serial` = ?', rank, playerUID, playerSerial)
         else
-            exports['m-mysql']:query('INSERT INTO `m-admins` (`username`, `serial`, `rank`) VALUES (?, ?, ?)', playerName, playerSerial, rank)
+            exports['m-mysql']:query('INSERT INTO `m-admins` (`username`, `serial`, `rank`, `playerUid`) VALUES (?, ?, ?, ?)', playerName, playerSerial, rank, playerUID)
         end
     elseif rank == 0 then
         exports['m-mysql']:query('DELETE FROM `m-admins` WHERE `serial` = ?', playerSerial)
@@ -31,6 +34,8 @@ function addPlayerRank(player, rank)
 
         triggerClientEvent(player, 'admin:toggleLogs', resourceRoot)
         triggerClientEvent(player, 'admin:toggleReports', resourceRoot)
+
+        unbindKey(player, 'y', 'down', 'chatbox', 'Admin')
     end
 end
 

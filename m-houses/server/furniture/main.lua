@@ -84,19 +84,19 @@ function useFurniture(player, itemHash, furniture)
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
-    local isInside = getElementData(player, 'player:house')
-    if not isInside then
-        exports['m-notis']:addNotification(player, 'error', 'Edycja mebli', 'Nie jesteś w domu.')
-        return
-    end
+    -- local isInside = getElementData(player, 'player:house')
+    -- if not isInside then
+    --     exports['m-notis']:addNotification(player, 'error', 'Edycja mebli', 'Nie jesteś w domu.')
+    --     return
+    -- end
 
-    local houseData = houses[isInside]
-    if not houseData then return end
+    -- local houseData = houses[isInside]
+    -- if not houseData then return end
 
-    if houseData.owner ~= uid then
-        exports['m-notis']:addNotification(player, 'error', 'Edycja mebli', 'Nie jesteś właścicielem tego domu.')
-        return
-    end
+    -- if houseData.owner ~= uid then
+    --     exports['m-notis']:addNotification(player, 'error', 'Edycja mebli', 'Nie jesteś właścicielem tego domu.')
+    --     return
+    -- end
 
     local item = exports['m-inventory']:getPlayerItem(player, itemHash)
 

@@ -38,7 +38,8 @@ function updateColshape(object, colshape)
         local size = colshape.size or 2
         local shape = createColSphere(object.position[1], object.position[2], object.position[3], size)
         if colshape.attached then
-            attachElements(shape, object.element, 0, 0, 0)
+            local pos = colshape.attachPosition or {0, 0, 0}
+            attachElements(shape, object.element, pos[1], pos[2], pos[3])
         end
 
         if colshape.event then
@@ -125,6 +126,38 @@ function updateObjectEffect(object, effect)
     end
 end
 
+function updateObjectAttachedElements(object, attachedElements)
+    if not attachedElements then return end
+
+    for i, attachedElement in ipairs(attachedElements) do
+        local element = findElementByHash(objects, attachedElement.hash)
+        if not element then return end
+
+        local x, y, z, rx, ry, rz = unpack(attachedElement.position)
+        attachElements(element.element, object.element, x, y, z, rx, ry, rz)
+    end
+end
+
+function updateObjectAttachedToOtherElement(object)
+    local attachedElementData = false
+    local attachedElementObject = false
+
+    for i, obj in ipairs(objects) do
+        for j, attachedElement in ipairs(obj.attachedElements) do
+            if attachedElement.hash == object.hash then
+                attachedElementData = attachedElement
+                attachedElementObject = obj.element
+                break
+            end
+        end
+    end
+
+    if not attachedElementData then return end
+
+    local x, y, z, rx, ry, rz = unpack(attachedElementData.position)
+    attachElements(object.element, attachedElementObject, x, y, z, rx, ry, rz)
+end
+
 function _createObject(object)
     local element = createObject(object.model, object.position[1], object.position[2], object.position[3], object.rotation[1], object.rotation[2], object.rotation[3])
     object.element = element
@@ -143,6 +176,7 @@ function updateObject(object)
     obj.position = object.position
     obj.rotation = object.rotation
     obj.customData = object.customData
+    obj.attachedElements = object.attachedElements
 
     updateColshape(obj, object.options.colshape)
     updateObjectBlip(obj, object.options.blip)
@@ -150,6 +184,8 @@ function updateObject(object)
     updateElementAttach(obj, object.options.attach)
     updateObjectGhost(obj, object.options.ghost)
     updateObjectEffect(obj, object.options.effect)
+    updateObjectAttachedElements(obj, object.attachedElements)
+    updateObjectAttachedToOtherElement(obj)
 
     setElementModel(obj.element, obj.model)
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
@@ -209,6 +245,22 @@ function getObjectByHash(hash)
     if not object then return end
     
     return object.element
+end
+
+function getAllLobbyObjectsWithCustomData(key)
+    local resObjects = {}
+    for i, object in ipairs(objects) do
+        if object.customData[key] then
+            table.insert(resObjects, {
+                hash = object.hash,
+                value = object.customData[key],
+                element = object.element,
+                customData = object.customData
+            })
+        end
+    end
+
+    return resObjects
 end
 
 function getLobbyObjectCustomData(hash, key)
@@ -287,6 +339,7 @@ function updatePed(ped)
     obj.model = ped.model
     obj.position = ped.position
     obj.rotation = ped.rotation
+    obj.invincible = ped.options.invincible
 
     updateColshape(obj, ped.options.colshape)
     updateObjectBlip(obj, ped.options.blip)
@@ -501,6 +554,14 @@ function getJobDataAsObject(key)
 
     return findElementByHash(objects, hash)
 end
+
+addEventHandler('onClientPedDamage', root, function(attacker)
+    for i, ped in ipairs(peds) do
+        if ped.element == source and ped.invincible then
+            cancelEvent()
+        end
+    end
+end)
 
 addEventHandler('jobs:updateObjects', resourceRoot, function(_objects)
     for i, object in ipairs(_objects) do

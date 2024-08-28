@@ -24,7 +24,12 @@
     <export function='createLobbyObject' type='server'/>
     <export function='createLobbyBlip' type='server'/>
     <export function='createLobbyMarker' type='server'/>
+    <export function='setLobbyMarkerCustomData' type='server'/>
+    <export function='getLobbyMarkerCustomData' type='server'/>
+    <export function='destroyLobbyMarker' type='server'/>
+    <export function='updateLobbyMarkers' type='server'/>
     <export function='createLobbyPed' type='server'/>
+    <export function='updateLobbyPeds' type='server'/>
     <export function='destroyLobbyObject' type='server'/>
     <export function='destroyLobbyBlip' type='server'/>
     <export function='destroyLobbyPed' type='server'/>
@@ -34,10 +39,13 @@
     <export function='detachObjectFromPlayer' type='server'/>
     <export function='setLobbyObjectCustomData' type='server'/>
     <export function='getLobbyObjectCustomData' type='shared'/>
-    <export function='getAllLobbyObjectsWithCustomData' type='server'/>
+    <export function='getAllLobbyObjectsWithCustomData' type='shared'/>
     <export function='getLobbyObjectModel' type='server'/>
     <export function='attachObject' type='server'/>
     <export function='detachObject' type='server'/>
+    <export function='setLobbyObjectPosition' type='server'/>
+    <export function='attachObjectToLobbyObject' type='server'/>
+    <export function='detachObjectFromLobbyObject' type='server'/>
     <export function='playSound3D' type='server'/>
     <export function='setLobbyData' type='server'/>
     <export function='getLobbyData' type='server'/>
@@ -51,7 +59,7 @@
     <export function='getJobDataAsObject' type='client'/>
     <export function='getObjectHash' type='client'/>
     <export function='findElementByHash' type='client'/>
-    <export function='getObjectByHash' type='client'/>
+    <export function='getObjectByHash' type='shared'/>
     <export function='getPedByHash' type='client'/>
     <export function='getPedHash' type='client'/>
     <export function='giveMoney' type='server'/>

@@ -150,7 +150,7 @@ addEventHandler('onVehicleEnter', root, function(player, seat)
     local jobVehicle = exports['m-jobs']:getLobbyData(player, 'trashmaster')
     if jobVehicle ~= vehicle then return end
 
-    local upgrades = exports['m-jobs']:getPlayerJobUpgrades(player, 'trash')
+    local upgrades = getElementData(player, 'player:job-upgrades-cache') or {}
     local modelHandling = getModelHandling(getElementModel(vehicle))
     local multiplier = table.find(upgrades, 'kierowca') and 1.15 or 1
 

@@ -48,3 +48,19 @@ function Vector3Distance(v1, v2)
     if not v1 or not v2 then return false end
     return math.sqrt((v1[1] - v2[1]) ^ 2 + (v1[2] - v2[2]) ^ 2 + (v1[3] - v2[3]) ^ 2)
 end
+
+function iter(s, e, func)
+    local t = {}
+    for i = s, e do
+        table.insert(t, func(i))
+    end
+    return t
+end
+
+function map(array, func)
+    local new_array = {}
+    for i, v in ipairs(array) do
+        new_array[i] = func(v)
+    end
+    return new_array
+end

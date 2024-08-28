@@ -121,6 +121,7 @@
 
     <div class="d-flex justify-center gap-2">
         <div class="flat-button flat-button-small" id="repair-button" onclick="mechanic_repairVehicle(this)">Napraw</div>
+        <div class="flat-button flat-button-small" onclick="mechanic_selectAll()">Zaznacz wszystko</div>
         <div class="flat-button flat-button-small" onclick="mta.triggerEvent('mechanic:hide')">Anuluj</div>
     </div>
 </div>
@@ -181,6 +182,13 @@
 
         makeButtonSpinner(button);
         mta.triggerEvent('mechanic:repair', selectedParts.join(','));
+    }
+
+    window.mechanic_selectAll = function() {
+        if (selectedParts.length === currentParts.length) selectedParts = [];
+        else selectedParts = currentParts.map(p => p.name);
+        
+        loadParts(currentParts);
     }
 
     function updateTotal() {

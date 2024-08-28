@@ -93,6 +93,7 @@ end
 
 function repairMarkerHit(hitElement, matchingDimension)
     if getElementType(hitElement) ~= 'player' then return end
+    if getPedOccupiedVehicle(hitElement) then return end
 
     local renderElement = getElementData(source, 'repair:render')
     local repairState = getElementData(renderElement, 'repair:state')
@@ -119,7 +120,7 @@ local function loadRepairShops()
     end
 
     for i, pos in ipairs(repairBlips) do
-        local blip = createBlip(pos[1], pos[2], pos[3], 48, 255, 255, 255, 255, 0, 9999)
+        local blip = createBlip(pos[1], pos[2], pos[3], 48, 2, 255, 255, 255, 255, 0, 9999)
         setElementData(blip, 'blip:hoverText', 'Mechanik')
     end
 end
@@ -200,7 +201,7 @@ addEventHandler('mechanic:repair', resourceRoot, function(vehicle, repair)
     
     local minutes = math.floor(totalTime / 60)
     local seconds = totalTime % 60
-    exports['m-notis']:addNotification(client, 'success', 'Naprawa', ('Naprawa została rozpoczęta. Czas naprawy: %d minut %d sekund'):format(minutes, seconds))
+    exports['m-notis']:addNotification(client, 'success', 'Naprawa', ('Naprawa została rozpoczęta.<br>Czas naprawy: %d minut %d sekund'):format(minutes, seconds))
     triggerClientEvent(client, 'mechanic:respond', resourceRoot, true)
 end)
 

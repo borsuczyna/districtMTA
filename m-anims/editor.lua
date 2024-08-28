@@ -56,7 +56,9 @@ addCommandHandler("aeditor", function()
     function refreshEditor()
         if not editor.data.frames[editor.frame] or not editor.data.frames[editor.frame][editor.bone] or not editor.data.frames[editor.frame][editor.bone].rotation then
             if editor.data.frames[editor.prev_frame] and editor.data.frames[editor.prev_frame][editor.bone] then
-                local rx, ry, rz = loadstring("return " .. editor.data.frames[editor.prev_frame][editor.bone].rotation)()
+                -- local rx, ry, rz = loadstring("return " .. editor.data.frames[editor.prev_frame][editor.bone].rotation)()
+                -- dont use loadstring
+                local rx, ry, rz = unpack(split(editor.data.frames[editor.prev_frame][editor.bone].rotation, ","))
                 editor.rx = rx
                 editor.ry = ry
                 editor.rz = rz
@@ -67,7 +69,9 @@ addCommandHandler("aeditor", function()
             end
             return
         end
-        local rx, ry, rz = loadstring("return " .. editor.data.frames[editor.frame][editor.bone].rotation)()
+        -- local rx, ry, rz = loadstring("return " .. editor.data.frames[editor.frame][editor.bone].rotation)()
+        -- dont use loadstring
+        local rx, ry, rz = unpack(split(editor.data.frames[editor.frame][editor.bone].rotation, ","))
         editor.rx = rx
         editor.ry = ry
         editor.rz = rz

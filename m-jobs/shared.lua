@@ -12,7 +12,7 @@ jobs = {
             {
                 name = 'Sprinter',
                 key = 'sprinter',
-                description = 'Zwiększa prędkość poruszania się o 10%',
+                description = 'Pozwala biegać sprintem',
                 points = 15
             },
             {
@@ -41,7 +41,7 @@ jobs = {
             {
                 name = 'Sprinter',
                 key = 'sprinter',
-                description = 'Zwiększa prędkość poruszania się o 10%',
+                description = 'Pozwala biegać sprintem',
                 points = 15
             },
             {
@@ -55,6 +55,35 @@ jobs = {
                 key = 'recykling',
                 description = 'Zwiększa ilość wyrzucanych śmieci o 10%',
                 points = 25
+            },
+        }
+    },
+    courier = {
+        name = 'Kurier',
+        background = 'trash',
+        description = 'Praca kuriera polega na dostarczaniu przesyłek do klientów.<br><br>Wymagana kategoria C',
+        coop = true,
+        minLobbySize = 1,
+        lobbySize = 2,
+        minLevel = 1,
+        upgrades = {
+            {
+                name = 'Kierowca',
+                key = 'kierowca',
+                description = 'Zwiększa prędkość samochodu o 15%',
+                points = 20
+            },
+            {
+                name = 'Pojemność',
+                key = 'pojemnosc',
+                description = 'Zwiększa ilość dostarczanych przesyłek o 20%',
+                points = 25
+            },
+            {
+                name = 'Sprinter',
+                key = 'sprinter',
+                description = 'Pozwala biegać sprintem',
+                points = 15
             },
         }
     }

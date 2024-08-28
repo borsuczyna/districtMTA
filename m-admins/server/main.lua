@@ -1,6 +1,6 @@
-local function dutyResponse(queryResult, player, serial)
+local function dutyResponse(queryResult, player, serial, playerUID)
     local result = dbPoll(queryResult, 0)
-    if #result == 0 then
+    if #result == 0 or result[1].playerUid ~= playerUID then
         exports['m-notis']:addNotification(player, 'error', 'Służba administracyjna', 'Nie posiadasz uprawnień')
         return
     end
@@ -35,9 +35,10 @@ end
 
 addCommandHandler('duty', function(player)
     local serial = getPlayerSerial(player)
+    local playerUID = getElementData(player, 'player:uid')
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    dbQuery(dutyResponse, {player, serial}, connection, 'SELECT * FROM `m-admins` WHERE serial = ?', serial)
+    dbQuery(dutyResponse, {player, serial, playerUID}, connection, 'SELECT * FROM `m-admins` WHERE serial = ? AND playerUid = ?', serial, playerUID)
 end)

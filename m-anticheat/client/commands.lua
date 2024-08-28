@@ -1,6 +1,11 @@
 local allowedCommands = {
     {'Admin', 'm-admins'},
     {'aeditor', 'm-anims'},
+    {'next', 'm-anims'},
+    {'prev', 'm-anims'},
+    {'bone', 'm-anims'},
+    {'copy', 'm-anims'},
+    {'removebone', 'm-anims'},
     {'logs', 'm-admins'},
     {'reports', 'm-admins'},
     {'gp', 'm-core'},
