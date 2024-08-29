@@ -15,7 +15,8 @@
 
     <file src='animations/kiwanie.json'/>
     <file src='animations/odlatuje.json'/>
-    <file src='animations/test.json'/>
+    <file src='animations/carry-burger.json'/>
+    <file src='animations/inspect.json'/>
 
     <export function='setPedAnimation' type='shared'/>
     <export function='addPedAnimation' type='shared'/>

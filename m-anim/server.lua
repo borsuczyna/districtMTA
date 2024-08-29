@@ -1,4 +1,6 @@
 addEvent('anim:saveAnimation', true)
+addEvent('animations:getServerTick', true)
+
 addEventHandler('anim:saveAnimation', resourceRoot, function(name, data)
     if not name or not data then return end
 
@@ -9,13 +11,17 @@ addEventHandler('anim:saveAnimation', resourceRoot, function(name, data)
     fileClose(file)
 end)
 
-function setPedAnimation(ped, animation)
-    setElementData(ped, 'element:animations', {{name = animation, startTime = getTickCount()}})
+function setPedAnimation(ped, animation, looping)
+    looping = looping == nil and true or looping
+
+    setElementData(ped, 'element:animations', {{name = animation, startTime = getTickCount(), looping = looping}})
 end
 
-function addPedAnimation(ped, animation)
+function addPedAnimation(ped, animation, looping)
+    looping = looping == nil and true or looping
+
     local animations = getElementData(ped, 'element:animations') or {}
-    table.insert(animations, {name = animation, startTime = getTickCount()})
+    table.insert(animations, {name = animation, startTime = getTickCount(), looping = looping})
     setElementData(ped, 'element:animations', animations)
 end
 
@@ -36,5 +42,11 @@ function clearPedAnimations(ped)
     setElementData(ped, 'element:animations', nil)
 end
 
--- setPedAnimation(getRandomPlayer(), 'test')
+addEventHandler('animations:getServerTick', root, function()
+    triggerClientEvent(client, 'animations:serverTickResponse', resourceRoot, getTickCount())
+end)
+
 clearPedAnimations(getRandomPlayer())
+setTimer(function()
+    setPedAnimation(getRandomPlayer(), 'inspect', false)
+end, 500, 1)

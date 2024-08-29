@@ -1,4 +1,22 @@
+addEvent('animations:serverTickResponse', true)
+addEvent('animations:onAnimationStart', true)
+addEvent('animations:onAnimationEnd', true)
+addEvent('animations:onAnimationLoop', true)
+
 local animationsData = {}
+local lastAnimationsFrames = {}
+local serverTick = {
+    clientStart = 0,
+    serverStart = 0
+}
+
+function getServerTick()
+    return serverTick.serverStart + (getTickCount() - serverTick.clientStart)
+end
+
+function fetchServerTick()
+    triggerServerEvent('animations:getServerTick', resourceRoot)
+end
 
 function angleDifference(a, b)
     local diff = a - b
@@ -69,11 +87,6 @@ function updateAnimationBone(ped, bone, items, frame)
     progress = math.max(0, math.min(1, progress))
 
     local easing = nextItem.easing or 'Linear'
-    -- local rx, ry, rz = interpolateBetween(
-    --     previousItem.rx, previousItem.ry, previousItem.rz,
-    --     nextItem.rx, nextItem.ry, nextItem.rz,
-    --     progress, easing
-    -- )
     local xDiff, yDiff, zDiff = angleDifference(nextItem.rx, previousItem.rx), angleDifference(nextItem.ry, previousItem.ry), angleDifference(nextItem.rz, previousItem.rz)
     local progress = getEasingValue(progress, easing)
     local rx, ry, rz = previousItem.rx + xDiff * progress, previousItem.ry + yDiff * progress, previousItem.rz + zDiff * progress
@@ -81,10 +94,29 @@ function updateAnimationBone(ped, bone, items, frame)
     setElementBoneRotation(ped, bone, rx, ry, rz)
 end
 
-function updateAnimationBonesForPed(ped, animation, startTime)
-    local frame = (getTickCount() - startTime) / animation.time * 100 % 100
+function updateAnimationBonesForPed(ped, data, animation)
+    local name = animation.name
+    local key = ('%s:%s'):format(tostring(ped), tostring(name))
+    local lastFrame = lastAnimationsFrames[key]
+    local frame = (getServerTick() - animation.startTime) / data.time * 100 % 100
 
-    for bone, items in pairs(animation.bones) do
+    local playingAgain = lastFrame and frame < lastFrame
+    local started = not lastFrame
+    if playingAgain then
+        if not animation.looping then
+            removePedAnimation(ped, name)
+            triggerEvent('animations:onAnimationEnd', ped, name)
+            return
+        else
+            triggerEvent('animations:onAnimationLoop', ped, name)
+        end
+    elseif started then
+        triggerEvent('animations:onAnimationStart', ped, name)
+    end
+
+    lastAnimationsFrames[key] = frame
+
+    for bone, items in pairs(data.bones) do
         updateAnimationBone(ped, bone, items, frame)
     end
 
@@ -100,10 +132,10 @@ function updatePedAnimation(ped)
         if not data then return end
 
         if not animation.startTime then
-            animation.startTime = getTickCount()
+            animation.startTime = getServerTick()
         end
 
-        updateAnimationBonesForPed(ped, data, animation.startTime)
+        updateAnimationBonesForPed(ped, data, animation)
     end
 end
 
@@ -117,14 +149,18 @@ function updatePedsAnimations()
     end
 end
 
-function setPedAnimation(ped, animation)
-    setElementData(ped, 'element:animations', {{name = animation, startTime = getTickCount()}})
+function setPedAnimation(ped, animation, looping)
+    looping = looping == nil and true or looping
+
+    setElementData(ped, 'element:animations', {{name = animation, startTime = getServerTick(), looping = looping}}, false)
 end
 
-function addPedAnimation(ped, animation)
+function addPedAnimation(ped, animation, looping)
+    looping = looping == nil and true or looping
+
     local animations = getElementData(ped, 'element:animations') or {}
-    table.insert(animations, {name = animation, startTime = getTickCount()})
-    setElementData(ped, 'element:animations', animations)
+    table.insert(animations, {name = animation, startTime = getServerTick(), looping = looping})
+    setElementData(ped, 'element:animations', animations, false)
 end
 
 function removePedAnimation(ped, animationName)
@@ -137,11 +173,20 @@ function removePedAnimation(ped, animationName)
         end
     end
 
-    setElementData(ped, 'element:animations', newAnimations)
+    setElementData(ped, 'element:animations', newAnimations, false)
 end
 
 function clearPedAnimations(ped)
-    setElementData(ped, 'element:animations', nil)
+    setElementData(ped, 'element:animations', nil, false)
 end
 
 addEventHandler('onClientPedsProcessed', root, updatePedsAnimations)
+
+addEventHandler('onClientResourceStart', resourceRoot, function()
+    fetchServerTick()
+end)
+
+addEventHandler('animations:serverTickResponse', resourceRoot, function(tick)
+    serverTick.clientStart = getTickCount()
+    serverTick.serverStart = tick
+end)
