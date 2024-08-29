@@ -97,6 +97,10 @@
     <file src="data/decoded/5131.col"/>
     <file src="data/decoded/5131.dff"/>
     <file src="data/decoded/3761.dff"/>
+    <file src="data/decoded/plane.dff"/>
+    <file src="data/decoded/plane.col"/>
+    <file src="data/decoded/rotate.dff"/>
+    <file src="data/decoded/rotate.col"/>
 
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>

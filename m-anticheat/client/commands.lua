@@ -1,5 +1,6 @@
 local allowedCommands = {
     {'Admin', 'm-admins'},
+    {'aeditor', 'm-anim'},
     {'aeditor', 'm-anims'},
     {'next', 'm-anims'},
     {'prev', 'm-anims'},

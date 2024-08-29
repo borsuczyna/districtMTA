@@ -430,6 +430,16 @@ models = {
         type = 'object',
         model = 3761,
     },
+    ['plane'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+    ['rotate'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
 }
 
 function getModelsCount()

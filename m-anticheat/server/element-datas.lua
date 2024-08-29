@@ -12,7 +12,7 @@ local lockedElementDatas = {
     'player:equippedFishingRod', 'player:bankMoney', 'player:licenses', 'marker:title', 'marker:desc', 'marker:house',
     'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
     'player:holdingPackage',
-    'controller',
+    'controller', 'element:animations',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',

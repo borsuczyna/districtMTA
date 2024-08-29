@@ -1,0 +1,26 @@
+<meta>
+    <script src='useful.lua' type='shared' cache='false'/>
+    <script src='client/interface.lua' type='client' cache='false'/>
+    <script src='client/rotate.lua' type='client' cache='false'/>
+    <script src='client/animations.lua' type='client' cache='false'/>
+    <script src='client/manager.lua' type='client' cache='false'/>
+    <script src='client/camera.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/mta-helper.fx'/>
+    <file src='data/shader.fx'/>
+    <file src='data/rotate.png'/>
+    <file src='data/bg.png'/>
+    <file src='data/interface.html'/>
+
+    <file src='animations/kiwanie.json'/>
+    <file src='animations/odlatuje.json'/>
+    <file src='animations/test.json'/>
+
+    <export function='setPedAnimation' type='shared'/>
+    <export function='addPedAnimation' type='shared'/>
+    <export function='removePedAnimation' type='shared'/>
+    <export function='clearPedAnimations' type='shared'/>
+
+    <min_mta_version server='1.5.8' client='1.5.8'/>
+</meta>
