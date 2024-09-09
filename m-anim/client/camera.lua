@@ -55,8 +55,8 @@ local function clickCamera(button, state, _, _, _, _, _, element)
     end
 end
 
-function toggleCamera()
-    if not camera then
+function toggleCamera(visible)
+    if visible then
         local x, y, z = getPositionFromElementOffset(localPlayer, 0, 2, 0.6)
         local rx, ry, rz = getElementRotation(localPlayer)
         local tempObject = createObject(1337, x, y, z)
@@ -78,6 +78,7 @@ function toggleCamera()
         addEventHandler('onClientClick', root, clickCamera)
         showCursor(true)
     else
+        if not camera then return end
         destroyElement(camera.tempObject)
         camera = false
         setCameraTarget(localPlayer)

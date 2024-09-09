@@ -24,3 +24,8 @@ addEventHandler('onPlayerDetonateSatchels', root, function()
 
     cancelEvent()
 end)
+
+addEventHandler('onVehicleExplode', root, function(_, player)
+    if not player then return end
+    ban(player, 'Explosion hack', 'Explosion hack')
+end)

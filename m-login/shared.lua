@@ -1,13 +1,35 @@
 spawns = {
-    -- nazwa, spawn x, y, z
-    ['Główne'] = {
-        {'Spawn Los Santos', 1138.949, -2036.785, 69.008, -90, camera={1275.88806, -1406.38342, 25.22648, 1313.18005, -1374.37402, 17.30728}},
-        {'Urząd', 1284, -1405, 0, 0, camera={1275.88806, -1406.38342, 25.22648, 1313.18005, -1374.37402, 17.30728}},
-        {'Szkoła jazdy', 1049, -1657, 0, 0, camera={1061.06055, -1758.87781, 26.04539, 1100.50415, -1792.82593, 19.58187}},
+    {
+        name = 'Los Santos',
+        spawns = {
+            {'Spawn Pershing Square', 1479.608, -1675.643, 13.555, 180},
+            {'Góra Galileo', 1147.351, -2037.077, 69.008, -90},
+            {'Szkoła jazdy', 1109.498, -1835.956, 16.603, -90},
+        }
     },
-    ['Wioski'] = {
-        {'Blueberry', 280, -100, 0, 0, camera={280.00000, -100.00000, 9.73867, 253.56168, -67.30295, 7.1392}},
-        {'Fort Carson', -62, 1045, 0, 0, camera={-62.00000, 1045.00000, 26.65475, -87.59967, 1097.10535, 25.14151}},
-        {'Dillimore', 713.52167, -522.02460, 16.32814, 0, camera={749.93439, -611.90558, 46.03849, 702.89777, -564.89679, 26.00567}},
+    {
+        name = 'Wioski',
+        spawns = {
+            {'Blueberry', 280, -100, 0, 0},
+            {'Fort Carson', -62, 1045, 0, 0},
+            {'Dillimore', 713.52167, -522.02460, 16.32814, 0},
+        }
     },
 }
+
+function getSpawnsByName(name)
+    for i, v in ipairs(spawns) do
+        if v.name == name then
+            return v.spawns
+        end
+    end
+    return {}
+end
+
+function getSpawn(name, index)
+    local spawns = getSpawnsByName(name)
+    if not spawns then
+        return false
+    end
+    return spawns[index]
+end

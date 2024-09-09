@@ -101,6 +101,25 @@
     <file src="data/decoded/plane.col"/>
     <file src="data/decoded/rotate.dff"/>
     <file src="data/decoded/rotate.col"/>
+    <file src="data/decoded/furniture-shop.dff"/>
+    <file src="data/decoded/furniture-shop.col"/>
+    <file src="data/decoded/furniture-shop.txd"/>
+    <file src="data/decoded/molo.txd"/>
+    <file src="data/decoded/6280.dff"/>
+    <file src="data/decoded/6280.col"/>
+    <file src="data/decoded/6293.dff"/>
+    <file src="data/decoded/6293.col"/>
+    <file src="data/decoded/6314.dff"/>
+    <file src="data/decoded/6314.col"/>
+    <file src="data/decoded/6417.dff"/>
+    <file src="data/decoded/6417.col"/>
+    <file src="data/decoded/6428.dff"/>
+    <file src="data/decoded/6428.col"/>
+    <file src="data/decoded/psquare-1.dff"/>
+    <file src="data/decoded/psquare-1.col"/>
+    <file src="data/decoded/psquare-1.txd"/>
+    <file src="data/decoded/psquare-2.dff"/>
+    <file src="data/decoded/psquare-2.col"/>
 
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>

@@ -1,0 +1,5 @@
+addEvent('missions:getCurrentPosition', false)
+addEventHandler('missions:getCurrentPosition', root, function(hash, player)
+    local x, y, z = getElementPosition(player)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Ustawiono pozycję gracza', data = {x = x, y = y, z = z}})
+end)

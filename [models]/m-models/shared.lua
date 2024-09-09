@@ -440,6 +440,46 @@ models = {
         model = 1337,
         custom = true,
     },
+    ['furniture-shop'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+    ['6280'] = {
+        type = 'object',
+        model = 6280,
+        txd = 'molo',
+    },
+    ['6293'] = {
+        type = 'object',
+        model = 6293,
+        txd = 'molo',
+    },
+    ['6314'] = {
+        type = 'object',
+        model = 6314,
+        txd = 'molo',
+    },
+    ['6417'] = {
+        type = 'object',
+        model = 6417,
+        txd = 'molo',
+    },
+    ['6428'] = {
+        type = 'object',
+        model = 6428,
+        txd = 'molo',
+    },
+    ['psquare-1'] = {
+        type = 'object',
+        model = 3985,
+        txd = 'psquare-1',
+    },
+    ['psquare-2'] = {
+        type = 'object',
+        model = 4186,
+        txd = 'psquare-1',
+    },
 }
 
 function getModelsCount()

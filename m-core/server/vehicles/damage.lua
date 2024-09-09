@@ -18,12 +18,10 @@ addEventHandler('onVehicleDamage', root, function(loss)
     end
 end)
 
-function respawnVehicleInner(source, wheels, panels, doors, lights)
+function respawnVehicleInner(source, panels, doors, lights, occupants)
     respawnVehicle(source)
-
-    for i = 0, 3 do
-        setVehicleWheelStates(source, i, wheels[i + 1])
-    end
+    
+    setVehicleWheelStates(source, 0, 0, 0, 0)
 
     for i = 0, 6 do
         setVehiclePanelState(source, i, panels[i + 1])
@@ -36,12 +34,21 @@ function respawnVehicleInner(source, wheels, panels, doors, lights)
     for i = 0, 3 do
         setVehicleLightState(source, i, lights[i + 1])
     end
+
+    for seat, occupantData in pairs(occupants) do
+        local player = occupantData.player
+        local position = occupantData.position
+        local rotation = occupantData.rotation
+
+        spawnPlayer(player, position.x, position.y, position.z, rotation)
+        warpPedIntoVehicle(player, source, seat)
+    end
 end
 
 addEventHandler('onVehicleExplode', root, function()
     local x, y, z = getElementPosition(source)
     local rx, ry, rz = getElementRotation(source)
-    local wheels = {0, 0, 0, 0}
+
     local panels = iter(0, 6, function(i)
         return getVehiclePanelState(source, i)
     end)
@@ -52,8 +59,22 @@ addEventHandler('onVehicleExplode', root, function()
         return getVehicleLightState(source, i)
     end)
 
+    local occupants = {}
+
+    for seat = 0, getVehicleMaxPassengers(source) do
+        local player = getVehicleOccupant(source, seat)
+
+        if player then
+            local px, py, pz = getElementPosition(player)
+            local playerPosition = { x = px, y = py, z = pz }
+            local playerRotation = getPedRotation(player)
+
+            occupants[seat] = { player = player, position = playerPosition, rotation = playerRotAtion }
+        end
+    end
+    
     setVehicleRespawnPosition(source, x, y, z, rx, ry, rz)
-    setTimer(respawnVehicleInner, 500, 1, source, wheels, panels, doors, lights)
+    setTimer(respawnVehicleInner, 500, 1, source, panels, doors, lights, occupants)
 end)
 
 function iter(s, e, func)

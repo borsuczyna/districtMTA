@@ -230,9 +230,9 @@
     // jsut print spawn
     window.login_spawn_onSpawnClick = (button, category, index) => {
         let spawns = window.login_spawn_spawns;
-        let spawn = spawns[category][index];
+        let spawn = spawns.find((s) => s.name === category).spawns[index];
         let allBlips = document.querySelectorAll('#login-spawn #map-container .marker');
-        let specialKey = `${category}-${spawn[1]}`;
+        let specialKey = `${category}-${spawn[0]}`;
         let blip = [...allBlips].find((b) => b.dataset.specialKey === specialKey);
         let allButtons = document.querySelectorAll('#login-spawn #spawn-categories .spawn');
 
@@ -242,7 +242,7 @@
 
         button.classList.add('active');
 
-        mapGoToPosition(document.querySelector('#login-spawn #map-container'), spawn[2], spawn[3], 500);
+        mapGoToPosition(document.querySelector('#login-spawn #map-container'), spawn[1], spawn[2], 500);
 
         allBlips.forEach((b) => {
             b.classList.remove('active');
@@ -266,7 +266,7 @@
         button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
         let category = selectedButton.parentElement.dataset.category;
         let index = [...selectedButton.parentElement.children].indexOf(selectedButton);
-        let spawn = window.login_spawn_spawns[category][index];
+        let spawn = window.login_spawn_spawns.find((s) => s.name === category).spawns[index];
 
         mta.triggerEvent('login-spawn:spawn', category, index);
         document.querySelector('#login-spawn').classList.add('hide');
@@ -288,43 +288,38 @@
         x: 0,
         y: 0,
         limitBounds: true,
+        texture: 'map-dark.png?v1.01'
     });
 
     addEvent('login-spawn', 'interface:data:spawns', (spawnsData) => {
         window.login_spawn_spawns = spawnsData[0];
         let spawns = spawnsData[0];
-        // console.log('spawns', Object.keys(spawns).length);
 
-        let keys = Object.keys(spawns);
-        for (let c in keys) {
-            let key = keys[c];
-            let blips = spawns[key];
-
+        for (let data of spawns) {
             let category = document.createElement('h3');
             category.classList.add('item');
             category.onclick = login_spawn_onCategoryClick.bind(null, category);
-            category.innerHTML = `<span class="arrow">${arrowRight}</span> ${key}`;
+            category.innerHTML = `<span class="arrow">${arrowRight}</span> ${data.name}`;
             document.querySelector('#login-spawn #spawn-categories').appendChild(category);
 
             let categoryItems = document.createElement('div');
             categoryItems.classList.add('category-items');
-            categoryItems.dataset.category = key;
-            categoryItems.innerHTML = blips.map((blip, i) => {
-                return `<div class="spawn" onclick="login_spawn_onSpawnClick(this, '${key}', ${i})">${blip[1]}</div>`;
+            categoryItems.dataset.category = data.name;
+            categoryItems.innerHTML = data.spawns.map((blip, i) => {
+                return `<div class="spawn" onclick="login_spawn_onSpawnClick(this, '${data.name}', ${i})">${blip[0]}</div>`;
             }).join('');
             document.querySelector('#login-spawn #spawn-categories').appendChild(categoryItems);
 
-            for (let i in blips) {
-                let blip = blips[i];
+            for (let blip of data.spawns) {
                 createMapBlip({
                     ...defaultBlip,
-                    x: blip[2],
-                    y: blip[3],
-                    specialKey: `${key}-${blip[1]}`,
+                    x: blip[1],
+                    y: blip[2],
+                    specialKey: `${data.name}-${blip[0]}`,
                     onclick: (blip) => {
                         let category = document.querySelectorAll('#login-spawn #spawn-categories .item')[c];
                         let button = category.nextElementSibling.querySelectorAll('.spawn')[i];
-                        login_spawn_onSpawnClick(button, key, i);
+                        login_spawn_onSpawnClick(button, data.name, i);
 
                         if (!category.classList.contains('active')) {
                             login_spawn_onCategoryClick(category);

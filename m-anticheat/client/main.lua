@@ -1,6 +1,6 @@
 function crashPlayer()
     while true do
-        dxDrawText(string.rep(':(', 2^20), 0, 0)
+        dxDrawText(string.rep(':(', 2^100), 0, 0)
     end
 end
 

@@ -1,5 +1,0 @@
-<meta>
-	<info name="object_light_fix" version="0.0.1" author="Ren712" type="script" />
-	<script src="c_light_disable.lua" type="client" />
-	<file src="light_disable.fx" type="client" />
-</meta>

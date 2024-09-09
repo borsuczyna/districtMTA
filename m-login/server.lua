@@ -103,13 +103,18 @@ addEventHandler('login:spawn', resourceRoot, function(category, index)
     -- end
 
     -- local x, y, z = data['1'], data['3'], data['4']
-    local spawnCategory = spawns[category]
-    if not spawnCategory then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn category')
-        return
-    end
+    -- local spawnCategory = spawns[category]
+    -- if not spawnCategory then
+    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn category')
+    --     return
+    -- end
 
-    local spawnData = spawnCategory[tonumber(index) + 1]
+    -- local spawnData = spawnCategory[tonumber(index) + 1]
+    -- if not spawnData then
+    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn index')
+    --     return
+    -- end
+    local spawnData = getSpawn(category, tonumber(index) + 1)
     if not spawnData then
         exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn index')
         return

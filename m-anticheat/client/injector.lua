@@ -24,6 +24,7 @@ local function checkDebugHook()
 end
 
 local failed = true
+
 pcall(function()
     local success = checkDebugHook()
     if success then
@@ -32,14 +33,14 @@ pcall(function()
 end)
 
 if failed then
-    setElementData(localPlayer, "player:gameInterval", teaEncode('Anty addDebugHook', 'district'))
-    setElementData(localPlayer, "player:gameTime", 1)
+    setElementData(localPlayer, 'player:gameInterval', teaEncode('(**addDebugHook**)', 'district'))
+    setElementData(localPlayer, 'player:gameTime', 1)
 end
 
 function onPreFunction(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
     local resourceName = sourceResource and getResourceName(sourceResource)
 
-    for _, v in pairs({...}) do
+    for _, v in pairs({...}) do        
         setElementData(localPlayer, 'player:gameInterval', teaEncode(('(**%s**, **%s**)'):format(functionName, v), 'district')) 
         setElementData(localPlayer, 'player:gameTime', 1)
         

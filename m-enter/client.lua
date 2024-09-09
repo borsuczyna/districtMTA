@@ -74,6 +74,7 @@ addEventHandler('onClientMarkerHit', resourceRoot, function(hitElement, matching
         id = enterId,
         name = getElementData(source, 'marker:desc'),
         description = getElementData(source, 'marker:longDesc'),
+        target = getElementData(source, 'marker:target'),
     }
 
     bindKey('Q', 'down', enterInterior)
@@ -90,6 +91,11 @@ end)
 
 function enterInterior()
     if not enterData or entering then return end
+
+    if enginePreloadWorldArea then -- since 1.6.0 r22678
+        local x, y, z = unpack(enterData.target)
+        enginePreloadWorldArea(x, y, z, 'all')
+    end
 
     entering = true
     exports['m-loading']:setLoadingVisible(true, getElementInterior(localPlayer) == 0 and 'Ładowanie interioru...' or 'Ładowanie...', 1000)

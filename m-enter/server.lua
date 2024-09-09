@@ -39,15 +39,37 @@ local enters = {
     },
 }
 
+function createEntrance(enter, index)
+    local x, y, z = unpack(enter.marker)
+    enter.marker = createMarker(x, y, z - 1, 'cylinder', 1, 255, 140, 0, 0)
+    setElementInterior(enter.marker, enter.interior)
+    setElementData(enter.marker, 'marker:title', enter.name)
+    setElementData(enter.marker, 'marker:desc', enter.description)
+    setElementData(enter.marker, 'marker:longDesc', enter.longDescrption)
+    setElementData(enter.marker, 'marker:enter', index)
+    setElementData(enter.marker, 'marker:target', enter.target)
+
+    if not enters[index] then
+        enters[index] = enter
+
+        if sourceResource then
+            enters[index].sourceResource = sourceResource
+        end
+    end
+end
+
 addEventHandler('onResourceStart', resourceRoot, function()
     for i, enter in ipairs(enters) do
-        local x, y, z = unpack(enter.marker)
-        enter.marker = createMarker(x, y, z - 1, 'cylinder', 1, 255, 140, 0, 0)
-        setElementInterior(enter.marker, enter.interior)
-        setElementData(enter.marker, 'marker:title', enter.name)
-        setElementData(enter.marker, 'marker:desc', enter.description)
-        setElementData(enter.marker, 'marker:longDesc', enter.longDescrption)
-        setElementData(enter.marker, 'marker:enter', i)
+        createEntrance(enter, i)
+    end
+end)
+
+addEventHandler('onResourceStop', root, function(stoppedResource)
+    for i, enter in pairs(enters) do
+        if enter.sourceResource == stoppedResource then
+            destroyElement(enter.marker)
+            enters[i] = nil
+        end
     end
 end)
 

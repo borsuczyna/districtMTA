@@ -1,0 +1,39 @@
+<meta>
+    <!-- main -->
+    <script src='client/main.lua' type='client' cache='false'/>
+
+    <!-- types -->
+    <script src='client/types/position.lua' type='client' cache='false'/>
+    <script src='client/types/string.lua' type='client' cache='false'/>
+    <script src='client/types/select.lua' type='client' cache='false'/>
+    <script src='client/types/number.lua' type='client' cache='false'/>
+    <script src='client/types/color.lua' type='client' cache='false'/>
+
+    <!-- actions -->
+    <script src='client/actions.lua' type='client' cache='false'/>
+    <script src='client/actions/marker.lua' type='client' cache='false'/>
+    <script src='client/actions/outputChat.lua' type='client' cache='false'/>
+    <script src='client/actions/destroy.lua' type='client' cache='false'/>
+    
+    <!-- events -->
+    <script src='client/events.lua' type='client' cache='false'/>
+    <script src='client/events/onStart.lua' type='client' cache='false'/>
+    <script src='client/events/onMarkerHit.lua' type='client' cache='false'/>
+
+    <!-- missions -->
+    <script src='missions/test.lua' type='client' cache='false'/>
+    
+    <!-- interface -->
+    <script src='interface/main.lua' type='client' cache='false'/>
+
+    <!-- server -->
+    <script src='server/main.lua' type='server'/>
+
+    <!-- files -->
+    <file src='interface/data/interface.html'/>
+    <file src='interface/data/arguments.js'/>
+    <file src='interface/data/windows.js'/>
+    <file src='interface/data/actions.js'/>
+    <file src='interface/data/events.js'/>
+    <file src='interface/data/save.js'/>
+</meta>

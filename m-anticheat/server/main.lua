@@ -6,6 +6,7 @@ function ban(player, reason, log)
     local ip = getPlayerIP(player)
 
     exports['m-core']:permBan(player, 'Anticheat', log, reason)
+
     local message = ('Banned `%s` (`%s`, `%s`): %s'):format(name, serial, ip, log or reason)
     exports['m-logs']:sendLog('anticheat', 'error', message)
 end
@@ -29,6 +30,8 @@ addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
             ban(client, 'Speed hack', 'Speed hack')
         elseif newValue == 6 then
             ban(client, 'World special properties', 'World special properties')
+        elseif newValue == 5 then
+            ban(client, 'Teleport hack', 'Teleport hack')
         elseif newValue == 1 then
             local message = getElementData(source, 'player:gameInterval')
             ban(client, 'Lua injector', ('Lua injector %s'):format(teaDecode(message, 'district')))

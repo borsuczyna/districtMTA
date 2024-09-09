@@ -146,9 +146,15 @@ houseInteriors = {
 }
 
 interiorTextures = {
-    {name = 'A test', texture = 'a', type = 'wall'},
-    {name = 'B test', texture = 'b', type = 'floor'},
-    {name = 'C test', texture = 'c', type = 'wall'},
+    {name = 'Murowana', texture = 'wall-1', type = 'wall'},
+    {name = 'Mieszanka', texture = 'wall-2', type = 'wall'},
+    {name = 'Hotelowa', texture = 'wall-3', type = 'wall'},
+    {name = 'Przyjemna', texture = 'wall-4', type = 'wall'},
+    {name = 'Panele', texture = 'floor-1', type = 'floor'},
+    {name = 'Dywan', texture = 'floor-2', type = 'floor'},
+    {name = 'Szary dywan', texture = 'floor-3', type = 'floor'},
+    {name = 'Panele', texture = 'floor-4', type = 'floor'},
+    {name = 'Deski', texture = 'floor-5', type = 'floor'},
 }
 
 function getInteriors()

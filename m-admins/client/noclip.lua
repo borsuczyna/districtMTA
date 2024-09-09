@@ -119,5 +119,8 @@ function controllerButtonPressed(button)
     toggleNoClip()
 end
 
-bindKey('x', 'down', toggleNoClip)
+addEventHandler('onClientKey', root, function(button, press)
+    if button ~= 'x' or not press then return end
+    toggleNoClip()
+end)
 addEventHandler('controller:buttonPressed', root, controllerButtonPressed)
