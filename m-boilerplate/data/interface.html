@@ -1,5 +1,5 @@
 <style>
-    #missionEditor {
+    #boilerplate {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -13,13 +13,13 @@
     }
 </style>
 
-Wyłącz zasób m-missionEditor.<br>
+Wyłącz zasób m-boilerplate.<br>
 Służy on jedynie jako przykład i nie jest używany w projekcie.
 
 <script>
-    addEvent('missionEditor', 'play-animation', async (appear) => {
+    addEvent('boilerplate', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
-        document.querySelector('#missionEditor').style.opacity = appear ? '1' : '0';
-        document.querySelector('#missionEditor').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+        document.querySelector('#boilerplate').style.opacity = appear ? '1' : '0';
+        document.querySelector('#boilerplate').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
     });
 </script>

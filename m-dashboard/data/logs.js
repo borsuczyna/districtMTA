@@ -15,6 +15,7 @@ let MONEY_LOG = {
     license: 'Prawo jazdy',
     house: 'Mieszkanie',
     repair: 'Naprawa pojazdu',
+    atm: 'Bankomat',
 }
 
 window.dashboard_renderLogs = (element, data, moneyHistory = false) => {

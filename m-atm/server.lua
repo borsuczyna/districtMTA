@@ -60,7 +60,7 @@ addEventHandler('atm:deposit', root, function(hash, player, amount)
         return
     end
 
-    exports['m-core']:givePlayerMoney(player, 'deposit', 'Depozyt w bankomacie', -amount)
+    exports['m-core']:givePlayerMoney(player, 'atm', 'Depozyt w bankomacie', -amount)
 
     local bankMoney = getElementData(player, 'player:bankMoney') or 0
     setElementData(player, 'player:bankMoney', bankMoney + amount)
@@ -92,7 +92,7 @@ addEventHandler('atm:withdraw', root, function(hash, player, amount)
         return
     end
 
-    exports['m-core']:givePlayerMoney(player, 'withdraw', 'Wypłata z bankomatu', amount)
+    exports['m-core']:givePlayerMoney(player, 'atm', 'Wypłata z bankomatu', amount)
 
     setElementData(player, 'player:bankMoney', bankMoney - amount)
     exports['m-core']:updatePlayerMoney(player)

@@ -13,6 +13,12 @@ addEvent('jobs:destroyPed', true)
 addEvent('jobs:destroyPeds', true)
 addEvent('jobs:updateData', true)
 addEvent('jobs:resetData', true)
+addEvent('jobs:setObjectCustomData', true)
+addEvent('jobs:setObjectPosition', true)
+addEvent('jobs:setObjectOption', true)
+addEvent('jobs:setPedRotation', true)
+addEvent('jobs:setPedControlState', true)
+addEvent('jobs:setMarkerCustomData', true)
 
 local objects = {}
 local blips = {}
@@ -569,6 +575,35 @@ addEventHandler('jobs:updateObjects', resourceRoot, function(_objects)
     end
 end)
 
+addEventHandler('jobs:setObjectCustomData', resourceRoot, function(hash, key, value)
+    local obj = findElementByHash(objects, hash)
+    if not obj then return end
+
+    obj.customData[key] = value
+    updateObject(obj)
+end)
+
+addEventHandler('jobs:setObjectOption', resourceRoot, function(hash, key, value)
+    local obj = findElementByHash(objects, hash)
+    if not obj then return end
+
+    obj.options[key] = value
+    updateObject(obj)
+end)
+
+addEventHandler('jobs:setObjectPosition', resourceRoot, function(hash, x, y, z, rx, ry, rz)
+    local obj = findElementByHash(objects, hash)
+    if not obj then return end
+
+    obj.position = {x, y, z}
+    setElementPosition(obj.element, x, y, z)
+
+    if rx and ry and rz then
+        obj.rotation = {rx, ry, rz}
+        setElementRotation(obj.element, rx, ry, rz)
+    end
+end)
+
 addEventHandler('jobs:destroyObjects', resourceRoot, destroyObjects)
 addEventHandler('jobs:destroyObject', resourceRoot, destroyObject)
 addEventHandler('jobs:updateBlips', resourceRoot, function(_blips)
@@ -591,6 +626,31 @@ addEventHandler('jobs:updatePeds', resourceRoot, function(_peds)
     for i, ped in ipairs(_peds) do
         updatePed(ped)
     end
+end)
+
+addEventHandler('jobs:setPedRotation', resourceRoot, function(hash, rot)
+    local ped = findElementByHash(peds, hash)
+    if not ped then return end
+
+    ped.rotation[3] = rot
+    setElementRotation(ped.element, 0, 0, rot, 'default', true)
+end)
+
+addEventHandler('jobs:setPedControlState', resourceRoot, function(hash, control, state)
+    local ped = findElementByHash(peds, hash)
+    if not ped then return end
+
+    ped.options.controlStates = ped.options.controlStates or {}
+    ped.options.controlStates[control] = state
+    setPedControlState(ped.element, control, state)
+end)
+
+addEventHandler('jobs:setMarkerCustomData', resourceRoot, function(hash, key, value)
+    local marker = findElementByHash(markers, hash)
+    if not marker then return end
+
+    marker.customData[key] = value
+    updateMarker(marker)
 end)
 
 addEventHandler('jobs:destroyMarker', resourceRoot, destroyMarker)

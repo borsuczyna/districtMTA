@@ -480,6 +480,28 @@ models = {
         model = 4186,
         txd = 'psquare-1',
     },
+    ['alahambra-1'] = {
+        type = 'object',
+        model = 5408,
+    },
+    ['alahambra-2'] = {
+        type = 'object',
+        model = 5503,
+    },
+    ['alahambra-3'] = {
+        type = 'object',
+        model = 5501,
+        txd = 'alahambra-2',
+    },
+    ['alahambra-4'] = {
+        type = 'object',
+        model = 5502,
+        txd = 'alahambra-2',
+    },
+    ['alahambra-6'] = {
+        type = 'object',
+        model = 5397,
+    },
 }
 
 function getModelsCount()

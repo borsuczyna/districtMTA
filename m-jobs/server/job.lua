@@ -129,7 +129,8 @@ function setLobbyObjectCustomData(playerOrHash, objectHash, key, value)
     if not object then return end
 
     object.customData[key] = value
-    triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {object})
+    -- triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {object})
+    triggerClientEvent(lobby.players, 'jobs:setObjectCustomData', resourceRoot, objectHash, key, value)
 end
 
 function getLobbyObjectCustomData(playerOrHash, objectHash, key)
@@ -170,7 +171,8 @@ function setLobbyObjectPosition(playerOrHash, objectHash, x, y, z, rx, ry, rz)
     if rx and ry and rz then
         object.rotation = {rx, ry, rz}
     end
-    triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {object})
+    -- triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {object})
+    triggerClientEvent(lobby.players, 'jobs:setObjectPosition', resourceRoot, objectHash, x, y, z, rx, ry, rz)
 end
 
 function setLobbyTimer(playerOrHash, event, time, ...)
@@ -334,7 +336,8 @@ function setPedRotation(playerOrHash, hash, rotation)
     if not ped then return end
 
     ped.rotation[3] = rotation
-    triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+    -- triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+    triggerClientEvent(lobby.players, 'jobs:setPedRotation', resourceRoot, hash, rotation)
 end
 
 function setPedControlState(playerOrHash, hash, state, enabled)
@@ -346,7 +349,8 @@ function setPedControlState(playerOrHash, hash, state, enabled)
 
     ped.options.controlStates = ped.options.controlStates or {}
     ped.options.controlStates[state] = enabled
-    triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+    -- triggerClientEvent(lobby.players, 'jobs:updatePeds', resourceRoot, {ped})
+    triggerClientEvent(lobby.players, 'jobs:setPedControlState', resourceRoot, hash, state, enabled)
 end
 
 function makePedGoAway(playerOrHash, hash)
@@ -428,7 +432,8 @@ function setLobbyMarkerCustomData(playerOrHash, markerHash, key, value)
     if not marker then return end
 
     marker.customData[key] = value
-    triggerClientEvent(lobby.players, 'jobs:updateMarkers', resourceRoot, {marker})
+    -- triggerClientEvent(lobby.players, 'jobs:updateMarkers', resourceRoot, {marker})
+    triggerClientEvent(lobby.players, 'jobs:setMarkerCustomData', resourceRoot, markerHash, key, value)
 end
 
 function updateLobbyMarkers(playerOrHash)
@@ -460,7 +465,8 @@ function setLobbyObjectOption(playerOrHash, elementHash, key, value)
     if not element then return end
 
     element.options[key] = value
-    triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {element})
+    -- triggerClientEvent(lobby.players, 'jobs:updateObjects', resourceRoot, {element})
+    triggerClientEvent(lobby.players, 'jobs:setObjectOption', resourceRoot, elementHash, key, value)
 end
 
 function attachObjectToPlayer(playerOrHash, objectHash, player, bone, x, y, z, rx, ry, rz)

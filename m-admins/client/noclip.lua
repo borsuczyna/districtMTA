@@ -120,7 +120,7 @@ function controllerButtonPressed(button)
 end
 
 addEventHandler('onClientKey', root, function(button, press)
-    if button ~= 'x' or not press then return end
+    if button ~= 'x' or not press or isChatBoxInputActive() then return end
     toggleNoClip()
 end)
 addEventHandler('controller:buttonPressed', root, controllerButtonPressed)

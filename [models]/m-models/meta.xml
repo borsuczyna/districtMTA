@@ -120,6 +120,19 @@
     <file src="data/decoded/psquare-1.txd"/>
     <file src="data/decoded/psquare-2.dff"/>
     <file src="data/decoded/psquare-2.col"/>
+    <file src="data/decoded/alahambra-1.txd"/>
+    <file src="data/decoded/alahambra-1.dff"/>
+    <file src="data/decoded/alahambra-1.col"/>
+    <file src="data/decoded/alahambra-2.txd"/>
+    <file src="data/decoded/alahambra-2.dff"/>
+    <file src="data/decoded/alahambra-2.col"/>
+    <file src="data/decoded/alahambra-3.dff"/>
+    <file src="data/decoded/alahambra-3.col"/>
+    <file src="data/decoded/alahambra-4.dff"/>
+    <file src="data/decoded/alahambra-4.col"/>
+    <file src="data/decoded/alahambra-6.txd"/>
+    <file src="data/decoded/alahambra-6.dff"/>
+    <file src="data/decoded/alahambra-6.col"/>
 
     <file src="data/decoded/burger/board.dff"/>
     <file src="data/decoded/burger/board.col"/>
