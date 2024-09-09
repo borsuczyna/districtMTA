@@ -1,4 +1,4 @@
-function createFurnitureShop(type, name, x, y, z)
+function createFurnitureShop(type, name, x, y, z, interior)
     local items = {}
 
     for _, item in pairs(getFurnituresByCategory(type)) do
@@ -9,6 +9,7 @@ function createFurnitureShop(type, name, x, y, z)
         position = {x, y, z},
         name = 'Sklep z meblami',
         description = name,
-        items = items
+        items = items,
+        interior = interior
     }
 end

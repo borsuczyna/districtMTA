@@ -49,9 +49,15 @@
     <file src='data/textures/position.png'/>
     <file src='data/textures/close.png'/>
     
-    <file src='data/textures/interior/a.png'/>
-    <file src='data/textures/interior/b.png'/>
-    <file src='data/textures/interior/c.png'/>
+    <file src='data/textures/interior/floor-1.png'/>
+    <file src='data/textures/interior/floor-2.png'/>
+    <file src='data/textures/interior/floor-3.png'/>
+    <file src='data/textures/interior/floor-4.png'/>
+    <file src='data/textures/interior/floor-5.png'/>
+    <file src='data/textures/interior/wall-1.png'/>
+    <file src='data/textures/interior/wall-2.png'/>
+    <file src='data/textures/interior/wall-3.png'/>
+    <file src='data/textures/interior/wall-4.png'/>
 
     <export function='useFurniture' type='server'/>
     <export function='getInteriors' type='shared'/>

@@ -21,6 +21,22 @@ function CheapCar(models, position, exitPosition)
     }
 end
 
+function GoodCar(models, position, exitPosition)
+    return {
+        models = models,
+        position = position,
+        exitPosition = exitPosition,
+        quality = {3},
+        fuel = {60, 60},
+        maxFuel = {30, 60, 5},
+        engineCapacity = {1.8, 2, 0.1},
+        mileage = {10000, 30000, 1},
+        fuelType = {'petrol', 'diesel'},
+        rotationTime = 20,
+        countSpawn = {1, 5},
+    }
+end
+
 -- useful
 
 function randomWithStep(first, last, stepSize)

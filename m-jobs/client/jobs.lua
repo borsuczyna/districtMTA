@@ -45,7 +45,7 @@ function updateColshape(object, colshape)
         if colshape.event then
             addEventHandler('onClientColShapeHit', shape, function(hitElement, matchingDimension)
                 if hitElement ~= localPlayer or not matchingDimension then return end
-                if getTickCount() - lastEventSend < 1000 then return end
+                if getTickCount() - lastEventSend < 1500 then return end
 
                 triggerServerEvent('jobs:colshapeHit', resourceRoot, object.hash)
                 lastEventSend = getTickCount()
@@ -465,7 +465,7 @@ function updateMarkerEvent(marker, event)
     if event then
         marker.eventHandler = function(hitElement, matchingDimension)
             if hitElement ~= localPlayer or not matchingDimension then return end
-            if getTickCount() - lastEventSend < 1000 then return end
+            if getTickCount() - lastEventSend < 1500 then return end
 
             triggerServerEvent('jobs:markerHit', resourceRoot, marker.hash)
             lastEventSend = getTickCount()
