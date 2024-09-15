@@ -23,6 +23,7 @@ local function createHouseMarker(id)
     local blip = createBlipAttachedTo(marker, data.owner and 47 or 46, 2, 255, 255, 255, 255, 0, 9999)
     setElementData(marker, 'marker:title', 'Dom')
     setElementData(marker, 'marker:desc', data.name)
+    setElementData(marker, 'marker:icon', 'house')
     setElementData(marker, 'marker:house', id)
     setElementData(blip, 'blip:hoverText', data.streetName)
 

@@ -10,6 +10,7 @@ local function loadRepairShop(data)
 
     setElementData(repairMarker, 'marker:title', 'Mechanik')
     setElementData(repairMarker, 'marker:desc', 'Stanowisko naprawcze')
+    setElementData(repairMarker, 'marker:icon', 'mechanic')
 
     setElementData(repairPreviewMarker, 'marker:square', {3, 6, data.rot})
     setElementData(repairPreviewMarker, 'marker:title', '')

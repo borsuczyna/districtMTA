@@ -1,4 +1,6 @@
 local playingVoiceLines = {}
+local sx, sy = guiGetScreenSize()
+local zoomOriginal = sx < 2048 and math.min(2.2, 2048/sx) or 1
 
 local function updatePedVoice(ped, fft)
     local openMouthValue = math.sqrt(fft[15]) * 256
@@ -6,9 +8,8 @@ local function updatePedVoice(ped, fft)
     local x, y, z = getElementBonePosition(ped, boneId)
     if not x or not y or not z then return end
     
-    -- setElementBonePosition(ped, boneId, x, y, tonumber(z - openMouthValue / 3000))
     local rx, ry, rz = getElementBoneRotation(ped, boneId)
-    setElementBoneRotation(ped, boneId, rx, ry + openMouthValue * 4, rz)
+    setElementBoneRotation(ped, boneId, rx, ry + openMouthValue / 4, rz)
     updateElementRpHAnim(ped)
 end
 
@@ -17,6 +18,9 @@ function renderVoiceLines()
         removeEventHandler('onClientPedsProcessed', root, renderVoiceLines)
         return
     end
+
+    local zoom = zoomOriginal * ( 25 / interfaceSize )
+    local y = sy - 25/zoom
 
     for i, line in ipairs(playingVoiceLines) do
         if not isElement(line.ped) or not isElement(line.sound) then
@@ -45,6 +49,7 @@ function pedTellVoiceLine(ped, line, text)
     table.insert(playingVoiceLines, {
         ped = ped,
         sound = sound,
+        text = text,
         path = path
     })
 
@@ -53,26 +58,4 @@ function pedTellVoiceLine(ped, line, text)
     end
 end
 
-local testPed = createPed(0, 2090.305, -1276.982, 31.62, 180)
-setElementFrozen(testPed, true)
-setElementDimension(testPed, getElementDimension(localPlayer))
-pedTellVoiceLine(testPed, 'oblakany')
-exports['m-anim']:setPedAnimation(testPed, 'gada', true)
-
-
-exports['m-anim']:setPedAnimation(localPlayer, 'sluchawka', true)
-pedTellVoiceLine(localPlayer, 'oblakany')
--- local testPed = createPed(134, 2090.499, -1274.967, 32.424, 180)
--- setElementFrozen(testPed, true)
--- setElementDimension(testPed, getElementDimension(localPlayer))
--- exports['m-anim']:setPedAnimation(testPed, 'strzela', true)
--- givePedWeapon(testPed, 24, 1000, true)
-
--- bindKey('z', 'down', function()
---     setPedControlState(testPed, 'fire', true)
---     setTimer(function()
---         setPedControlState(testPed, 'fire', false)
---     end, 100, 1)
--- end)
-
--- setCameraMatrix(2090.159, -1276.19, 33.024, 2092.159, -1270.619, 33.78, 0, 100)
+pedTellVoiceLine(localPlayer, 'oblakany', 'Dzień dobry tutaj obłąkany człowiek prosze pani')

@@ -136,7 +136,7 @@ end)
 
 addEventHandler('onPlayerVehicleExit', root, function(vehicle)
     if getElementData(vehicle, 'scooter:owner') ~= source then return end
-    exports['m-notis']:addNotification(source, 'warning', 'Wynajem hulajnogi', 'Hulajnoga zostanie zwrócona po minucie nieaktywności, naciśnij <kbd class="keycap keycap-sm">H</kbd><div class="controller-button small circle"></div> aby ją złożyć')
+    exports['m-notis']:addNotification(source, 'info', 'Wynajem hulajnogi', 'Hulajnoga zostanie zwrócona po minucie nieaktywności, naciśnij <kbd class="keycap keycap-sm">H</kbd><div class="controller-button small circle"></div> aby ją złożyć')
 
 	timers[source] = setTimer(destroyScooter, 60000, 1, source)
 end)

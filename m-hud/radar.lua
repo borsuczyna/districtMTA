@@ -103,16 +103,23 @@ function renderRadar()
         end
     end
 
+    local pinterior = getElementInterior(localPlayer)
+    local pdimension = getElementDimension(localPlayer)
+
     for k,v in pairs(blips) do
         local icon = getBlipIcon(v)
-        if icon ~= 0 then
+        local interior = getElementInterior(v)
+        local dimension = getElementDimension(v)
+        if icon ~= 0 and interior == pinterior and dimension == pdimension then
             drawBlip(v)
         end
     end
 
     for k,v in pairs(blips) do
         local icon = getBlipIcon(v)
-        if icon == 0 then
+        local interior = getElementInterior(v)
+        local dimension = getElementDimension(v)
+        if icon == 0 and interior == pinterior and dimension == pdimension then
             drawBlip(v)
         end
     end
