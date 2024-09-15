@@ -28,7 +28,25 @@ function addMoneyLogByUid(uid, type, details, amount)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    dbExec(connection, 'INSERT INTO `m-money-logs` (`player`, `type`, `details`, `money`) VALUES (?, ?, ?, ?)', uid, type, details, amount)
+    if type ~= 'job' then
+        dbExec(connection, 'INSERT INTO `m-money-logs` (`player`, `type`, `details`, `money`) VALUES (?, ?, ?, ?)', uid, type, details, amount)
+    else
+        -- it can stack, get last log and if it's the same type, just update it
+        dbQuery(function(qh)
+            local result = dbPoll(qh, 0)
+            if result and #result > 0 then
+                local lastLog = result[1]
+                if lastLog then
+                    if lastLog['type'] == type then
+                        dbExec(connection, 'UPDATE `m-money-logs` SET `money` = `money` + ? WHERE `uid` = ?', amount, lastLog.uid)
+                        return
+                    end
+                end
+            end
+
+            dbExec(connection, 'INSERT INTO `m-money-logs` (`player`, `type`, `details`, `money`) VALUES (?, ?, ?, ?)', uid, type, details, amount)
+        end, connection, 'SELECT * FROM `m-money-logs` WHERE `player` = ? ORDER BY `uid` DESC LIMIT 1', uid)
+    end
 end
 
 function getLogType(name)
