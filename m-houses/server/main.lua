@@ -214,6 +214,34 @@ function updateHouseRents()
     end
 end
 
+function getPlayerHouses(player)
+    local playerUid = getElementData(player, 'player:uid')
+    if not playerUid then return end
+
+    local playerHouses = {}
+    for id, data in pairs(houses) do
+        if data.owner == playerUid or table.find(data.sharedPlayers, playerUid) then
+            table.insert(playerHouses, data)
+        end
+    end
+
+    return playerHouses
+end
+
+function getPlayerOwnedHouses(player)
+    local playerUid = getElementData(player, 'player:uid')
+    if not playerUid then return end
+
+    local playerHouses = {}
+    for id, data in pairs(houses) do
+        if data.owner == playerUid then
+            table.insert(playerHouses, data)
+        end
+    end
+
+    return playerHouses
+end
+
 setTimer(updateHouseRents, 60000, 0)
 
 addEventHandler('onResourceStart', resourceRoot, function()

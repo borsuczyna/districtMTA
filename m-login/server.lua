@@ -4,6 +4,7 @@ local loadedResources = {}
 
 addEvent('login:spawn', true)
 addEvent('onAccountResponse', true)
+addEvent('login-spawn:getPlayerHouses', true)
 
 addEventHandler('onPlayerResourceStart', root, function(resource)
     if resource ~= getThisResource() then return end
@@ -97,36 +98,47 @@ addEventHandler('login:spawn', resourceRoot, function(category, index)
         return
     end
 
-    -- if type(data) ~= 'table' then
-    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
-    --     return
-    -- end
+    local name, x, y, z, rot;
+    if category == 'Domy i mieszkania' then
+        local houses = exports['m-houses']:getPlayerHouses(client)
+        if not houses or #houses == 0 then
+            exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn without having any houses')
+            return
+        end
 
-    -- local x, y, z = data['1'], data['3'], data['4']
-    -- local spawnCategory = spawns[category]
-    -- if not spawnCategory then
-    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn category')
-    --     return
-    -- end
+        local house = houses[tonumber(index) + 1]
+        if not house then
+            exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid house index')
+            return
+        end
 
-    -- local spawnData = spawnCategory[tonumber(index) + 1]
-    -- if not spawnData then
-    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn index')
-    --     return
-    -- end
-    local spawnData = getSpawn(category, tonumber(index) + 1)
-    if not spawnData then
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn index')
-        return
+        name, x, y, z = house.name, unpack(house.position)
+        rot = 0
+    else
+        local spawnData = getSpawn(category, tonumber(index) + 1)
+        if not spawnData then
+            exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn index')
+            return
+        end
+
+        name, x, y, z, rot = unpack(spawnData)
     end
-
-    local name, x, y, z, rot = unpack(spawnData)
-    -- if type(x) ~= 'number' or type(y) ~= 'number' or type(z) ~= 'number' then
-    --     exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Tried to spawn with invalid spawn data')
-    --     return
-    -- end
 
     spawnPlayer(client, x, y, z, rot, getElementData(client, 'player:skin'))
     setElementData(client, 'player:spawn', {x, y, z})
     setCameraTarget(client, client)
+end)
+
+addEventHandler('login-spawn:getPlayerHouses', resourceRoot, function()
+    local houses = exports['m-houses']:getPlayerHouses(client)
+    local houseSpawns = {}
+
+    for i, house in ipairs(houses) do
+        table.insert(houseSpawns, {
+            position = house.position,
+            name = house.name,
+        })
+    end
+
+    triggerClientEvent(client, 'login-spawn:returnPlayerHouses', resourceRoot, houseSpawns)
 end)

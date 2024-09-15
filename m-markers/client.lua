@@ -184,3 +184,12 @@ local function renderMarkers()
 end
 
 addEventHandler('onClientPreRender', root, renderMarkers)
+
+-- rerender all markers targets on restore
+addEventHandler('onClientRestore', root, function(didClearRenderTargets)
+    if didClearRenderTargets then
+        for marker, target in pairs(targets) do
+            updateMarkerTarget(marker, target.target)
+        end
+    end
+end)

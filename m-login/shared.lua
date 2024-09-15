@@ -1,3 +1,5 @@
+addEvent('login-spawn:returnPlayerHouses', true)
+
 spawns = {
     {
         name = 'Los Santos',
@@ -33,3 +35,18 @@ function getSpawn(name, index)
     end
     return spawns[index]
 end
+
+addEventHandler('login-spawn:returnPlayerHouses', resourceRoot, function(houses)
+    local houseSpawns = {}
+
+    for i, v in ipairs(houses) do
+        table.insert(houseSpawns, {v.name, v.position[1], v.position[2], v.position[3], 0})
+    end
+
+    table.insert(spawns, {
+        name = 'Domy i mieszkania',
+        spawns = houseSpawns
+    })
+
+    setSpawnsData()
+end)

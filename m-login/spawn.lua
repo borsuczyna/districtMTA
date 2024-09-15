@@ -1,4 +1,5 @@
 addEvent('login-spawn:spawn', true)
+
 addEventHandler('login-spawn:spawn', root, function(category, index)
     setTimer(function()
         exports['m-ui']:destroyInterfaceElement('login-spawn')
@@ -20,5 +21,6 @@ addEventHandler('interface:load', root, function(name)
 end)
 
 function showSpawnSelect()
+    triggerServerEvent('login-spawn:getPlayerHouses', resourceRoot)
     exports['m-ui']:loadInterfaceElementFromFile('login-spawn', 'm-login/data/spawn.html')
 end

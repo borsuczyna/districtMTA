@@ -295,6 +295,9 @@
         window.login_spawn_spawns = spawnsData[0];
         let spawns = spawnsData[0];
 
+        destroyAllMapBlips(document.querySelector('#login-spawn #map-container'));
+        document.querySelector('#login-spawn #spawn-categories').innerHTML = '';
+
         for (let data of spawns) {
             let category = document.createElement('h3');
             category.classList.add('item');
