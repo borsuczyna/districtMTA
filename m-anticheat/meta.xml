@@ -5,6 +5,7 @@
     <include resource='m-ui'/>
     
     <script src='client/injector.lua' type='client' cache='false'/>
+    <script src='client/integration.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
     <script src='client/commands.lua' type='client' cache='false'/>
     <script src='client/fly-hack.lua' type='client' cache='false'/>

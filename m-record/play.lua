@@ -1,13 +1,42 @@
+addEvent("onPlaybackFinished", true)
+
 local playing = {}
+
+local function killPlayback(index)
+    local playback = playing[index]
+    if not playback then return end
+
+    -- kill timers
+    for _, timer in ipairs(playback.timers) do
+        if isTimer(timer) then
+            killTimer(timer)
+        end
+    end
+
+    -- destroy vehicles
+    for _, vehicleData in pairs(playback.vehicles) do
+        destroyElement(vehicleData.vehicle)
+    end
+end
+
+function destroyPlaybackElements(name)
+    for index, playback in pairs(playing) do
+        if playback.name == name then
+            killPlayback(index)
+            playing[index] = nil
+            return
+        end
+    end
+end
 
 local function stopPlayback(index)
     local playback = playing[index]
     if not playback then return end
 
-    -- destroyElement(playback.ped)
-    playing[index] = nil
+    -- playing[index] = nil
 
-    outputChatBox("Playback have finished", 255, 0, 0)
+    -- outputChatBox("Playback have finished", 255, 0, 0)
+    triggerEvent("onPlaybackFinished", root, playback.name)
 end
 
 local function getVehicleByIndex(index, vehicleIndex)
@@ -100,7 +129,8 @@ local function setPlaybackNextFrame(index)
     local timeDiff = nextFrameTime - currentFrameTime
 
     playback.index = playback.index + 1
-    setTimer(setPlaybackNextFrame, timeDiff, 1, index)
+    local timer = setTimer(setPlaybackNextFrame, timeDiff, 1, index)
+    table.insert(playback.timers, timer)
 end
 
 local function setPlaybackVehicleNextFrame(index, vehicleIndex)
@@ -135,7 +165,8 @@ local function setPlaybackVehicleNextFrame(index, vehicleIndex)
     local timeDiff = nextFrameTime - currentFrameTime
 
     vehicleData.index = vehicleData.index + 1
-    setTimer(setPlaybackVehicleNextFrame, timeDiff, 1, index, vehicleIndex)
+    local timer = setTimer(setPlaybackVehicleNextFrame, timeDiff, 1, index, vehicleIndex)
+    table.insert(playback.timers, timer)
 end
 
 local function updatePlayback(playback)
@@ -195,10 +226,11 @@ local function createPlaybackVehicle(index, data)
     playingData.vehicles[vehicleIndex] = data
 
     local firstSnapshot = data.data[1]
-    setTimer(setPlaybackVehicleNextFrame, firstSnapshot.tick, 1, index, vehicleIndex)
+    local timer = setTimer(setPlaybackVehicleNextFrame, firstSnapshot.tick, 1, index, vehicleIndex)
+    table.insert(playingData.timers, timer)
 end
 
-local function startPlayback(name)
+function startPlayback(name, defaultPed)
     local file = fileOpen("recordings/" .. name .. ".json")
     if not file then
         return print("Failed to open file")
@@ -207,7 +239,7 @@ local function startPlayback(name)
     local data = fromJSON(fileRead(file, fileGetSize(file)))
     fileClose(file)
 
-    local ped = createPed(data.model, 0, 0, 0)
+    local ped = defaultPed or createPed(data.model, 0, 0, 0)
     setElementInterior(ped, getElementInterior(localPlayer))
     setElementDimension(ped, getElementDimension(localPlayer))
     setElementMatrix(ped, unpack(data.matrix))
@@ -223,6 +255,7 @@ local function startPlayback(name)
         vehicles = {},
         tick = getTickCount(),
         index = 1,
+        timers = {}
     }
 
     local index = #playing + 1
@@ -233,8 +266,18 @@ local function startPlayback(name)
     end
 
     local firstSnapshot = data.data[1]
-    setTimer(setPlaybackNextFrame, firstSnapshot.tick, 1, index)
-    outputChatBox("Playback started", 0, 255, 0)
+    local timer = setTimer(setPlaybackNextFrame, firstSnapshot.tick, 1, index)
+    table.insert(playback.timers, timer)
+    -- outputChatBox("Playback started", 0, 255, 0)
+end
+
+function stopPlaybackByName(name)
+    for index, playback in pairs(playing) do
+        if playback.name == name then
+            stopPlayback(index)
+            return
+        end
+    end
 end
 
 function startPlaybackCommand(cmd, name)

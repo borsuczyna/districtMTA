@@ -29,7 +29,7 @@ function setAnimUIVisible(visible)
     -- showCursor(visible, false)
     local callback = visible and addEventHandler or removeEventHandler
     local bindCallback = visible and bindKey or unbindKey
-    callback('onClientPreRender', root, renderAnimationEditor)
+    callback('onClientPedsProcessed', root, renderAnimationEditor)
     callback('onClientClick', root, clickAnimationEditor)
     bindCallback('c', 'down', copyAnimationBind)
     bindCallback('v', 'down', pasteAnimationBind)
@@ -56,6 +56,8 @@ end
 function toggleAnimUI()
     if not getElementData(localPlayer, 'player:spawn') then return end
     setAnimUIVisible(not animUIVisible)
+
+    destroyTempElements()
 
     if animUIVisible then
         resetAnimationEditor()

@@ -8,6 +8,10 @@ function getEvents()
     return events
 end
 
+function getEvent(name)
+    return events[name]
+end
+
 function triggerMissionEvent(event, ...)
     local data = getCurrentMissionData()
     if not data then return end

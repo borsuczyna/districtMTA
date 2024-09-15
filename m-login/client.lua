@@ -58,7 +58,7 @@ function showInterface()
     sound = playSound('data/music.mp3', true)
 
     moveCamera(1936, 1628, 80, 1606.15, -1595.12, 103.31, 150)
-    addEventHandler('onClientRender', root, render, true, 'high+9999')
+    addEventHandler('onClientRender', root, render, true, 'high+9998')
     dxSetShaderValue(shader, 'screenSource', screenSource)
     guiSetInputMode('no_binds')
     showCursor(true)

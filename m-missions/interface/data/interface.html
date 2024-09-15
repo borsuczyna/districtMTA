@@ -125,7 +125,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    #missionEditor .argument[data-type="position"] input {
+    #missionEditor .argument[data-type="position"] input, #missionEditor .argument[data-type="rotation"] input, #missionEditor .argument[data-type="rotation3d"] input {
         max-width: 4rem;
     }
 
@@ -148,13 +148,8 @@
     }
 </style>
 
-<div class="window" style="--x: 30%; --y: 30%;" id="events">
+<div class="window" style="--x: 1rem; --y: 30%;" id="events">
     <div class="title-bar">Eventy</div>
-    <div class="body"></div>
-</div>
-
-<div class="window d-none" style="--x: 60%; --y: 30%;" id="actions">
-    <div class="title-bar">Akcje</div>
     <div class="body"></div>
 </div>
 
@@ -163,9 +158,26 @@
     <div class="body"></div>
 </div>
 
-<div class="window d-none" style="--x: 45%; --y: 30%;" id="addAction">
+<div class="window d-none" style="--x: 20%; --y: 30%;" id="actions">
+    <div class="title-bar">Akcje</div>
+    <div class="body"></div>
+</div>
+
+<div class="window d-none" style="--x: 60%; --y: 30%;" id="addAction">
     <div class="title-bar">Dodaj akcje</div>
     <div class="body"></div>
+</div>
+
+<div class="window" style="--x: calc(100% - 16rem); --y: calc(100% - 8.5rem);" id="manage">
+    <div class="title-bar">Zarządzanie</div>
+    <div class="body d-flex flex-column gap-1">
+        <input class="simple-input" placeholder="Nazwa misji" id="missionName" />
+        <div class="d-flex gap-1">
+            <div class="flat-button flat-button-small flex-grow-1" onclick="editor_saveMission()">Zapisz</div>
+            <div class="flat-button flat-button-small flex-grow-1" onclick="editor_testMission()">Przetestuj</div>
+            <div class="flat-button flat-button-small flex-grow-1" onclick="editor_loadMission()">Wczytaj</div>
+        </div>
+    </div>
 </div>
 
 <script>

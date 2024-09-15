@@ -38,9 +38,15 @@ function renderAction(action, index) {
                 }, action.arguments, -1, 'editor_updateActionArgument') : ''}
             
                 ${actionInfo.arguments.map((argument, index) => {
-                    return editor_renderArgument(argument, action.arguments, index, 'editor_updateActionArgument');
+                    return editor_renderArgument(argument, action.arguments, index + 1, 'editor_updateActionArgument');
                 }).join('')}
             </div>
+
+            ${actionInfo.promise ? `<div>
+                <input type="checkbox" id="promise-${index}" ${action.promise ? 'checked' : ''} onchange="editor_updateActionPromise(this, ${index})">
+                <label for="promise-${index}">${actionInfo.promise.name}</label>
+            </div>` : ''}
+                
 
             <div class="d-flex justify-end gap-1 align-items-center mt-1">
                 ${editor_getIcon('trash', true, `editor_removeAction(${index})`)}
@@ -49,12 +55,20 @@ function renderAction(action, index) {
     </div>`;
 }
 
+window.editor_updateActionPromise = (element, index) => {
+    let actions = editor_getCurrentEventActions();
+    let action = actions[index];
+
+    action.promise = element.checked;
+    editor_setCurrentEventActions(actions);
+}
+
 window.editor_updateActionArgument = (element, index) => {
     let actions = editor_getCurrentEventActions();
     let actionIndex = element.closest('.item').getAttribute('data-index');
     let action = actions[actionIndex];
 
-    action.arguments = action.arguments || [];
+    action.arguments = action.arguments || {};
 
     action.arguments[index] = editor_getValue(element);
     editor_setCurrentEventActions(actions);
@@ -80,6 +94,7 @@ window.editor_reloadActions = () => {
     </div>
 
     <div class="d-flex justify-end gap-1 align-items-center mt-1">
+        ${editor_getIcon('close', true, 'editor_hideActionsWindow()')}
         ${editor_getIcon('add', true, 'editor_showAddActionWindow()')}
     </div>`;
 }
@@ -96,7 +111,15 @@ window.editor_showAddActionWindow = () => {
                 ${actionInfo.editorName}
             </div>`;
         }).join('')}
+    </div>
+
+    <div class="d-flex justify-end gap-1 align-items-center mt-1">
+        ${editor_getIcon('close', true, 'editor_hideAddActionWindow()')}
     </div>`;
+}
+
+window.editor_hideAddActionWindow = () => {
+    editor_hideWindow('addAction');
 }
 
 window.editor_addAction = (eventName) => {
@@ -106,7 +129,7 @@ window.editor_addAction = (eventName) => {
 
     actions.push({
         name: eventName,
-        arguments: [],
+        arguments: {},
     });
 
     editor_setCurrentEventActions(actions);

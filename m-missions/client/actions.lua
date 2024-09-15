@@ -54,3 +54,7 @@ end
 function getActions()
     return actions
 end
+
+function getAction(name)
+    return actions[name]
+end

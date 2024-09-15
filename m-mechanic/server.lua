@@ -169,7 +169,8 @@ addEventHandler('mechanic:repair', resourceRoot, function(vehicle, repair)
     end
 
     local occupants = getVehicleOccupants(vehicle)
-    if #occupants ~= 0 then
+    local controller = getVehicleController(vehicle)
+    if #occupants ~= 0 or controller then
         exports['m-notis']:addNotification(client, 'error', 'Naprawa', 'Pojazd musi być pusty podczas naprawy')
         triggerClientEvent(client, 'mechanic:respond', resourceRoot, false)
         return

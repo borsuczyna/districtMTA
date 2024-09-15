@@ -9,6 +9,7 @@ addEvent('anim:cutAnimation')
 addEvent('anim:createSnapshot')
 addEvent('anim:setAnimTime')
 addEvent('anim:setEasing')
+addEvent('anim:setPosition')
 addEvent('anim:resetAnimation')
 addEvent('anim:saveAnimation')
 addEvent('anim:close')
@@ -57,11 +58,13 @@ local function updateEditingBone()
     setElementBoneRotation(localPlayer, animation.selectedBone, tempAngle[1], tempAngle[2], tempAngle[3])
     updateElementRpHAnim(localPlayer)
 
+    updateAnimationPosition(localPlayer, animation, animation.timelineTime)
     local position = Vector3(getElementBonePosition(localPlayer, animation.selectedBone))
     local matrix = getElementBoneMatrix(localPlayer, animation.selectedBone)
 
     setElementBoneRotation(localPlayer, animation.selectedBone, boneAngle[1], boneAngle[2], boneAngle[3])
     updateElementRpHAnim(localPlayer)
+    updateAnimationPosition(localPlayer, animation, animation.timelineTime)
 
     local newAxis, newRot = renderRotatePoint(position, {
         size = 0.3,
@@ -107,11 +110,14 @@ function updateEditorAnimationBones()
     end
 
     updateElementRpHAnim(localPlayer)
+    updateAnimationPosition(localPlayer, animation, animation.timelineTime)
+
     animation.timelineTime = tempTime
 end
 
 function updateTimeline()
     exports['m-ui']:setInterfaceData('anim', 'timeline', animation.bones)
+    exports['m-ui']:setInterfaceData('anim', 'positions', animation.positions)
 end
 
 function deselectBone()
@@ -267,6 +273,14 @@ addEventHandler('anim:setEasing', root, function(easing)
     exports['m-notis']:addNotification('info', 'Edytor animacji', 'Zmieniono easing klatki animacji')
 end)
 
+addEventHandler('anim:setPosition', root, function(x, y, z)
+    animation.positions = animation.positions or {}
+    animation.positions[animation.timelineTime] = {tonumber(x), tonumber(y), tonumber(z)}
+
+    updateTimeline()
+    exports['m-notis']:addNotification('info', 'Edytor animacji', 'Zmieniono pozycję klatki animacji')
+end)
+
 function resetAnimationEditor()
     animation.bones = {}
     updateTimeline()
@@ -348,6 +362,7 @@ function setEditingBone(bone)
 end
 
 function renderAnimationEditor()
+    updateAnimationPosition(localPlayer, animation, animation.timelineTime)
     updateEditorAnimationBones()
     updateEditingBone()
     drawBones()

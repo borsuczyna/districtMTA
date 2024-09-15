@@ -46,11 +46,14 @@ addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
 
     local timeUnitName = timeUnits[unit]
     local discordReason = ('Admin `%s` zbanował gracza `%s` na %d %s: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
+    local serverReason = ('Admin %s zbanował gracza % na %d: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
     local notiMessage = ('Zbanowano gracza %s na %d %s'):format(getPlayerName(foundPlayer), timeValue, timeUnitName)
-    
+
     exports['m-core']:tempBan(foundPlayer, player, timeValue, unit, discordReason, reason)
     exports['m-logs']:sendLog('admin', 'error', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Ban', notiMessage)
+
+    triggerClientEvent('createAdminNotification', resourceRoot, 'ban', serverReason)
 end)
 
 addCommandHandler('pb', function(player, cmd, playerToFind, ...)
@@ -75,11 +78,14 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
     end
 
     local discordReason = ('Admin `%s` zbanował gracza `%s` na zawsze: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
+    local serverReason = ('Admin %s zbanował gracza % na zawsze: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
     local notiMessage = ('Zbanowano gracza %s na zawsze'):format(getPlayerName(foundPlayer))
 
     exports['m-core']:permBan(foundPlayer, player, discordReason, reason)
     exports['m-logs']:sendLog('admin', 'error', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Ban', notiMessage)
+
+    triggerClientEvent('createAdminNotification', resourceRoot, 'ban', serverReason)
 end)
 
 addCommandHandler('ub', function(player, cmd, serial)

@@ -1,6 +1,7 @@
 local currentMission = nil
 missions = {}
 missionData = {}
+playedPlaybacks = {}
 
 function addSpecialMissionElement(name, element)
     destroyMissionElement(name)
@@ -9,6 +10,10 @@ function addSpecialMissionElement(name, element)
     if isElement(element) then
         setElementData(element, 'mission:element', name)
     end
+end
+
+function getMissionElement(name)
+    return missionData[name]
 end
 
 function addMissionElement(element)
@@ -27,13 +32,27 @@ function destroyAllMissionElements()
     for name, element in pairs(missionData) do
         destroyMissionElement(name)
     end
+
+    killAllPromises()
+end
+
+function stopMission()
+    destroyAllMissionElements()
+
+    for _, playback in pairs(playedPlaybacks) do
+        exports['m-record']:destroyPlaybackElements(playback)
+    end
+
+    currentMission = nil
 end
 
 function startMission(id)
     if not missions[id] then return end
 
+    stopMission()
     currentMission = id
-    destroyAllMissionElements()
+    addSpecialMissionElement('me', localPlayer)
+    
     triggerMissionEvent('onStart')
 end
 

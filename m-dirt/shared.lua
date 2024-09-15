@@ -1,5 +1,9 @@
 function isValidDirtVehicle(vehicle)
 	if vehicle and isElement(vehicle) and getElementType(vehicle) == 'vehicle' then
+		if not getElementData(vehicle, 'vehicle:uid') then 
+			return false
+		end
+		
 		if allowedVehicleTypes[getVehicleType(vehicle)] then
 			return true
 		end

@@ -1,9 +1,19 @@
+addEvent('onMissionMarkerHit')
+
 defineMissionEvent({
     name = 'onMarkerHit',
     editorName = 'Gdy gracz wejdzie w marker',
     arguments = {
         String('ID markera'),
-    }
+    },
+    generate = function(marker)
+        return {
+            arguments = {'marker'},
+            header = ('if marker == %q then'):format(marker),
+            footer = 'end',
+            tabs = 1,
+        }
+    end,
 })
 
 addEventHandler('onClientMarkerHit', root, function(hitElement, matchingDimension)
@@ -12,5 +22,9 @@ addEventHandler('onClientMarkerHit', root, function(hitElement, matchingDimensio
     local specialId = getElementData(source, 'mission:element')
     if not specialId then return end
 
-    triggerMissionEvent('onMarkerHit', specialId)
+    triggerEvent('onMissionMarkerHit', resourceRoot, specialId)
+end)
+
+addEventHandler('onMissionMarkerHit', resourceRoot, function(markerId)
+    triggerMissionEvent('onMarkerHit', markerId)
 end)

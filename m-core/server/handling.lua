@@ -38,7 +38,7 @@ addEventHandler('onVehicleStartEnter', root, function(ped, seat, jacked)
 end)
 
 addEventHandler('onElementDataChange', root, function(dataName, oldValue)
-    if getElementType(source) == 'vehicle' and updateElementDatas[dataName] then
+    if source and getElementType(source) == 'vehicle' and updateElementDatas[dataName] then
         updateVehicleHandling(source)
     end
 end)

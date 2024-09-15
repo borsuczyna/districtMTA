@@ -6,6 +6,11 @@ local function dutyResponse(queryResult, player, serial, playerUID)
     end
 
     if getElementData(player, 'player:rank') then
+        if isPedWearingJetpack(player) then
+            exports['m-notis']:addNotification(player, 'error', 'Służba administracyjna', 'Nie możesz się teraz wylogować ze służby')
+            return
+        end
+        
         exports['m-notis']:addNotification(player, 'success', 'Służba administracyjna', 'Wylogowano ze służby administracyjnej')
         removeElementData(player, 'player:rank')
 
@@ -42,3 +47,13 @@ addCommandHandler('duty', function(player)
 
     dbQuery(dutyResponse, {player, serial, playerUID}, connection, 'SELECT * FROM `m-admins` WHERE serial = ? AND playerUid = ?', serial, playerUID)
 end)
+
+function getGroundPosition()
+    local playerPos = Vector3(getElementPosition(localPlayer))
+    local x, y, z = playerPos.x, playerPos.y, playerPos.z
+    local hit, hitX, hitY, hitZ, hitElement = processLineOfSight(x, y, z + 10, x, y, z - 10, true, false, false, true, false, true, false)
+    
+    if hit then
+        return hitZ
+    end
+end

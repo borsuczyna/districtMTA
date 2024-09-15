@@ -6,7 +6,7 @@ defineMissionAction({
         Position('Pozycja'),
         Select('Typ markera', {'cylinder', 'checkpoint', 'ring', 'arrow', 'corona'}, 'cylinder'),
         Number('Wielkość', 1),
-        Color('Kolor', {255, 0, 255, 255}),
+        Color('Kolor', {255, 255, 255, 255}),
         String('Tytuł', 'Title'),
         String('Opis', 'Description')
     },
@@ -17,5 +17,21 @@ defineMissionAction({
             setElementData(marker, 'marker:desc', description)
         end
         return marker
-    end
+    end,
+    promise = {
+        name = 'Poczekaj aż gracz wejdzie w marker',
+        toCode = function(args)
+            return ('waitForMarkerEnter(%q)'):format(args['-1'])
+        end
+    }
 })
+
+function waitForMarkerEnter(markerId)
+    return Promise:new(function(resolve, _)
+        addEventHandler('onMissionMarkerHit', resourceRoot, function(hitMarkerId)
+            if hitMarkerId == markerId then
+                resolve()
+            end
+        end)
+    end)
+end

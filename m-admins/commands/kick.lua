@@ -24,6 +24,9 @@ addCommandHandler('k', function(player, cmd, playerToFind, ...)
     local foundPlayerName = getPlayerName(foundPlayer)
 
     banPlayer(foundPlayer, true, false, true, player, 'Zostałeś wyrzucony: ' .. reason, 5)
+    
     exports['m-logs']:sendLog('admin', 'error', ('Admin `%s` wyrzucił gracza `%s`: `%s`'):format(playerName, foundPlayerName, reason))
     exports['m-notis']:addNotification(player, 'success', 'Kick', ('Wyrzucono gracza %s'):format(foundPlayerName))
+
+    triggerClientEvent('createAdminNotification', resourceRoot, 'kick', ('Admin %s wyrzucił gracza %s: %s'):format(playerName, foundPlayerName, reason))
 end)

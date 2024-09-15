@@ -33,12 +33,16 @@ pcall(function()
 end)
 
 if failed then
-    setElementData(localPlayer, 'player:gameInterval', teaEncode('(**addDebugHook**)', 'district'))
+    setElementData(localPlayer, 'player:gameInterval', teaEncode('(**corrupt addDebugHook**)', 'district'))
     setElementData(localPlayer, 'player:gameTime', 1)
 end
 
 function onPreFunction(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
     local resourceName = sourceResource and getResourceName(sourceResource)
+    if resourceName == 'm-missions' then
+        -- @TODO REMOVE IT LATER, JUST FOR TESTING PURPOSES
+        return
+    end
 
     for _, v in pairs({...}) do        
         setElementData(localPlayer, 'player:gameInterval', teaEncode(('(**%s**, **%s**)'):format(functionName, v), 'district')) 

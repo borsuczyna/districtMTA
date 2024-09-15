@@ -277,7 +277,7 @@ models = {
         txd = 'gas-station/gas-station-ls',
     },
     ['gas-station/gas-station-ls3'] = {
-        custom = false,
+        custom = true,
         type = 'object',
         model = 14581,
         txd = 'gas-station/gas-station-ls',
@@ -289,7 +289,7 @@ models = {
         txd = 'gas-station/gas-station-ls',
     },
     ['gas-station/glass'] = {
-        custom = false,
+        custom = true,
         type = 'object',
         model = 16251,
         txd = 'gas-station/gas-station-ls',
@@ -493,14 +493,187 @@ models = {
         model = 5501,
         txd = 'alahambra-2',
     },
-    ['alahambra-4'] = {
-        type = 'object',
-        model = 5502,
-        txd = 'alahambra-2',
-    },
+    -- ['alahambra-4'] = {
+    --     type = 'object',
+    --     model = 5502,
+    --     txd = 'alahambra-2',
+    -- },
     ['alahambra-6'] = {
         type = 'object',
         model = 5397,
+    },
+
+
+    -- {3980, 'city_hall_3d.dff', 'city_hall_3d.txd', 'city_hall_3d.col', true, true},
+	-- {4002, 'city_hall_3d_2.dff', false, 'city_hall_3d_2.col', true, true},
+	-- {4163, 'city_hall_3d_road.dff', false, 'city_hall_3d_road.col', true, true},
+    
+    ['models/city_hall_3d'] = {
+        type = 'object',
+        model = 3980,
+    },
+    ['models/city_hall_3d_2'] = {
+        type = 'object',
+        model = 4002,
+    },
+    ['models/city_hall_3d_road'] = {
+        type = 'object',
+        model = 4163,
+    },
+    
+    -- {6053, 'auto_dealership.dff', 'auto_dealership.txd', 'auto_dealership.col', true, true},
+    -- {5994, 'auto_dealership_road.dff', false, 'auto_dealership_road.col', true, true},
+    -- {6067, 'auto_dealership_lod.dff', 'auto_dealership_lod.txd', false, true, true},
+
+    ['models/auto_dealership'] = {
+        type = 'object',
+        model = 6053,
+    },
+    ['models/auto_dealership_road'] = {
+        type = 'object',
+        model = 5994,
+    },
+    ['models/auto_dealership_lod'] = {
+        type = 'object',
+        model = 6067,
+    },
+
+    -- {5134, 'police_station_ls.dff', 'police_station_ls.txd', 'police_station_ls.col', true, true},
+	-- {5321, 'police_station_ls_lod.dff', 'police_station_ls_lod.txd', false, true, true},
+	-- {5139, 'police_station_ls2.dff', 'police_station_ls_road.txd', 'police_station_ls2.col', true, true},
+	-- {5204, 'police_station_ls2lod.dff', false, false, true, true},
+	-- {5121, 'police_station_ls_road.dff', 'police_station_ls_road.txd', 'police_station_ls_road.col', true, true},
+	-- {5270, 'police_station_ls_channels.dff', false, 'police_station_ls_channels.col', true, true},
+	-- {5404, 'police_station_ls_channels2.dff', false, 'police_station_ls_channels2.col', true, true},
+	-- {5374, 'police_station_ls_alpha.dff', 'police_station_ls_alpha.txd', 'police_station_ls_alpha.col', true, true},
+	-- {5231, 'police_station_ls_plines.dff', false, false, true, true},
+
+    ['models/police_station_ls'] = {
+        type = 'object',
+        model = 5134,
+    },
+    ['models/police_station_ls_lod'] = {
+        type = 'object',
+        model = 5321,
+    },
+    ['models/police_station_ls2'] = {
+        type = 'object',
+        model = 5139,
+    },
+    ['models/police_station_ls2lod'] = {
+        type = 'object',
+        model = 5204,
+    },
+    ['models/police_station_ls_road'] = {
+        type = 'object',
+        model = 5121,
+    },
+    ['models/police_station_ls_channels'] = {
+        type = 'object',
+        model = 5270,
+    },
+    ['models/police_station_ls_channels2'] = {
+        type = 'object',
+        model = 5404,
+    },
+    ['models/police_station_ls_alpha'] = {
+        type = 'object',
+        model = 5374,
+    },
+    ['models/police_station_ls_plines'] = {
+        type = 'object',
+        model = 5231,
+    },
+
+    -- {4019, 'ls_fire_station_building.dff', 'ls_fire_station.txd', 'ls_fire_station_building.col', true, true},
+	-- {4012, 'ls_fire_station_terrain.dff', 'ls_fire_station.txd', 'ls_fire_station_terrain.col', true, true},
+	-- {5502, 'ls_fire_station_road.dff', false, 'ls_fire_station_road.col', true, false},
+	-- {4025, 'ls_fire_station_lod.dff', 'ls_fire_station_lod.txd', false, true, true},
+
+    ['models/ls_fire_station_building'] = {
+        type = 'object',
+        model = 4019,
+        txd = 'models/ls_fire_station',
+    },
+    ['models/ls_fire_station_terrain'] = {
+        type = 'object',
+        model = 4012,
+        txd = 'models/ls_fire_station',
+    },
+    ['models/ls_fire_station_road'] = {
+        type = 'object',
+        model = 5502,
+    },
+    ['models/ls_fire_station_lod'] = {
+        type = 'object',
+        model = 4025,
+    },
+    
+    ['skatepark/1'] = {
+        type = 'object',
+        model = 5390,
+        custom = true,
+    },
+
+    ['skatepark/2'] = {
+        type = 'object',
+        model = 7100,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/3'] = {
+        type = 'object',
+        model = 7101,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/4'] = {
+        type = 'object',
+        model = 7203,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/5'] = {
+        type = 'object',
+        model = 7217,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/6'] = {
+        type = 'object',
+        model = 7218,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/7'] = {
+        type = 'object',
+        model = 7247,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/9'] = {
+        type = 'object',
+        model = 7249,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/12'] = {
+        type = 'object',
+        model = 7251,
+        txd = 'skatepark/1',
+        custom = true,
+    },
+
+    ['skatepark/5500'] = {
+        type = 'object',
+        model = 5500,
     },
 }
 
@@ -553,3 +726,7 @@ function createCustomObject(model, x, y, z, rx, ry, rz)
 end
 
 createCustomObject('railway-station', 1177.474, -1993.162, 67.508)
+removeWorldModel(5204, 1000, 2025.414, -1903.955, 13.281)
+removeWorldModel(4215, 1000, 1815.729, -1769.549, 25.905)
+removeWorldModel(1689, 20, 2242.8720703125, -1190.1533203125, 35.066143035889, 0)
+removeWorldModel(1297, 3, 1953.326, -1455.422, 13.391)

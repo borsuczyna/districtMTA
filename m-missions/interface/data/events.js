@@ -23,7 +23,7 @@ window.editor_updateEventArgument = function (element, index) {
     let value = editor_getValue(element);
     let eventIndex = element.closest('.item').getAttribute('data-index');
 
-    eventsData[eventIndex].arguments = eventsData[eventIndex].arguments || [];
+    eventsData[eventIndex].arguments = eventsData[eventIndex].arguments || {};
 
     eventsData[eventIndex].arguments[index] = value;
     editor_setEditorData('events', eventsData);
@@ -44,7 +44,7 @@ function renderEvent(event, index) {
         <div class="details">
             <div class="d-flex flex-column gap-1">
                 ${eventInfo.arguments.map((argument, index) => {
-                    return editor_renderArgument(argument, event.arguments, index, 'editor_updateEventArgument');
+                    return editor_renderArgument(argument, event.arguments, index + 1, 'editor_updateEventArgument');
                 }).join('')}
             </div>
 
@@ -56,7 +56,7 @@ function renderEvent(event, index) {
     </div>`;
 }
 
-function reloadEvents() {
+window.editor_reloadEvents = () => {
     let eventsWindow = editor_getWindowBody('events');
     let eventsData = editor_getEditorData('events');
     
@@ -81,18 +81,26 @@ window.editor_showAddEventWindow = () => {
                 ${eventInfo.editorName}
             </div>`;
         }).join('')}
+    </div>
+
+    <div class="d-flex justify-end gap-1 align-items-center mt-1">
+        ${editor_getIcon('close', true, 'editor_hideAddEventWindow()')}
     </div>`;
+}
+
+window.editor_hideAddEventWindow = () => {
+    editor_hideWindow('addEvent');
 }
 
 window.editor_addEvent = (eventName) => {
     let eventsData = editor_getEditorData('events');
     eventsData.push({
         name: eventName,
-        arguments: []
+        arguments: {}
     });
 
     editor_setEditorData('events', eventsData);
-    reloadEvents();
+    editor_reloadEvents();
     editor_hideWindow('addEvent');
 }
 
@@ -101,7 +109,7 @@ window.editor_removeEvent = (index) => {
     eventsData.splice(index, 1);
 
     editor_setEditorData('events', eventsData);
-    reloadEvents();
+    editor_reloadEvents();
 
     if (currentEditingEvent === index) {
         currentEditingEvent = null;
@@ -116,5 +124,5 @@ window.editor_editActions = (index) => {
 
 addEvent('missionEditor', 'interface:data:events', (data) => {
     actions = data[0];
-    reloadEvents();
+    editor_reloadEvents();
 });

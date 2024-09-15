@@ -39,11 +39,14 @@ addCommandHandler('zpj', function(player, cmd, playerToFind, time, ...)
 
     local timeUnitName = timeUnits[unit]
     local discordReason = ('Admin `%s` zabrał prawo jazdy `%s` na %d %s: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
+    local serverReason = ('Admin %s zabrał prawo jazdy %s na %d %s: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
     local notiMessage = ('Zabrano prawo jazdy %s na %d %s'):format(getPlayerName(foundPlayer), timeValue, timeUnitName)
     
     exports['m-core']:takeLicense(foundPlayer, player, timeValue, unit, discordReason, reason)
     exports['m-logs']:sendLog('admin', 'error', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Prawo jazdy', notiMessage)
+
+    triggerClientEvent('createAdminNotification', root, 'license', serverReason)
 end)
 
 addCommandHandler('opj', function(player, cmd, playerToFind, ...)
@@ -66,9 +69,12 @@ addCommandHandler('opj', function(player, cmd, playerToFind, ...)
     end
 
     local discordReason = ('Admin `%s` oddał prawo jazdy `%s`: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
+    local serverReason = ('Admin %s oddał prawo jazdy %s: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
     local notiMessage = ('Oddano prawo jazdy %s'):format(getPlayerName(foundPlayer))
 
     exports['m-core']:returnLicense(foundPlayer, player)
     exports['m-logs']:sendLog('admin', 'success', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Prawo jazdy', notiMessage)
+
+    triggerClientEvent('createAdminNotification', root, 'license', serverReason)
 end)

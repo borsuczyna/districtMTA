@@ -10,6 +10,13 @@ local serverTick = {
     serverStart = 0
 }
 
+local boneIDs = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 21,
+    22, 23, 24, 25, 26, 31, 32, 33,
+    34, 35, 36, 41, 42, 43, 44, 51,
+    52, 53, 54, 201, 301, 302
+}
+
 function getServerTick()
     return serverTick.serverStart + (getTickCount() - serverTick.clientStart)
 end
@@ -94,6 +101,52 @@ function updateAnimationBone(ped, bone, items, frame)
     setElementBoneRotation(ped, bone, rx, ry, rz)
 end
 
+function updateAnimationPosition(ped, data, frame)
+    local previousPosition = false
+    local nextPosition = false
+    local firstPosition = false
+
+    for time, position in pairs(data.positions or {}) do
+        if not firstPosition or time < firstPosition.time then
+            firstPosition = {time = time, position = position}
+        end
+
+        if time < frame and (not previousPosition or time > previousPosition.time) then
+            previousPosition = {time = time, position = position}
+        elseif time >= frame and (not nextPosition or time < nextPosition.time) then
+            nextPosition = {time = time, position = position}
+        end
+    end
+
+    if not previousPosition and not nextPosition then return end
+    if not nextPosition then
+        nextPosition = {
+            time = 100,
+            position = firstPosition.position
+        }
+    end
+
+    if not previousPosition then previousPosition = nextPosition end
+
+    local time = frame
+    local pTime = previousPosition.time
+    local nTime = nextPosition.time
+
+    local progress = (time - pTime) / (nTime - pTime)
+    if progress ~= progress then progress = 0 end
+
+    local xDiff, yDiff, zDiff = nextPosition.position[1] - previousPosition.position[1], nextPosition.position[2] - previousPosition.position[2], nextPosition.position[3] - previousPosition.position[3]
+    local progress = getEasingValue(progress, 'Linear')
+    local x, y, z = previousPosition.position[1] + xDiff * progress, previousPosition.position[2] + yDiff * progress, previousPosition.position[3] + zDiff * progress
+
+    -- local bx, by, bz = getElementBonePosition(ped, 0)
+    -- setElementBonePosition(ped, 0, bx + x, by + y, bz + z)
+    for _, bone in pairs(boneIDs) do
+        local bx, by, bz = getElementBonePosition(ped, bone)
+        setElementBonePosition(ped, bone, bx + x, by + y, bz + z)
+    end
+end
+
 function updateAnimationBonesForPed(ped, data, animation)
     local name = animation.name
     local key = ('%s:%s'):format(tostring(ped), tostring(name))
@@ -121,6 +174,7 @@ function updateAnimationBonesForPed(ped, data, animation)
     end
 
     updateElementRpHAnim(ped)
+    updateAnimationPosition(ped, data, frame)
 end
 
 function updatePedAnimation(ped)

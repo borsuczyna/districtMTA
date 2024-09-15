@@ -5,6 +5,18 @@ local settings = {
     snapshotInterval = 50,
 }
 
+local function uploadFile(name)
+    local file = fileOpen("recordings/" .. name .. ".json", true)
+    if not file then
+        return print("Failed to open file")
+    end
+
+    local data = fileRead(file, fileGetSize(file))
+    fileClose(file)
+
+    triggerLatentServerEvent("onClientUploadRecording", 5000, resourceRoot, name, data)
+end
+
 local function stopRecording()
     if not recording then return end
 
@@ -21,6 +33,7 @@ local function stopRecording()
     fileClose(file)
 
     outputChatBox("Recording stopped, saved as " .. recording.name .. ".json", 0, 255, 0)
+    uploadFile(recording.name)
     recording = false
 end
 

@@ -76,7 +76,7 @@ function loadModel(name, data)
         outputConsole('Załadowano wszystkie modele')
         updateAllCustomModels()
     else
-        setTimer(updateQueue, 50, 1)
+        setTimer(updateQueue, 0, 1)
     end
 end
 

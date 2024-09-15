@@ -29,6 +29,8 @@ end
 local function getTempObject(axis, color)
     if not axisObjects[axis] then
         axisObjects[axis] = createObject(1337, 0, 0, 0)
+        setElementDimension(axisObjects[axis], getElementDimension(localPlayer))
+        setElementInterior(axisObjects[axis], getElementInterior(localPlayer))
         setElementData(axisObjects[axis], 'element:model', 'rotate')
         setElementCollisionsEnabled(axisObjects[axis], false)
         setElementDoubleSided(axisObjects[axis], true)

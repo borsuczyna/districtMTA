@@ -39,11 +39,14 @@ addCommandHandler('m', function(player, cmd, playerToFind, time, ...)
 
     local timeUnitName = timeUnits[unit]
     local discordReason = ('Admin `%s` wyciszył gracza `%s` na %d %s: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
+    local serverReason = ('Admin %s wyciszył gracza %s na %d %s: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
     local notiMessage = ('Wyciszono gracza %s na %d %s'):format(getPlayerName(foundPlayer), timeValue, timeUnitName)
     
     exports['m-core']:mutePlayer(foundPlayer, player, timeValue, unit, discordReason, reason)
     exports['m-logs']:sendLog('admin', 'error', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Mute', notiMessage)
+
+    triggerClientEvent('createAdminNotification', resourceRoot, 'mute', serverReason)
 end)
 
 addCommandHandler('um', function(player, cmd, playerToFind, ...)
@@ -66,9 +69,12 @@ addCommandHandler('um', function(player, cmd, playerToFind, ...)
     end
 
     local discordReason = ('Admin `%s` odciszył gracza `%s`: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
+    local serverReason = ('Admin %s odciszył gracza %s: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
     local notiMessage = ('Odciszono gracza %s'):format(getPlayerName(foundPlayer))
 
     exports['m-core']:unmutePlayer(foundPlayer, player)
     exports['m-logs']:sendLog('admin', 'success', discordReason)
     exports['m-notis']:addNotification(player, 'success', 'Unmute', notiMessage)
+
+    triggerClientEvent('createAdminNotification', resourceRoot, 'mute', serverReason)
 end)

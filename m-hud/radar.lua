@@ -63,7 +63,7 @@ function renderRadar()
     dxSetShaderValue(radar.shader, "gUVRotAngle", math.rad(-camrot))
     
     local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSettings.size - 45/zoom, radarSettings.size, radarSettings.size
-    dxDrawImage(radarX - 8/zoom, radarY - 8/zoom, radarW + 14/zoom, radarH + 14/zoom, textures[4], 0, 0, 0, tocolor(255, 255, 255, 255))
+    dxDrawImage(radarX - 12/zoom, radarY - 12/zoom, radarW + 25/zoom, radarH + 22/zoom, textures[4], 0, 0, 0, tocolor(255, 255, 255, 200))
     dxDrawImage(radarX, radarY, radarW, radarH, radar.shader, 0, 0, 0, tocolor(255, 255, 255, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, textures[3], 0, 0, 0, tocolor(255, 255, 255, 255))
     -- draw zone name

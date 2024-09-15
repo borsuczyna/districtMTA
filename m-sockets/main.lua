@@ -18,6 +18,8 @@ function handleMessage(message)
         handleClearAvatar(message.message)
     elseif message.type == 'connectAccount' then
         handleConnectAccount(message.message)
+    elseif message.type == 'getAllPlayers' then
+        getAllPlayers()
     end
 end
 

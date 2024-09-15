@@ -103,6 +103,12 @@
         Easing:
         <div id="anim-easing" onclick="anim_openEasingSelect(event)"></div>
     </div>
+    <div class="d-flex gap-1">
+        Position:
+        <input type="number" id="anim-position-x" value="0" min="-100" max="100" step="0.01" oninput="anim_setPosition()">
+        <input type="number" id="anim-position-y" value="0" min="-100" max="100" step="0.01" oninput="anim_setPosition()">
+        <input type="number" id="anim-position-z" value="0" min="-100" max="100" step="0.01" oninput="anim_setPosition()">
+    </div>
     <div class="d-flex flex-column gap-1">  
         Animation name:
         <input type="text" id="anim-name" value="my-animation">
@@ -272,6 +278,7 @@
     ];
     let timelineTime = 0;
     let timelineData = [];
+    let positionsData = [];
     let selectedBone = false;
 
     function updateEasing() {
@@ -285,6 +292,21 @@
         if (!keyframe) return;
 
         document.querySelector('#anim #anim-easing').innerHTML = keyframe.easing || 'Linear';
+    }
+
+    function updatePosition() {
+        let position = positionsData[timelineTime];
+        if (!position) return;
+
+        // document.querySelector('#anim #anim-position-x').value = position[0];
+        // document.querySelector('#anim #anim-position-y').value = position[1];
+        // document.querySelector('#anim #anim-position-z').value = position[2];
+        // if its the same dont update
+
+        let [x, y, z] = [document.querySelector('#anim #anim-position-x').value, document.querySelector('#anim #anim-position-y').value, document.querySelector('#anim #anim-position-z').value];
+        if (parseFloat(x) != parseFloat(position[0])) document.querySelector('#anim #anim-position-x').value = position[0];
+        if (parseFloat(y) != parseFloat(position[1])) document.querySelector('#anim #anim-position-y').value = position[1];
+        if (parseFloat(z) != parseFloat(position[2])) document.querySelector('#anim #anim-position-z').value = position[2];
     }
 
     function renderTimeline() {
@@ -307,6 +329,7 @@
         }
 
         updateEasing();
+        updatePosition();
     }
 
     window.anim_deleteFrame = () => {
@@ -355,6 +378,18 @@
         document.querySelector('#anim #easing-select').style.display = 'none';
     }
 
+    window.anim_setPosition = () => {
+        let x = document.querySelector('#anim #anim-position-x').value;
+        let y = document.querySelector('#anim #anim-position-y').value;
+        let z = document.querySelector('#anim #anim-position-z').value;
+        x = parseFloat(x);
+        y = parseFloat(y);
+        z = parseFloat(z);
+        if (isNaN(x) || isNaN(y) || isNaN(z)) return;
+
+        mta.triggerEvent('anim:setPosition', x, y, z);
+    }
+
     window.anim_saveAnimation = () => {
         let name = document.querySelector('#anim #anim-name').value;
         mta.triggerEvent('anim:saveAnimation', name);
@@ -393,6 +428,11 @@
 
     addEvent('anim', 'interface:data:timeline', async (data) => {
         timelineData = data[0];
+        renderTimeline();
+    });
+
+    addEvent('anim', 'interface:data:positions', async (data) => {
+        positionsData = data[0];
         renderTimeline();
     });
 

@@ -58,5 +58,5 @@ function startCameraInterpolation()
     -- startPlaybackCommand('', '')
 end
 
-bindKey("l", "down", startCameraInterpolation)
-setCameraTarget(localPlayer)
+-- bindKey("l", "down", startCameraInterpolation)
+-- setCameraTarget(localPlayer)

@@ -17,7 +17,11 @@
     <file src='animations/odlatuje.json'/>
     <file src='animations/carry-burger.json'/>
     <file src='animations/inspect.json'/>
+    <file src='animations/gada.json'/>
+    <file src='animations/strzela.json'/>
+    <file src='animations/sluchawka.json'/>
 
+    <export function='toggleAnimUI' type='client'/>
     <export function='setPedAnimation' type='shared'/>
     <export function='addPedAnimation' type='shared'/>
     <export function='removePedAnimation' type='shared'/>
