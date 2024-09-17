@@ -129,12 +129,14 @@ addEventHandler('dashboard:vehicleDetails', resourceRoot, function(id)
     end
 
     local fuel = getElementData(vehicle, 'vehicle:fuel')
+    local maxFuel = getElementData(vehicle, 'vehicle:maxFuel')
     local mileage = getElementData(vehicle, 'vehicle:mileage')
     local x, y, z = getElementPosition(vehicle)
     local lastDriver = getElementData(vehicle, 'vehicle:lastDriver')
 
     triggerClientEvent(client, 'dashboard:vehicleDetailsResult', resourceRoot, id, {
         fuel = fuel,
+        maxFuel = maxFuel,
         mileage = mileage,
         position = {x, y, z},
         lastDriver = exports['m-core']:getPlayerNameByUid(tonumber(lastDriver)) or 'Brak'

@@ -48,7 +48,10 @@ window.dashboard_renderAccount = (data) => {
     setData('Organizacja', data.organization);
 
     setArcPercent(document.querySelector('#dashboard .level-card .level'), data.exp / data.nextLevelExp * 99.99);
+    
     document.querySelector('#dashboard .level-card .level-text').innerText = data.level;
+    document.querySelector('#dashboard .level-card .level-text').style.fontSize = (data.level >= 1000 && '2.5rem' || data.level >= 100 && '3rem' || '4.1rem');
+    
     document.querySelectorAll('#dashboard .money-card .money')[0].innerText = `\$${data.money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     document.querySelectorAll('#dashboard .money-card .money')[1].innerText = `\$${data.bankMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     document.querySelector('#dashboard #username').innerText = data.username;

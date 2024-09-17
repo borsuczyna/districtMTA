@@ -62,6 +62,7 @@ window.dashboard_vehicleDetails = function(id, data) {
     let details = document.querySelector('#dashboard #tabs #vehicle-details');
     let position = data?.position || vehicle.position.split(',').map(v => parseFloat(v));
     let fuel = parseFloat(data?.fuel || vehicle.fuel);
+    let maxFuel = parseFloat(data?.maxFuel || vehicle.maxFuel);
     let mileage = parseFloat(data?.mileage || vehicle.mileage);
 
     details.innerHTML = `
@@ -82,7 +83,7 @@ window.dashboard_vehicleDetails = function(id, data) {
                 </div>
                 <div class="d-flex gap-1">
                     <div class="label">Paliwo:</div>
-                    <div>${fuel.toFixed(2)}%</div>
+                    <div>${fuel.toFixed(2)}/${maxFuel.toFixed(2)} l</div>
                 </div>
                 <div class="d-flex gap-1">
                     <div class="label">Przebieg:</div>
