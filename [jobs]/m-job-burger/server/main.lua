@@ -6,6 +6,8 @@ addEvent('jobs:burger:getServerTick', true)
 local dimensionsInUse = {}
 local interiorObject = createObject(1337, unpack(settings.interior))
 setElementDimension(interiorObject, 10000)
+setElementAlpha(interiorObject, 0)
+setElementCollisionsEnabled(interiorObject, false)
 
 local blip = createBlip(settings.jobStart, 40, 2, 255, 255, 255, 255, 0, 9999)
 setElementData(blip, 'blip:hoverText', 'Praca dorywcza<br>Burgerownia')

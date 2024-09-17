@@ -109,7 +109,7 @@ end)
 addEventHandler('jobs:burger:pedLeave', resourceRoot, function(lobby, hash)
     if client then
         if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (jobs:burger:pedLeave)')
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (**jobs:burger:pedLeave**)')
     end
     exports['m-jobs']:destroyLobbyPed(lobby, hash)
 end)
@@ -230,7 +230,7 @@ end
 addEventHandler('jobs:burger:addRandomNpc', resourceRoot, function(lobby)
     if client then
         if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (jobs:burer:addRandomNpc)')
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (**jobs:burer:addRandomNpc**)')
     end
     local randomTime = math.random(unpack(settings.npcSpawnInterval))
     local timeMultiplier = 1
