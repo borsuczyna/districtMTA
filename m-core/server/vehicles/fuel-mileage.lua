@@ -18,12 +18,13 @@ function changeFuel(vehicle)
         local lpgFuel = getElementData(vehicle, 'vehicle:lpgFuel') or 100
         local lpgState = getElementData(vehicle, 'vehicle:lpgState')
 
-        if lpgState == 1 then
+        if lpgState then
             if lpgFuel <= 0 then
                 setVehicleEngineState(vehicle, false)
             end
 
             lpgFuel = lpgFuel - speed / 18000
+            lpgFuel = math.max(lpgFuel, 0)
             setElementData(vehicle, 'vehicle:lpgFuel', lpgFuel)
         else
             if fuel <= 0 then
@@ -31,6 +32,7 @@ function changeFuel(vehicle)
             end
 
             fuel = fuel - speed / 18000
+            fuel = math.max(fuel, 0)
             setElementData(vehicle, 'vehicle:fuel', fuel)
         end
     end

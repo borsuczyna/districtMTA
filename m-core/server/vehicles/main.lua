@@ -29,9 +29,9 @@ local function loadPrivateVehicle(data, player, position)
     local rx, ry, rz = unpack(map(split(data.rotation, ','), tonumber))
     local fuel = data.fuel
     local maxFuel = data.maxFuel
-    local lpg = data.lpg
+    local lpg = data.lpg == 1
     local lpgFuel = data.lpgFuel
-    local lpgState = data.lpgState
+    local lpgState = data.lpgState == 1
     local fuelType = data.fuelType or 'petrol'
     local engineCapacity = data.engineCapacity
     local mileage = data.mileage
@@ -169,9 +169,9 @@ function buildSavePrivateVehicleQuery(vehicle)
         lastDriver = lastDriver,
         fuel = fuel,
         maxFuel = maxFuel,
-        lpg = lpg,
+        lpg = lpg and 1 or 0,
         lpgFuel = lpgFuel,
-        lpgState = lpgState,
+        lpgState = lpgState and 1 or 0,
         fuelType = fuelType,
         engineCapacity = engineCapacity,
         mileage = mileage,

@@ -54,8 +54,14 @@ local function renderSpeedo()
     local speed = getVehicleSpeed(vehicle)
     local rpm = getVehicleRPM(vehicle)
     local mileage = getElementData(vehicle, 'vehicle:mileage') or 3213
+
     local fuel = getElementData(vehicle, 'vehicle:fuel') or 37
     local maxFuel = getElementData(vehicle, 'vehicle:maxFuel') or 37
+    local lpgState = getElementData(vehicle, 'vehicle:lpgState') or false
+    if lpgState then
+        fuel = getElementData(vehicle, 'vehicle:lpgFuel') or 37
+    end
+
     local r, g, b = getVehicleHeadLightColor(vehicle)
 
     local icons = {

@@ -98,9 +98,12 @@ local options = {
     {
         text = function(vehicle)
             local state = getElementData(vehicle, 'vehicle:lpgState')
-            return (state == 1) and 'Przełącz na benzynę' or 'Przełącz na LPG'
+            return state and 'Przełącz na benzynę' or 'Przełącz na LPG'
         end,
-        icon = 'hood',
+        condition = function(vehicle)
+            return getElementData(vehicle, 'vehicle:lpg')
+        end,
+        icon = 'fuel',
         key = 'fuelType',
         serverAction = 'fuelType',
     },
@@ -133,9 +136,11 @@ function getInteractionOptions()
 
     for i, option in ipairs(options) do
         if not isPassenger or option.passenger then 
-            local text = type(option.text) == 'function' and option.text(vehicle) or option.text
-            local icon = type(option.icon) == 'function' and option.icon(vehicle) or option.icon
-            table.insert(availableOptions, {text, icon, option.key})
+            if not option.condition or option.condition(vehicle) then
+                local text = type(option.text) == 'function' and option.text(vehicle) or option.text
+                local icon = type(option.icon) == 'function' and option.icon(vehicle) or option.icon
+                table.insert(availableOptions, {text, icon, option.key})
+            end
         end
     end
 

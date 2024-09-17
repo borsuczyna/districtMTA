@@ -58,8 +58,15 @@ local function hitStationMarker(player, matchingDimension)
     local fuel = getElementData(vehicle, 'vehicle:fuel')
     local maxFuel = getElementData(vehicle, 'vehicle:maxFuel')
     local fuelType = getElementData(vehicle, 'vehicle:fuelType')
+    local lpg = getElementData(vehicle, 'vehicle:lpg')
+    local lpgFuel = getElementData(vehicle, 'vehicle:lpgFuel')
 
     table.insert(fuels, {name = fuelNames[fuelType], price = fuelPrices[fuelType], amount = fuel, max = maxFuel})
+
+    if lpg then
+        table.insert(fuels, {name = fuelNames.lpg, price = fuelPrices.lpg, amount = lpgFuel, max = 25})
+    end
+
     triggerClientEvent(player, 'stations:showFuelStationsUi', resourceRoot, {
         fuels = fuels
     })
@@ -112,13 +119,25 @@ addEventHandler('stations:refill', root, function(hash, player, fuelName, amount
     local maxFuel = getElementData(vehicle, 'vehicle:maxFuel')
     local fuelType = getElementData(vehicle, 'vehicle:fuelType')
     local selectedFuel = getFuelTypeFromName(fuelName)
+    local lpg = getElementData(vehicle, 'vehicle:lpg')
+    local lpgFuel = getElementData(vehicle, 'vehicle:lpgFuel')
 
-    if fuelType ~= selectedFuel then
+    local price = 0
+    if selectedFuel ~= 'lpg' and fuelType ~= selectedFuel then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie możesz zatankować tego paliwa.'})
+        return
+    elseif selectedFuel == 'lpg' and not lpg then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Twój pojazd nie posiada instalacji gazowej.'})
         return
     end
 
-    local price = fuelPrices[selectedFuel] * amount
+    if selectedFuel == 'lpg' then
+        maxFuel = 25
+        amount = math.min(amount, maxFuel - lpgFuel)
+        fuel = lpgFuel
+    end
+
+    price = fuelPrices[selectedFuel] * amount
     if getPlayerMoney(player) < price then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie masz wystarczająco pieniędzy.'})
         return
@@ -127,11 +146,16 @@ addEventHandler('stations:refill', root, function(hash, player, fuelName, amount
     local possibleFuel = maxFuel - fuel
     amount = math.min(amount, possibleFuel)
     if amount <= 0 then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Twój pojazd jest pełny.'})
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Bak jest pełny.'})
         return
     end
 
     exports['m-core']:givePlayerMoney(player, 'stations', ('Zatankowanie pojazdu %s (%d) - %dL %s'):format(getVehicleName(vehicle), uid, amount, fuelName), -price)
-    setElementData(vehicle, 'vehicle:fuel', fuel + amount)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zatankowano pojazd.', fuel = fuel + amount})
+    
+    if selectedFuel == 'lpg' then
+        setElementData(vehicle, 'vehicle:lpgFuel', fuel + amount)
+    else
+        setElementData(vehicle, 'vehicle:fuel', fuel + amount)
+    end
 end)
