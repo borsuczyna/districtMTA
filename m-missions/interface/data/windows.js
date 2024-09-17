@@ -1,9 +1,43 @@
+let savedScrollPositions = [];
 let windows = {
     events: document.querySelector('#missionEditor #events'),
     actions: document.querySelector('#missionEditor #actions'),
     addEvent: document.querySelector('#missionEditor #addEvent'),
     addAction: document.querySelector('#missionEditor #addAction'),
 };
+
+function getElementPath(element) {
+    let path = [];
+    while (element) {
+        path.push(element.tagName + (element.id ? '#' + element.id : '') + (element.className ? '.' + element.className : ''));
+        element = element.parentElement;
+    }
+    return path.join(' > ');
+}
+
+window.editor_saveScrollPosition = (element) => {
+    let saveScroll = (element) => {
+        savedScrollPositions.push({
+            path: getElementPath(element),
+            scroll: element.scrollTop,
+        });
+    }
+
+    saveScroll(element);
+    element.querySelectorAll('.nice-scroll').forEach(saveScroll);
+}
+
+window.editor_loadScrollPosition = (element) => {
+    let loadScroll = (element) => {
+        let saved = savedScrollPositions.find((saved) => getElementPath(element) == saved.path);
+        if (saved) {
+            element.scrollTop = saved.scroll;
+        }
+    }
+
+    loadScroll(element);
+    element.querySelectorAll('.nice-scroll').forEach(loadScroll);
+}
 
 window.editor_getWindow = (name) => {
     return windows[name];

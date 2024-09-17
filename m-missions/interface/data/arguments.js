@@ -58,7 +58,7 @@ window.editor_renderArgument = (argument, valueArray, index, callback) => {
         </div>`;
     } else if (argument.type === 'checkbox') {
         return `<div class="argument" data-type="${argument.type}">
-            <div>
+            <div data-type="${argument.type}">
                 <input type="checkbox" ${value ? 'checked' : ''} onchange="${callback}(this.parentElement, '${index}')">
                 <label>${argument.name}</label>
             </div>

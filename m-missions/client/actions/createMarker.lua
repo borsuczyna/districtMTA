@@ -7,15 +7,25 @@ defineMissionAction({
         Select('Typ markera', {'cylinder', 'checkpoint', 'ring', 'arrow', 'corona'}, 'cylinder'),
         Number('Wielkość', 1),
         Color('Kolor', {255, 255, 255, 255}),
-        String('Tytuł', 'Title'),
-        String('Opis', 'Description')
+        String('Tytuł', ''),
+        String('Opis', ''),
+        String('Ikona', '')
     },
-    callback = function(position, type, size, color, title, description)
-        local marker = createMarker(position, type, size, unpack(color))
-        if title then
+    callback = function(position, type, size, color, title, description, icon)
+        local marker = createMarker(position.x, position.y, position.z, type, size, unpack(color))
+
+        if title and #title > 0 then
             setElementData(marker, 'marker:title', title)
+        end
+
+        if description and #description > 0 then
             setElementData(marker, 'marker:desc', description)
         end
+
+        if icon and #icon > 0 then
+            setElementData(marker, 'marker:icon', icon)
+        end    
+
         return marker
     end,
     promise = {

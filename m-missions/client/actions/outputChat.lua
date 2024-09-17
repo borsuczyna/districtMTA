@@ -2,7 +2,7 @@ defineMissionAction({
     name = 'outputChat',
     editorName = 'Wiadomość na chacie',
     arguments = {
-        String('Wiadomość', 'Hello World'),
+        String('Wiadomość', ''),
         Color('Kolor', {255, 255, 255, 255})
     },
     callback = function(message, color)

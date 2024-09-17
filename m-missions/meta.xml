@@ -1,10 +1,13 @@
 <meta>
     <!-- main -->
+    <script src="shared/promise.lua" type="shared" cache="false" />
+    <script src="shared/utils.lua" type="shared" cache="false" />
     <script src="client/useful.lua" type="client" cache="false" />
     <script src="client/main.lua" type="client" cache="false" />
-    <script src="client/promise.lua" type="client" cache="false" />
     <script src="client/generator.lua" type="client" cache="false" />
     <script src="client/voice.lua" type="client" cache="false" />
+    <script src="client/actions.lua" type="client" cache="false" />
+    <script src="client/events.lua" type="client" cache="false" />
     
     <!-- types -->
     <script src="client/types/position.lua" type="client" cache="false" />
@@ -18,8 +21,8 @@
     <script src="client/types/checkbox.lua" type="client" cache="false" />
     
     <!-- actions -->
-    <script src="client/actions.lua" type="client" cache="false" />
     <script src="client/actions/createMarker.lua" type="client" cache="false" />
+    <script src="client/actions/createBlip.lua" type="client" cache="false" />
     <script src="client/actions/createPed.lua" type="client" cache="false" />
     <script src="client/actions/outputChat.lua" type="client" cache="false" />
     <script src="client/actions/destroy.lua" type="client" cache="false" />
@@ -27,19 +30,32 @@
     <script src="client/actions/playPlayback.lua" type="client" cache="false" />
     <script src="client/actions/playAnimation.lua" type="client" cache="false" />
     <script src="client/actions/warpIntoVehicle.lua" type="client" cache="false" />
-    <script src="client/actions/createVehicle.lua" type="client" cache="false" />
+    <script src="client/actions/vehicle.lua" type="client" cache="false" />
     <script src="client/actions/destroyPlaybackElements.lua" type="client" cache="false" />
+    <script src="client/actions/tellVoiceLine.lua" type="client" cache="false" />
+    <script src="client/actions/moveToMissionDimension.lua" type="client" cache="false" />
+    <script src="client/actions/setEngineState.lua" type="client" cache="false" />
+    <script src="client/actions/setLightsState.lua" type="client" cache="false" />
+    <script src="client/actions/setVelocity.lua" type="client" cache="false" />
+    <script src="client/actions/camera.lua" type="client" cache="false" />
+    <script src="client/actions/setElementPosition.lua" type="client" cache="false" />
+    <script src="client/actions/triggerEvent.lua" type="client" cache="false" />
+    <script src="client/actions/mission.lua" type="client" cache="false" />
+    <script src="client/actions/element.lua" type="client" cache="false" />
     
     <!-- events -->
-    <script src="client/events.lua" type="client" cache="false" />
     <script src="client/events/onStart.lua" type="client" cache="false" />
     <script src="client/events/onMarkerHit.lua" type="client" cache="false" />
     <script src="client/events/onPlaybackFinish.lua" type="client" cache="false" />
+    <script src="client/events/onDialogFinish.lua" type="client" cache="false" />
+    <script src="client/events/onVehicleEnter.lua" type="client" cache="false" />
+    <script src="client/events/onVehicleDamage.lua" type="client" cache="false" />
     
     <!-- interface -->
     <script src="interface/main.lua" type="client" cache="false" />
     
     <!-- server -->
+    <script src="server/save.lua" type="server" />
     <script src="server/main.lua" type="server" />
     
     <!-- files -->
@@ -49,14 +65,12 @@
     <file src="interface/data/actions.js" />
     <file src="interface/data/events.js" />
     <file src="interface/data/save.js" />
-
+    
     <!-- voice lines -->
     <file src="data/voice/test.wav" />
     <file src="data/voice/oblakany.wav" />
     
     <!-- missions -->
-    <script type="client" cache="false"></script>
-    <script src="missions/test.lua" type="client" cache="false"></script>
-    <script src="missions/test2.lua" type="client" cache="false"></script>
-    <script src="missions/ped.lua" type="client" cache="false"></script>
+    <script src="missions/prolog.lua" type="shared" cache="false"></script>
+    <script src="missions/test.lua" type="shared" cache="false"></script>
 </meta>

@@ -4,9 +4,10 @@ defineMissionAction({
     arguments = {
         String('Ped', ''),
         Animation('Animacja'),
-        Checkbox('Powtarzaj', false),
+        Checkbox('Powtarzaj'),
     },
     callback = function(ped, animation, loop)
+        local ped = getMissionElement(ped)
         exports['m-anim']:setPedAnimation(ped, animation, loop)
     end
 })

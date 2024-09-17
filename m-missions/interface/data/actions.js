@@ -50,6 +50,8 @@ function renderAction(action, index) {
 
             <div class="d-flex justify-end gap-1 align-items-center mt-1">
                 ${editor_getIcon('trash', true, `editor_removeAction(${index})`)}
+                ${editor_getIcon('arrow-up', true, `editor_moveAction(${index}, -1)`)}
+                ${editor_getIcon('arrow-down', true, `editor_moveAction(${index}, 1)`)}
             </div>
         </div>
     </div>`;
@@ -61,6 +63,22 @@ window.editor_updateActionPromise = (element, index) => {
 
     action.promise = element.checked;
     editor_setCurrentEventActions(actions);
+}
+
+window.editor_moveAction = (index, direction) => {
+    let actions = editor_getCurrentEventActions();
+    let action = actions[index];
+    actions.splice(index, 1);
+    actions.splice(index + direction, 0, action);
+    editor_setCurrentEventActions(actions);
+    editor_reloadActions();
+
+    // open the moved item
+    let item = document.querySelector(`#actions .item[data-index="${index + direction}"]`);
+    if (item)
+        editor_openListItem(null, item);
+
+    editor_loadScrollPosition(editor_getWindowBody('actions'));
 }
 
 window.editor_updateActionArgument = (element, index) => {
@@ -89,7 +107,9 @@ window.editor_reloadActions = () => {
     }
 
     let body = editor_getWindowBody('actions');
-    body.innerHTML = `<div class="list">
+    editor_saveScrollPosition(body);
+
+    body.innerHTML = `<div class="list nice-scroll">
         ${actions.map((action, index) => renderAction(action, index)).join('')}
     </div>
 
@@ -97,14 +117,19 @@ window.editor_reloadActions = () => {
         ${editor_getIcon('close', true, 'editor_hideActionsWindow()')}
         ${editor_getIcon('add', true, 'editor_showAddActionWindow()')}
     </div>`;
+
+    editor_loadScrollPosition(body);
 }
 
 window.editor_showAddActionWindow = () => {
     editor_showWindow('addAction');
 
     let body = editor_getWindowBody('addAction');
-    
-    body.innerHTML = `<div class="list">
+    editor_saveScrollPosition(body);
+
+    body.innerHTML = `<input type="text" class="mission-input mb-2" placeholder="Wyszukaj akcję" oninput="editor_filterActions(this)">
+
+    <div class="list nice-scroll">
         ${Object.keys(actions).map((actionName) => {
             let actionInfo = actions[actionName].data;
             return `<div class="item" onclick="editor_addAction('${actionName}')">
@@ -116,6 +141,20 @@ window.editor_showAddActionWindow = () => {
     <div class="d-flex justify-end gap-1 align-items-center mt-1">
         ${editor_getIcon('close', true, 'editor_hideAddActionWindow()')}
     </div>`;
+
+    editor_loadScrollPosition(body);
+}
+
+window.editor_filterActions = (element) => {
+    let list = element.nextElementSibling;
+    let items = list.querySelectorAll('.item');
+
+    items.forEach((item) => {
+        if (item.innerText.toLowerCase().includes(element.value.toLowerCase()))
+            item.style.display = 'block';
+        else
+            item.style.display = 'none';
+    });
 }
 
 window.editor_hideAddActionWindow = () => {

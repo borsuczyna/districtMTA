@@ -6,18 +6,17 @@ defineMissionAction({
     arguments = {
         String('Ped', ''),
         Recording('Nazwa'),
+        Checkbox('Poczekaj na zakończenie')
     },
-    callback = function(ped, name)
+    callback = function(ped, name, wait)
         local ped = getMissionElement(ped)
         exports['m-record']:startPlayback(name, ped)
         table.insert(playedPlaybacks, name)
-    end,
-    promise = {
-        name = 'Poczekaj aż nagranie się zakończy',
-        toCode = function(args)
-            return ('waitForPlaybackFinish(%q)'):format(args['2'])
+
+        if wait then
+            await(waitForPlaybackFinish(name))
         end
-    }
+    end,
 })
 
 function waitForPlaybackFinish(playbackName)

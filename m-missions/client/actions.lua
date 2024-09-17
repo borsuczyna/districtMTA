@@ -1,13 +1,13 @@
 local actions = {}
 
-local function checkArguments(argumentsDefinitions, arguments)
+local function checkArguments(argumentsDefinitions, arguments, codeGeneration)
     local result = {}
 
     for index, definition in ipairs(argumentsDefinitions) do
         local value = arguments[index]
 
         if not value then
-            if definition.default then
+            if definition.default ~= nil then
                 value = definition.default
             else
                 error(('Argument %s (%d) is required'):format(definition.name, index))
@@ -23,6 +23,11 @@ local function checkArguments(argumentsDefinitions, arguments)
         table.insert(result, value)
     end
 
+    if codeGeneration then
+        local lastArgument = arguments[#arguments]
+        table.insert(result, lastArgument)
+    end
+
     return result
 end
 
@@ -35,7 +40,7 @@ function defineMissionAction(data)
         __call = function(self, _, specialId, ...)
             local arguments = data.specialId and {...} or {specialId, ...}
 
-            arguments = checkArguments(data.arguments, arguments)
+            arguments = checkArguments(data.arguments, arguments, data.codeGeneration)
             local element = data.callback(unpack(arguments))
 
             if element then

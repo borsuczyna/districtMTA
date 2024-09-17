@@ -16,7 +16,9 @@ function triggerMissionEvent(event, ...)
     local data = getCurrentMissionData()
     if not data then return end
 
-    if data[event] then
-        data[event](getActions(), ...)
+    for i, v in ipairs(data) do
+        if v.name == event then
+            v.callback(getActions(), ...)
+        end
     end
 end

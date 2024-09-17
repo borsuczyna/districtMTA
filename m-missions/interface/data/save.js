@@ -2,48 +2,8 @@ let editor = {
     "events": [
         {
             "name": "onStart",
-            "actions": [
-                {
-                    "name": "createMarker",
-                    "arguments": {
-                        "1": {
-                            "x": 2027.3994,
-                            "y": -1898.9922,
-                            "z": 13.2812
-                        },
-                        "3": 1,
-                        "4": [
-                            215,
-                            9,
-                            9,
-                            255
-                        ],
-                        "6": "opisek xd",
-                        "-1": "zero"
-                    }
-                }
-            ]
+            "actions": []
         },
-        {
-            "name": "onMarkerHit",
-            "actions": [
-                {
-                    "name": "outputChat",
-                    "arguments": {
-                        "1": "wszedles w marker",
-                        "2": [
-                            255,
-                            77,
-                            77,
-                            255
-                        ]
-                    }
-                }
-            ],
-            "arguments": {
-                "1": "zero"
-            }
-        }
     ]
 };
 

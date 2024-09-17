@@ -59,22 +59,26 @@ function renderEvent(event, index) {
 window.editor_reloadEvents = () => {
     let eventsWindow = editor_getWindowBody('events');
     let eventsData = editor_getEditorData('events');
-    
-    eventsWindow.innerHTML = `<div class="list">
+    editor_saveScrollPosition(eventsWindow);
+
+    eventsWindow.innerHTML = `<div class="list nice-scroll">
         ${eventsData.map((event, index) => renderEvent(event, index)).join('')}
     </div>
     
     <div class="d-flex justify-end gap-1 align-items-center mt-1">
         ${editor_getIcon('add', true, 'editor_showAddEventWindow()')}
     </div>`;
+
+    editor_loadScrollPosition(eventsWindow);
 }
 
 window.editor_showAddEventWindow = () => {
     editor_showWindow('addEvent');
 
     let body = editor_getWindowBody('addEvent');
-    
-    body.innerHTML = `<div class="list">
+    let scrollPosition = body.scrollTop;    
+
+    body.innerHTML = `<div class="list nice-scroll">
         ${Object.keys(actions).map((eventName) => {
             let eventInfo = actions[eventName];
             return `<div class="item" onclick="editor_addEvent('${eventName}')">
@@ -86,6 +90,8 @@ window.editor_showAddEventWindow = () => {
     <div class="d-flex justify-end gap-1 align-items-center mt-1">
         ${editor_getIcon('close', true, 'editor_hideAddEventWindow()')}
     </div>`;
+
+    body.scrollTop = scrollPosition;
 }
 
 window.editor_hideAddEventWindow = () => {

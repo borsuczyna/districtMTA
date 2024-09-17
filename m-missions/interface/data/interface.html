@@ -35,7 +35,7 @@
         border-radius: 0.35rem;
         overflow-x: hidden;
         overflow-y: auto;
-        max-height: 50rem;
+        max-height: 30rem;
     }
 
     #missionEditor .list .item {
@@ -95,7 +95,7 @@
         font-size: 0.8rem;
     }
 
-    #missionEditor .argument input {
+    #missionEditor .argument input, #missionEditor .mission-input {
         background-color: rgba(27, 27, 27, 0.4);
         border: 1px solid transparent;
         padding: 0.25rem;
@@ -198,6 +198,12 @@
         'edit': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 326 326" version="1.1">
             <path d="M121.499 266.352L58.6563 203.524L210.653 51.5624L273.496 114.391L121.499 266.352ZM52.7821 214.591L110.43 272.225L24 301L52.7821 214.591ZM292.825 95.1495L281.925 106.047L218.999 43.1356L229.899 32.238C240.879 21.254 258.684 21.254 269.664 32.238L292.825 55.3934C303.725 66.4073 303.725 84.1388 292.825 95.1495Z" fill="currentColor" />
         </svg>`,
+        'arrow-up': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M3 16.5L12.5 7L22 16.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </svg>`,
+        'arrow-down': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M3 7.5L12.5 17L22 7.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </svg>`,
     }
 
     window.editor_getIcon = (name, button = false, event = '') => {
@@ -208,7 +214,7 @@
     }
 
     window.editor_openListItem = (event, element) => {
-        if (event.target.closest('.details'))
+        if (event && event.target.closest('.details'))
             return;
 
         element.parentElement.querySelectorAll('.item').forEach((item) => {

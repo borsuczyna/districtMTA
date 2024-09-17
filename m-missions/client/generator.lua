@@ -1,6 +1,10 @@
 addEvent('missions:saveMission', true)
 addEvent('missions:testMission', true)
 addEvent('missions:loadMission', true)
+addEvent('missions:loadTestMission', true)
+
+allowedMissionVehicles = {}
+allowedMissionPeds = {}
 
 local function doesContainLuaSpecialChars(str)
     return str:find('[^%w_]')
@@ -30,17 +34,29 @@ local function generateAction(action, tabs)
     -- Normal arguments
     for i = 1, #actionData.arguments do
         local defaultValue = actionData.arguments[i].default
-        local value = arguments[tostring(i)] or defaultValue
+        -- local value = arguments[tostring(i)] or defaultValue
+        local value = arguments[tostring(i)]
+        if value == nil then
+            value = defaultValue or ''
+        end
         value = formatValue(value, actionData.arguments[i].toCode)
 
         table.insert(actionArguments, ('%s'):format(value))
     end
 
     -- Code generation
+    if actionData.codeGeneration then
+        local realArguments = {loadstring('return ' .. table.concat(actionArguments, ', '))()}
+        local generationValue = actionData.codeGeneration(unpack(realArguments))
+        if generationValue then
+            table.insert(actionArguments, generationValue)
+        end
+    end
+
     local actionCode = ('%scontext:%s(%s)'):format(tabsCode, actionData.name, table.concat(actionArguments, ', '))
 
     -- Promise
-    if action.promise then
+    if action.promise and actionData.promise then
         actionCode = actionCode .. '\n' .. ('%sawait(%s)'):format(tabsCode, generateActionPromise(actionData, action))
     end
 
@@ -72,27 +88,51 @@ local function generateEvent(event)
     local eventArguments = #eventGenerateData.arguments > 0 and (', %s'):format(table.concat(eventGenerateData.arguments, ', ')) or ''
 
     -- Generate event header
-    local eventCode = ('\t%s = async(function(context%s)\n'):format(eventName, eventArguments)
+    local eventCode = ('\t{\n\t\tname = %q,\n\t\tcallback = async(function(context%s)\n'):format(eventName, eventArguments)
     if eventGenerateData.header then
-        eventCode = ('%s\t\t%s\n'):format(eventCode, eventGenerateData.header)
+        eventCode = ('%s\t\t\t%s\n'):format(eventCode, eventGenerateData.header)
     end
 
     -- Generate event actions
     for _, action in pairs(event.actions or {}) do
-        eventCode = eventCode .. generateAction(action, eventGenerateData.tabs + 2) .. '\n'
+        eventCode = eventCode .. generateAction(action, eventGenerateData.tabs + 3) .. '\n'
     end
 
     -- Generate event footer
     if eventGenerateData.footer then
-        eventCode = ('%s\t\t%s\n'):format(eventCode, eventGenerateData.footer)
+        eventCode = ('%s\t\t\t%s\n'):format(eventCode, eventGenerateData.footer)
     end
 
-    eventCode = eventCode .. '\tend),'
+    eventCode = eventCode .. '\t\tend),\n\t},'
 
     return eventCode
 end
 
+local function generateAllowedVehicles()
+    local code = '\tallowedVehicles = {\n'
+    
+    for index, vehicle in ipairs(allowedMissionVehicles) do
+        code = code .. ('\t\t[%d] = %s,\n'):format(index, inspect(vehicle):gsub('\n', ''):gsub('\t', ''))
+    end
+
+    code = code .. '\t},'
+    return code
+end
+
+local function generateAllowedPeds()
+    local code = '\tallowedPeds = {\n'
+    
+    for index, ped in ipairs(allowedMissionPeds) do
+        code = code .. ('\t\t[%d] = %s,\n'):format(index, inspect(ped):gsub('\n', ''):gsub('\t', ''))
+    end
+
+    code = code .. '\t},'
+    return code
+end
+
 local function generateMission(data)
+    allowedMissionVehicles = {}
+    allowedMissionPeds = {}
     local missionCode = ''
     local missionName = data.name
     local missionData = data.data
@@ -104,6 +144,10 @@ local function generateMission(data)
     for _, event in pairs(missionData.events) do
         missionCode = missionCode .. generateEvent(event) .. '\n\n'
     end
+
+    -- Generate allowed elements
+    missionCode = missionCode .. generateAllowedVehicles() .. '\n'
+    missionCode = missionCode .. generateAllowedPeds() .. '\n'
 
     -- Trim the last two newlines
     missionCode = missionCode:sub(1, -3)
@@ -119,7 +163,6 @@ addEventHandler('missions:saveMission', root, function(dataString)
     if not data then return end
 
     local missionCode = generateMission(data)
-    setClipboard(missionCode)
     triggerLatentServerEvent('missions:saveMission', resourceRoot, data.name, missionCode, dataString)
 
     -- save dataString to missions folder
@@ -131,6 +174,7 @@ addEventHandler('missions:saveMission', root, function(dataString)
     local file = fileCreate(path)
     fileWrite(file, dataString)
     fileClose(file)
+    exports['m-notis']:addNotification('info', 'Edytor misji', 'Pomyślnie zapisano misję')
 end)
 
 addEventHandler('missions:testMission', root, function(dataString)
@@ -143,9 +187,8 @@ addEventHandler('missions:testMission', root, function(dataString)
     }
 
     local missionCode = generateMission(missionData)
-    setClipboard(missionCode)
     loadstring(missionCode)()
-    startMission('__temp_test_mission')
+    triggerServerEvent('missions:setTestMission', resourceRoot, missions['__temp_test_mission'])
 end)
 
 addEventHandler('missions:loadMission', root, function(missionName)
@@ -160,4 +203,10 @@ addEventHandler('missions:loadMission', root, function(missionName)
     fileClose(file)
 
     exports['m-ui']:triggerInterfaceEvent('missionEditor', 'loadMission', fromJSON(dataString).data)
+    exports['m-notis']:addNotification('info', 'Edytor misji', 'Pomyślnie załadowano misję')
+end)
+
+addEventHandler('missions:loadTestMission', resourceRoot, function()
+    startMission('__temp_test_mission')
+    exports['m-notis']:addNotification('info', 'Edytor misji', 'Pomyślnie uruchomiono testową misję')
 end)

@@ -8,7 +8,12 @@ function addSpecialMissionElement(name, element)
     missionData[name] = element
 
     if isElement(element) then
-        setElementData(element, 'mission:element', name)
+        setElementData(element, 'mission:element', name, false)
+    end
+
+    if element ~= localPlayer then
+        setElementDimension(element, getElementDimension(localPlayer))
+        setElementInterior(element, getElementInterior(localPlayer))
     end
 end
 
@@ -38,12 +43,22 @@ end
 
 function stopMission()
     destroyAllMissionElements()
+    clearAllVoiceLines()
+    setMissionTarget('')
+    resetCamera()
+
+    triggerServerEvent('missions:destroyMissionElements', resourceRoot)
+    triggerServerEvent('missions:moveOutOfMissionDimension', resourceRoot)
 
     for _, playback in pairs(playedPlaybacks) do
         exports['m-record']:destroyPlaybackElements(playback)
     end
 
+    calledCustomEvents = {}
     currentMission = nil
+    setElementData(localPlayer, 'missions:vehicleExitLocked', false)
+    setElementData(localPlayer, 'missions:vehicleEnterLocked', false)
+    toggleAllControls(true)
 end
 
 function startMission(id)
@@ -51,9 +66,15 @@ function startMission(id)
 
     stopMission()
     currentMission = id
+    resetCamera()
     addSpecialMissionElement('me', localPlayer)
     
     triggerMissionEvent('onStart')
+end
+
+function restartMission()
+    if not currentMission then return end
+    startMission(currentMission)
 end
 
 function getCurrentMissionData()
@@ -61,7 +82,11 @@ function getCurrentMissionData()
     return missions[currentMission]
 end
 
+function getCurrentMission()
+    return currentMission
+end
+
 -- debug
 -- addEventHandler('onClientResourceStart', resourceRoot, function()
---     startMission(1)
+--     startMission('test4')
 -- end)
