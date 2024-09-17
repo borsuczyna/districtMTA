@@ -87,7 +87,7 @@ end)
 addEventHandler('jobs:courier:pedLeave', resourceRoot, function(lobby, hash)
     if client then
         if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (jobs:courier:pedLeave)')
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (**jobs:courier:pedLeave**)')
     end
 
     exports['m-jobs']:destroyLobbyPed(lobby, hash)

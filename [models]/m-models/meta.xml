@@ -230,28 +230,6 @@
     <file src='data/decoded/models/city_hall_3d_2.dff'/>
     <file src='data/decoded/models/city_hall_3d_road.col'/>
     <file src='data/decoded/models/city_hall_3d_road.dff'/>
-
-    <file src='data/decoded/skatepark/1.dff'/>
-    <file src='data/decoded/skatepark/1.col'/>
-    <file src='data/decoded/skatepark/1.txd'/>
-    <file src='data/decoded/skatepark/2.col'/>
-    <file src='data/decoded/skatepark/2.dff'/>
-    <file src='data/decoded/skatepark/3.col'/>
-    <file src='data/decoded/skatepark/3.dff'/>
-    <file src='data/decoded/skatepark/4.col'/>
-    <file src='data/decoded/skatepark/4.dff'/>
-    <file src='data/decoded/skatepark/5.col'/>
-    <file src='data/decoded/skatepark/5.dff'/>
-    <file src='data/decoded/skatepark/6.col'/>
-    <file src='data/decoded/skatepark/6.dff'/>
-    <file src='data/decoded/skatepark/7.col'/>
-    <file src='data/decoded/skatepark/7.dff'/>
-    <file src='data/decoded/skatepark/9.col'/>
-    <file src='data/decoded/skatepark/9.dff'/>
-    <file src='data/decoded/skatepark/10.col'/>
-    <file src='data/decoded/skatepark/10.dff'/>
-    <file src='data/decoded/skatepark/12.col'/>
-    <file src='data/decoded/skatepark/12.dff'/>
-    <file src='data/decoded/skatepark/5500.dff'/>
-    <file src='data/decoded/skatepark/5500.col'/>
+    <file src='data/decoded/kutas.dff'/>
+    <file src='data/decoded/kutas.txd'/>
 </meta>

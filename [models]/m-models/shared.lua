@@ -11,6 +11,11 @@ models = {
         model = 1337,
         txd = 'int-2-3',
     },
+    ['kutas'] = {
+        custom = false,
+        type = 'object',
+        model = 1337,
+    },
     ['int-3'] = {
         custom = true,
         type = 'object',
@@ -607,73 +612,6 @@ models = {
     ['models/ls_fire_station_lod'] = {
         type = 'object',
         model = 4025,
-    },
-    
-    ['skatepark/1'] = {
-        type = 'object',
-        model = 5390,
-        custom = true,
-    },
-
-    ['skatepark/2'] = {
-        type = 'object',
-        model = 7100,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/3'] = {
-        type = 'object',
-        model = 7101,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/4'] = {
-        type = 'object',
-        model = 7203,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/5'] = {
-        type = 'object',
-        model = 7217,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/6'] = {
-        type = 'object',
-        model = 7218,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/7'] = {
-        type = 'object',
-        model = 7247,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/9'] = {
-        type = 'object',
-        model = 7249,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/12'] = {
-        type = 'object',
-        model = 7251,
-        txd = 'skatepark/1',
-        custom = true,
-    },
-
-    ['skatepark/5500'] = {
-        type = 'object',
-        model = 5500,
     },
 }
 
