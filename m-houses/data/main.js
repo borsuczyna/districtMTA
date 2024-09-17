@@ -135,8 +135,8 @@ function setHouseData(data) {
     mapGoToPosition(document.querySelector('#houses #house-map'), data.position[0], data.position[1], 0);
     createMapBlip({
         element: document.querySelector('#houses #house-map'),
-        icon: '/m-hud/data/images/blips/40.png',
-        size: 15,
+        icon: `/m-hud/data/images/blips/${data.owner && 47 || 46}.png`,
+        size: 12,
         class: 'blip',
         x: data.position[0],
         y: data.position[1],

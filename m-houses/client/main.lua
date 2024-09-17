@@ -5,7 +5,7 @@ addEvent('houses:hideInterface')
 local currentHouseId = nil
 
 addEventHandler('onClientMarkerHit', root, function(element, matchingDimension)
-    if element ~= localPlayer or not matchingDimension then return end
+    if element ~= localPlayer or not matchingDimension or getPedOccupiedVehicle(localPlayer) then return end
 
     local houseId = getElementData(source, 'marker:house')
     if not houseId then return end
@@ -15,7 +15,7 @@ addEventHandler('onClientMarkerHit', root, function(element, matchingDimension)
 end)
 
 addEventHandler('onClientMarkerLeave', root, function(element, matchingDimension)
-    if element ~= localPlayer or not matchingDimension then return end
+    if element ~= localPlayer or not matchingDimension or getPedOccupiedVehicle(localPlayer) then return end
 
     local houseId = getElementData(source, 'marker:house')
     if not houseId then return end
