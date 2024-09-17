@@ -1,13 +1,4 @@
 local colorCache = {}
-local fonts = {}
-
-function getFont(font, size)
-    if not fonts[font..size] then
-        fonts[font..size] = exports['m-ui']:getFont(font, size)
-    end
-
-    return fonts[font..size]
-end
 
 function rgbToHsl(r, g, b, a)
     r, g, b = r / 255, g / 255, b / 255

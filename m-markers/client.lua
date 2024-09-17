@@ -24,7 +24,11 @@ dxSetShaderValue(shader, 'glowTexture', textures.glow)
 local function updateMarkerTarget(marker, rt)
     dxSetRenderTarget(rt, true)
 
-    local r, g, b = getMarkerColor(marker)
+    local r, g, b, a = getMarkerColor(marker)
+    if a ~= 0 then
+        setMarkerColor(marker, r, g, b, 0)
+    end
+    
     local title = getElementData(marker, "marker:title") or "Przechowalnia"
     local icon = getElementData(marker, "marker:icon") or "entrance"
     local desc = getElementData(marker, "marker:desc") or "Odbiór pojazdów"
@@ -33,8 +37,8 @@ local function updateMarkerTarget(marker, rt)
         dxDrawImage(100, 0, 200, 200, 'data/icons/' .. icon .. '.png')
     end
 
-    dxDrawText(title, 200, 255, nil, nil, white, 1, getFont('Inter-Bold', 25), 'center', 'bottom')
-    dxDrawText(desc, 200, 255, nil, nil, 0xFFCCCCCC, 1, getFont('Inter-Medium', 23), 'center', 'top')
+    dxDrawText(title, 200, 255, nil, nil, white, 1, exports['m-ui']:getFont('Inter-Bold', 25), 'center', 'bottom')
+    dxDrawText(desc, 200, 255, nil, nil, 0xFFCCCCCC, 1, exports['m-ui']:getFont('Inter-Medium', 23), 'center', 'top')
 
     dxSetRenderTarget()
 end
