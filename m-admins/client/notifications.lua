@@ -10,7 +10,7 @@ function createAdminNotification(type, text, color, time)
     if #text > 0 then
         table.insert(notifications, {
             text = text,
-            color = color or {120, 120, 120},
+            color = color or {150, 150, 150},
             alpha = 1,
             time = time or 7500,
         })
@@ -54,6 +54,6 @@ function renderNotification()
         v.y = math.min(v.y + 0.15, 0)
 
         dxDrawImage(0, 0 + (25/zoom) * v.y, 1920/zoom, 22/zoom, 'data/background.png', 0, 0, 0, tocolor(v.color[1], v.color[2], v.color[3], 240 * v.alpha))
-        dxDrawText(v.text, sx/2, 9/zoom + (22/zoom) * v.y, nil, nil, tocolor(v.color[1], v.color[2], v.color[3], 170 * v.alpha), 1, exports['m-ui']:getFont('Inter-Regular', 7/zoom), 'center', 'center', false, false)
+        dxDrawText(v.text, sx/2, 9/zoom + (22/zoom) * v.y, nil, nil, tocolor(v.color[1], v.color[2], v.color[3], 255 * v.alpha), 1, exports['m-ui']:getFont('Inter-Regular', 7/zoom), 'center', 'center', false, false)
     end
 end

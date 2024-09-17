@@ -10,7 +10,9 @@ addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
         return
     end
 
-    local reason = table.concat({...}, ' ')
+    local reason = table.concat({...}, ' ') or 'nie podano powodu'
+    reason = reason ~= '' and reason or 'nie podano powodu'
+    
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
@@ -46,7 +48,7 @@ addCommandHandler('b', function(player, cmd, playerToFind, time, ...)
 
     local timeUnitName = timeUnits[unit]
     local discordReason = ('Admin `%s` zbanował gracza `%s` na %d %s: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
-    local serverReason = ('Admin %s zbanował gracza % na %d: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
+    local serverReason = ('Admin %s zbanował gracza %s na %d %s: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), timeValue, timeUnitName, reason)
     local notiMessage = ('Zbanowano gracza %s na %d %s'):format(getPlayerName(foundPlayer), timeValue, timeUnitName)
 
     exports['m-core']:tempBan(foundPlayer, player, timeValue, unit, discordReason, reason)
@@ -63,7 +65,9 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
         return
     end
 
-    local reason = table.concat({...}, ' ')
+    local reason = table.concat({...}, ' ') or 'nie podano powodu'
+    reason = reason ~= '' and reason or 'nie podano powodu'
+    
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
@@ -78,7 +82,7 @@ addCommandHandler('pb', function(player, cmd, playerToFind, ...)
     end
 
     local discordReason = ('Admin `%s` zbanował gracza `%s` na zawsze: `%s`'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
-    local serverReason = ('Admin %s zbanował gracza % na zawsze: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
+    local serverReason = ('Admin %s zbanował gracza %s na zawsze: %s'):format(getPlayerName(player), getPlayerName(foundPlayer), reason)
     local notiMessage = ('Zbanowano gracza %s na zawsze'):format(getPlayerName(foundPlayer))
 
     exports['m-core']:permBan(foundPlayer, player, discordReason, reason)

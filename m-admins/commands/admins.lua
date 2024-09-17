@@ -17,7 +17,7 @@ addCommandHandler('admins', function(player)
 
     local output = ''
     for i, data in ipairs(list) do
-        output = output .. ('<b style="color: %s; font-size: 0.9rem; text-shadow: 2px 2px #00000055, 0 0 0.4rem %s;">%s (%d)</b><br>'):format(data.color, data.color, data.name, #data.admins)
+        output = output .. ('<b style="color: %s; font-size: 0.9rem; text-shadow: 2px 2px #00000055, 0 0 0.4rem %s;"><br>%s (%d)</b><br>'):format(data.color, data.color, data.name, #data.admins)
 
         for i, admin in ipairs(data.admins) do
             output = output .. ('%s<br>'):format(getPlayerName(admin))

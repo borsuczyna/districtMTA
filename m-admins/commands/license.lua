@@ -10,7 +10,9 @@ addCommandHandler('zpj', function(player, cmd, playerToFind, time, ...)
         return
     end
 
-    local reason = table.concat({...}, ' ')
+    local reason = table.concat({...}, ' ') or 'nie podano powodu'
+    reason = reason ~= '' and reason or 'nie podano powodu'
+    
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
@@ -61,7 +63,9 @@ addCommandHandler('opj', function(player, cmd, playerToFind, ...)
         return
     end
 
-    local reason = table.concat({...}, ' ')
+    local reason = table.concat({...}, ' ') or 'nie podano powodu'
+    reason = reason ~= '' and reason or 'nie podano powodu'
+    
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
         exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie znaleziono gracza')
