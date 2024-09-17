@@ -14,6 +14,7 @@ local lockedElementDatas = {
     'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
     'player:holdingPackage',
     'controller', 'element:animations',
+    'mission:element', 'missions:vehicleDamageProof',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
@@ -32,6 +33,7 @@ local selfElementDatas = {
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
     'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing',
     'player:controllerMode',
+    'missions:vehicleExitLocked',
 }
 
 local selfVehicleElementDatas = {

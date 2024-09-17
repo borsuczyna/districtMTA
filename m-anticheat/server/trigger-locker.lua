@@ -2,16 +2,16 @@ function setPlayerTriggerLocked(player, state, reason)
     setElementData(player, 'player:triggerLocked', state)
 
     if state then
-        exports['m-logs']:sendLog('anticheat', 'error', ('Locked player %s for all triggers: %s'):format(getPlayerName(player), reason or 'No reason provided'))
+        exports['m-logs']:sendLog('anticheat', 'error', ('Locked player `%s` for all triggers: %s'):format(getPlayerName(player), reason or 'No reason provided'))
     else
-        exports['m-logs']:sendLog('anticheat', 'error', ('Unlocked player %s for all triggers'):format(getPlayerName(player)))
+        exports['m-logs']:sendLog('anticheat', 'error', ('Unlocked player `%s` for all triggers'):format(getPlayerName(player)))
     end
 end
 
 function isPlayerTriggerLocked(player)
     local redirected = getElementData(player, 'redirected')
     if redirected then
-        exports['m-logs']:sendLog('anticheat', 'error', ('Player %s is redirected but sent trigger, anty redirect?'):format(getPlayerName(player)))
+        exports['m-logs']:sendLog('anticheat', 'error', ('Player `%s` is redirected but sent trigger, anty redirect?'):format(getPlayerName(player)))
         return true
     end
 

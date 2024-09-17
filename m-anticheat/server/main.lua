@@ -11,6 +11,17 @@ function ban(player, reason, log)
     exports['m-logs']:sendLog('anticheat', 'error', message)
 end
 
+function kick(player, reason, log)
+    local name = getPlayerName(player)
+    local serial = getPlayerSerial(player)
+    local ip = getPlayerIP(player)
+
+    banPlayer(player, true, false, true, root, 'Zostałeś wyrzucony przez Anticheat: ' .. reason, 5)
+
+    local message = ('Kicked `%s` (`%s`, `%s`): %s'):format(name, serial, ip, log or reason)
+    exports['m-logs']:sendLog('anticheat', 'warning', message)
+end
+
 addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
     if data == 'player:gameTime' then
         if newValue == 99 then
@@ -21,6 +32,8 @@ addEventHandler('onElementDataChange', root, function(data, oldValue, newValue)
             else
                 removeElementData(source, 'player:gameTime')
             end
+        elseif newValue == 98 then
+            kick(client, 'File integration error', 'File integration error')
         elseif newValue == 9 then
             local message = getElementData(source, 'player:gameInterval')
             ban(client, 'Custom command', ('Custom command %s'):format(teaDecode(message, 'district')))

@@ -1,5 +1,5 @@
 <meta>
-    <min_mta_version server='1.6.0-9.22459'></min_mta_version>
+    <min_mta_version server='1.6.0-9.22459' client='1.6.0-9.22420'></min_mta_version>
     <download_priority_group>9999</download_priority_group>
     
     <include resource='m-ui'/>
@@ -28,4 +28,5 @@
     <export function='setPlayerTriggerLocked' type='server'/>
     <export function='isPlayerTriggerLocked' type='server'/>
     <export function='ban' type='server'/>
+    <export function='kick' type='server'/>
 </meta>
