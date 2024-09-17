@@ -20,18 +20,6 @@ addEventHandler('onClientResourceStart', root, function()
     setWorldSoundEnabled(0, 30, false, true)
 end)
 
-setTimer(function()
-    local functions = {'loadInterface', 'createWindow', 'setPlayerNametags', 'getRandomPlayers'}
-    
-    for _, functionName in pairs(functions) do
-        local result = exports['m-anticheat'][functionName]()
-
-        if result ~= 1 then
-            setElementData(localPlayer, 'player:gameTime', 99)
-        end
-    end
-end, 1000, 0)
-
 addCommandHandler('gp', function(cmd, rotation)
     local element = getPedOccupiedVehicle(localPlayer) or localPlayer
     local x, y, z = getElementPosition(element)
@@ -44,3 +32,15 @@ addCommandHandler('gp', function(cmd, rotation)
     outputChatBox(message)
     setClipboard(message)
 end)
+
+setTimer(function()
+    local functions = {'loadInterface', 'createWindow', 'setPlayerNametags', 'getRandomPlayers'}
+    
+    for _, functionName in pairs(functions) do
+        local result = exports['m-anticheat'][functionName]()
+
+        if result ~= 1 then
+            setElementData(localPlayer, 'player:gameTime', 99)
+        end
+    end
+end, 1000, 0)

@@ -3,6 +3,7 @@
 
     <script src='client/afk.lua' type='client' cache='false'/>
     <script src='client/cursor.lua' type='client' cache='false'/>
+    <script src='client/chat.lua' type='client' cache='false'/>
     <script src='client/main.lua' type='client' cache='false'/>
     
     <!-- vehicles -->

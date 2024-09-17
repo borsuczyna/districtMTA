@@ -29,6 +29,9 @@ local function loadPrivateVehicle(data, player, position)
     local rx, ry, rz = unpack(map(split(data.rotation, ','), tonumber))
     local fuel = data.fuel
     local maxFuel = data.maxFuel
+    local lpg = data.lpg
+    local lpgFuel = data.lpgFuel
+    local lpgState = data.lpgState
     local fuelType = data.fuelType or 'petrol'
     local engineCapacity = data.engineCapacity
     local mileage = data.mileage
@@ -51,6 +54,9 @@ local function loadPrivateVehicle(data, player, position)
 
     setElementData(vehicle, 'vehicle:fuel', tonumber(data.fuel))
     setElementData(vehicle, 'vehicle:maxFuel', tonumber(data.maxFuel))
+    setElementData(vehicle, 'vehicle:lpg', lpg)
+    setElementData(vehicle, 'vehicle:lpgFuel', lpgFuel)
+    setElementData(vehicle, 'vehicle:lpgState', lpgState)
     setElementData(vehicle, 'vehicle:fuelType', fuelType)
     setElementData(vehicle, 'vehicle:engineCapacity', tonumber(data.engineCapacity))
     setElementData(vehicle, 'vehicle:mileage', tonumber(data.mileage))
@@ -143,6 +149,9 @@ function buildSavePrivateVehicleQuery(vehicle)
     local lastDriver = getElementData(vehicle, 'vehicle:lastDriver')
     local fuel = getElementData(vehicle, 'vehicle:fuel')
     local maxFuel = getElementData(vehicle, 'vehicle:maxFuel')
+    local lpg = getElementData(vehicle, 'vehicle:lpg')
+    local lpgFuel = getElementData(vehicle, 'vehicle:lpgFuel')
+    local lpgState = getElementData(vehicle, 'vehicle:lpgState')
     local fuelType = getElementData(vehicle, 'vehicle:fuelType')
     local engineCapacity = getElementData(vehicle, 'vehicle:engineCapacity')
     local mileage = getElementData(vehicle, 'vehicle:mileage')
@@ -160,6 +169,9 @@ function buildSavePrivateVehicleQuery(vehicle)
         lastDriver = lastDriver,
         fuel = fuel,
         maxFuel = maxFuel,
+        lpg = lpg,
+        lpgFuel = lpgFuel,
+        lpgState = lpgState,
         fuelType = fuelType,
         engineCapacity = engineCapacity,
         mileage = mileage,

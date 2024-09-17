@@ -43,7 +43,7 @@ end
 addEventHandler('onPlayerChat', root, function(message, messageType)
     cancelEvent()
     if not getElementData(source, 'player:uid') or not getElementData(source, 'player:spawn') then return end
-    
+
     if antySpam[source] and getTickCount() - antySpam[source] < 500 then
         exports['m-notis']:addNotification(source, 'error', 'Anty spam', 'Nie możesz wysyłać wiadomości tak szybko!')
         return
@@ -52,6 +52,12 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
     local timeLeft, admin, reason = isPlayerMuted(source)
     if timeLeft then
         exports['m-notis']:addNotification(source, 'error', 'Wyciszenie', ('Jesteś wyciszony przez %s na %s z powodu: %s'):format(admin, timeLeft, reason))
+        return
+    end
+
+    local messageLength = utf8.len(message)
+    if messageLength > 64 then
+        exports['m-notis']:addNotification(source, 'error', 'Błąd', 'Wiadomość jest za długa')
         return
     end
 
@@ -78,6 +84,7 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
         })
     end
 
+    triggerClientEvent('chat:addBubble', source, message)
     antySpam[source] = getTickCount()
 end)
 
@@ -89,7 +96,7 @@ addCommandHandler('do', function(player, command, ...)
         exports['m-notis']:addNotification(player, 'error', 'Wyciszenie', ('Jesteś wyciszony przez %s na %s z powodu: %s'):format(admin, timeLeft, 'elo'))
         return
     end
-
+    
     local x, y, z = getElementPosition(player)
     local message = removeHex(table.concat({...}, ' '))
     local dimension = getElementDimension(player)

@@ -5,7 +5,7 @@ local playerNameCache = {}
 function sendAccountResponse(hash, response)
     if client then
         if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
-        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (onAccountResponse)')
+        exports['m-anticheat']:setPlayerTriggerLocked(client, true, 'Trigger hack (**onAccountResponse**)')
     end
     triggerEvent('onAccountResponse', root, hash, response)
 end

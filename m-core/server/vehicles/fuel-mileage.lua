@@ -15,12 +15,24 @@ function changeFuel(vehicle)
 
     if uid then
         local fuel = getElementData(vehicle, 'vehicle:fuel') or 100
-        if fuel <= 0 then
-            setVehicleEngineState(vehicle, false)
-        end
+        local lpgFuel = getElementData(vehicle, 'vehicle:lpgFuel') or 100
+        local lpgState = getElementData(vehicle, 'vehicle:lpgState')
 
-        fuel = fuel - speed / 18000
-        setElementData(vehicle, 'vehicle:fuel', fuel)
+        if lpgState == 1 then
+            if lpgFuel <= 0 then
+                setVehicleEngineState(vehicle, false)
+            end
+
+            lpgFuel = lpgFuel - speed / 18000
+            setElementData(vehicle, 'vehicle:lpgFuel', lpgFuel)
+        else
+            if fuel <= 0 then
+                setVehicleEngineState(vehicle, false)
+            end
+
+            fuel = fuel - speed / 18000
+            setElementData(vehicle, 'vehicle:fuel', fuel)
+        end
     end
 
     local mileage = getElementData(vehicle, 'vehicle:mileage') or 0
