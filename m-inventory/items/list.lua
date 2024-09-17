@@ -1,5 +1,6 @@
 itemsData = {
     m4 = createM4Item(),
+    canister = createCanisterItem(),
     hotDog = createHotDogItem(),
     potion = createPotionItem(),
     bait = createBaitItem(),

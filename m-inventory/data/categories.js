@@ -19,6 +19,10 @@ let categories = {
         name: 'Meble',
         icon: inventory_icons.furniture,
     },
+    'vehicle': {
+        name: 'Pojazdy',
+        icon: inventory_icons.vehicle,
+    },
     'trade': {
         name: 'Wymiana',
         icon: inventory_icons.trade,

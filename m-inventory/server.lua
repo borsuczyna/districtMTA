@@ -307,6 +307,9 @@ addEventHandler('inventory:useItem', root, function(hash, player, itemHash)
     end
     
     exports['m-ui']:respondToRequest(hash, {status = 'success', inventory = getPlayerInventory(player)})
+    
+    local itemName = exports['m-inventory']:getItemName(item)
+    exports['m-logs']:sendLog('items', 'info', ('Gracz `%s` użył przedmiotu %s (`%s`)'):format(getPlayerName(player), itemName, itemHash))
 end)
 
 -- TODO: remove
