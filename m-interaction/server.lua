@@ -61,6 +61,13 @@ addEventHandler('interaction:action', resourceRoot, function(action, ...)
         local door = seatsDoors[seat]
         setVehicleDoorOpenRatio(vehicle, door, getVehicleDoorOpenRatio(vehicle, door) > 0 and 0 or 1, 500)
         feedbackData = getVehicleDoorOpenRatio(vehicle, door) > 0
+    elseif action == 'fuelType' then
+        local uid = getElementData(vehicle, 'vehicle:uid')
+
+        if uid and getElementData(vehicle, 'vehicle:lpg') then
+            local state = getElementData(vehicle, 'vehicle:lpgState')
+            setElementData(vehicle, 'vehicle:lpgState', not state)
+        end
     end
 
     triggerClientEvent(client, 'interaction:action-feedback', resourceRoot, action, feedbackData)

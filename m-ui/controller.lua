@@ -59,16 +59,16 @@ function updateMovement()
     if inVehicle then
         setAnalogControlState('accelerate', getControllerButton(8))
         setAnalogControlState('brake_reverse', getControllerButton(7))
-        setControlState('handbrake', getControllerButton(2) >= 0.5)
+        setPedControlState('handbrake', getControllerButton(2) >= 0.5)
     else
         -- jump on x
-        setControlState('jump', getControllerButton(1) >= 0.5)
+        setPedControlState('jump', getControllerButton(1) >= 0.5)
 
         -- sprint on circle
-        setControlState('sprint', getControllerButton(2) >= 0.5)
+        setPedControlState('sprint', getControllerButton(2) >= 0.5)
         
         -- crouch on square
-        setControlState('crouch', getControllerButton(3) >= 0.5)
+        setPedControlState('crouch', getControllerButton(3) >= 0.5)
 
         -- arrow right for entering as passenger
         if getControllerButton(16) >= 0.5 then
@@ -80,7 +80,7 @@ function updateMovement()
     end
     
     -- entering vehicle on triangle
-    setControlState('enter_exit', getControllerButton(4) >= 0.5)
+    setPedControlState('enter_exit', getControllerButton(4) >= 0.5)
 end
 
 function getNearestVehicle(player, maxDistance)

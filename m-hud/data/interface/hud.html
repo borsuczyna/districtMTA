@@ -39,6 +39,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 0.9rem;
     }
 
     #hud .border {
@@ -222,6 +223,7 @@
 
     window.hud_setLevel = (level) => {
         document.querySelector('#hud .level').textContent = level;
+        document.querySelector('#hud .level').style.fontSize = (level >= 1000 && '0.6rem' || level >= 100 && '0.7rem' || '0.9rem');
     }
 
     window.hud_setHealth = (health) => {

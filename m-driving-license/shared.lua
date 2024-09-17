@@ -106,13 +106,13 @@ function angleDifference(a, b)
 end
 
 local function onClientMarkerHit(hitElement, matchingDimension)
-    if hitElement ~= localPlayer or not matchingDimension then return end
+    if hitElement ~= localPlayer or not matchingDimension or getPedOccupiedVehicle(localPlayer) then return end
     
     setDrivingLicenseUIVisible(true)
 end
 
 local function onClientMarkerLeave(leaveElement, matchingDimension)
-    if leaveElement ~= localPlayer or not matchingDimension then return end
+    if leaveElement ~= localPlayer or not matchingDimension or getPedOccupiedVehicle(localPlayer) then return end
     
     setDrivingLicenseUIVisible(false)
 end

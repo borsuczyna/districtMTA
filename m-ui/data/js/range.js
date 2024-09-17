@@ -39,6 +39,13 @@ function setRangeInput(element, value) {
     element.dispatchEvent(new Event('change'));
 }
 
+function setRangeInputMaxValue(element, value) {
+    let rangeInput = rangeInputs.find(r => r.element === element);
+    rangeInput.max = value;
+    rangeInput.value = Math.min(rangeInput.value, value);
+    setRangeInput(element, rangeInput.value);
+}
+
 function updateRanges() {
     rangeInputs = rangeInputs.filter(r => document.body.contains(r.element));
 }

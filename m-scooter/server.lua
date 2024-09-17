@@ -135,6 +135,7 @@ addEventHandler('scooter:fold', resourceRoot, function()
 end)
 
 addEventHandler('onPlayerVehicleExit', root, function(vehicle)
+	if not isElement(vehicle) then return end
     if getElementData(vehicle, 'scooter:owner') ~= source then return end
     exports['m-notis']:addNotification(source, 'info', 'Wynajem hulajnogi', 'Hulajnoga zostanie zwrócona po minucie nieaktywności, naciśnij <kbd class="keycap keycap-sm">H</kbd><div class="controller-button small circle"></div> aby ją złożyć')
 

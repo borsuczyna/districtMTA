@@ -8,6 +8,7 @@ local logChannels = {
     reports = 'https://discord.com/api/webhooks/1258091355050082439/ChhbMnteB9NmP_CPIrqCq-INIzrOogw7NEVpdNUwWe-RMubPjVS6cosK7qGueAp0kkSF',
     trade = 'https://discordapp.com/api/webhooks/1269364540101890191/1ypT9BzZCd7zCA_ZSElRV_wYw23FS-5umn6GCXPfYlQGGdLPz5o7kMcB9UH0kmUWeCrH',
     houses = 'https://discord.com/api/webhooks/1277312069225545850/g9NB6xWXn-8Eo6KybZkUIRfgtYsjOZ6IW7zho5oQzTc1sX_5xRu4zqDojAxa85UpAtwF',
+    items = 'https://discord.com/api/webhooks/1285275403522412625/HBUBGqumUxPr_AREzwpw8ibI2d_3dZKLPPWO3gfuSHFCRWV-ChlGtNjt_G1I6sSkKiUb',
 }
 
 local icons = {

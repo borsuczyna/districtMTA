@@ -4,7 +4,7 @@ local lastArrowAngle = 0
 local defaultSpeedo = 'compact'
 local noSpeedos = {481}
 local speedos = {
-    old = {401, 403, 404, 410, 418, 419, 436, 439, 467, 475, 478, 479, 491, 492, 496, 605, 604, 600, 585, 572, 571, 568, 566, 550, 549, 546, 543, 542, 540, 531, 530, 529, 526, 518},
+    old = {401, 403, 404, 410, 418, 419, 436, 439, 467, 475, 478, 479, 491, 492, 546, 496, 605, 604, 600, 585, 572, 571, 568, 566, 550, 549, 543, 542, 540, 531, 530, 529, 526, 518},
     modern = {411, 415, 429, 451, 477, 587, 562, 559, 558, 541, 506},
     muscle = {412, 466, 474, 576, 575, 567, 555, 536, 535, 534},
 }
@@ -55,6 +55,7 @@ local function renderSpeedo()
     local rpm = getVehicleRPM(vehicle)
     local mileage = getElementData(vehicle, 'vehicle:mileage') or 3213
     local fuel = getElementData(vehicle, 'vehicle:fuel') or 37
+    local maxFuel = getElementData(vehicle, 'vehicle:maxFuel') or 37
     local r, g, b = getVehicleHeadLightColor(vehicle)
 
     local icons = {
@@ -78,7 +79,7 @@ local function renderSpeedo()
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/background.png')
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/fuel.png')
-        dxDrawImageSection(sx - 245/zoom, sy - 370/zoom, 98/zoom * (fuel / 100), 350/zoom, 242, 0, 190 * (fuel / 100), 680, 'data/modern/fuel-2.png', 0, 0, 0, tocolor(0, 255, 0))
+        dxDrawImageSection(sx - 245/zoom, sy - 370/zoom, 98/zoom * (fuel / maxFuel), 350/zoom, 242, 0, 190 * (fuel / maxFuel), 680, 'data/modern/fuel-2.png', 0, 0, 0, tocolor(0, 255, 0))
         dxDrawImage(sx - 370/zoom, sy - 370/zoom, 350/zoom, 350/zoom, 'data/modern/arrow.png', -143 + lastArrowAngle, 0, 0, tocolor(255, 255, 255, 255))
         
         dxDrawText('000', sx - 15/zoom - textsWidths['000']/zoom, sy - 200/zoom, nil, nil, tocolor(255, 255, 255, 35), 0.8/zoom, fonts[2], 'right', 'center')
@@ -102,7 +103,7 @@ local function renderSpeedo()
         dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/background.png')
         dxDrawImage(sx - 255/zoom, sy - 230/zoom, 48/zoom, 214/zoom, 'data/old/gauge.png', math.min(-92 + speed/200 * 184, 92), 0, 90/zoom)
         dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/overlay.png')
-        dxDrawImage(sx - 500/zoom, sy - 140/zoom, 33/zoom, 190/zoom, 'data/old/fuel-gauge.png', -100 + fuel * 1.3)
+        dxDrawImage(sx - 500/zoom, sy - 140/zoom, 33/zoom, 190/zoom, 'data/old/fuel-gauge.png', -100 + (fuel / maxFuel) * 130)
         dxDrawText(('%07d'):format(mileage), sx - 230/zoom, sy - 44/zoom, nil, nil, tocolor(0, 0, 0, 255), 1/zoom, fonts[4], 'center', 'center')
     
         local iconSize = 25/zoom
@@ -118,7 +119,7 @@ local function renderSpeedo()
     elseif speedo == 'compact' then
         dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/background.png')
         dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
-        dxDrawImage(sx - 400/zoom, sy - 190/zoom, 26/zoom, 153/zoom, 'data/compact/fuel-gauge.png', -227 + fuel * 2.3)
+        dxDrawImage(sx - 400/zoom, sy - 190/zoom, 26/zoom, 153/zoom, 'data/compact/fuel-gauge.png', -227 + (fuel / maxFuel) * 230)
 
         dxDrawText('km/h', sx - 190/zoom, sy - 250/zoom, nil, nil, tocolor(255, 255, 255, 155), 1/zoom, fonts[1], 'center', 'center')
 
@@ -147,7 +148,7 @@ local function renderSpeedo()
     elseif speedo == 'muscle' then
         local mphSpeed = speed * 0.621371
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/background.png')
-        dxDrawImage(sx - 466.5/zoom, sy - 145/zoom, 41/zoom, 111/zoom, 'data/muscle/fuel-gauge.png', 55 - fuel * 1.1, 0, -30/zoom)
+        dxDrawImage(sx - 466.5/zoom, sy - 145/zoom, 41/zoom, 111/zoom, 'data/muscle/fuel-gauge.png', 55 - (fuel / maxFuel) * 110, 0, -30/zoom)
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/overlay.png')
         dxDrawImage(sx - 214/zoom, sy - 290/zoom, 42/zoom, 191/zoom, 'data/muscle/gauge.png', -135 + mphSpeed/120 * 270, 0, 0)
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))

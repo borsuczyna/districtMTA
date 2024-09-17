@@ -71,6 +71,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 0.9rem;
     }
 
     #helper .level {
@@ -382,6 +383,7 @@
 
     window.helper_setLevel = (level) => {
         document.querySelector('#helper .level-box').innerText = level;
+        document.querySelector('#helper .level-box').style.fontSize = (level >= 1000 && '0.6rem' || level >= 100 && '0.7rem' || '0.9rem')
     }
 
     window.helper_setProgress = (progress) => {

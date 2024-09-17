@@ -32,3 +32,20 @@ addEventHandler('onClientElementStreamOut', root, function()
         destroyElement(getLowLODElement(source))
     end
 end)
+
+local function updateMapObjects(old)
+    local plrDim = getElementDimension(localPlayer)
+
+    for i, object in ipairs(getElementsByType('object')) do
+        local dim = getElementDimension(object)
+        if dim == old then
+            setElementDimension(object, plrDim)
+        end
+    end
+end
+
+addEventHandler('onClientElementDimensionChange', root, function(old)
+    if source == localPlayer then
+        updateMapObjects(old)
+    end
+end)

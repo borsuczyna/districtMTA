@@ -29,7 +29,8 @@ local function renderblurShaderH()
     local dimension = getElementDimension(localPlayer)
 
     if getElementData(localPlayer, 'player:spawn') and radarVisible and interior == 0 and dimension == 0 then
-        local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
+        local interfaceSize = getElementData(localPlayer, 'player:interfaceSize')
+        
         if interfaceSize and tonumber(interfaceSize) then
             local zoom = zoomOriginal * ( 25 / interfaceSize )
             local radarSize = 470/zoom
@@ -37,6 +38,7 @@ local function renderblurShaderH()
             dxDrawCircle(radarX + radarW/2, radarY + radarH/2, radarW/2, 0, 360, 0xFF000000)
         end
     end
+
     dxSetRenderTarget()
 
     dxDrawImage(0, 0, sx, sy, blurShaderV)

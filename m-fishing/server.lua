@@ -94,7 +94,7 @@ addEventHandler('fishing:catchFish', resourceRoot, function(success)
 
     local fish = fishData.fish
     if fishData.time + 800 > getTickCount() and success then
-        exports['m-anticheat']:ban(client, 'Lua injector', 'Lua injector (fishing too fast)')
+        exports['m-anticheat']:ban(client, 'Lua injector', 'Lua injector (**fishing too fast**)')
         return
     end
 

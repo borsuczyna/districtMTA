@@ -29,14 +29,16 @@ function destroyPlaybackElements(name)
     end
 end
 
-local function stopPlayback(index)
+local function stopPlayback(index, trigger)
     local playback = playing[index]
     if not playback then return end
 
     -- playing[index] = nil
 
     -- outputChatBox("Playback have finished", 255, 0, 0)
-    triggerEvent("onPlaybackFinished", root, playback.name)
+    if trigger then
+        triggerEvent("onPlaybackFinished", root, playback.name)
+    end
 end
 
 local function getVehicleByIndex(index, vehicleIndex)
@@ -55,7 +57,7 @@ local function setPlaybackNextFrame(index)
 
     local snapshot = playback.data.data[playback.index]
     if not snapshot then
-        stopPlayback(index)
+        stopPlayback(index, true)
         return
     end
 
@@ -120,7 +122,7 @@ local function setPlaybackNextFrame(index)
 
     local nextFrame = playback.data.data[playback.index + 1]
     if not nextFrame then
-        stopPlayback(index)
+        stopPlayback(index, true)
         return
     end
 

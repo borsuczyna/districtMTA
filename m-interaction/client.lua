@@ -95,6 +95,15 @@ local options = {
         key = 'hood',
         serverAction = 'hood',
     },
+    {
+        text = function(vehicle)
+            local state = getElementData(vehicle, 'vehicle:lpgState')
+            return (state == 1) and 'Przełącz na benzynę' or 'Przełącz na LPG'
+        end,
+        icon = 'hood',
+        key = 'fuelType',
+        serverAction = 'fuelType',
+    },
 }
 
 function useInteraction(key, state)

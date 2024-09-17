@@ -46,7 +46,8 @@ function renderRadar()
     if not radarVisible then return end
     local interior = getElementInterior(localPlayer)
     local dimension = getElementDimension(localPlayer)
-    if interior ~= 0 or dimension ~= 0 then return end
+    local uid = getElementData(localPlayer, 'player:uid') or 0
+    if interior ~= 0 or (dimension ~= 0 and dimension ~= 7000 + uid) then return end
 
     local interfaceSize = getElementData(localPlayer, "player:interfaceSize")
     local zoom = zoomOriginal * ( 25 / interfaceSize )
@@ -63,7 +64,7 @@ function renderRadar()
     dxSetShaderValue(radar.shader, "gUVRotAngle", math.rad(-camrot))
     
     local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSettings.size - 45/zoom, radarSettings.size, radarSettings.size
-    dxDrawImage(radarX - 12/zoom, radarY - 12/zoom, radarW + 25/zoom, radarH + 22/zoom, textures[4], 0, 0, 0, tocolor(255, 255, 255, 200))
+    dxDrawImage(radarX - 12/zoom, radarY - 12/zoom, radarW + 25/zoom, radarH + 25/zoom, textures[4], 0, 0, 0, tocolor(255, 255, 255, 200))
     dxDrawImage(radarX, radarY, radarW, radarH, radar.shader, 0, 0, 0, tocolor(255, 255, 255, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, textures[3], 0, 0, 0, tocolor(255, 255, 255, 255))
     -- draw zone name
