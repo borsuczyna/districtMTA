@@ -9,7 +9,7 @@
     }
 
     #stations-wrapper {
-        background: rgba(26, 26, 26, 0.9);
+        background: rgba(26, 26, 26, 0.75);
         border: 0.0625rem solid #36363673;
         border-radius: 0.625rem;
         font-weight: bold;
@@ -18,55 +18,35 @@
         color: #fff;
     }
 
-    #stations .progress-bar {
-        position: relative;
-        width: 100%;
-        height: 2.2rem;
-        background: rgba(90, 90, 90, 0.615);
-        border-radius: 0.25rem;
-    }
-
-    #stations .progress {
-        height: 100%;
-        background: linear-gradient(90deg, #ffab48 0.01%, #fc8c5b 100%);
-        border-radius: 0.25rem;
-        transition: width 0.4s;
-        /* box-shadow: 0 0 2rem 2rem #ffaa4845; */
-    }
-
-    #stations .progress-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #fff;
-        font-size: 0.75rem;
-        text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(0, 0, 0, 0.7);
-        z-index: 1;
+    #stations #fuels {
+        min-width: 20rem;
     }
 
     #stations .fuel-type {
-        background: rgba(76, 76, 76, 0.338);
+        background: rgba(76, 76, 76, 0.2);
         border: 0.125rem solid rgba(52, 52, 52, 0.45);
         border-radius: 0.25rem;
         padding: 0.7rem;
         flex: 1;
         display: flex;
+        flex-direction: column;
         gap: 0.1rem;
         justify-content: center;
-        align-items: end;
+        align-items: center;
         transition: background 0.2s, border 0.2s;
         cursor: pointer;
     }
 
     #stations .fuel-type .name {
-        font-size: 0.9rem;
+        font-size: 1.3rem;
         color: #d7d7d7;
+        width: 10rem;
     }
 
     #stations .fuel-type .price {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: rgb(172, 172, 172);
+        font-weight: normal;
     }
 
     #stations .fuel-type.active {
@@ -75,27 +55,93 @@
         cursor: default;
     }
 
-    #stations #info-text {
-        color: #dcdcdc;
-        font-size: 0.9rem;
-        text-align: center;
+    #stations .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+
+    #stations #vehicle-info {
+        background: rgba(70, 70, 70, 0.3);
+        border: 0.0625rem solid #5c5c5c66;
+        border-radius: 0.425rem;
+        padding: 0.85rem;
+    }
+
+    #stations .fuel-card {
+        position: relative;
+    }
+
+    #stations .info-card .fuel {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    #stations .info-card .fuel-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, calc(-50% - 0.0rem));
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: white;
     }
 </style>
 
 <div class="d-flex flex-column">
-    <h2 id="info-text">Przytrzymaj spację, aby zatankować paliwo</h2>
     <div id="stations-wrapper">
         <div class="d-flex flex-column gap-2">
+            <div id="vehicle-info" class="d-flex justify-between">
+                <div class="d-flex flex-column align-items-start justify-center">
+                    <span style="font-weight: bold; font-size: 1.1rem;">Twój pojazd</span>
+                    <span style="font-weight: normal; font-size: 0.9rem;" class="label">Infernus</span>
+                </div>
+
+                <div class="info-card fuel-card d-flex flex-column gap-2 justify-center align-items-center">
+                    <svg class="fuel" viewBox="0 0 110 110">
+                        <defs>
+                            <mask id="circleMask">
+                                <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                                <circle cx="50%" cy="50%" r="35%" fill="black" transform="translate(-5, -5)"/>
+                            </mask>
+                            <linearGradient id="gradientColor" x1="79" y1="1.92046e-06" x2="25" y2="100" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#fca64a" />
+                                <stop offset="0.5" stop-color="#e97d4c" />
+                                <stop offset="1" stop-color="#dd644d" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="50" transform="translate(5, 5)" fill="#00000044" mask="url(#circleMask)"/>
+                        <path mask="url(#circleMask)" transform="translate(5, 5)" fill="url(#gradientColor)"/>
+                    </svg>
+                    <div class="fuel-text">15/75</div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-center">
+                <span class="label">Typ paliwa</span>
+                <div class="line"></div>
+            </div>
             <div class="d-flex gap-2" id="fuels"></div>
         
-            <div class="progress-bar" style="width: 25rem;">
-                <div class="progress-text">35/75L</div>
-                <div class="progress" style="width: 60%;"></div>
+            <div class="d-flex gap-4 align-items-center">
+                <span class="label">Ilość paliwa</span>
+                <div class="line"></div>
+            </div>
+            <div class="range-container d-flex gap-3 align-items-center mt-1 flex-grow-1" id="fuel-data">
+                <span class="text-muted">0</span>
+                <div min="0" max="60" step="1" data-value="0" id="range-fuel" onchange="stations_updatePrice()"></div>
+                <span class="text-muted">60</span>
             </div>
             
-            <div class="d-flex gap-2">
-                <div class="nice-button button-sm" style="flex: 1;">Potwierdź</div>
-                <div class="flat-button flat-button-small" style="flex: 1;">Anuluj</div>
+            <div class="d-flex justify-between gap-2">
+                <div class="d-flex flex-column gap-1 align-items-start">
+                    <span class="label" style="font-weight: 400;">Cena</span>
+                    <span>
+                        <span style="color: #2ecc71;">$</span>
+                        <span id="price">0</span>
+                    </span>
+                </div>
+                <div class="nice-button" onclick="stations_refill()">Zatankuj</div>
             </div>
         </div>
     </div>
@@ -104,7 +150,46 @@
 <script>
     let fuelData = [];
     let currentFuel = null;
-    let holdingSpace = false;
+
+    createRangeInput(document.querySelector('#range-fuel'));
+
+    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+            x: centerX + (radius * Math.cos(angleInRadians)),
+            y: centerY + (radius * Math.sin(angleInRadians))
+        };
+    }
+
+    function setArcStartAndEndAngle(element, start, end) {
+        const radius = 50;
+        const centerX = 50;
+        const centerY = 50;
+        const startCoords = polarToCartesian(centerX, centerY, radius, end);
+        const endCoords = polarToCartesian(centerX, centerY, radius, start);
+
+        const largeArcFlag = end - start <= 180 ? "0" : "1";
+
+        const d = [
+            "M", centerX, centerY,
+            "L", startCoords.x, startCoords.y,
+            "A", radius, radius, 0, largeArcFlag, 0, endCoords.x, endCoords.y,
+            "Z"
+        ].join(" ");
+
+        element.querySelector('path').setAttribute('d', d);
+    }
+
+    function setArcPercent(element, percent) {
+        setArcStartAndEndAngle(element, 0, percent * 3.6);
+    }
+
+    function setFuelLevel(level) {
+        let fuelElement = document.querySelector('#stations .fuel-card');
+        let fuelTextElement = fuelElement.querySelector('.fuel-text');
+        fuelTextElement.innerText = `${level}/${currentFuel.max}`;
+        setArcPercent(fuelElement, level / currentFuel.max * 100);
+    }
 
     function setFuelData(data) {
         fuelData = data;
@@ -120,6 +205,12 @@
         stations_selectFuel(data.fuels[0].name);
     }
 
+    window.stations_updatePrice = () => {
+        let priceElement = document.querySelector('#price');
+        let amount = document.querySelector('#range-fuel').getAttribute('data-value');
+        priceElement.innerText = (amount * currentFuel.price).toFixed(2);
+    }
+
     window.stations_selectFuel = (fuelName) => {
         let fuelsElement = document.querySelector('#stations #fuels');
         fuelsElement.querySelectorAll('.fuel-type').forEach(fuelElement => {
@@ -128,38 +219,42 @@
         });
 
         currentFuel = fuelData.fuels.find(fuel => fuel.name === fuelName);
-        stations_updateProgress();
+        setFuelLevel(Math.floor(currentFuel.amount));
+
+        let max = Math.ceil(currentFuel.max - currentFuel.amount);
+        setRangeInputMaxValue(document.querySelector('#range-fuel'), max);
+        document.querySelector('#fuel-data').querySelector('span:last-child').innerText = max;
+        stations_updatePrice();
     }
 
-    window.stations_updateProgress = () => {
-        let progressElement = document.querySelector('#stations .progress');
-        let progressTextElement = document.querySelector('#stations .progress-text');
+    window.stations_refill = async () => {
+        let amount = document.querySelector('#range-fuel').getAttribute('data-value');
+        let fuelName = currentFuel.name;
 
-        let progress = currentFuel.amount / currentFuel.max * 100;
-        progressElement.style.width = `${progress}%`;
-        progressTextElement.innerText = `${currentFuel.amount}/${currentFuel.max}L`;
+        if (amount === 0) {
+            notis_addNotification('warning', 'Stacja paliw', 'Nie możesz zatankować 0 litrów paliwa.');
+            return;
+        }
+
+        let data = await mta.fetch('stations', 'refill', [fuelName, amount]);
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            waiting = false;
+            return;
+        } else if (data.status != 'success') {
+            notis_addNotification('error', 'Błąd', data.message);
+            waiting = false;
+            return;
+        }
+
+        notis_addNotification('success', 'Stacja paliw', 'Pomyślnie zatankowano pojazd.');
+        // data.fuel is new fuel amount
+        fuelData.fuels.find(fuel => fuel.name === fuelName).amount = data.fuel;
+        setFuelLevel(Math.floor(data.fuel));
+        let max = Math.ceil(currentFuel.max - data.fuel);
+        setRangeInputMaxValue(document.querySelector('#range-fuel'), max);
+        document.querySelector('#fuel-data').querySelector('span:last-child').innerText = max;
     }
-
-    addEvent('stations', 'keydown', (e) => {
-        console.log(e.code);
-        if (e.code === 'Space' && !holdingSpace) {
-            holdingSpace = true;
-        }
-    });
-
-    addEvent('stations', 'keyup', (e) => {
-        if (e.code === 'Space' && holdingSpace) {
-            holdingSpace = false;
-            currentFuel.amount += 1;
-        }
-    });
-
-    addEvent('stations', 'update', () => {
-        if (holdingSpace) {
-            currentFuel.amount += 1;
-            stations_updateProgress();
-        }
-    });
 
     addEvent('stations', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -167,10 +262,14 @@
         document.querySelector('#stations').style.transform = appear ? 'translate(-50%, 0%) scale(1)' : 'translate(-50%, 0%) scale(0.9)';
     });
 
-    setFuelData({
-        fuels: [
-            { name: 'Benzyna', price: 2, amount: 15, max: 75 },
-            { name: 'LPG', price: 1, amount: 35, max: 75 }
-        ]
+    addEvent('stations', 'interface:data:stations', (data) => {
+        setFuelData(data[0]);
     });
+
+    // setFuelData({
+    //     fuels: [
+    //         { name: 'Benzyna', price: 2, amount: 15, max: 75 },
+    //         { name: 'LPG', price: 1, amount: 35, max: 75 }
+    //     ]
+    // });
 </script>
