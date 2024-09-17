@@ -68,7 +68,8 @@ local function hitStationMarker(player, matchingDimension)
     end
 
     triggerClientEvent(player, 'stations:showFuelStationsUi', resourceRoot, {
-        fuels = fuels
+        fuels = fuels,
+        vehicleName = getVehicleName(vehicle),
     })
 end
 

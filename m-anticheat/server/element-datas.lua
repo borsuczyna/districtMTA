@@ -18,7 +18,7 @@ local lockedElementDatas = {
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
-    'vehicle:fuelType', 'vehicle:mileage', 'vehicle:maxFuel', 'vehicle:fuel',
+    'vehicle:fuelType', 'vehicle:lpg', 'vehicle:lpgState', 'vehicle:lpgFuel', 'vehicle:mileage', 'vehicle:maxFuel', 'vehicle:fuel',
     'vehicle:lastDriver', 
 
     'element:model', 'element:ghostmode',

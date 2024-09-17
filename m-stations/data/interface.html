@@ -94,7 +94,7 @@
             <div id="vehicle-info" class="d-flex justify-between">
                 <div class="d-flex flex-column align-items-start justify-center">
                     <span style="font-weight: bold; font-size: 1.1rem;">Twój pojazd</span>
-                    <span style="font-weight: normal; font-size: 0.9rem;" class="label">Infernus</span>
+                    <span style="font-weight: normal; font-size: 0.9rem;" class="label" id="vehicle-name"></span>
                 </div>
 
                 <div class="info-card fuel-card d-flex flex-column gap-2 justify-center align-items-center">
@@ -188,7 +188,7 @@
         let fuelElement = document.querySelector('#stations .fuel-card');
         let fuelTextElement = fuelElement.querySelector('.fuel-text');
         fuelTextElement.innerText = `${level}/${currentFuel.max}`;
-        setArcPercent(fuelElement, level / currentFuel.max * 100);
+        setArcPercent(fuelElement, level / currentFuel.max * 99.99);
     }
 
     function setFuelData(data) {
@@ -231,7 +231,7 @@
         let amount = document.querySelector('#range-fuel').getAttribute('data-value');
         let fuelName = currentFuel.name;
 
-        if (amount === 0) {
+        if (Math.floor(amount) == 0) {
             notis_addNotification('warning', 'Stacja paliw', 'Nie możesz zatankować 0 litrów paliwa.');
             return;
         }
@@ -264,6 +264,7 @@
 
     addEvent('stations', 'interface:data:stations', (data) => {
         setFuelData(data[0]);
+        document.querySelector('#vehicle-name').innerText = data[0].vehicleName;
     });
 
     // setFuelData({
