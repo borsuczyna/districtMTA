@@ -1,4 +1,5 @@
 <meta>
+    <min_mta_version server="1.5.8-9.20957"></min_mta_version>
     <info type="map" version="1.0.0"></info>
     <map src="m-stacja-ls.map" dimension="0"></map>
     <settings>

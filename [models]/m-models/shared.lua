@@ -11,11 +11,6 @@ models = {
         model = 1337,
         txd = 'int-2-3',
     },
-    ['kutas'] = {
-        custom = false,
-        type = 'object',
-        model = 1337,
-    },
     ['int-3'] = {
         custom = true,
         type = 'object',
@@ -102,6 +97,54 @@ models = {
         type = 'object',
         model = 1337,
         txd = 'cablecar',
+    },
+    ['market-tuner-1'] = {
+        type = 'object',
+        model = 5730,
+    },
+    ['market-tuner-2'] = {
+        type = 'object',
+        model = 5819,
+    },
+    ['market-tuner-3'] = {
+        type = 'object',
+        model = 5760,
+    },
+    ['market-tuner-4'] = {
+        type = 'object',
+        model = 5729,
+    },
+    ['market-tuner-road-1'] = {
+        type = 'object',
+        model = 5703,
+    },
+    ['market-tuner-road-2'] = {
+        type = 'object',
+        model = 5759,
+    },
+    ['market-center'] = {
+        type = 'object',
+        model = 5784,
+    },
+    ['market-center-road'] = {
+        type = 'object',
+        model = 5757,
+    },
+    ['market-center-road-2'] = {
+        type = 'object',
+        model = 5795,
+    },
+    ['market-station'] = {
+        type = 'object',
+        model = 5773,
+    },
+    ['market-station-fix'] = {
+        type = 'object',
+        model = 5772,
+    },
+    ['market-station-road'] = {
+        type = 'object',
+        model = 5798,
     },
     ['railway-station'] = {
         custom = true,
@@ -372,6 +415,12 @@ models = {
         type = 'object',
         model = 5527,
     },
+    ['car_repair_shop_interior'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'car_repair_shop',
+    },
     ['5521_banner_removed'] = {
         custom = false,
         type = 'object',
@@ -387,6 +436,16 @@ models = {
         type = 'object',
         model = 1337,
         txd = 'ufo',
+    },
+    ['407'] = {
+        custom = false,
+        type = 'vehicle',
+        model = 407,
+    },
+    ['544'] = {
+        custom = false,
+        type = 'vehicle',
+        model = 544,
     },
     ['courierb'] = {
         custom = false,
@@ -431,9 +490,57 @@ models = {
         type = 'object',
         model = 5131,
     },
+    ['5411'] = {
+        type = 'object',
+        model = 5411,
+    },
+    ['5461'] = {
+        type = 'object',
+        model = 5461,
+    },
+    ['5462'] = {
+        type = 'object',
+        model = 5462,
+    },
+    ['5458'] = {
+        type = 'object',
+        model = 5458,
+    },
+    ['5640'] = {
+        type = 'object',
+        model = 5640,
+    },
+    ['5133'] = {
+        type = 'object',
+        model = 5133,
+    },
     ['3761'] = {
         type = 'object',
         model = 3761,
+    },
+    ['5435'] = {
+        type = 'object',
+        model = 5435,
+    },
+    ['5495'] = {
+        type = 'object',
+        model = 5495,
+    },
+    ['5434'] = {
+        type = 'object',
+        model = 5434,
+    },
+    ['5498'] = {
+        type = 'object',
+        model = 5498,
+    },
+    ['5641'] = {
+        type = 'object',
+        model = 5641,
+    },
+    ['5637'] = {
+        type = 'object',
+        model = 5637,
     },
     ['plane'] = {
         type = 'object',
@@ -475,6 +582,18 @@ models = {
         model = 6428,
         txd = 'molo',
     },
+    ['glenpark-houses-1'] = {
+        type = 'object',
+        model = 5443,
+    },
+    ['glenpark-houses-2'] = {
+        type = 'object',
+        model = 5457,
+    },
+    ['glenpark-houses-3'] = {
+        type = 'object',
+        model = 5392,
+    },
     ['psquare-1'] = {
         type = 'object',
         model = 3985,
@@ -507,7 +626,6 @@ models = {
         type = 'object',
         model = 5397,
     },
-
 
     -- {3980, 'city_hall_3d.dff', 'city_hall_3d.txd', 'city_hall_3d.col', true, true},
 	-- {4002, 'city_hall_3d_2.dff', false, 'city_hall_3d_2.col', true, true},
@@ -564,6 +682,32 @@ models = {
     ['models/police_station_ls2'] = {
         type = 'object',
         model = 5139,
+        txd = 'models/police_station_ls2lod',
+    },
+    ['youkestest/6123'] = {
+        type = 'object',
+        model = 6123,
+        txd = 'youkestest/Tekstury',
+    },
+    ['youkestest/6041'] = {
+        type = 'object',
+        model = 6041,
+        txd = 'youkestest/Tekstury',
+    },
+    ['youkestest/6039'] = {
+        type = 'object',
+        model = 6039,
+        txd = 'youkestest/Tekstury',
+    },
+    ['youkestest/6098'] = {
+        type = 'object',
+        model = 6098,
+        txd = 'youkestest/Tekstury',
+    },
+    ['youkestest/6213'] = {
+        type = 'object',
+        model = 6213,
+        txd = 'youkestest/Tekstury',
     },
     ['models/police_station_ls2lod'] = {
         type = 'object',
@@ -612,6 +756,75 @@ models = {
     ['models/ls_fire_station_lod'] = {
         type = 'object',
         model = 4025,
+    },
+
+    ['wheels/1096'] = {
+        type = 'object',
+        model = 1096,
+    },
+    ['wheels/1083'] = {
+        type = 'object',
+        model = 1083,
+    },
+    ['wheels/1084'] = {
+        type = 'object',
+        model = 1084,
+    },
+    ['wheels/1081'] = {
+        type = 'object',
+        model = 1081,
+    },
+    ['wheels/1097'] = {
+        type = 'object',
+        model = 1097,
+    },
+    ['wheels/1098'] = {
+        type = 'object',
+        model = 1098,
+    },
+    ['wheels/1025'] = {
+        type = 'object',
+        model = 1025,
+    },
+    ['wheels/1085'] = {
+        type = 'object',
+        model = 1085,
+    },
+    ['wheels/1082'] = {
+        type = 'object',
+        model = 1082,
+    },
+    ['wheels/1080'] = {
+        type = 'object',
+        model = 1080,
+    },
+    ['wheels/1079'] = {
+        type = 'object',
+        model = 1079,
+    },
+    ['wheels/1078'] = {
+        type = 'object',
+        model = 1078,
+    },
+    ['wheels/1077'] = {
+        type = 'object',
+        model = 1077,
+    },
+    ['wheels/1076'] = {
+        type = 'object',
+        model = 1076,
+    },
+    ['wheels/1075'] = {
+        type = 'object',
+        model = 1075,
+    },
+    ['wheels/1074'] = {
+        type = 'object',
+        model = 1074,
+    },
+    ['wheels/1073'] = {
+        type = 'object',
+        model = 1073,
     },
 }
 

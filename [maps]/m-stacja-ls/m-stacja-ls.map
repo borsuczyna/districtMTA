@@ -40,4 +40,8 @@
     <removeWorldObject id="removeWorldObject (washgaspump) (2)" radius="3.8871777" interior="-1" model="1676" lodModel="0" posX="1941.6563" posY="-1771.3437" posZ="14.14063" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
     <removeWorldObject id="removeWorldObject (washgaspump) (3)" radius="3.8871777" interior="-1" model="1676" lodModel="0" posX="1941.6563" posY="-1778.4531" posZ="14.14063" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
     <object id="object (ab_mafiaSuite01zzz) (1)" breakable="true" interior="0" alpha="255" dimension="0" element:model="gas-station/gas-station-ls3" model="14581" scale="1" doublesided="false" collisions="true" posX="1921.4" posY="-1775.1" posZ="14.9" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (washgaspump) (1)" breakable="false" frozen="true" interior="0" alpha="255" dimension="0" model="1676" scale="1" doublesided="false" collisions="true" posX="1941.6801" posY="-1767.45" posZ="14.2" rotX="0" rotY="0" rotZ="90"></object>
+    <object id="object (washgaspump) (2)" breakable="false" frozen="true" interior="0" alpha="255" dimension="0" model="1676" scale="1" doublesided="false" collisions="true" posX="1941.7" posY="-1771.3" posZ="14.2" rotX="0" rotY="0" rotZ="-90"></object>
+    <object id="object (washgaspump) (3)" breakable="false" frozen="true" interior="0" alpha="255" dimension="0" model="1676" scale="1" doublesided="false" collisions="true" posX="1941.7" posY="-1774.4" posZ="14.2" rotX="0" rotY="0" rotZ="90"></object>
+    <object id="object (washgaspump) (4)" breakable="false" frozen="true" interior="0" alpha="255" dimension="0" model="1676" scale="1" doublesided="false" collisions="true" posX="1941.7" posY="-1778.4" posZ="14.2" rotX="0" rotY="0" rotZ="-90"></object>
 </map>
