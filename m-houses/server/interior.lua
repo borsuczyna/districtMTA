@@ -53,6 +53,7 @@ function leaveHouse(player, houseData)
     removeElementData(player, 'player:house')
     setElementPosition(player, x, y, z)
     setPlayerFurnitureEditMode(player, false)
+    triggerClientEvent(player, 'houses:unloadInterior', resourceRoot)
 end
 
 function enterHouse(player, houseUid)

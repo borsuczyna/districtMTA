@@ -1,4 +1,5 @@
 addEvent('houses:loadInterior', true)
+addEvent('houses:unloadInterior', true)
 addEvent('houses:ringBell', true)
 addEvent('houses:updateFurniture', true)
 addEvent('houses:removeFurniture', true)
@@ -106,6 +107,7 @@ function getInteriorData()
 end
 
 addEventHandler('houses:loadInterior', resourceRoot, loadInterior)
+addEventHandler('houses:unloadInterior', resourceRoot, destroyHouseInterior)
 
 addEventHandler('houses:ringBell', resourceRoot, function(position, player)
     local sound = playSound3D('data/doorbell.wav', unpack(position))
