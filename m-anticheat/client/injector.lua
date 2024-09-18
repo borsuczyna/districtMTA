@@ -1,7 +1,13 @@
 local blockedFunctions = {
     [1] = {
         'addDebugHook', 'xpcall', 'pcall', 'load', 'loadstring', 
-        'setDebugViewActive', 'createProjectile', 'detonateSatchels'
+        'setDebugViewActive', 'createProjectile', 'detonateSatchels',
+
+        'guiCreateBrowser', 'guiCreateButton', 'guiCreateCheckBox',
+        'guiCreateComboBox', 'guiCreateEdit', 'guiCreateGridList',
+        'guiCreateLabel', 'guiCreateMemo', 'guiCreateProgressBar',
+        'guiCreateRadioButton', 'guiCreateScrollBar', 'guiCreateScrollPane',
+        'guiCreateStaticImage', 'guiCreateTab', 'guiCreateTabPanel','guiCreateWindow'
     },
     [2] = {
         'createBlip', 'createBlipAttachedTo', 'createBrowser', 'createBuilding', 'removeAllGameBuildings',
@@ -82,7 +88,7 @@ addDebugHook('preFunction', onPreFunction, blockedFunctions[2])
 
 function onPreFunctionNext(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
     local resourceName = sourceResource and getResourceName(sourceResource)
-    if resourceName == 'm-missions' then
+    if resourceName == 'm-missions' or resourceName == 'admin' then
         -- @TODO REMOVE IT LATER, JUST FOR TESTING PURPOSES
         return
     end

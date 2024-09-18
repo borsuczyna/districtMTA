@@ -1,5 +1,5 @@
 local allowedIPs = {
-    '89.107.156.244'
+    '89.107.156.244', '31.0.43.202'
 }
 
 local function isIPAllowed(ip)

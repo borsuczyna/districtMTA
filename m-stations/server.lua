@@ -15,6 +15,7 @@ local fuelNames = {
 local stations = {
     {1938.679, -1772.928, 13.383, false},
     {1944.479, -1772.928, 13.383, false},
+    {1876.290, -1289.317, 13.391, false},
 }
 
 local timeouts = {}
@@ -47,6 +48,8 @@ local function hitStationMarker(player, matchingDimension)
 
     local vehicle = getPedOccupiedVehicle(player)
     if not vehicle then return end
+
+    if getVehicleController(vehicle) ~= player then return end
 
     local uid = getElementData(vehicle, 'vehicle:uid')
     if not uid then
@@ -107,6 +110,11 @@ addEventHandler('stations:refill', root, function(hash, player, fuelName, amount
     local vehicle = getPedOccupiedVehicle(player)
     if not vehicle then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie jesteś w pojeździe.'})
+        return
+    end
+
+    if getVehicleController(vehicle) ~= player then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie jesteś kierowcą pojazdu.'})
         return
     end
 

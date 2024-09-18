@@ -60,6 +60,7 @@ local function renderSpeedo()
     local lpgState = getElementData(vehicle, 'vehicle:lpgState') or false
     if lpgState then
         fuel = getElementData(vehicle, 'vehicle:lpgFuel') or 37
+        maxFuel = 25
     end
 
     local r, g, b = getVehicleHeadLightColor(vehicle)

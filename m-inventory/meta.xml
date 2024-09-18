@@ -30,6 +30,7 @@
     <!-- shops -->
     <script src='shop/shops/fish.lua' type='shared' cache='false'/>
     <script src='shop/shops/furniture.lua' type='shared' cache='false'/>
+    <script src='shop/shops/station.lua' type='shared' cache='false'/>
     
     <script src='shop/shared.lua' type='shared' cache='false'/>
     <script src='shop/server.lua' type='server'/>

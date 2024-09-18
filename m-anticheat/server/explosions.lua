@@ -27,5 +27,9 @@ end)
 
 addEventHandler('onVehicleExplode', root, function(_, player)
     if not player then return end
-    ban(player, 'Explosion hack', 'Explosion hack')
+
+    local controller = getVehicleController(source)
+    if player == controller then return end
+    
+    kick(player, 'Explosion hack', 'Explosion hack')
 end)

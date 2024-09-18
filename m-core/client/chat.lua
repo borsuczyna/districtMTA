@@ -1,5 +1,5 @@
 local messageTime = 8000
-local messageDrawDistance = 14 
+local messageDrawDistance = 25
 local messageFadeDistance = messageDrawDistance * 0.75
 local messageBaseAlpha = 170
 local messageLimit = 4
@@ -7,6 +7,8 @@ local messageLimit = 4
 local chatBubbles = {}
 
 function renderChatBubbles()
+    if getElementData(localPlayer, 'player:hiddenNametags') then return end
+
     for player, bubbleData in pairs(chatBubbles) do
         if isElement(player) then            
             local boneX, boneY, boneZ = getPedBonePosition(player, 3)
@@ -41,7 +43,7 @@ addEvent('chat:addBubble', true)
 addEventHandler('chat:addBubble', root, function(message)
     local player = source
 
-    if source ~= localPlayer then     
+    if player ~= localPlayer then     
         if not chatBubbles[player] then
             chatBubbles[player] = {
                 text = message,
@@ -61,5 +63,9 @@ addEventHandler('chat:addBubble', root, function(message)
 end)
 
 addEventHandler('onClientPlayerQuit', root, function()
-    chatBubbles[source] = nil
+    local player = source
+
+    if chatBubbles[player] then
+        chatBubbles[player] = nil
+    end
 end)

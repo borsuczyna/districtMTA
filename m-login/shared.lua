@@ -43,6 +43,8 @@ addEventHandler('login-spawn:returnPlayerHouses', resourceRoot, function(houses)
         table.insert(houseSpawns, {v.name, v.position[1], v.position[2], v.position[3], 0})
     end
 
+    if #houseSpawns == 0 then return end
+
     table.insert(spawns, {
         name = 'Domy i mieszkania',
         spawns = houseSpawns

@@ -48,6 +48,7 @@ function createShop(index, data)
 end
 
 shopList = {
+    createStationShop('Idlewood', 1925.296, -1771.964, 13.577),
     createFishShop(154.176, -1942.934, 3.769),
     createFurnitureShop('toilet', 'Sypialnia', 2054.112, -1075.416, 126.458, 1),
     createFurnitureShop('toilet', 'Salon', 2053.505, -1081.298, 126.458, 1),

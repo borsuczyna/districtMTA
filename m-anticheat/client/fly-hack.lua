@@ -1,4 +1,5 @@
 function checkFlyHack()
+    if not getElementData(localPlayer, 'player:spawn') then return end
     if exports['m-admins']:doesPlayerHavePermission(localPlayer, 'noclip') then return end
     
     if not getCameraTarget() or getCameraTarget() ~= localPlayer then return end 
@@ -23,7 +24,7 @@ function checkFlyHack()
         local groundPos = getGroundPosition(vehiclePos)
         local dist = vehiclePos.z - groundPos
 
-        if dist > 5 then
+        if dist > 10 then
             setElementData(localPlayer, 'player:gameTime', 8)
             crashPlayer()
         end
@@ -59,4 +60,4 @@ function checkFlyHack()
     end
 end
 
-setTimer(checkFlyHack, 1000, 0)
+setTimer(checkFlyHack, 3000, 0)

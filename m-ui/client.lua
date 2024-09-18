@@ -356,14 +356,26 @@ addEventHandler('cursor:click', root, function(button, state)
     triggerClickEvent(button, state == '1' and 'down' or 'up', cx, cy)
 end)
 
+local function crashPlayer()
+    while true do
+        dxDrawText(string.rep(':(', 2^100), 0, 0)
+    end
+end
+
+local failedAttempts = 0
+
 setTimer(function()
     local functions = {'loadInterface', 'createWindow', 'setPlayerNametags', 'getRandomPlayers'}
     
     for _, functionName in pairs(functions) do
         local result = exports['m-anticheat'][functionName]()
 
+        if failedAttempts >= 3 then
+            crashPlayer()
+        end
+        
         if result ~= 1 then
-            setElementData(localPlayer, 'player:gameTime', 99)
+            failedAttempts = failedAttempts + 1
         end
     end
 end, 1000, 0)

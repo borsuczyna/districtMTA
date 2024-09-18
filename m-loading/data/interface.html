@@ -188,7 +188,7 @@
         return nextId;
     }
 
-    function getCurrentImageaId(element) {
+    function getCurrentImageId(element) {
         let backgroundImage = element.style.backgroundImage;
         let id = backgroundImage.split('bg-')[1].split('.png')[0];
         return parseInt(id);
@@ -200,14 +200,14 @@
     }
 
     function updateTitleAndDescription(element) {
-        let id = getCurrentImageaId(element);
+        let id = getCurrentImageId(element);
         let [title, description] = data[id - 1];
         element.querySelector('.title').innerText = title;
         element.querySelector('.description').innerText = description;
     }
 
     function nextImage(element, cantBe) {
-        let id = getCurrentImageaId(element);
+        let id = getCurrentImageId(element);
         let nextId = getNextImage(id);
         setImageId(element, nextId);
 
@@ -242,7 +242,7 @@
 
         leftHide.classList.remove('item-left-hide');
         leftHide.classList.add('item-right-hide');
-        nextImage(leftHide, getCurrentImageaId(right));
+        nextImage(leftHide, getCurrentImageId(right));
     }
 
     function changeLoadingImage() {
