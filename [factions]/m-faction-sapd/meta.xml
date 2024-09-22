@@ -1,0 +1,6 @@
+<meta>
+    <script src='client/taser.lua' type='client' cache='false'/>
+    <script src='server/main.lua' type='server'/>
+
+    <file src='data/taser.mp3'/>
+</meta>

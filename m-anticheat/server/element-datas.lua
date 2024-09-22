@@ -2,7 +2,7 @@ local lockedElementDatas = {
     'player:uid', 'player:id',
     'player:premium', 'player:avatar', 'player:skin',
     'player:spawn', 'player:logged', 'player:organization',
-    'player:level', 'player:exp', 'player:rank',
+    'player:level', 'player:exp', 'player:duty', 'player:rank', 'player:paint',
     'player:mute', 'player:muteAdmin', 'player:muteReason',
     'player:takenLicense', 'player:takenLicenseAdmin', 'player:takenLicenseReason',
     'player:triggerLocked', 'player:dailyRewardDay', 'player:dailyRewardRedeem',
@@ -14,7 +14,8 @@ local lockedElementDatas = {
     'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
     'player:holdingPackage',
     'controller', 'element:animations',
-    'mission:element', 'missions:vehicleDamageProof',
+    'mission:element', 'missions:vehicleDamageProof', 'marker:manage-faction', 'marker:duty-faction', 'marker:shelf-items',
+    'gate:faction', 'gate:object', 'gate:position', 'gate:openBy', 'gate:state', 'gate:time', 'gate:disableCollision',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
@@ -25,7 +26,7 @@ local lockedElementDatas = {
     'blip:hoverText', 'redirected', 'area:hoverText', 'area:className',
 
     'repair:colShape', 'repair:marker', 'repair:state', 'repair:data', 'repair:render', 
-    'repair:vehicle', 'repair:time', 'vehicle:repairing', 
+    'repair:vehicle', 'repair:time', 'vehicle:repairing', 'player:knownIntros',
 }
 
 local selfElementDatas = {
