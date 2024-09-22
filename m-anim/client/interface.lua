@@ -6,7 +6,7 @@ end
 
 addEventHandler('interface:load', root, function(name)
     if name == 'anim' then
-        exports['m-ui']:setInterfaceVisible(name, true)
+        -- exports['m-ui']:setInterfaceVisible(name, true)
         setInterfaceData()
     end
 end)

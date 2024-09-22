@@ -44,7 +44,7 @@ local function updatePedVoice(ped, fft)
     end
     
     local rx, ry, rz = getElementBoneRotation(ped, boneId)
-    setElementBoneRotation(ped, boneId, rx, ry + openMouthValue / 4, rz)
+    setElementBoneRotation(ped, boneId, rx, ry + openMouthValue / 3, rz)
     updateElementRpHAnim(ped)
 end
 
@@ -97,16 +97,16 @@ function renderVoiceLines()
 end
 
 function pedTellVoiceLine(ped, line, text)
-    if DEBUG_SKIP_VOICE then
-        setTimer(triggerEvent, 10, 1, 'missions:onVoiceLineFinish', resourceRoot, line)
-        return
-    end
+    -- if DEBUG_SKIP_VOICE then
+    --     setTimer(triggerEvent, 10, 1, 'missions:onVoiceLineFinish', resourceRoot, line)
+    --     return
+    -- end
 
     local sound;
 
     local path = ('data/voice/%s.wav'):format(line)
     if line ~= '' and fileExists(path) then
-        sound = playSound3D(path, 0, 0, 0, false)
+        sound = playSound(path)
     else
         local url = playTTS(text, 'pl')
         -- sound = playSound3D(url, 0, 0, 0, false)
@@ -156,5 +156,13 @@ function setMissionTarget(text)
     end
 end
 
--- pedTellVoiceLine(localPlayer, '', 'jebac cie')
+-- local ped = createPed(291, 992.570, -1440.423, 13.586, 61)
+-- local menelica = createPed(38, 992.893, -1439.800, 13.586, 85)
+-- local beer = createObject(1544, 0, 0, 0)
+-- setObjectScale(beer, 0.8)
+-- exports['m-anim']:setPedAnimation(ped, 'ciolek')
+-- exports['m-anim']:setPedAnimation(menelica, 'menelica')
+-- exports['m-pattach']:attach(beer, menelica, 25, 0.05, 0.05, -0.1, 0, 0, 0)
+-- pedTellVoiceLine(menelica, 'menelica', '')
+-- pedTellVoiceLine(ped, 'ciolek', '')
 -- setMissionTarget('Wsiądź do pojazdu')

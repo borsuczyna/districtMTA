@@ -20,6 +20,7 @@ function showParkingInterface()
 end
 
 function setParkingUIVisible(visible)
+    
     if parkingHideTimer and isTimer(parkingHideTimer) then
         killTimer(parkingHideTimer)
     end

@@ -39,7 +39,7 @@ local function updateCamera()
             mz = mz - 0.1
         end
 
-        local x, y, z = getPositionFromElementOffset(camera.tempObject, mx, my, mz)
+        local x, y, z = getPositionFromElementOffset(camera.tempObject, mx / 4, my / 4, mz / 4)
         camera.x, camera.y, camera.z = x, y, z
     end
 end

@@ -68,6 +68,8 @@ addCommandHandler('cv', function(player, cmd, model)
         local x, y, z = getElementPosition(player)
         local rx, ry, rz = getElementRotation(player)
         local vehicle = createVehicle(model, x, y + 2, z, rx, ry, rz)
+        setElementInterior(vehicle, getElementInterior(player))
+        setElementDimension(vehicle, getElementDimension(player))
 
         warpPedIntoVehicle(player, vehicle)
     else
@@ -87,7 +89,7 @@ addCommandHandler('dv', function(player, cmd)
 
     local vehicle = getPedOccupiedVehicle(player)
     if not vehicle then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie masz pojazdu')
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Nie jesteś w pojeździe')
         return
     end
 

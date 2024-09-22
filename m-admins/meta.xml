@@ -28,6 +28,7 @@
     <script src='commands/cv.lua' type='server'/>
     <script src='commands/rank.lua' type='server'/>
     <script src='commands/fix.lua' type='server'/>
+    <script src='commands/heal.lua' type='server'/>
     <script src='commands/admins.lua' type='server'/>
 
     <file src='data/logs.html'/>

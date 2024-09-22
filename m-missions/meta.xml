@@ -69,6 +69,8 @@
     <!-- voice lines -->
     <file src="data/voice/test.wav" />
     <file src="data/voice/oblakany.wav" />
+    <file src="data/voice/ciolek.wav" />
+    <file src="data/voice/menelica.wav" />
     
     <!-- missions -->
     <script src="missions/prolog.lua" type="shared" cache="false"></script>

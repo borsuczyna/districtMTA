@@ -7,7 +7,13 @@ local parkings = {
         take = Vector3(1230.394, -2058.134, 58.852),
         takeOut = Vector3(1238.519, -2053.540, 59.836),
         takeRotation = Vector3(0, 0, -90)
-    }
+    },
+    {
+        putBack = Vector3(1362.043, -1651.249, 12.383),
+        take = Vector3(1359.544, -1647.193, 12.418),
+        takeOut = Vector3(1362.422, -1643.260, 13.383),
+        takeRotation = Vector3(0, 0, -90)
+    },
 }
 
 function hidePrivateVehicle(hitElement)

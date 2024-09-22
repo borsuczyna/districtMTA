@@ -10,6 +10,7 @@ ranks = {
             'command:spec',
             'command:warn',
             'command:fix',
+            'command:heal',
             'command:admin',
         }
     },
@@ -28,6 +29,7 @@ ranks = {
             'command:spec',
             'command:warn',
             'command:fix',
+            'command:heal',
             'command:admin',
         }
     },
@@ -48,6 +50,7 @@ ranks = {
             'command:warn',
             'command:cv',
             'command:fix',
+            'command:heal',
             'command:admin',
         }
     },
@@ -69,6 +72,7 @@ ranks = {
             'command:warn',
             'command:cv',
             'command:fix',
+            'command:heal',
             'command:admin',
         }
     },
@@ -94,6 +98,7 @@ ranks = {
             'command:cv.bypass',
             'command:rank',
             'command:fix',
+            'command:heal',
             'command:admin',
         }
     }

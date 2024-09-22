@@ -53,7 +53,7 @@ function checkFlyHack()
                     return false
                 end
             end
-    
+
             setElementData(localPlayer, 'player:gameTime', 8)
             crashPlayer()
         end

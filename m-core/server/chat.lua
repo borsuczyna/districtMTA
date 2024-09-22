@@ -55,12 +55,6 @@ addEventHandler('onPlayerChat', root, function(message, messageType)
         return
     end
 
-    local messageLength = utf8.len(message)
-    if messageLength > 80 then
-        exports['m-notis']:addNotification(source, 'error', 'Błąd', 'Wiadomość jest za długa')
-        return
-    end
-
     local x, y, z = getElementPosition(source)
     local dimension = getElementDimension(source)
     local playerName = getPlayerName(source)

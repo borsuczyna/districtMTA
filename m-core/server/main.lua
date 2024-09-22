@@ -1,5 +1,5 @@
 local gameMode = 'RPG + Fabuła'
-local fpsLimit = 75
+local fpsLimit = 100
 
 function updateRealTime()
     local time = getRealTime()
@@ -15,7 +15,8 @@ addEventHandler('onResourceStart', resourceRoot, function()
 
     setFPSLimit(fpsLimit)
     setOcclusionsEnabled(false)
-    setWeather(18)
+
+    setMoonSize(1)
     setHeatHaze(0)
 
     setWorldSpecialPropertyEnabled('burnflippedcars', false)

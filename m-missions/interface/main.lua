@@ -65,9 +65,3 @@ end)
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('missionEditor')
 end)
-
--- toggle cursor on f2
-bindKey('f2', 'down', function()
-    showCursor(not isCursorShowing())
-    guiSetInputEnabled(isCursorShowing())
-end)

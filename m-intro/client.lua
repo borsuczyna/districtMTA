@@ -9,6 +9,7 @@ addEventHandler('interface:load', root, function(name)
 end)
 
 function showInterface()
+    triggerServerEvent('intro:fetchKnownIntros', resourceRoot)
     exports['m-ui']:loadInterfaceElementFromFile('intro', 'm-intro/data/interface.html')
 end
 
@@ -30,5 +31,3 @@ end)
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('intro')
 end)
-
-triggerServerEvent('intro:fetchKnownIntros', resourceRoot)

@@ -4,7 +4,7 @@ spawns = {
     {
         name = 'Los Santos',
         spawns = {
-            {'Spawn Pershing Square', 1479.608, -1675.643, 13.555, 180},
+            {'Spawn Market', 990.057, -1449.080, 13.883, 180},
             {'Góra Galileo', 1147.351, -2037.077, 69.008, -90},
             {'Szkoła jazdy', 1109.498, -1835.956, 16.603, -90},
         }

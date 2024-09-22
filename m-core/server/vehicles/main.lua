@@ -276,6 +276,9 @@ function tryVehicleStartEnter(player, seat)
     local uid = getElementData(player, 'player:uid')
     if not uid then return cancelEvent() end
 
+    local controller = getVehicleController(source)
+    if seat ~= 0 and not controller then cancelEvent() end
+
     local timeLeft, admin, reason = exports['m-core']:isPlayerHaveTakenLicense(player)
     if timeLeft then
         if seat == 0 then

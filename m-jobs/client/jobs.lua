@@ -511,6 +511,8 @@ function updateMarker(marker)
     setElementData(obj.element, 'marker:icon', marker.options.icon or 'work')
     setElementData(obj.element, 'marker:title', marker.options.title or 'Marker')
     setElementData(obj.element, 'marker:desc', marker.options.desc or 'Marker')
+    setElementDimension(obj.element, marker.options.dimension or 0)
+    setElementInterior(obj.element, marker.options.interior or 0)
 end
 
 function destroyMarker(hash)

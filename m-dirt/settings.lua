@@ -33,8 +33,7 @@ grassList = {
 
 rainyWeathers = {
 	[8] = true,
-	[16] = true,
-	[118] = true,
+	[16] = true
 }
 
 replaceTextures = {

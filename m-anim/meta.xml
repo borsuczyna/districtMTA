@@ -20,6 +20,8 @@
     <file src='animations/gada.json'/>
     <file src='animations/strzela.json'/>
     <file src='animations/sluchawka.json'/>
+    <file src='animations/menelica.json'/>
+    <file src='animations/ciolek.json'/>
 
     <export function='toggleAnimUI' type='client'/>
     <export function='setPedAnimation' type='shared'/>

@@ -37,12 +37,35 @@ local enters = {
         description = 'Szkoła jazdy',
         longDescrption = 'Wyście ze szkoły jazdy',
     },
+    {
+        marker = {1119.206, -1370.383, 13.984},
+        interior = 0,
+        dimension = 0,
+        target = {2255.866, -223.291, 96.190},
+        targetInterior = 5,
+        targetDimension = 5,
+        name = 'Wejście',
+        description = 'Magazyn',
+        longDescrption = 'Wejście do magazynu',
+    },
+    {
+        marker = {2257.462, -223.382, 96.186},
+        interior = 5,
+        dimension = 5,
+        target = {1119.024, -1372.255, 13.984},
+        targetInterior = 0,
+        targetDimension = 0,
+        name = 'Wyjście',
+        description = 'Magazyn',
+        longDescrption = 'Wyście z magazynu',
+    },
 }
 
 function createEntrance(enter, index)
     local x, y, z = unpack(enter.marker)
     enter.marker = createMarker(x, y, z - 1, 'cylinder', 1, 255, 140, 0, 0)
     setElementInterior(enter.marker, enter.interior)
+    setElementDimension(enter.marker, enter.dimension or 0)
     setElementData(enter.marker, 'marker:title', enter.name)
     setElementData(enter.marker, 'marker:desc', enter.description)
     setElementData(enter.marker, 'marker:longDesc', enter.longDescrption)
@@ -87,5 +110,6 @@ addEventHandler('enter:interior', resourceRoot, function(id)
 
     local x, y, z = unpack(enter.target)
     setElementPosition(client, x, y, z)
+    setElementDimension(client, enter.targetDimension or 0)
     setElementInterior(client, enter.targetInterior)
 end)

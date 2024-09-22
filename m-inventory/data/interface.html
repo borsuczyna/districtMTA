@@ -807,6 +807,7 @@
                 content: 'W kategorii crafting możesz tworzyć przedmioty z innych',
                 element: document.querySelector('#inventory #inventory-crafting'),
                 onShow: async () => {
+                    inventory_setShopVisible(false);
                     if (!inventory_isCraftingOpen()) {
                         inventory_goToCategory('craft');
                         await new Promise(resolve => setTimeout(resolve, 100));

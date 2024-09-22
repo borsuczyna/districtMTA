@@ -102,7 +102,8 @@ local function createTuningShop(position)
     setElementData(marker, 'marker:icon', 'mechanic')
     setElementData(marker, 'marker:title', 'Brama wjazdowa')
     setElementData(marker, 'marker:desc', 'Warsztat tuningowy')
-    createBlipAttachedTo(marker, 54, 2, 255, 255, 255, 255, 0, 9999)
+    local blip = createBlipAttachedTo(marker, 7, 2, 255, 255, 255, 255, 0, 9999)
+    setElementData(blip, 'blip:hoverText', 'Warsztat tuningowy')
 
     addEventHandler('onMarkerHit', marker, hitTuningMarker)
 end

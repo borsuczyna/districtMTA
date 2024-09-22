@@ -12,6 +12,7 @@ addEvent('jobs:tryStartJob', true)
 addEvent('jobs:jobStarted', true)
 addEvent('jobs:startJob', true)
 addEvent('jobs:endJob', true)
+addEvent('jobs:hideJobGui', true)
 
 addEventHandler('jobs:checkJobAvailability', root, function()
     local success = triggerEvent('jobs:tryStartJob', root, jobGui)
@@ -162,4 +163,8 @@ addEventHandler('jobs:jobStarted', resourceRoot, function(success, players)
     if success then
         setJobsVisible(false)
     end
+end)
+
+addEventHandler('jobs:hideJobGui', resourceRoot, function()
+    hideJobGui()
 end)

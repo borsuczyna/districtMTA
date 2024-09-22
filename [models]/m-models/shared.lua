@@ -498,6 +498,14 @@ models = {
         type = 'object',
         model = 5461,
     },
+    ['5810'] = {
+        type = 'object',
+        model = 5810,
+    },
+    ['5995'] = {
+        type = 'object',
+        model = 5995,
+    },
     ['5462'] = {
         type = 'object',
         model = 5462,
@@ -541,6 +549,18 @@ models = {
     ['5637'] = {
         type = 'object',
         model = 5637,
+    },
+    ['6152'] = {
+        type = 'object',
+        model = 6152,
+    },
+    ['6156'] = {
+        type = 'object',
+        model = 6156,
+    },
+    ['6192'] = {
+        type = 'object',
+        model = 6192,
     },
     ['plane'] = {
         type = 'object',
@@ -593,16 +613,6 @@ models = {
     ['glenpark-houses-3'] = {
         type = 'object',
         model = 5392,
-    },
-    ['psquare-1'] = {
-        type = 'object',
-        model = 3985,
-        txd = 'psquare-1',
-    },
-    ['psquare-2'] = {
-        type = 'object',
-        model = 4186,
-        txd = 'psquare-1',
     },
     ['alahambra-1'] = {
         type = 'object',
@@ -684,31 +694,6 @@ models = {
         model = 5139,
         txd = 'models/police_station_ls2lod',
     },
-    ['youkestest/6123'] = {
-        type = 'object',
-        model = 6123,
-        txd = 'youkestest/Tekstury',
-    },
-    ['youkestest/6041'] = {
-        type = 'object',
-        model = 6041,
-        txd = 'youkestest/Tekstury',
-    },
-    ['youkestest/6039'] = {
-        type = 'object',
-        model = 6039,
-        txd = 'youkestest/Tekstury',
-    },
-    ['youkestest/6098'] = {
-        type = 'object',
-        model = 6098,
-        txd = 'youkestest/Tekstury',
-    },
-    ['youkestest/6213'] = {
-        type = 'object',
-        model = 6213,
-        txd = 'youkestest/Tekstury',
-    },
     ['models/police_station_ls2lod'] = {
         type = 'object',
         model = 5204,
@@ -732,6 +717,11 @@ models = {
     ['models/police_station_ls_plines'] = {
         type = 'object',
         model = 5231,
+    },
+    ['models/police_station_ls_door'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
     },
 
     -- {4019, 'ls_fire_station_building.dff', 'ls_fire_station.txd', 'ls_fire_station_building.col', true, true},

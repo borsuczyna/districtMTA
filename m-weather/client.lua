@@ -1,62 +1,39 @@
-local weatherUILoaded, boilerplateUIVisible, weatherHideTimer = false, false, false
+addEvent('weather:receiveWeather', true)
 
-function setInterfaceData()
-    exports['m-ui']:triggerInterfaceEvent('weather', 'play-animation', true)
-end
+local lastCityName = nil
+local currentWeather = nil
 
-addEventHandler('interface:load', root, function(name)
-    if name == 'weather' then
-        exports['m-ui']:setInterfaceVisible(name, true)
-        setInterfaceData()
-    end
-end)
-
-function showWeatherInterface()
-    exports['m-ui']:loadInterfaceElementFromFile('weather', 'm-weather/data/interface.html')
-end
-
-function setWeatherUIVisible(visible)
-    if weatherHideTimer and isTimer(weatherHideTimer) then
-        killTimer(weatherHideTimer)
+local function updateWeather()
+    if not getElementData(localPlayer, 'player:spawn') then 
+        setWeather(0)
+        return 
     end
 
-    weatherUIVisible = visible
-
-    if not visible and isTimer(weatherTimer) then
-        killTimer(weatherTimer)
+    if getElementInterior(localPlayer) ~= 0 or getElementDimension(localPlayer) ~= 0 then 
+        setWeather(0)
+        return
     end
 
-    if not weatherUILoaded and visible then
-        showWeatherInterface()
-    else
-        if not visible then
-            exports['m-ui']:triggerInterfaceEvent('weather', 'play-animation', false)
-            weatherHideTimer = setTimer(function()
-                exports['m-ui']:destroyInterfaceElement('weather')
-                weatherUILoaded = false
-            end, 300, 1)
-        else
-            exports['m-ui']:setInterfaceVisible('weather', true)
-            setInterfaceData()
-            weatherUIVisible = true
-        end
-    end
+    local x, y, z = getElementPosition(localPlayer)
+    local cityName = getZoneName(x, y, z, true)
+    if cityName == lastCityName then return end
+
+    triggerServerEvent('weather:fetchWeather', resourceRoot, cityName)
 end
 
-function toggleWeatherUI()
-    if not getElementData(localPlayer, 'player:spawn') then return end
-    setWeatherUIVisible(not weatherUIVisible)
-end
-
-addEventHandler('onClientResourceStart', resourceRoot, function()
-    toggleWeatherUI()
+addEventHandler('weather:receiveWeather', resourceRoot, function(cityName, weather)    
+    local x, y, z = getElementPosition(localPlayer)
+    local city = getZoneName(x, y, z, true)
+    if city ~= cityName then return end
     
-    addEventHandler('interfaceLoaded', root, function()
-        weatherUILoaded = false
-        setWeatherUIVisible(weatherUIVisible)
-    end)
+    weather.city = cityName
+    lastCityName = cityName
+
+    setWeather(weather.weather)
+    exports['m-timecyc']:setWeather(weather.weather)
+
+    showWeatherData(weather)
 end)
 
-addEventHandler('onClientResourceStop', resourceRoot, function()
-    exports['m-ui']:destroyInterfaceElement('weather')
-end)
+setTimer(updateWeather, 5000, 0)
+addEventHandler('onClientResourceStart', resourceRoot, updateWeather)

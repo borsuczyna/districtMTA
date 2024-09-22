@@ -11,7 +11,7 @@ addEventHandler('onClientRender', root, function()
     toggleControl('aim_weapon', state)
 end)
 
-addEventHandler('onClientResourceStart', root, function()
+addEventHandler('onClientResourceStart', root, function()    
     setAmbientSoundEnabled('general', false)
     setAmbientSoundEnabled('gunfire', false)
     

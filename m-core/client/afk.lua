@@ -17,7 +17,6 @@ end)
 
 addEventHandler('onClientMinimize', root, function()
     setElementData(localPlayer, 'player:afk', true)
-    showCursor(true, false)
 end)
 
 addEventHandler('onClientRestore', root, function()

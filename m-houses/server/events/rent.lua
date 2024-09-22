@@ -20,6 +20,11 @@ local function rentHouseForPlayer(player, houseUid, days, cost)
     local endRentTime = getRealTime().timestamp + days * 24 * 60 * 60
     if house.owner then
         endRentTime = house.rentDate.timestamp + days * 24 * 60 * 60
+    else
+        if #getPlayerOwnedHouses(player) >= 3 then
+            exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Możesz wynająć maksymalnie 3 domy.'})
+            return
+        end
     end
     
     dbExec(connection, 'UPDATE `m-houses` SET `owner` = ?, `rentDate` = FROM_UNIXTIME(?) WHERE `uid` = ?', uid, endRentTime, houseUid)

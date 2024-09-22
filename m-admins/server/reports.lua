@@ -8,6 +8,8 @@ local REPORT_STATE = {
     REJECTED = 2
 }
 
+local reportTimeouts = {}
+
 local function generateHash()
     local chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     local hash = ''
@@ -44,6 +46,11 @@ addCommandHandler('report', function(player, cmd, playerToFind, ...)
     if not getElementData(player, 'player:uid') then return end
     if exports['m-anticheat']:isPlayerTriggerLocked(player) then return end
 
+    if (reportTimeouts[player] or 0) > getTickCount() then
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Report można wysłać co 1 minutę')
+        return
+    end
+
     local reason = table.concat({...}, ' ')
     local foundPlayer = exports['m-core']:getPlayerFromPartialName(playerToFind)
     if not foundPlayer then
@@ -63,6 +70,7 @@ addCommandHandler('report', function(player, cmd, playerToFind, ...)
     exports['m-notis']:addNotification(player, 'success', 'Report', ('Wysłano zgłoszenie na gracza (%d) %s'):format(foundId, foundPlayerName))
     createReport(player, foundPlayer, reason)
     exports['m-logs']:sendLog('reports', 'info', ('Gracz `%s` zgłosił gracza `%s` z powodem: `%s`'):format(getPlayerName(player), foundPlayerName, reason))
+    reportTimeouts[player] = getTickCount() + 60000
 end)
 
 addEventHandler('reports:doReportAction', resourceRoot, function(hash, action)

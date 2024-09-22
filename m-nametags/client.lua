@@ -92,7 +92,6 @@ function renderNametag(player)
     dxDrawText(color .. '(' .. playerID ..') #ffffff'..getPlayerName(player), x, y, nil, nil, tocolor(255,215,125,225), scale, fonts[1], 'center', 'bottom', false, false, false, true, true)
 end
 
-
 function renderNametags()
     if getElementData(localPlayer, 'player:hiddenNametags') then return end
 

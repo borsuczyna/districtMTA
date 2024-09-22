@@ -22,6 +22,8 @@
     <file src='data/js/nice-table.js'/>
     <file src='data/js/tooltips.js'/>
     <file src='data/js/controller.js'/>
+    <file src='data/js/coloris.js'/>
+    <file src='data/js/select2.js'/>
 
     <file src='data/css/style.css'/>
     <file src='data/css/switch.css'/>
@@ -33,6 +35,8 @@
     <file src='data/css/scroll.css'/>
     <file src='data/css/nice-table.css'/>
     <file src='data/css/tooltip.css'/>
+    <file src='data/css/coloris.css'/>
+    <file src='data/css/select2.css'/>
     
     <file src='data/images/background.png'/>
     <file src='data/images/spinner.png'/>

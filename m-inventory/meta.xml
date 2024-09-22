@@ -4,6 +4,7 @@
     <script src='items/server/hotdog.lua' type='server'/>
     <script src='items/server/m4.lua' type='server'/>
     <script src='items/server/canister.lua' type='server'/>
+    <script src='items/server/spray.lua' type='server'/>
     <script src='items/server/potion.lua' type='server'/>
     <script src='items/server/furniture.lua' type='server'/>
 
@@ -14,6 +15,7 @@
     <script src='items/shared/hotdog.lua' type='shared' cache='false'/>
     <script src='items/shared/m4.lua' type='shared' cache='false'/>
     <script src='items/shared/canister.lua' type='shared' cache='false'/>
+    <script src='items/shared/spray.lua' type='shared' cache='false'/>
     <script src='items/shared/fish.lua' type='shared' cache='false'/>
     <script src='items/shared/reefer.lua' type='shared' cache='false'/>
     <script src='items/shared/furniture.lua' type='shared' cache='false'/>
@@ -91,6 +93,7 @@
     <file src='data/icons/white-slurpfish.png'/>
     <file src='data/icons/ws-spicy-fish.png'/>
     <file src='data/icons/yellow-slurpfish.png'/>
+    <file src='data/icons/spray.png'/>
 
     <!-- furniture -->
     <file src='data/icons/furniture/toilet-1.png'/>

@@ -106,6 +106,7 @@
         <div class="category" onclick="adminLogs_setCategory(this)" data-category="przelewy">Przelewy</div>
         <div class="category" onclick="adminLogs_setCategory(this)" data-category="pm">PM</div>
         <div class="category" onclick="adminLogs_setCategory(this)" data-category="komendy">Komendy</div>
+        <div class="category" onclick="adminLogs_setCategory(this)" data-category="money">Gospodarka</div>
     </div>
 </div>
 
@@ -149,8 +150,10 @@
         row.appendChild(iconsDom);
         row.dataset.category = category;
         let currentCategory = document.querySelector('#admin-logs .category.active').dataset.category;
-        if (currentCategory !== 'wszystko' && category !== currentCategory) {
-            row.classList.add('d-none');
+        if (currentCategory === 'wszystko') {
+            row.classList.toggle('d-none', category == 'money');
+        } else {
+            row.classList.toggle('d-none', category !== currentCategory);
         }
 
         rows.appendChild(row);
@@ -167,7 +170,11 @@
         category.classList.add('active');
 
         document.querySelectorAll('#admin-logs .rows div').forEach((el) => {
-            el.classList.toggle('d-none', category.dataset.category !== 'wszystko' && el.dataset.category !== category.dataset.category);
+            if (category.dataset.category === 'wszystko') {
+                el.classList.toggle('d-none', el.dataset.category == 'money');
+            } else {
+                el.classList.toggle('d-none', el.dataset.category !== category.dataset.category);
+            }
         });
 
         document.querySelector('#admin-logs .rows').scrollTop = document.querySelector('#admin-logs .rows').scrollHeight;

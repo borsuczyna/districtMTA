@@ -1,6 +1,7 @@
 itemsData = {
     m4 = createM4Item(),
     canister = createCanisterItem(),
+    spray = createSprayItem(),
     hotDog = createHotDogItem(),
     potion = createPotionItem(),
     bait = createBaitItem(),

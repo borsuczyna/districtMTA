@@ -86,7 +86,36 @@ jobs = {
                 points = 15
             },
         }
-    }
+    },
+    warehouse = {
+        name = 'Magazynier',
+        background = 'warehouse',
+        description = 'Praca magazyniera polega na przenoszeniu przesyłek z ciężarówki na półki magazynu.',
+        coop = false,
+        minLobbySize = 1,
+        lobbySize = 1,
+        minLevel = 1,
+        upgrades = {
+            {
+                name = 'Sprinter',
+                key = 'sprinter',
+                description = 'Pozwala biegać sprintem',
+                points = 25
+            },
+            {
+                name = 'Biznesmen',
+                key = 'biznesmen',
+                description = 'Zwiększa zarobki o 5%',
+                points = 15
+            },
+            {
+                name = 'Fachowiec',
+                key = 'fachowiec',
+                description = 'Zwiększa zarobki o 10%',
+                points = 30
+            },
+        }
+    },
 }
 
 function getJobName(job)

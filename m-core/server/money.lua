@@ -3,6 +3,7 @@ local _givePlayerMoney = givePlayerMoney
 function givePlayerMoney(player, type, details, amount)
     if amount == 0 then return end
     
+    amount = math.ceil(amount)
     addMoneyLog(player, type, details, amount)
 
     if amount > 0 then

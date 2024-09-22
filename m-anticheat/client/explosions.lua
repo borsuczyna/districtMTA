@@ -1,3 +1,3 @@
-addEventHandler('onClientProjectileCreation', root, function()
-    destroyElement(source)
-end)
+-- addEventHandler('onClientProjectileCreation', root, function()
+--     destroyElement(source)
+-- end)

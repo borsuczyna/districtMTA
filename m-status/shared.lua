@@ -22,6 +22,7 @@ function getPlayerStatus(player)
     local premium = getElementData(player, 'player:premium-end')
     local afk = getElementData(player, 'player:afk')
     local job = getElementData(player, 'player:job')
+    local duty = getElementData(player, 'player:duty')
 
     local status = 'W grze'
     local statusColor = '#3AF36D'
@@ -41,6 +42,11 @@ function getPlayerStatus(player)
         statusColor = '#ffcc00'
     end
 
+    if duty then
+        status = 'Służba ' .. duty
+        statusColor = '#00FF00'
+    end
+
     if rank and rank > 0 then
         if not ranksData[rank] then
             ranksData[rank] = {
@@ -51,6 +57,14 @@ function getPlayerStatus(player)
 
         status = status .. ' (' .. ranksData[rank].name .. ')'
         statusColor = ranksData[rank].color
+    end
+
+    if duty == 'SAPD' then
+        statusColor = '#0099FF'
+    elseif duty == 'SAFD' then
+        statusColor = '#FF0000'
+    elseif duty == 'SAMC' then
+        statusColor = '#00FFFF'
     end
 
     if job then

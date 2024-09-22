@@ -35,6 +35,8 @@ function startJob(job, players, minPlayers)
     end
 
     exports['m-notis']:addNotification(players, 'info', 'Informacja', 'Praca została rozpoczęta')
+    triggerClientEvent(players, 'jobs:hideJobGui', resourceRoot)
+    
     local success = triggerEvent('jobs:startJob', root, job, hash, players)
     if not success then
         destroyJobLobby(getLobbyByHash(hash))
@@ -578,7 +580,7 @@ function leaveJob(player)
         setElementData(p, 'player:job-players', lobby.players)
     end
 
-    if #lobby.players < lobby.minPlayers then
+    if #(lobby.players or {}) < (lobby.minPlayers or 100) then
         exports['m-notis']:addNotification(lobby.players, 'error', 'Praca', 'Zbyt mało graczy na kontynuację pracy')
 
         for i, player in ipairs(lobby.players) do

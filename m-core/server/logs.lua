@@ -22,6 +22,13 @@ function addMoneyLog(player, type, details, amount)
     if not uid then return end
 
     addMoneyLogByUid(uid, type, details, amount)
+
+    local color = getPlayerColor(player)
+    local playerName = getPlayerName(player)
+    local playerID = getElementData(player, 'player:id')
+    local playerUID = getElementData(player, 'player:uid')
+    local message = ('%s(#ffffff%d%s) #dddddd%s - %s%s%s#dddddd - %s'):format(color, playerID, color, playerName, amount > 0 and '#2ecc71' or '#DA4A4A', amount > 0 and '+$' or '-$', math.abs(amount), details)
+    exports['m-admins']:addLog('money', message, {})
 end
 
 function addMoneyLogByUid(uid, type, details, amount)

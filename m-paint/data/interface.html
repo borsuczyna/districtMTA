@@ -1,0 +1,163 @@
+<style>
+    #paint {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        opacity: 0;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        padding: 0.8rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #paint .color {
+        width: 10.25rem;
+        height: 2.5rem;
+        border: none;
+        border-radius: 0.3125rem;
+        margin: 0.625rem;
+        padding: 0;
+        font-size: 1rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    #paint .color-preview {
+        width: 8rem;
+        height: 8rem;
+        border: none;
+        border-radius: 0.3125rem;
+        padding: 0;
+        cursor: pointer;
+        background-color: red;
+    }
+
+    #paint .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+
+    #paint .color {
+        background-color: rgba(47, 47, 47, 0.9);
+        color: rgb(231, 231, 231);
+        font-weight: 700;
+        width: 8rem;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #paint .color-select {
+        padding: 0.5rem;
+        background-color: rgba(47, 47, 47, 0.9);
+        color: rgba(231, 231, 231, 0.747);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.3125rem;
+        cursor: pointer;
+    }
+
+    #paint .color-select.active {
+        background-color: rgba(68, 68, 68, 0.7);
+        color: rgb(231, 231, 231);
+        border: 0.0625rem solid rgba(70, 70, 70, 0.7);
+        cursor: default;
+    }
+
+    .clr-field {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .clr-picker {
+        background-color: rgba(30, 30, 30, 0.9) !important;
+    }
+</style>
+
+<div class="d-flex flex-column gap-2">
+    <div class="d-flex gap-4 align-items-center">
+        <span class="label">Lakiernia</span>
+        <div class="line"></div>
+    </div>
+    <div class="d-flex gap-3">
+        <div class="d-flex flex-column gap-2">
+            <div class="color-preview" onclick="paint_toggleColoris(this)" style="background-color: #ff0000"></div>
+            <input type="text" class="color" value="#ff0000">
+        </div>
+        <div class="d-flex flex-column flex-wrap gap-2" style="width: 12rem;">
+            <div class="color-select active" onclick="paint_selectColor(this)" data-color="1">Kolor podstawowy</div>
+            <div class="color-select" onclick="paint_selectColor(this)" data-color="2">Kolor dodatkowy</div>
+            <div class="color-select" onclick="paint_selectColor(this)" data-color="3">Kolor felg</div>
+            <div class="color-select" onclick="paint_selectColor(this)" data-color="4">Kolor rantów</div>
+        </div>
+    </div>
+    <div class="label text-center">Koszt malowania wynosi $500</div>
+    <div class="nice-button" onclick="paint_takeSpray(this)">Kup spray</div>
+</div>
+
+<script>
+    Coloris({
+        el: '#paint .color',
+        theme: 'polaroid',
+        themeMode: 'dark',
+        format: 'hex',
+        formatToggle: false,
+        closeButton: false,
+        clearButton: false,
+        alpha: false,
+        wrap: false,
+        swatches: [
+            '#067bc2',
+            '#84bcda',
+            '#80e377',
+            '#ecc30b',
+            '#f37748',
+            '#d56062'
+        ]
+    });
+
+    paint_toggleColoris = (el) => {
+        el.nextElementSibling.click();
+    }
+
+    paint_selectColor = (el) => {
+        document.querySelectorAll('#paint .color-select').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    paint_takeSpray = async (button) => {
+        if (isButtonSpinner(button)) return;
+
+        let color = document.querySelector('#paint .color').value;
+        let type = document.querySelector('#paint .color-select.active').dataset.color;
+
+        makeButtonSpinner(button);
+        let data = await mta.fetch('paint', 'takeSpray', [color, type]);
+        makeButtonSpinner(button, false);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            return;
+        } else {
+            notis_addNotification(data.status, data.status === 'success' ? 'Sukces' : 'Błąd', data.message);
+
+            if (data.status === 'success') {
+                mta.triggerEvent('paint:hideUI');
+            }
+        }
+    }
+
+    document.addEventListener('coloris:pick', event => {
+        document.querySelector('#paint .color-preview').style.backgroundColor = event.detail.color;
+    });
+
+    addEvent('paint', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#paint').style.opacity = appear ? '1' : '0';
+        document.querySelector('#paint').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    
+        Coloris.close();
+    });
+</script>

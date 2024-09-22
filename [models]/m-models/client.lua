@@ -64,6 +64,7 @@ function loadModel(name, data)
 
     local total = getElementData(localPlayer, 'models:loading:total')
     local loaded = getElementData(localPlayer, 'models:loading:progress') + 1
+    outputConsole('Załadowano model ' .. name .. ' (' .. loaded .. '/' .. total .. ')')
 
     setElementData(localPlayer, 'models:loading:progress', loaded)
     data.loaded = true

@@ -22,7 +22,9 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:premium-end', data.premiumEnd)
     setElementData(player, 'player:time', data.time)
     setElementData(player, 'player:session', 0)
-    setElementData(player, 'player:afkTime', data.afkTime)    
+    setElementData(player, 'player:afkTime', data.afkTime)
+    setElementData(player, 'player:dutyTime', data.dutyTime)
+    setElementData(player, 'player:payDutyTime', data.payDutyTime)
     setElementData(player, 'player:dailyRewardDay', data.dailyRewardDay)
     setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
     setElementData(player, 'player:avatar', data.avatar)
@@ -74,6 +76,8 @@ function buildSavePlayerQuery(player)
     local bankMoney = getElementData(player, 'player:bankMoney')
     local time = getElementData(player, 'player:time')
     local afkTime = getElementData(player, 'player:afkTime')
+    local dutyTime = getElementData(player, 'player:dutyTime')
+    local payDutyTime = getElementData(player, 'player:payDutyTime')
     local inventory = getElementData(player, 'player:inventory') or {}
     local licenses = table.concat(getElementData(player, 'player:licenses') or {}, ',')
     local knownIntros = table.concat(getElementData(player, 'player:knownIntros') or {}, ',')
@@ -91,6 +95,8 @@ function buildSavePlayerQuery(player)
         exp = getElementData(player, 'player:exp'),
         time = time,
         afkTime = afkTime,
+        dutyTime = dutyTime,
+        payDutyTime = payDutyTime,
         settings = toJSON(settings),
         inventory = toJSON(inventory),
         licenses = licenses,
