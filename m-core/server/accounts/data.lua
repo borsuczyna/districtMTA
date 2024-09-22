@@ -11,6 +11,16 @@ local function assignPlayerInventory(player, data)
     setElementData(player, 'player:inventory', inventory, false)
 end
 
+function getPlayerTicketsCount(result, player)
+    if not result then return end
+
+    local data = dbPoll(result, 0)
+    if not data then return end
+
+    setElementData(player, 'player:tickets', data[1].count)
+    setPlayerWantedLevel(player, math.min(data[1].count, 6))
+end
+
 function assignPlayerData(player, data)
     local settings = fromJSON(data.settings)
     
@@ -66,6 +76,7 @@ function assignPlayerData(player, data)
     if not connection then return end
 
     dbExec(connection, 'UPDATE `m-users` SET lastActive = NOW() WHERE uid = ?', data.uid)
+    dbQuery(getPlayerTicketsCount, { player }, connection, 'SELECT COUNT(*) as count FROM `m-sapd-tickets` WHERE `user` = ? AND `active` = 1', data.uid)
 end
 
 function buildSavePlayerQuery(player)

@@ -3,6 +3,7 @@ addEvent('intro:setKnownIntros', true)
 
 addEventHandler('interface:load', root, function(name)
     if name == 'intro' then
+        triggerServerEvent('intro:fetchKnownIntros', resourceRoot)
         exports['m-ui']:setInterfaceVisible(name, true)
         exports['m-ui']:setInterfaceZIndex('intro', 999)
     end

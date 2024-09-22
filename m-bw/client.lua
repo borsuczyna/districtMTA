@@ -21,7 +21,7 @@ addEventHandler('onClientPlayerWasted', root, function()
     addEventHandler('onClientRender', root, renderBW, true, 'high+9998')
     dxSetShaderValue(shader, 'screenSource', screenSource)
 
-    toggleAllControls(false)
+    toggleAllControls(false, true, false)
     setBWUIVisible(true)
 end)
 

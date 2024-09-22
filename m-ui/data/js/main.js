@@ -35,12 +35,14 @@ function updateBrowserTitle() {
     const element = document.elementFromPoint(lastCursorPos.x, lastCursorPos.y);
     if (!element) return;
     const cursorStyle = getComputedStyle(element).cursor;
+    let anyInputFocused = document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
 
     document.title = JSON.stringify({
         c: cursorStyle,
         al: getControllerAxis(0),
         ar: getControllerAxis(1),
         b: new Array(18).fill(0).map((_, i) => getControllerButton(i)),
+        i: anyInputFocused,
     });
 }
 

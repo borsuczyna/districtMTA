@@ -3,13 +3,13 @@ function getPlayerFromPartialName(searchName)
 
     local players = getElementsByType('player')
     for i, player in ipairs(players) do
-        local name = removeHex(getPlayerName(player)):lower()
-        if name:find(searchName) then
+        local id = getElementData(player, 'player:id')
+        if id and tonumber(searchName) == id then
             return player
         end
 
-        local id = getElementData(player, 'player:id')
-        if id and tonumber(searchName) == id then
+        local name = removeHex(getPlayerName(player)):lower()
+        if name:find(searchName) then
             return player
         end
     end

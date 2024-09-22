@@ -25,8 +25,8 @@ local textures = {
 }
 
 local fonts = {
-	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 23/zoomOriginal, false, 'proof'),
-	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 18/zoomOriginal, false, 'proof'),
+	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 19, false, 'proof'),
+	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 16, false, 'proof'),
 }
 
 function findRotation( x1, y1, x2, y2 ) 
@@ -74,7 +74,7 @@ function renderRadar()
 
     local zone = getZoneName(px, py, pz, false)
     dxDrawText(zone, radarX + radarW - 20/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 200), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
-    dxDrawText(zone, radarX + radarW - 20/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 225), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
+    dxDrawText(zone, radarX + radarW - 20/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 200), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
 
     local _, _, cz = getElementRotation(getCamera())
     local x, y, z = getElementPosition(getCameraTarget() or localPlayer)

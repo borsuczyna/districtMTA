@@ -66,6 +66,7 @@ function updateHud(avatar)
         money = getPlayerMoney(localPlayer),
         level = level,
         exp = (getElementData(localPlayer, 'player:exp') or 0) / nextLevelExp * 100,
+        wantedStars = getPlayerWantedLevel(localPlayer),
     }
 
     local anythingChanged = false

@@ -20,6 +20,11 @@ local function uidToPlate(uid)
         :upper(), uid % 10000)
 end
 
+local function randomPlate()
+    local uid = math.random(0, 999999)
+    return uidToPlate(uid)
+end
+
 local function loadPrivateVehicle(data, player, position)
     destroyPrivateVehicle(data.uid)
 
@@ -37,7 +42,7 @@ local function loadPrivateVehicle(data, player, position)
     local mileage = data.mileage
     local health = data.health
     local color = map(split(data.color, ','), tonumber)
-    local plate = data.plate or uidToPlate(data.uid)
+    local plate = data.plate
     local panels = map(split(data.panels, ','), tonumber)
     local doors = map(split(data.doors, ','), tonumber)
     local lights = map(split(data.lights, ','), tonumber)
@@ -396,11 +401,11 @@ function createPrivateVehicle(player, hash, data)
     local lights = table.concat(data.lights, ',')
     
     local query = [[
-        INSERT INTO `m-vehicles` (`model`, `position`, `rotation`, `fuel`, `maxFuel`, `engineCapacity`, `mileage`, `fuelType`, `color`, `wheels`, `panels`, `doors`, `lights`, `owner`)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO `m-vehicles` (`model`, `position`, `rotation`, `fuel`, `maxFuel`, `engineCapacity`, `mileage`, `fuelType`, `color`, `wheels`, `panels`, `doors`, `lights`, `owner`, `plate`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ]]
     
-    dbQuery(createPrivateVehicleResult, {player, hash, Vector3(x, y, z), Vector3(rx, ry, rz), 'Pomyślnie zakupiono pojazd'}, connection, query, data.model, positionString, rotationString, data.fuel, data.maxFuel, data.engineCapacity, data.mileage, data.fuelType, color, wheels, panels, doors, lights, uid)
+    dbQuery(createPrivateVehicleResult, {player, hash, Vector3(x, y, z), Vector3(rx, ry, rz), 'Pomyślnie zakupiono pojazd'}, connection, query, data.model, positionString, rotationString, data.fuel, data.maxFuel, data.engineCapacity, data.mileage, data.fuelType, color, wheels, panels, doors, lights, uid, randomPlate())
 end
 
 addEventHandler('onResourceStart', resourceRoot, loadPrivateVehicles)

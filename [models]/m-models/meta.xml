@@ -347,4 +347,7 @@
 	<file src='data/decoded/wheels/1074.dff' />
 	<file src='data/decoded/wheels/1073.txd' />
 	<file src='data/decoded/wheels/1073.dff' />
+
+    <file src='data/decoded/speedcamera.dff'/>
+    <file src='data/decoded/speedcamera.txd'/>
 </meta>

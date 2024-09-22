@@ -288,6 +288,13 @@ function checkCursorChanged()
         cursorType = 'controller'
     end
 
+    -- if input is focused toggle controls
+    if data.i then
+        guiSetInputMode('no_binds')
+    else
+        guiSetInputMode('allow_binds')
+    end
+
     updateController(data.al, data.ar, data.b)
 end
 

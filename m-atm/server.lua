@@ -161,8 +161,5 @@ addEventHandler('atm:transfer', root, function(hash, player, target, amount)
         return
     end
 
-    local connection = exports['m-mysql']:getConnection()
-    if not connection then return end
-
     dbQuery(transferLookForPlayer, {hash, player, target, amount}, connection, 'SELECT `username`, `uid` FROM `m-users` WHERE uid = ?', target)
 end)

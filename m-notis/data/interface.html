@@ -187,7 +187,7 @@
 
     window.notis_hudVisibilityChanged = () => {
         let visible = isInterfaceVisible('hud') && isInterfaceLoaded('hud');
-        document.getElementById('notis').style.top = visible ? (window.jobData ? (window.jobData.coop ? '28rem' : '25rem') : '16rem') : '0';
+        document.getElementById('notis').style.top = visible ? (window.jobData ? (window.jobData.coop ? '28rem' : '25rem') : '17rem') : '0';
     }
 
     addEvent('notis', 'interface:visible', (name, visible) => {

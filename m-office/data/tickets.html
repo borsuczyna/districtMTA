@@ -1,0 +1,168 @@
+<style>
+    #tickets {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 0.625rem;
+        min-width: 24rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #tickets .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+
+    #tickets #items {
+        display: flex;
+        gap: 0.325rem;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>
+
+<div class="d-flex gap-4 align-items-center mb-2">
+    <span class="label">Opłacanie mandatów</span>
+    <div class="line"></div>
+</div>
+
+<div id="ticket-wrapper" class="d-flex flex-column gap-2 d-none">
+    <select id="ticket" onchange="tickets_ticketChange()"></select>
+    <div id="ticket-info"></div>
+</div>
+
+<div class="d-flex justify-center gap-3 mt-2 align-items-center" id="loading">
+    <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+    <span style="font-size: 0.9rem;">Ładowanie...</span>
+</div>
+
+<div id="items" class="mt-2"></div>
+
+<div class="d-flex justify-center mt-2 gap-2">
+    <div class="flat-button flat-button-small" onclick="tickets_pay(this)">Opłać</div>
+    <div class="flat-button flat-button-small" onclick="tickets_todo()">Odsiedź wyrok</div>
+    <div class="flat-button flat-button-small" onclick="tickets_close()">Zamknij</div>
+</div>
+
+<script>
+    let itemsData = {};
+
+    $('#tickets #ticket').select2();
+
+    function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    tickets_reloadTickets = () => {
+        let ticketSelect = document.querySelector('#tickets #ticket');
+        ticketSelect.innerHTML = '';
+        let tickets = itemsData;
+
+        for (let ticket of tickets) {
+            let option = new Option(`${ticket.issuer} - $${formatNumber(ticket.amount)}`, ticket.uid);
+            ticketSelect.add(option);
+        }
+
+        if (tickets.length == 0) {
+            let option = new Option('Brak mandatów', '');
+            ticketSelect.add(option);
+        }
+
+        document.querySelector('#tickets #ticket-wrapper').classList.remove('d-none');
+        document.querySelector('#tickets #loading').classList.add('d-none');
+
+        let firstTicket = tickets[0]?.uid || '';
+        ticketSelect.value = firstTicket;
+
+        ticketSelect.dispatchEvent(new Event('change'));
+    }
+
+    tickets_close = () => {
+        mta.triggerEvent('tickets:close');
+    }
+
+    tickets_todo = () => {
+        notis_addNotification('info', 'Informacja', 'Ciągle pracujemy nad tą funkcją');
+    }
+
+    tickets_pay = async (button) => {
+        if (isButtonSpinner(button)) return;
+
+        makeButtonSpinner(button);
+        let ticket = document.querySelector('#tickets #ticket').value;
+        if (ticket == '') {
+            notis_addNotification('error', 'Błąd', 'Nie wybrano mandatu');
+            makeButtonSpinner(button, false);
+            return;
+        }
+        
+        let data = await mta.fetch('office', 'payTicket', ticket);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+            
+            if (data.status == 'success') {
+                itemsData = itemsData.filter(x => x.uid != ticket);
+                tickets_reloadTickets();
+            }
+        }
+        
+        makeButtonSpinner(button, false);
+    }
+
+    tickets_loadData = async () => {
+        let data = await mta.fetch('office', 'tickets');
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            if (data.status == 'success') {
+                let tickets = data.tickets;
+                itemsData = tickets;
+                tickets_reloadTickets();
+            } else {
+                notis_addNotification('error', 'Błąd', 'Wystąpił błąd podczas ładowania danych');
+            }
+        }
+    }
+
+    tickets_ticketChange = () => {
+        let ticket = document.querySelector('#tickets #ticket').value;
+        let ticketInfo = document.querySelector('#tickets #ticket-info');
+        let ticketData = itemsData.find(x => x.uid == ticket);
+
+        if (ticketData == null) {
+            ticketInfo.innerHTML = '';
+            return;
+        }
+
+        ticketInfo.innerHTML = `
+            <span class="label">Wystawił: ${ticketData.issuer}</span><br>
+            <span class="label">Kwota: $${formatNumber(ticketData.amount)}</span><br>
+            <span class="label">Powód: ${ticketData.reason}</span>
+        `;
+    }
+
+    tickets_loadData();
+
+    addEvent('tickets', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#tickets').style.opacity = appear ? '1' : '0';
+        document.querySelector('#tickets').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+        
+        if (!appear) {
+            $('#tickets #ticket').select2('close');
+        }
+    });
+</script>

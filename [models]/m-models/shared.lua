@@ -816,6 +816,11 @@ models = {
         type = 'object',
         model = 1073,
     },
+    ['speedcamera'] = {
+        type = 'object',
+        model = 16101,
+        custom = true,
+    },
 }
 
 function getModelsCount()
