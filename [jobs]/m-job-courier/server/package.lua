@@ -1,5 +1,5 @@
 addEvent('jobs:courier:packagePickup', true)
-addEvent('jobs:courier:vehicleHit', true)
+addEvent('jobs:courier:vehicleHit')
 
 addEventHandler('jobs:courier:packagePickup', resourceRoot, function(objectHash)
     local object = exports['m-jobs']:getObjectByHash(client, objectHash)
