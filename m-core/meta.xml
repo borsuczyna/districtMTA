@@ -111,6 +111,7 @@
     <export function='removePlayerLicense' type='server'/>
     <export function='doesPlayerHaveLicense' type='shared'/>
     <export function='getPlayerColor' type='server'/>
+    <export function='getVehicleByUid' type='server'/>
     
     <export function='premiumChatDiscord' http='true'/>
 </meta>

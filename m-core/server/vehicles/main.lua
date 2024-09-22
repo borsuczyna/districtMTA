@@ -65,6 +65,7 @@ local function loadPrivateVehicle(data, player, position)
     setElementData(vehicle, 'vehicle:fuelType', fuelType)
     setElementData(vehicle, 'vehicle:engineCapacity', tonumber(data.engineCapacity))
     setElementData(vehicle, 'vehicle:mileage', tonumber(data.mileage))
+    setElementData(vehicle, 'vehicle:carExchange', data.exchangeData and fromJSON(data.exchangeData) or false)
     setElementHealth(vehicle, health)
     setVehicleColor(vehicle, unpack(color))
     setVehicleHeadLightColor(vehicle, color[13] or 255, color[14] or 255, color[15] or 255)
@@ -115,6 +116,10 @@ local function loadPrivateVehicle(data, player, position)
     end
 end
 
+function getVehicleByUid(uid)
+    return vehicles[uid]
+end
+
 function putVehicleIntoParking(vehicle)
     local uid = getElementData(vehicle, 'vehicle:uid')
     if not uid then return false, 'Brak identyfikatora pojazdu' end
@@ -160,6 +165,7 @@ function buildSavePrivateVehicleQuery(vehicle)
     local fuelType = getElementData(vehicle, 'vehicle:fuelType')
     local engineCapacity = getElementData(vehicle, 'vehicle:engineCapacity')
     local mileage = getElementData(vehicle, 'vehicle:mileage')
+    local carExchange = getElementData(vehicle, 'vehicle:carExchange')
     local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
     local tuning = getVehicleUpgrades(vehicle) or {}
@@ -180,6 +186,7 @@ function buildSavePrivateVehicleQuery(vehicle)
         fuelType = fuelType,
         engineCapacity = engineCapacity,
         mileage = mileage,
+        exchangeData = carExchange and toJSON(carExchange) or nil,
         health = math.max(health, 315),
         position = table.concat({getElementPosition(vehicle)}, ','),
         rotation = table.concat({getElementRotation(vehicle)}, ','),

@@ -112,7 +112,8 @@ local function renderRoundedMarker(marker)
         local x1, y1 = x + anglePosition[1] * radius, y + anglePosition[2] * radius
         local x2, y2 = x + nextAnglePosition[1] * radius, y + nextAnglePosition[2] * radius
        
-        dxDrawMaterialSectionLine3D(x1, y1, z, x2, y2, z, textureSide * side * size, 0, textureSide * size, 512, true, shader, 0.4, white, 'postfx', x, y, z)
+        -- dxDrawMaterialSectionLine3D(x1, y1, z, x2, y2, z, textureSide * side * size, 0, textureSide * size, 512, true, shader, 0.4, white, 'postfx', x, y, z)
+        dxDrawMaterialSectionLine3D(x1, y1, z, x2, y2, z, textureSide * side * size + getTickCount() / 3, 0, textureSide * size, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
     end
     
     local groundZ = getGroundPosition(x, y, z)
@@ -148,10 +149,14 @@ local function renderSquareMarker(marker, size)
 
     local width = 5354 * size[1] / 3
     local length = 5354 * size[2] / 3
-    dxDrawMaterialSectionLine3D(x - size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y - size[2] / 2, z, 0, 0, width, 512, true, shader, 0.4, white, 'prefx', x, y, z)
-    dxDrawMaterialSectionLine3D(x + size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y + size[2] / 2, z, width, 0, length, 512, true, shader, 0.4, white, 'prefx', x, y, z)
-    dxDrawMaterialSectionLine3D(x + size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y + size[2] / 2, z, width + length, 0, width, 512, true, shader, 0.4, tocolor(r, g, b, 255), 'prefx', x, y, z)
-    dxDrawMaterialSectionLine3D(x - size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y - size[2] / 2, z, width*2 + length, 0, length, 512, true, shader, 0.4, white, 'prefx', x, y, z)
+    -- dxDrawMaterialSectionLine3D(x - size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y - size[2] / 2, z, 0, 0, width, 512, true, shader, 0.4, white, 'prefx', x, y, z)
+    -- dxDrawMaterialSectionLine3D(x + size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y + size[2] / 2, z, width, 0, length, 512, true, shader, 0.4, white, 'prefx', x, y, z)
+    -- dxDrawMaterialSectionLine3D(x + size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y + size[2] / 2, z, width + length, 0, width, 512, true, shader, 0.4, tocolor(r, g, b, 255), 'prefx', x, y, z)
+    -- dxDrawMaterialSectionLine3D(x - size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y - size[2] / 2, z, width*2 + length, 0, length, 512, true, shader, 0.4, white, 'prefx', x, y, z)
+    dxDrawMaterialSectionLine3D(x - size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y - size[2] / 2, z, 0 + getTickCount() / 3, 0, width, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
+    dxDrawMaterialSectionLine3D(x + size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y + size[2] / 2, z, width + getTickCount() / 3, 0, length, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
+    dxDrawMaterialSectionLine3D(x + size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y + size[2] / 2, z, width + length + getTickCount() / 3, 0, width, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
+    dxDrawMaterialSectionLine3D(x - size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y - size[2] / 2, z, width*2 + length + getTickCount() / 3, 0, length, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
 
     local groundZ = getGroundPosition(x, y, z)
     local maxSize = math.max(size[1], size[2])

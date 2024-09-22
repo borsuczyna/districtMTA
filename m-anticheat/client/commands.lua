@@ -18,6 +18,7 @@ local allowedCommands = {
     {'createhouse', 'm-house-create'},
     {'record', 'm-record'},
     {'play', 'm-record'},
+    {'kuppojazd', 'm-carexchange'},
 }
 
 function checkCommandHandlers()

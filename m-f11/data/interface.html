@@ -251,6 +251,7 @@
         7: ['Warsztat tuningowy', 'services'],
         14: ['Lakiernia', 'services'],
         15: ['Urząd miasta', 'departments'],
+        16: ['Giełda samochodowa', 'services'],
     };
 
     function renderColors() {
@@ -354,7 +355,7 @@
     }
 
     f11_setCategory = (button, category) => {
-        let categories = document.querySelectorAll('.category');
+        let categories = document.querySelectorAll('#f11 .category');
         categories.forEach(c => c.classList.remove('active'));
         button.classList.add('active');
 

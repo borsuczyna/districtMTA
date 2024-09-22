@@ -16,6 +16,7 @@ local lockedElementDatas = {
     'controller', 'element:animations',
     'mission:element', 'missions:vehicleDamageProof', 'marker:manage-faction', 'marker:duty-faction', 'marker:shelf-items',
     'gate:faction', 'gate:object', 'gate:position', 'gate:openBy', 'gate:state', 'gate:time', 'gate:disableCollision',
+    'vehicle:carExchange', 'marker:carExchange:prices', 'colshape:carExchange:prices',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',

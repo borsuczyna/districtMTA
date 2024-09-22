@@ -1,0 +1,157 @@
+<style>
+    #carExchangeOffer {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 0.625rem;
+        max-width: 24rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #carExchangeOffer .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+</style>
+
+<div class="d-flex gap-4 align-items-center mb-2">
+    <span class="label">Sprzedaż pojazdu</span>
+    <div class="line"></div>
+</div>
+
+<div id="offerWrapper" class="label d-flex flex-column gap-2 d-none">
+    <select id="vehicle">
+        <option value="">Brak pojazdów</option>
+    </select>
+
+    <select id="player">
+        <option value="">Brak graczy w pobliżu</option>
+    </select>
+
+    <input type="number" id="price" class="simple-input" placeholder="Cena">
+
+    Uwaga! Administracja nie odpowiada za przypadkowe błędy w cenie, prosimy o sprawdzenie jej przed wysłaniem oferty.
+</div>
+
+<div class="d-flex justify-center gap-3 mt-2 align-items-center" id="loading">
+    <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+    <span style="font-size: 0.9rem;">Ładowanie...</span>
+</div>
+
+<div class="d-flex justify-center mt-2 gap-2">
+    <div class="flat-button flat-button-small" onclick="carExchangeOffer_sendOffer(this)">Wyślij ofertę</div>
+    <div class="flat-button flat-button-small" onclick="mta.triggerEvent('carExchange:closeCarExchangeOfferWindow')">Zamknij</div>
+</div>
+
+<script>
+    let interfaceData = [];
+
+    $('#carExchangeOffer #vehicle').select2();
+    $('#carExchangeOffer #player').select2();
+
+    carExchangeOffer_updateData = () => {
+        let vehicles = interfaceData.vehicles;
+        let players = interfaceData.players;
+
+        let vehicleSelect = document.querySelector('#carExchangeOffer #vehicle');
+        let playerSelect = document.querySelector('#carExchangeOffer #player');
+
+        vehicleSelect.innerHTML = '';
+        playerSelect.innerHTML = '';
+
+        if (vehicles.length == 0) {
+            let option = new Option('Brak pojazdów', '');
+            vehicleSelect.appendChild(option);
+        } else {
+            vehicles.forEach(vehicle => {
+                let option = new Option(`(${vehicle.uid}) ${vehicle.vehicleName}`, vehicle.uid);
+                vehicleSelect.appendChild(option);
+            });
+        }
+
+        if (players.length == 0) {
+            let option = new Option('Brak graczy w pobliżu', '');
+            playerSelect.appendChild(option);
+        } else {
+            players.forEach(player => {
+                let option = new Option(`(${player.uid}) ${player.name}`, player.uid);
+                playerSelect.appendChild(option);
+            });
+        }
+
+        document.querySelector('#offerWrapper').classList.remove('d-none');
+        document.querySelector('#loading').classList.add('d-none');
+    }
+
+    carExchangeOffer_loadData = async () => {
+        let data = await mta.fetch('carExchange', 'getCarExchangeOfferData');
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            if (data.status == 'success') {
+                interfaceData = data.data;
+                carExchangeOffer_updateData();
+            } else {
+                notis_addNotification('error', 'Błąd', 'Wystąpił błąd podczas ładowania danych');
+            }
+        }
+    }
+
+    carExchangeOffer_sendOffer = async (button) => {
+        if (isButtonSpinner(button)) return;
+
+        makeButtonSpinner(button);
+        let vehicle = document.querySelector('#carExchangeOffer #vehicle').value;
+        let player = document.querySelector('#carExchangeOffer #player').value;
+        let price = document.querySelector('#carExchangeOffer #price').value;
+
+        if (vehicle == '' || player == '' || price == '') {
+            notis_addNotification('error', 'Błąd', 'Wypełnij wszystkie pola');
+            makeButtonSpinner(button, false);
+            return;
+        }
+
+        if (isNaN(price) || price < 0) {
+            notis_addNotification('error', 'Błąd', 'Niepoprawna cena');
+            makeButtonSpinner(button, false);
+            return;
+        }
+        
+        let data = await mta.fetch('carExchange', 'sendCarExchangeOffer', [vehicle, player, price]);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+            
+            if (data.status == 'success') {
+                // mta.trigger('carExchange:closeCarExchangeOfferWindow');
+            }
+        }
+        
+        makeButtonSpinner(button, false);
+    }
+
+    addEvent('carExchangeOffer', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#carExchangeOffer').style.opacity = appear ? '1' : '0';
+        document.querySelector('#carExchangeOffer').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    
+        if (!appear) {
+            $('#carExchangeOffer #vehicle').select2('close');
+            $('#carExchangeOffer #player').select2('close');
+        }
+    });
+
+    carExchangeOffer_loadData();
+</script>
