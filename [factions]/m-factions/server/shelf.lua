@@ -73,6 +73,16 @@ addEventHandler('factions:useShelf', root, function(hash, player, faction, categ
         return
     end
 
-    item.callback(player)
+    if item.skin then
+        if item.skin == 'default' then
+            setElementModel(player, getElementData(player, 'player:skin'))
+        else
+            setElementModel(player, item.skin)
+        end
+    end
+    if item.weapon then
+        giveWeapon(player, item.weapon, item.ammo or 0, true)
+    end
+
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zestaw został pobrany.'})
 end)

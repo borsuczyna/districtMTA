@@ -69,5 +69,3 @@ addEventHandler('factions:payOutPayment', root, function(hash, player)
     setElementData(player, 'player:payDutyTime', 0)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = ('Wypłacono %d$'):format(payAmount)})
 end)
-
-createPaymentMarker({990.031, -1434.241, 13.586})

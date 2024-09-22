@@ -1,7 +1,7 @@
 addEvent('onPlayerHeadshot', false)
 
 function checkForHeadshot(attacker, weapon, bodypart, loss)
-	if bodypart == 9 then
+	if bodypart == 9 and weapon ~= 23 then
 		local forceDeath = triggerEvent('onPlayerHeadshot', source, attacker, weapon, loss)
 
 		if forceDeath then

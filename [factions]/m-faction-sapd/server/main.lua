@@ -2,20 +2,14 @@ exports['m-factions']:createShelfMarker('SAPD', {2044.955, -1910.402, 13.703}, {
     {
         name = 'Ubrania',
         items = {
-            {item = 'Test skin', permissions = {'manageFaction', 'defaultEquipment'}, callback = function(player)
-                setElementModel(player, 283)
-            end},
-            {item = 'Ubranie cywilne', permissions = {'manageFaction', 'duty'}, callback = function(player)
-                setElementModel(player, getElementData(player, 'player:skin'))
-            end},
+            {item = 'Test skin', permissions = {'manageFaction', 'defaultEquipment'}, skin = 283},
+            {item = 'Ubranie cywilne', permissions = {'manageFaction', 'duty'}, skin = 'default'},
         }
     },
     {
         name = 'Bronie',
         items = {
-            {item = 'Teaser', permissions = {'manageFaction', 'defaultEquipment'}, callback = function(player)
-                giveWeapon(player, 23, 1000)
-            end},
+            {item = 'Teaser', permissions = {'manageFaction', 'defaultEquipment'}, weapon = 23, ammo = 1000},
         }
     },
 })

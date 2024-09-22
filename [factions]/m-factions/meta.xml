@@ -31,4 +31,5 @@
     <export function='createManagePanel' type='server'/>
     <export function='createDutyMarker' type='server'/>
     <export function='createGate' type='server'/>
+    <export function='doesPlayerHaveAnyFactionPermission' type='server'/>
 </meta>

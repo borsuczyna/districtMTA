@@ -20,3 +20,7 @@ addEventHandler('onResourceStop', root, function(resource)
         end
     end
 end)
+
+addEventHandler('onResourceStart', resourceRoot, function()
+    createPaymentMarker({1481.091, -1803.535, 18.734})
+end)

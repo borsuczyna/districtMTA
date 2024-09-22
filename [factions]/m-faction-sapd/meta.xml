@@ -1,6 +1,16 @@
 <meta>
+    <script src='useful.lua' type='shared' cache='false'/>
     <script src='client/taser.lua' type='client' cache='false'/>
+    <script src='client/screen.lua' type='client' cache='false'/>
+    <script src='client/tablet.lua' type='client' cache='false'/>
+    
     <script src='server/main.lua' type='server'/>
+    <script src='server/taser.lua' type='server'/>
+    <script src='server/tablet.lua' type='server'/>
 
     <file src='data/taser.mp3'/>
+    <file src='data/tablet.html'/>
+    <file src='data/users.js'/>
+    <file src='data/vehicles.js'/>
+    <file src='data/ticket.js'/>
 </meta>
