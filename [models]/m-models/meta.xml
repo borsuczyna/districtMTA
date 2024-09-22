@@ -350,4 +350,6 @@
 
     <file src='data/decoded/speedcamera.dff'/>
     <file src='data/decoded/speedcamera.txd'/>
+    <file src='data/decoded/taser.dff'/>
+    <file src='data/decoded/taser.txd'/>
 </meta>

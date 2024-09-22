@@ -821,6 +821,10 @@ models = {
         model = 16101,
         custom = true,
     },
+    ['taser'] = {
+        type = 'object',
+        model = 347,
+    },
 }
 
 function getModelsCount()
