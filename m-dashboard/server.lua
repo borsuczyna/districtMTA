@@ -3,6 +3,7 @@ addEvent('dashboard:vehicleDetails', true)
 addEvent('dashboard:redeemDailyReward')
 addEvent('dashboard:fetchDailyReward', true)
 addEvent('dashboard:claimDailyTask')
+addEvent('dashboard:fetchPaymentUrl')
 
 local requests = {}
 

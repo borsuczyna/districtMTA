@@ -29,7 +29,8 @@ window.dashboard_renderVehicles = (data) => {
         data: data,
         columns: [
             { data: 'uid' },
-            { data: 'model', render: (data) => window.vehicleNames[parseInt(data) - 400] },
+            // { data: 'model', render: (data) => window.vehicleNames[parseInt(data) - 400] },
+            { data: 'modelName' },
             { data: 'ownerName' },
             { data: 'parking', render: (data) => data ? 'Tak' : 'Nie' },
             { data: 'uid', render: (data) => {

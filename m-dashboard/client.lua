@@ -14,6 +14,7 @@ addEvent('dashboard:getPlayerLast10DaysDailyTasksResult', true)
 -- addEvent('dashboard:redeemTaskResult', true)
 addEvent('dashboard:updateAchievements', true)
 addEvent('dashboard:fetchDailyReward', true)
+addEvent('dashboard:boughtSeasonPass', true)
 addEvent('avatars:onPlayerAvatarChange', true)
 
 function updateDashboardData()
@@ -213,4 +214,8 @@ end)
 
 addEventHandler('dashboard:updateAchievements', root, function(data)
     exports['m-ui']:triggerInterfaceEvent('dashboard', 'update-achievements', data)
+end)
+
+addEventHandler('dashboard:boughtSeasonPass', root, function()
+    exports['m-ui']:triggerInterfaceEvent('dashboard', 'bought-season-pass')
 end)
