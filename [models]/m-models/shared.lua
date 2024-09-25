@@ -816,6 +816,12 @@ models = {
         type = 'object',
         model = 1073,
     },
+
+    ['weapons/chromegun'] = {
+        type = 'weapon',
+        model = 349,
+    },
+
     ['speedcamera'] = {
         type = 'object',
         model = 16101,
@@ -825,7 +831,46 @@ models = {
         type = 'object',
         model = 347,
     },
+    ['parking/3985'] = {
+        type = 'object',
+        model = 3985,
+    },
+    ['parking/4057'] = {
+        type = 'object',
+        model = 4057,
+    },
+    ['parking/4186'] = {
+        type = 'object',
+        model = 4186,
+    },
+    ['parking/4210'] = {
+        type = 'object',
+        model = 4210,
+    },
+
+    ['furniture/ufo-lamp'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+    },
+
+    -- vehicles
+    ['vehicles/destino'] = {
+        name = 'Destino',
+        type = 'vehicle',
+        model = 600,
+        vehicleId = 613,
+        custom = true,
+    },
 }
+
+local vehicleNames = {}
+
+for key, value in pairs(models) do
+    if value.type == 'vehicle' and value.name and value.vehicleId then
+        vehicleNames[value.vehicleId] = value.name
+    end
+end
 
 function getModelsCount()
     local count = 0
@@ -873,6 +918,48 @@ function createCustomObject(model, x, y, z, rx, ry, rz)
     setElementData(object, 'element:model', model)
 
     return object
+end
+
+function setVehicleModel(vehicle, model)
+    setElementData(vehicle, 'vehicle:model', model)
+
+    if model >= 400 and model <= 611 then
+        setElementModel(vehicle, model)
+        removeElementData(vehicle, 'element:model')
+        return
+    end
+
+    local modelKey = false
+    for key, value in pairs(models) do
+        if value.vehicleId == model then
+            modelKey = key
+            break
+        end
+    end
+
+    if not modelKey then return end
+
+    setElementData(vehicle, 'element:model', modelKey)
+    setElementModel(vehicle, models[modelKey].model)
+end
+
+local _getVehicleName = getVehicleName
+function getVehicleName(vehicle)
+    local model = getElementData(vehicle, 'vehicle:model')
+    if not model then
+        return _getVehicleName(vehicle)
+    end
+
+    return vehicleNames[model] or 'Unknown'
+end
+
+local _getVehicleNameFromModel = getVehicleNameFromModel
+function getVehicleNameFromModel(model)
+    if model >= 400 and model <= 611 then
+        return _getVehicleNameFromModel(model)
+    end
+
+    return vehicleNames[model] or 'Unknown'
 end
 
 createCustomObject('railway-station', 1177.474, -1993.162, 67.508)

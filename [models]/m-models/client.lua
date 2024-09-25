@@ -142,6 +142,15 @@ addEventHandler('onClientElementDataChange', root, function(dataName)
             if customModel then
                 setElementModel(source, customModel)
             else
+                local vehicleModel = getElementData(source, 'vehicle:model')
+                if vehicleModel then
+                    setElementModel(source, vehicleModel)
+                end
+            end
+        else
+            local vehicleModel = getElementData(source, 'vehicle:model')
+            if vehicleModel then
+                setElementModel(source, vehicleModel)
             end
         end
     end

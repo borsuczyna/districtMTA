@@ -4,6 +4,9 @@
     <script src='server.lua' type='server' />
 
     <export function='createCustomObject' type='shared'/>
+    <export function='setVehicleModel' type='shared'/>
+    <export function='getVehicleName' type='shared'/>
+    <export function='getVehicleNameFromModel' type='shared'/>
     
     <!-- automatically added -->
     <file src='data/decoded/gen_pol_vegas.txd'/>
@@ -348,8 +351,28 @@
 	<file src='data/decoded/wheels/1073.txd' />
 	<file src='data/decoded/wheels/1073.dff' />
 
+    <file src='data/decoded/weapons/chromegun.txd' />
+	<file src='data/decoded/weapons/chromegun.dff' />
+
     <file src='data/decoded/speedcamera.dff'/>
     <file src='data/decoded/speedcamera.txd'/>
     <file src='data/decoded/taser.dff'/>
     <file src='data/decoded/taser.txd'/>
+
+    <file src='data/decoded/vehicles/destino.dff'/>
+    <file src='data/decoded/vehicles/destino.txd'/>
+
+    <file src='data/decoded/parking/3985.dff'/>
+    <file src='data/decoded/parking/3985.txd'/>
+    <file src='data/decoded/parking/3985.col'/>
+    <file src='data/decoded/parking/4057.dff'/>
+    <file src='data/decoded/parking/4057.txd'/>
+    <file src='data/decoded/parking/4186.dff'/>
+    <file src='data/decoded/parking/4186.txd'/>
+    <file src='data/decoded/parking/4186.col'/>
+    <file src='data/decoded/parking/4210.dff'/>
+    <file src='data/decoded/parking/4210.txd'/>
+    
+    <file src='data/decoded/furniture/ufo-lamp.dff'/>
+    <file src='data/decoded/furniture/ufo-lamp.txd'/>
 </meta>
