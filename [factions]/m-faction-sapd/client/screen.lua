@@ -35,7 +35,7 @@ local function renderScreen()
 
         record = {
             speed = speed,
-            name = getVehicleName(hitElement):sub(1, 20),
+            name = exports['m-models']:getVehicleName(hitElement):sub(1, 20),
             plate = getVehiclePlateText(hitElement),
             driver = driverName,
         }

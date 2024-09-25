@@ -1,4 +1,4 @@
-exports['m-factions']:createShelfMarker('SAPD', {2044.955, -1910.402, 13.703}, {
+﻿exports['m-factions']:createShelfMarker('SAPD', {2044.955, -1910.402, 13.703}, {
     {
         name = 'Ubrania',
         items = {
@@ -9,7 +9,15 @@ exports['m-factions']:createShelfMarker('SAPD', {2044.955, -1910.402, 13.703}, {
     {
         name = 'Bronie',
         items = {
-            {item = 'Teaser', permissions = {'manageFaction', 'defaultEquipment'}, weapon = 23, ammo = 1000},
+            {item = 'Taser', permissions = {'manageFaction', 'defaultEquipment'}, weapon = 23, ammo = 1000},
+            {item = 'Deagle', permissions = {'manageFaction', 'defaultEquipment'}, weapon = 24, ammo = 1000},
+            {item = 'Baton', permissions = {'manageFaction', 'defaultEquipment'}, weapon = 3, ammo = 1000},
+            {item = 'Suszarka', permissions = {'manageFaction', 'defaultEquipment'}, weapon = 22, ammo = 1000},
+            {item = 'Beanbag', permissions = {'manageFaction', 'midEquipment'}, weapon = 25, ammo = 1000},
+            {item = 'Combat', permissions = {'manageFaction', 'midEquipment'}, weapon = 27, ammo = 1000},
+            {item = 'Myśliwski', permissions = {'manageFaction', 'highEquipment'}, weapon = 33, ammo = 1000},
+            {item = 'Karabin snajperski', permissions = {'manageFaction', 'highEquipment'}, weapon = 34, ammo = 1000},
+            {item = 'M4', permissions = {'manageFaction', 'highEquipment'}, weapon = 31, ammo = 1000},
         }
     },
 })

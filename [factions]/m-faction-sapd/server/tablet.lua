@@ -179,7 +179,7 @@ local function searchVehicleResult(query, hash, player)
     end
 
     for i, vehicle in ipairs(result) do
-        vehicle.modelName = getVehicleNameFromModel(vehicle.model)
+        vehicle.modelName = exports['m-models']:getVehicleNameFromModel(vehicle.model)
     end
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', vehicles = result, message = ('Znaleziono %d pojazdów.'):format(#result)})
@@ -229,7 +229,7 @@ local function getVehicleInfoResult(query, hash, player)
     end
 
     local vehicle = result[1]
-    vehicle.modelName = getVehicleNameFromModel(vehicle.model)
+    vehicle.modelName = exports['m-models']:getVehicleNameFromModel(vehicle.model)
 
     local connection = exports['m-mysql']:getConnection()
     if not connection then

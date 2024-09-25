@@ -9,6 +9,7 @@
     <script src='server/tablet.lua' type='server'/>
 
     <file src='data/taser.mp3'/>
+    <file src='data/chromegun.mp3'/>
     <file src='data/tablet.html'/>
     <file src='data/users.js'/>
     <file src='data/vehicles.js'/>
