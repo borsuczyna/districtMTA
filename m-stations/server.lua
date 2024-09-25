@@ -72,7 +72,7 @@ local function hitStationMarker(player, matchingDimension)
 
     triggerClientEvent(player, 'stations:showFuelStationsUi', resourceRoot, {
         fuels = fuels,
-        vehicleName = getVehicleName(vehicle),
+        vehicleName = exports['m-models']:getVehicleName(vehicle),
     })
 end
 
@@ -160,7 +160,7 @@ addEventHandler('stations:refill', root, function(hash, player, fuelName, amount
         return
     end
 
-    exports['m-core']:givePlayerMoney(player, 'stations', ('Zatankowanie pojazdu %s (%d) - %dL %s'):format(getVehicleName(vehicle), uid, amount, fuelName), -price)
+    exports['m-core']:givePlayerMoney(player, 'stations', ('Zatankowanie pojazdu %s (%d) - %dL %s'):format(exports['m-models']:getVehicleName(vehicle), uid, amount, fuelName), -price)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zatankowano pojazd.', fuel = fuel + amount})
     
     if selectedFuel == 'lpg' then

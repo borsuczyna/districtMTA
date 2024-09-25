@@ -111,7 +111,7 @@ local function renderRepairShop(element)
     elseif state == 1 then
         local vehicle = getElementData(element, 'repair:vehicle')
         if isElement(vehicle) and getTickCount() % 3000 > 2000 then
-            dxDrawText(getVehicleName(vehicle), 0, 0, 900, 200, tocolor(255, 255, 255), 6, 'default-bold', 'center', 'center')
+            dxDrawText(exports['m-models']:getVehicleName(vehicle), 0, 0, 900, 200, tocolor(255, 255, 255), 6, 'default-bold', 'center', 'center')
         else
             dxDrawText('Zajęte stanowisko', 0, 0, 900, 200, tocolor(255, 255, 255), 6, 'default-bold', 'center', 'center')
         end
@@ -135,7 +135,7 @@ local function renderRepairShop(element)
         if getTickCount() % 3000 > 1500 then
             dxDrawText(string.format('Pozostały czas: %02d:%02d', minutes, seconds), 0, 0, 900, 200, tocolor(255, 255, 255), 5, 'default-bold', 'center', 'center')
         else
-            dxDrawText('Pojazd w naprawie\n' .. getVehicleName(vehicle), 0, 0, 900, 200, tocolor(255, 255, 255), 4, 'default-bold', 'center', 'center')
+            dxDrawText('Pojazd w naprawie\n' .. exports['m-models']:getVehicleName(vehicle), 0, 0, 900, 200, tocolor(255, 255, 255), 4, 'default-bold', 'center', 'center')
         end
     end
 

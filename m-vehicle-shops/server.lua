@@ -47,7 +47,8 @@ local function makeVehicleRotation(shopId, vehicleId, vehicle)
     local rotationTime = data.rotationTime * 60 * 60 * 1000
     data.count = math.random(unpack(data.countSpawn))
     
-    setElementModel(vehicle, model)
+    -- setElementModel(vehicle, model)
+    exports['m-models']:setVehicleModel(vehicle, model)
     setElementData(vehicle, 'vehicle:shop', shopId, false)
     setElementData(vehicle, 'vehicle:shop-vehicle', vehicleId, false)
     setElementData(vehicle, 'vehicle:shop:price', price, false)
@@ -101,7 +102,7 @@ function getShopVehicleData(shopId, vehicleId)
     if not vehicle then return end
 
     return {
-        name = getVehicleNameFromModel(getElementModel(vehicle)),
+        name = exports['m-models']:getVehicleName(vehicle),
         shopId = shopId,
         vehicleId = vehicleId,
         price = getElementData(vehicle, 'vehicle:shop:price'),
@@ -113,7 +114,7 @@ function getShopVehicleData(shopId, vehicleId)
         fuelType = getElementData(vehicle, 'vehicle:shop:fuelType'),
         exitPosition = getElementData(vehicle, 'vehicle:shop:exitPosition'),
         rotationTime = getElementData(vehicle, 'vehicle:shop:rotationTime'),
-        vehicleName = getVehicleNameFromModel(getElementModel(vehicle)),
+        vehicleName = exports['m-models']:getVehicleName(vehicle),
         count = vehicleData.count,
     }, vehicle
 end
@@ -167,7 +168,8 @@ addEventHandler('vehicle-shops:buyVehicle', root, function(hash, player, shopId,
         return
     end
 
-    local vehicleName = getVehicleNameFromModel(getElementModel(vehicle))
+    -- local vehicleName = getVehicleNameFromModel(getElementModel(vehicle))
+    local vehicleName = exports['m-models']:getVehicleName(vehicle)
     exports['m-core']:givePlayerMoney(player, 'vehicle-buy', 'Zakup pojazdu ' .. vehicleName .. ' w sklepie', -data.price)
 
     decreaseVehicleCount(shopId, vehicleId)
@@ -185,7 +187,8 @@ addEventHandler('vehicle-shops:buyVehicle', root, function(hash, player, shopId,
     local wheels = {getVehicleWheelStates(vehicle)}
     
     local data = {
-        model = getElementModel(vehicle),
+        -- model = getElementModel(vehicle),
+        model = getElementData(vehicle, 'vehicle:model'),
         position = data.exitPosition,
         fuel = data.fuel,
         maxFuel = data.maxFuel,

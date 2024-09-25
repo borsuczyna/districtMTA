@@ -72,7 +72,7 @@ local function onPutUpMarkerHit(hitElement, matchingDimension)
     triggerClientEvent(hitElement, 'carExchange:showPutUpWindow', resourceRoot, {
         uid = uid,
         vehicleUid = vehicleUid,
-        vehicleName = getVehicleName(vehicle),
+        vehicleName = exports['m-models']:getVehicleName(vehicle),
         tuning = getVehicleTuning(vehicle),
         prices = prices
     })
@@ -175,7 +175,7 @@ addEventHandler('carExchange:putUp', root, function(hash, player, vehicleUid, am
         price = tonumber(amount),
         owner = owner,
         ownerName = getPlayerName(player),
-        vehicleName = getVehicleName(vehicle),
+        vehicleName = exports['m-models']:getVehicleName(vehicle),
         tuning = tuning,
         carExchangeIndex = carExchangeIndex
     })
@@ -213,7 +213,7 @@ addEventHandler('carExchange:getCarExchangeOfferData', root, function(hash, play
     for i, vehicle in ipairs(vehicles) do
         table.insert(vehiclesData, {
             uid = getElementData(vehicle, 'vehicle:uid'),
-            vehicleName = getVehicleName(vehicle),
+            vehicleName = exports['m-models']:getVehicleName(vehicle),
         })
     end
 
@@ -296,7 +296,7 @@ addEventHandler('carExchange:sendCarExchangeOffer', root, function(hash, player,
     }
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wysłano ofertę.'})
-    exports['m-notis']:addNotification(targetPlayer, 'info', 'Giełda', ('Otrzymałeś ofertę kupna pojazdu od %s.<br>Pojazd: (%d) %s<br>Aby zakupić pojazd wpisz /kuppojazd %d<br><br>Przed kupnem sprawdź czy UID pojazdu się zgadza, administracja nie odpowiada za oszustwa!'):format(getPlayerName(player), vehicleUid, getVehicleName(vehicle), vehicleUid), 30000)
+    exports['m-notis']:addNotification(targetPlayer, 'info', 'Giełda', ('Otrzymałeś ofertę kupna pojazdu od %s.<br>Pojazd: (%d) %s<br>Aby zakupić pojazd wpisz /kuppojazd %d<br><br>Przed kupnem sprawdź czy UID pojazdu się zgadza, administracja nie odpowiada za oszustwa!'):format(getPlayerName(player), vehicleUid, exports['m-models']:getVehicleName(vehicle), vehicleUid), 30000)
 end)
 
 -- buy
@@ -357,8 +357,8 @@ addCommandHandler('kuppojazd', function(player, cmd, vehicleUid)
         return
     end
 
-    local details1 = ('Kupno pojazdu (%d) %s od %s'):format(vehicleUid, getVehicleName(vehicle), getPlayerName(targetPlayer))
-    local details2 = ('Sprzedaż pojazdu (%d) %s do %s'):format(vehicleUid, getVehicleName(vehicle), getPlayerName(player))
+    local details1 = ('Kupno pojazdu (%d) %s od %s'):format(vehicleUid, exports['m-models']:getVehicleName(vehicle), getPlayerName(targetPlayer))
+    local details2 = ('Sprzedaż pojazdu (%d) %s do %s'):format(vehicleUid, exports['m-models']:getVehicleName(vehicle), getPlayerName(player))
     exports['m-core']:givePlayerMoney(player, 'vehicle-buy', details1, -price)
     exports['m-core']:givePlayerMoney(targetPlayer, 'vehicle-sell', details2, price)
 

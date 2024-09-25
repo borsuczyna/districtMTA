@@ -165,7 +165,7 @@ addEventHandler('tuning:installItem', root, function(hash, player, key, index)
         return
     end
     
-    exports['m-core']:givePlayerMoney(player, 'tuning', ('Kupno tuningu %s do pojazdu (%d) %s'):format(data.name, vehicleUid, getVehicleName(vehicle)), -data.price)
+    exports['m-core']:givePlayerMoney(player, 'tuning', ('Kupno tuningu %s do pojazdu (%d) %s'):format(data.name, vehicleUid, exports['m-models']:getVehicleName(vehicle)), -data.price)
     data.install(player, vehicle)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zamontowano tuning.'})
     triggerClientEvent(player, 'tuning:updateOriginalTuning', resourceRoot)
@@ -212,7 +212,7 @@ addEventHandler('tuning:uninstallItem', root, function(hash, player, key, index)
         return
     end
     
-    exports['m-core']:givePlayerMoney(player, 'tuning', ('Demontaż tuningu %s z pojazdu (%d) %s'):format(data.name, vehicleUid, getVehicleName(vehicle)), data.price)
+    exports['m-core']:givePlayerMoney(player, 'tuning', ('Demontaż tuningu %s z pojazdu (%d) %s'):format(data.name, vehicleUid, exports['m-models']:getVehicleName(vehicle)), data.price)
     data.uninstall(player, vehicle)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Odmontowano tuning.'})
     triggerClientEvent(player, 'tuning:updateOriginalTuning', resourceRoot)

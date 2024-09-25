@@ -159,7 +159,8 @@
             data: vehicles,
             columns: [
                 { data: 'uid' },
-                { data: 'model', render: (data) => window.vehicleNames[parseInt(data) - 400] },
+                // { data: 'model', render: (data) => window.vehicleNames[parseInt(data) - 400] },
+                { data: 'modelName' },
                 { data: 'lastDriverName' },
                 { data: 'uid', render: (data) => `<div class="flat-button flat-button-small" onclick="parking_getVehicle(this, ${data})">Wyjmij</div>` }
             ],

@@ -101,6 +101,6 @@ addCommandHandler('dv', function(player, cmd)
         return
     end
 
-    exports['m-notis']:addNotification(player, 'success', 'Pojazd', ('Usunięto pojazd %s'):format(getVehicleName(vehicle)))
+    exports['m-notis']:addNotification(player, 'success', 'Pojazd', ('Usunięto pojazd %s'):format(exports['m-models']:getVehicleName(vehicle)))
     destroyElement(vehicle)
 end)

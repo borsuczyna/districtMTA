@@ -53,7 +53,9 @@ local function loadPrivateVehicle(data, player, position)
     local tuning = map(split(data.tuning, ','), tonumber)
     local dirt = map(split(data.dirt, ','), tonumber)
 
-    local vehicle = createVehicle(data.model, x, y, z, rx, ry, rz, plate)
+    -- local vehicle = createVehicle(data.model, x, y, z, rx, ry, rz, plate)
+    local vehicle = createVehicle(400, x, y, z, rx, ry, rz, plate)
+    exports['m-models']:setVehicleModel(vehicle, data.model)
     setElementData(vehicle, 'vehicle:uid', data.uid)
     vehicles[data.uid] = vehicle
 
@@ -323,6 +325,11 @@ local function getPlayerVehiclesResult(queryHandle, player, hash)
     if not result then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie udało się pobrać danych'})
         return
+    end
+
+    -- add modelName to all vehicles
+    for _, vehicle in ipairs(result) do
+        vehicle.modelName = exports['m-models']:getVehicleNameFromModel(vehicle.model)
     end
     
     exports['m-ui']:respondToRequest(hash, {status = 'success', data = result})

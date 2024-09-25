@@ -18,15 +18,15 @@ end)
 
 local textures = {
     dxCreateTexture('data/images/blur_mask.png'),
-	dxCreateTexture(':m-maps/data/map-dark.png'),
+	dxCreateTexture(':m-maps/data/map-transparent.png'),
 	dxCreateTexture('data/images/bg.png'),
 	dxCreateTexture('data/images/overlay.png'),
 	dxCreateTexture('data/images/blur_mask.png'),
 }
 
 local fonts = {
-	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 19, false, 'proof'),
-	dxCreateFont(':m-ui/data/css/fonts/Inter-Medium.ttf', 16, false, 'proof'),
+	dxCreateFont(':m-ui/data/css/fonts/Inter-Bold.ttf', 19, false, 'proof'),
+	dxCreateFont(':m-ui/data/css/fonts/Inter-Bold.ttf', 17, false, 'proof'),
 }
 
 function findRotation( x1, y1, x2, y2 ) 
@@ -64,17 +64,17 @@ function renderRadar()
     dxSetShaderValue(radar.shader, "gUVRotAngle", math.rad(-camrot))
     
     local radarX, radarY, radarW, radarH = 45/zoom, sy - radarSettings.size - 45/zoom, radarSettings.size, radarSettings.size
-    dxDrawImage(radarX - 12/zoom, radarY - 12/zoom, radarW + 25/zoom, radarH + 25/zoom, textures[4], 0, 0, 0, tocolor(255, 255, 255, 200))
+    dxDrawImage(radarX - 12/zoom, radarY - 12/zoom, radarW + 25/zoom, radarH + 25/zoom, textures[4], 0, 0, 0, tocolor(42, 42, 42, 180))
     dxDrawImage(radarX, radarY, radarW, radarH, radar.shader, 0, 0, 0, tocolor(255, 255, 255, 255))
     dxDrawImage(radarX, radarY, radarW, radarH, textures[3], 0, 0, 0, tocolor(255, 255, 255, 255))
     -- draw zone name
     local zone = getZoneName(px, py, pz, true)
-    dxDrawText(zone, radarX + radarW + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 200), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
-    dxDrawText(zone, radarX + radarW, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 200), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
+    dxDrawText(zone, radarX + radarW + 25/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 170), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
+    dxDrawText(zone, radarX + radarW + 25/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 170), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
 
     local zone = getZoneName(px, py, pz, false)
-    dxDrawText(zone, radarX + radarW - 20/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 200), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
-    dxDrawText(zone, radarX + radarW - 20/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 200), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
+    dxDrawText(zone, radarX + radarW - 15/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 170), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
+    dxDrawText(zone, radarX + radarW - 15/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 180), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)
 
     local _, _, cz = getElementRotation(getCamera())
     local x, y, z = getElementPosition(getCameraTarget() or localPlayer)

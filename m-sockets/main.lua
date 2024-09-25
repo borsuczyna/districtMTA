@@ -4,6 +4,8 @@ if sockOpen == nil then
     return
 end
 
+addEvent('socket:onAuthenticated', true)
+
 local socketApiKey = 'MhM4PTCp2Ww8ez9hGXZhp4EV18vdQ97NxmwoTMvLSmrux5dOjnfK8aODTdpn5ejO'
 local discordBot = sockOpen('127.0.0.1', 32800)
 
@@ -20,6 +22,10 @@ function handleMessage(message)
         handleConnectAccount(message.message)
     elseif message.type == 'getAllPlayers' then
         getAllPlayers()
+    elseif message.type == 'paymentCreated' then
+        handlePaymentCreatedMessage(message.message)
+    elseif message.type == 'paymentFinished' then
+        handlePaymentFinishedMessage(message.message)
     end
 end
 

@@ -1,4 +1,4 @@
-addEvent('parking:getVehicles')
+﻿addEvent('parking:getVehicles')
 addEvent('parking:getVehicle')
 
 local parkings = {
@@ -10,7 +10,7 @@ local parkings = {
     },
     {
         putBack = Vector3(1362.043, -1651.249, 12.383),
-        take = Vector3(1359.544, -1647.193, 12.418),
+        take = Vector3(1359.125, -1647.297, 13.492-1),
         takeOut = Vector3(1362.422, -1643.260, 13.383),
         takeRotation = Vector3(0, 0, -90)
     },

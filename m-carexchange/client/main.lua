@@ -66,7 +66,7 @@ local function renderRenderTarget()
 
     dxSetRenderTarget(renderTarget, true)
     -- dxDrawRoundedRectangle(0, 0, 800, 450, tocolor(30, 30, 30, 245), 20)
-    local vehicleName = ('(%d) %s'):format(getElementData(lastVehicle, 'vehicle:uid'), getVehicleName(lastVehicle))
+    local vehicleName = ('(%d) %s'):format(getElementData(lastVehicle, 'vehicle:uid'), exports['m-models']:getVehicleName(lastVehicle))
     local ownerName = ('(%d) %s'):format(carExchange.owner, carExchange.ownerName)
     local vehicleNameWidth = dxGetTextWidth(vehicleName, 1, fonts[1])
     local ownerNameWidth = dxGetTextWidth(ownerName, 1, fonts[2]) + 45
@@ -111,26 +111,25 @@ local function renderRenderTarget()
         local max = #carExchange.tuning
         if max == 0 then
             dxDrawText('Brak tuningów', 15, 75, 785, 435, tocolor(255, 255, 255, 230), 1, fonts[2], 'left', 'top')
-            return
-        end
+        else
+            local start = math.max(scrollPosition, 0)
+            local finish = start + scrollView - 1
+            local scrollPosition = scrollPosition / math.max(max - scrollView, 1)
+            local scrollSize = math.min(scrollView / max, 1)
+            
+            dxDrawRoundedRectangle(783, 70, 12, 325, tocolor(85, 85, 85, 200), 5)
+            dxDrawRoundedRectangle(783, 70 + scrollPosition * (325 - 325 * scrollSize), 12, 325 * scrollSize, tocolor(180, 180, 180, 160), 5)
 
-        local start = math.max(scrollPosition, 0)
-        local finish = start + scrollView - 1
-        local scrollPosition = scrollPosition / math.max(max - scrollView, 1)
-        local scrollSize = math.min(scrollView / max, 1)
-        
-        dxDrawRoundedRectangle(783, 70, 12, 325, tocolor(85, 85, 85, 200), 5)
-        dxDrawRoundedRectangle(783, 70 + scrollPosition * (325 - 325 * scrollSize), 12, 325 * scrollSize, tocolor(180, 180, 180, 160), 5)
+            local rowHeight = (325 / scrollView)
+            for i = start, finish do
+                local tuning = carExchange.tuning[i + 1]
+                if not tuning then break end
 
-        local rowHeight = (325 / scrollView)
-        for i = start, finish do
-            local tuning = carExchange.tuning[i + 1]
-            if not tuning then break end
-
-            local y = 70 + (i - start) * rowHeight
-            local rowHeight = rowHeight - 5
-            dxDrawRoundedRectangle(7, y, 768, rowHeight, tocolor(35, 35, 35, 245), 15)
-            dxDrawText(tuning, 18, y, 785, y + rowHeight, tocolor(255, 255, 255, 230), 1, fonts[2], 'left', 'center')
+                local y = 70 + (i - start) * rowHeight
+                local rowHeight = rowHeight - 5
+                dxDrawRoundedRectangle(7, y, 768, rowHeight, tocolor(35, 35, 35, 245), 15)
+                dxDrawText(tuning, 18, y, 785, y + rowHeight, tocolor(255, 255, 255, 230), 1, fonts[2], 'left', 'center')
+            end
         end
     end
 
