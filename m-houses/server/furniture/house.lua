@@ -1,4 +1,5 @@
 addEvent('houses:removeFurniture', true) -- args: id
+addEvent('houses:changeFurnitureTexture', true) -- args: id
 addEvent('houses:saveFurniture', true) -- args: id, x, y, z, rx, ry, rz
 
 function getHouseRelativePosition(houseId, x, y, z, rx, ry, rz)
@@ -132,6 +133,63 @@ function removeHouseFurniture(id)
     end
 end
 
+function changeHouseFurnitureTexture(id)
+    if source ~= resourceRoot then
+        local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end __i = __i + 1 end; __args = __args:sub(1, -2)
+        local banMessage = ('Tried to trigger `houses:changeFurnitureTexture` event with wrong source (%s)\nArguments:\n%s'):format(tostring(source), __args)
+        return exports['m-anticheat']:ban(client, 'Trigger hack', banMessage)
+    end
+
+    if not client then return end
+    if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+    local uid = getElementData(client, 'player:uid')
+    if not uid then return end
+
+    local limited, time = isPlayerRateLimited(client)
+    if limited then
+        exports['m-notis']:addNotification(client, 'error', 'Edycja mebli', ('Zbyt szybko wykonujesz akcje, odczekaj %s sekund.'):format(time))
+        return
+    end
+
+    local houseId = getElementData(client, 'player:house')
+    if not houseId then return end
+
+    local houseData = houses[houseId]
+    if not houseData then return end
+
+    if houseData.owner ~= uid then
+        exports['m-notis']:addNotification(client, 'error', 'Edycja mebli', 'Nie jesteś właścicielem tego domu.')
+        return
+    end
+
+    local furniture = table.findCallback(houseData.furniture, function(furniture)
+        return furniture.uid == id
+    end)
+    if not furniture then return end
+
+    local furnitureData = exports['m-inventory']:getFurnitureByModel(furniture.model)
+    if not furnitureData or not furnitureData.textures then return end
+
+    furniture.texture = furniture.texture or 1
+    furniture.texture = furniture.texture + 1
+
+    if furniture.texture > #furnitureData.textures then
+        furniture.texture = 1
+    end
+
+    local connection = exports['m-mysql']:getConnection()
+    if not connection then return end
+
+    local query = dbQuery(connection, 'UPDATE `m-furniture` SET `texture` = ? WHERE `uid` = ?', furniture.texture, id)
+    local result, num_affected_rows = dbPoll(query, -1)
+    if num_affected_rows == 0 then return end
+
+    local players = getPlayersInHouse(houseId)
+    if not players or #players == 0 then return end
+
+    triggerClientEvent(players, 'houses:updateFurniture', resourceRoot, furniture)
+end
+
 function saveHouseFurniture(id, x, y, z, rx, ry, rz)
     if source ~= resourceRoot then
         local __args = ''; local __i = 1; while true do local name, value = debug.getlocal(1, __i); if not name then break end; if name ~= '__args' and name ~= '__i' then __args = __args .. ('`%s`: `%s`\n'):format(name, inspect(value)); end __i = __i + 1 end; __args = __args:sub(1, -2)
@@ -233,6 +291,7 @@ function addDefaultHouseFurniture(uid)
 end
 
 addEventHandler('houses:removeFurniture', resourceRoot, removeHouseFurniture)
+addEventHandler('houses:changeFurnitureTexture', resourceRoot, changeHouseFurnitureTexture)
 addEventHandler('houses:saveFurniture', resourceRoot, saveHouseFurniture)
 
 addCommandHandler('hgp', function(plr)

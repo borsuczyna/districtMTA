@@ -16,7 +16,8 @@ function placeFurniture(player, key, state)
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
 
-    local model = getElementModel(furnitureObjects[player])
+    -- local model = getElementModel(furnitureObjects[player])
+    local model = getElementData(furnitureObjects[player], 'element:model') or getElementModel(furnitureObjects[player])
     stopFurniture(player, true)
 
     local houseId = getElementData(player, 'player:house')
@@ -65,7 +66,12 @@ function startFurniture(player, itemHash, furniture)
     exports['m-notis']:addNotification(player, 'info', 'Edycja mebli', 'Wyciągnięto mebel z ekwipunku, naciśnij <kbd class="keycap keycap-sm">LPM</kbd> aby go położyć i rozpocząć edycje.')
 
     destroyPlayerFurnitureObject(player)
-    local object = createObject(furniture.model, 0, 0, 0)
+    local isNumber = type(furniture.model) == 'number' or tonumber(furniture.model)
+    local object = createObject(isNumber and tonumber(furniture.model) or 1337, 0, 0, 0)
+    if not isNumber then
+        setElementData(object, 'element:model', furniture.model)
+    end
+
     setElementDoubleSided(object, true)
     exports['m-pattach']:attach(object, player, unpack(getFurnitureHoldPosition(furniture.item)))
     setElementData(player, 'player:animation', 'carry')

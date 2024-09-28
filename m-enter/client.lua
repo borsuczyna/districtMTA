@@ -65,6 +65,8 @@ end)
 
 addEventHandler('onClientMarkerHit', resourceRoot, function(hitElement, matchingDimension)
     if hitElement ~= localPlayer or not matchingDimension or getPedOccupiedVehicle(localPlayer) then return end
+    if getElementInterior(source) ~= getElementInterior(localPlayer) then return end
+
     local enterId = getElementData(source, 'marker:enter')
     if not enterId then return end
 

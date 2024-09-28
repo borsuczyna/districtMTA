@@ -107,10 +107,46 @@
     <file src='data/icons/traces/2.png'/>
 
     <!-- furniture -->
+    <!-- <file src='data/icons/furniture/toilet-1.png'/>
+    <file src='data/icons/furniture/toilet-2.png'/>
+    <file src='data/icons/furniture/toilet-3.png'/>
+    <file src='data/icons/furniture/soap-1.png'/> -->
+
+    <file src='data/icons/furniture/armchair1.png'/>
+    <file src='data/icons/furniture/bath1.png'/>
+    <file src='data/icons/furniture/bed1.png'/>
+    <file src='data/icons/furniture/boxshelf1.png'/>
+    <file src='data/icons/furniture/cabinetwithglass1.png'/>
+    <file src='data/icons/furniture/chair1.png'/>
+    <file src='data/icons/furniture/chair2.png'/>
+    <file src='data/icons/furniture/coffeetable1.png'/>
+    <file src='data/icons/furniture/countercabinet2.png'/>
+    <file src='data/icons/furniture/countercabinet3.png'/>
+    <file src='data/icons/furniture/counterdouble1.png'/>
+    <file src='data/icons/furniture/counterjoin1.png'/>
+    <file src='data/icons/furniture/countersingle1.png'/>
+    <file src='data/icons/furniture/countertablelong1.png'/>
+    <file src='data/icons/furniture/countertableshort1.png'/>
+    <file src='data/icons/furniture/countertop.png'/>
+    <file src='data/icons/furniture/countertopjoin1.png'/>
+    <file src='data/icons/furniture/countertopleft1.png'/>
+    <file src='data/icons/furniture/countertopright1.png'/>
+    <file src='data/icons/furniture/fridge1.png'/>
+    <file src='data/icons/furniture/fridgecover1.png'/>
+    <file src='data/icons/furniture/induction1.png'/>
+    <file src='data/icons/furniture/lamp1.png'/>
+    <file src='data/icons/furniture/nighttable1.png'/>
+    <file src='data/icons/furniture/oven1.png'/>
+    <file src='data/icons/furniture/shower1.png'/>
+    <file src='data/icons/furniture/sink1.png'/>
+    <file src='data/icons/furniture/soap-1.png'/>
+    <file src='data/icons/furniture/sofa1.png'/>
+    <file src='data/icons/furniture/table1.png'/>
     <file src='data/icons/furniture/toilet-1.png'/>
     <file src='data/icons/furniture/toilet-2.png'/>
     <file src='data/icons/furniture/toilet-3.png'/>
-    <file src='data/icons/furniture/soap-1.png'/>
+    <file src='data/icons/furniture/toilet1.png'/>
+    <file src='data/icons/furniture/uppercabinet1.png'/>
 
     <export function='doesPlayerHaveItem' type='server'/>
     <export function='doesPlayerHaveItems' type='server'/>
@@ -135,6 +171,7 @@
     <export function='getItemName' type='shared'/>
     <export function='getItemIcon' type='shared'/>
     <export function='getFurnitures' type='shared'/>
+    <export function='getFurnitureByModel' type='shared'/>
     <export function='useItem' type='server'/>
     <export function='getPlayerItemCount' type='server'/>
 </meta>

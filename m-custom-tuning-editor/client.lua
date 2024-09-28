@@ -76,7 +76,7 @@ end)
 -- setVehicleDoorOpenRatio(getPedOccupiedVehicle(localPlayer), 1, 1, 1000)
 
 -- editor
-if getPlayerName(localPlayer) ~= 'neko_' then return end
+if getPlayerName(localPlayer) ~= 'soth' and getPlayerName(localPlayer) ~= 'neko_' then return end
 local sx, sy = guiGetScreenSize()
 local editing = true
 local editingPosition = {
@@ -127,7 +127,11 @@ local componentNames = {
 }
 local editingVehicle = createVehicle(400, 1942.476, -1806.212, 13.383)
 setCameraTarget(editingVehicle)
-local editingPart = createObject(1049, 0, 0, 0)
+local editingPart = createObject(1004, 0, 0, 0)
+setElementCollisionsEnabled(editingPart, false)
+if getPlayerName(localPlayer) == 'soth' then
+    setElementData(editingPart, 'element:model', 'tuning/bulbbar')
+end
 local editingPartName = 'spoiler'
 local editingModel = 400
 
@@ -138,7 +142,7 @@ end)
 
 addCommandHandler('reset', function(cmd, model)
     editingPosition = {
-        component = 'boot_dummy',
+        component = editingPosition.component,
         position = Vector3(0, 0, 0),
         -- rotation = Vector3(0, 0, 0),
         scale = Vector3(1, 1, 1)

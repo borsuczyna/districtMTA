@@ -1,11 +1,14 @@
 local shops = {
-    {2060.906, -1075.533, 25.458},
+    {2029.781, -1312.903, 23.991},
 }
 
 local function loadFurnitureShop(data, index)
     local object = createObject(1337, data[1], data[2], data[3] + 100)
     setElementData(object, 'element:model', 'furniture-shop')
     setElementInterior(object, 1)
+
+    local blip = createBlip(data[1], data[2], data[3], 17, 2, 255, 0, 0, 255, 0, 9999.0)
+    setElementData(blip, 'blip:hoverText', 'Sklep z meblami')
 
     exports['m-enter']:createEntrance({
         marker = data,

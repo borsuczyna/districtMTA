@@ -58,11 +58,10 @@ shopList = {
     createStationShop('Glen Park', 2.211, -28.779, 1003.549, 10),
     createFishShop(154.176, -1942.934, 3.769),
 
-    createFurnitureShop('toilet', 'Sypialnia', 2054.112, -1075.416, 126.458, 1),
-    createFurnitureShop('toilet', 'Salon', 2053.505, -1081.298, 126.458, 1),
-    createFurnitureShop('toilet', 'Kuchnia', 1910.776, -1743.806, 114.547, 1),
-    createFurnitureShop('toilet', 'Biuro', 1911.373, -1738.374, 114.547, 1),
-    createFurnitureShop('toilet', 'Bufet', 1911.586, -1749.421, 114.547, 1),
+    createFurnitureShop('salon', 'Salon', 2022.815, -1318.151, 124.991, 1),
+    createFurnitureShop('kitchen', 'Kuchnia', 2030.227, -1311.097, 124.991, 1),
+    createFurnitureShop('bathroom', 'Łazienka', 2029.594, -1317.517, 124.991, 1),
+    createFurnitureShop('bedroom', 'Sypialnia', 2022.797, -1312.786, 124.991, 1),
 }
 
 for i, shop in ipairs(shopList) do

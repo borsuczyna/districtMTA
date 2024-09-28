@@ -5,6 +5,33 @@ addEvent('houses:updateFurniture', true)
 addEvent('houses:removeFurniture', true)
 
 local interior = false
+local textures = {}
+local shaders = {}
+
+local function getFurnitureTexture(path)
+    if not textures[path] then
+        textures[path] = dxCreateTexture(('data/furniture-textures/%s.png'):format(path))
+    end
+
+    return textures[path]
+end
+
+local function getFurnitureShaderTexture(path)
+    if not shaders[path] then
+        shaders[path] = dxCreateShader('data/shader.fx')
+        dxSetShaderValue(shaders[path], 'Tex0', getFurnitureTexture(path))
+    end
+
+    return shaders[path]
+end
+
+local function destroyFurnitureTextures()
+    for path, texture in pairs(textures) do
+        destroyElement(texture)
+    end
+
+    textures = {}
+end
 
 local function destroyHouseInterior()
     if not interior then return end
@@ -12,6 +39,7 @@ local function destroyHouseInterior()
     destroyElement(interior.mainObject)
     destroyElement(interior.marker)
     destroyInteriorTextures()
+    destroyFurnitureTextures()
 
     if interior.furniture then
         for i, data in ipairs(interior.furniture) do
@@ -29,10 +57,29 @@ local function loadFurnitureObject(data)
         destroyElement(data.object)
     end
 
+    if data.shader and isElement(data.shader) then
+        destroyElement(data.shader)
+    end
+
     local spawn = map(split(data.position, ','), tonumber)
     spawn = {getRelativeInteriorPosition(interior.mainObject, spawn[1], spawn[2], spawn[3], spawn[4], spawn[5], spawn[6])}
 
-    local object = createObject(data.model, unpack(spawn))
+    local isNumber = type(data.model) == 'number' or tonumber(data.model)
+    local object = createObject(isNumber and tonumber(data.model) or 1337, unpack(spawn))
+    if not isNumber then
+        setElementData(object, 'element:model', data.model)
+    end
+
+    if data.texture then
+        local furnitureData = exports['m-inventory']:getFurnitureByModel(data.model)
+
+        local texture = furnitureData.textures[data.texture]
+        if texture then
+            local shaderTexture = getFurnitureShaderTexture(texture)
+            engineApplyShaderToWorldTexture(shaders[texture], furnitureData.textures[1], object)
+        end
+    end
+
     setElementDimension(object, interior.dimension)
 
     data.object = object
@@ -126,6 +173,7 @@ addEventHandler('houses:updateFurniture', resourceRoot, function(furniture)
         furnitureData.model = furniture.model
         furnitureData.position = furniture.position
         furnitureData.rotation = furniture.rotation
+        furnitureData.texture = furniture.texture
 
         loadFurnitureObject(furnitureData)
     else

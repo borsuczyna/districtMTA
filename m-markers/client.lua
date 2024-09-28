@@ -117,8 +117,8 @@ local function renderRoundedMarker(marker)
     end
     
     local groundZ = getGroundPosition(x, y, z)
-    --dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r, g, b, 255), 'prefx', x, y, groundZ)
-    --dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r2, g2, b2, fade / 2), 'prefx', x, y, groundZ)
+    dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r, g, b, 255), 'prefx', x, y, groundZ)
+    dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r2, g2, b2, fade / 2), 'prefx', x, y, groundZ)
 
     local target = getMarkerTarget(marker)
     local floatZ = fade / 255 * 0.1

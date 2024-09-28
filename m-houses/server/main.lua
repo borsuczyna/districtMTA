@@ -40,7 +40,7 @@ function updateHouseRent(id)
     
     if not isRented then
         if wasRented and data.owner then
-            exports['m-logs']:sendLog('houses', 'info', ('Dom %s wygasł (uid: %d) - właściciel: %s'):format(data.streetName, id, data.ownerName))
+            exports['m-logs']:sendLog('houses', 'info', ('Dom %s wygasł (uid: %d) - właściciel: %s'):format(data.streetName, id, data.ownerName or 'brak'))
             removePlayersFromHouse(id)
             removeAllHouseFurniture(id)
             removeAllHouseTextures(id)

@@ -91,6 +91,11 @@ local function drawFurniture(data)
     if not px or not py then return end
     
     local icons = {'data/textures/furniture.png', 'data/textures/remove.png'}
+    local furnitureData = exports['m-inventory']:getFurnitureByModel(data.model)
+    if furnitureData and furnitureData.textures and #furnitureData.textures > 1 then
+        table.insert(icons, 2, 'data/textures/paint.png')
+    end
+
     if isEditing then
         icons = {'data/textures/check.png', editing.editMode == 'position' and 'data/textures/rotate.png' or 'data/textures/position.png', 'data/textures/remove.png'}
     end
@@ -117,8 +122,15 @@ local function clickFurniture(data)
         end},
         {'data/textures/remove.png', function()
             triggerServerEvent('houses:removeFurniture', resourceRoot, data.uid)
-        end}
+        end},
     }
+
+    local furnitureData = exports['m-inventory']:getFurnitureByModel(data.model)
+    if furnitureData and furnitureData.textures and #furnitureData.textures > 1 then
+        table.insert(icons, 2, {'data/textures/paint.png', function()
+            triggerServerEvent('houses:changeFurnitureTexture', resourceRoot, data.uid)
+        end})
+    end
 
     if editing.furniture and editing.furniture.uid == data.uid then
         icons = {
@@ -135,7 +147,7 @@ local function clickFurniture(data)
             end},
             {'data/textures/remove.png', function()
                 triggerServerEvent('houses:removeFurniture', resourceRoot, data.uid)
-            end}
+            end},
         }
     end
 

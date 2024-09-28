@@ -863,15 +863,201 @@ models = {
         type = 'object',
         model = 4210,
     },
-    ['5813'] = {
-        type = 'object',
-        model = 5813,
-    },
+    -- ['5813'] = {
+    --     type = 'object',
+    --     model = 5813,
+    -- },
 
-    ['furniture/ufo-lamp'] = {
+    -- ['furniture/ufo-lamp'] = {
+    --     type = 'object',
+    --     model = 2000,
+    --     custom = true,
+    -- },
+    ['furniture/Blat'] = {
         type = 'object',
         model = 2000,
         custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/BlatKoniecLewy'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/BlatKoniecPrawy'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/BlatLaczenie'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Fotel'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Indukcja'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Kibelek'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/KomodaZszklem'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Krzeslo'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Lampa'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Lodowka'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Lozko'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Piec'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/PolkiNadBlatem'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Prysznic'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Sofa'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Stol'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Stolek'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Stolikkawowy'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkaNadBlatemLaczenie'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkaNocnaMini'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkaPudelkowa'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkiLaczenie'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkiNadBlatem'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkiPodwojna'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkiPojedyncza'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkiRozsuwanyDlugi'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/SzafkiRozsuwanyKrotki'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/Wanna'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/ZabudowaLodowki'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
+    },
+    ['furniture/ZlewKuchnia'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+        txd = 'furniture/textures'
     },
 
     -- vehicles
@@ -934,6 +1120,11 @@ models = {
 
     -- tuning
     ['tuning/spoiler'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+    ['tuning/bulbbar'] = {
         type = 'object',
         model = 1337,
         custom = true,
