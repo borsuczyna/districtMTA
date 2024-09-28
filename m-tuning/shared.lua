@@ -1,4 +1,5 @@
 local camera
+upgradeSlots = {'spoiler'}
 
 function getModelBoundingBox(element)
 	local type = getElementType(element)
@@ -103,38 +104,33 @@ end
 
 addEventHandler('onClientRender', root, updateCamera)
 
-function visualUpgrades(vehicle, id, zoomTo)
-	local upgrades = getVehicleCompatibleUpgrades(vehicle, id)
+function visualUpgrades(vehicle, id, zoomTo, compatible)
+	local upgrades = compatible or exports['m-upgrades']:getVehicleCompatibleUpgrades(vehicle, id)
 	local outUpgrades = {}
-	local vehicleUpgrades = getVehicleUpgrades(vehicle)
+	local vehicleUpgrades = exports['m-upgrades']:getVehicleUpgrades(vehicle)
 
 	for i, upgrade in ipairs(upgrades) do
 		local installed = not not table.find(vehicleUpgrades, upgrade)
 		local price = getUpgradePrice(upgrade)
 
 		table.insert(outUpgrades, {
-			name = ('(%d) %s'):format(upgrade, getUpgradeName(upgrade)),
+			name = tonumber(upgrade) and ('(%d) %s'):format(upgrade, getUpgradeName(upgrade)) or upgrade,
 			upgrade = upgrade,
 			installed = installed,
 			price = installed and math.floor(price * 0.6) or price,
 			preview = function(vehicle)
-				local current = getVehicleUpgradeOnSlot(vehicle, id)
-				if current then
-					removeVehicleUpgrade(vehicle, current)
-				end
-
-				addVehicleUpgrade(vehicle, upgrade)
+				exports['m-upgrades']:forceVehicleUpgrade(vehicle, upgrade)
 				zoomToComponent(vehicle, zoomTo)
 			end,
 			install = function(player, vehicle)
-				addVehicleUpgrade(vehicle, upgrade)
+				exports['m-upgrades']:forceVehicleUpgrade(vehicle, upgrade)
 			end,
 			uninstall = function(player, vehicle)
-				removeVehicleUpgrade(vehicle, upgrade)
+				exports['m-upgrades']:removeVehicleUpgrade(vehicle, upgrade)
 			end,
 			canInstall = function(vehicle)
-				local current = getVehicleUpgradeOnSlot(vehicle, id)
-				return current == 0 or not current, 'Posiadasz już inny tuning tego typu, pierw go zdemontuj.'
+				local current = exports['m-upgrades']:getVehicleUpgradeOnSlot(vehicle, id)
+				return (not current or current == 0), 'Posiadasz już inny tuning tego typu, pierw go zdemontuj.'
 			end,
 		})
 	end
@@ -152,137 +148,160 @@ end
 
 categories = {
 	{
-		name = 'Koła',
-		icon = 'wheel',
-		key = 'wheels',
-		items = function(vehicle) 
-			return visualUpgrades(vehicle, 12, {-2, 0.6, 0.5, -1, 0.4, 0})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 12)
-		end,
-	},
-	{
-		name = 'Maska',
-		icon = 'hood',
-		key = 'hood',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 0, {-0.4, 1, 1.3, -0.15, 0.5, 0.5})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 0)
-		end,
-	},
-		{
-		name = 'Wloty',
-		icon = 'vent',
-		key = 'vent',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 1, {-0.4, 1, 1.3, -0.15, 0.5, 0.5})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 1)
-		end,
-	},
-	{
 		name = 'Spoilery',
 		icon = 'spoiler',
 		key = 'spoiler',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 2, {-0.7, -1, 0.9, -0.15, -0.5, 0.3})
+		items = function(vehicle, compatible)
+			return visualUpgrades(vehicle, 'spoiler', {-0.7, -1, 0.9, -0.15, -0.5, 0.3}, compatible and compatible.spoiler)
 		end,
 		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 2)
+			restoreVehicleUpgrade(vehicle, 'spoiler')
 		end,
 	},
 	{
-		name = 'Progi',
-		icon = 'sideskirt',
-		key = 'sideskirt',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 3, {-1.5, -0.1, 0.3, 0.9, -0.23, -0.1})
+		name = 'Spoilery 2',
+		icon = 'spoiler',
+		key = 'spoiler2',
+		items = function(vehicle, compatible)
+			return visualUpgrades(vehicle, 'spoiler', {-0.7, -1, 0.9, -0.15, -0.5, 0.3}, compatible and compatible.spoiler)
 		end,
 		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 3)
+			restoreVehicleUpgrade(vehicle, 'spoiler')
 		end,
 	},
-	{
-		name = 'Lampy',
-		icon = 'lights',
-		key = 'lights',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 4, {0, 1.5, 0.5, 0, 0.5, 0.5})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 4)
-		end,
-	},
-	{
-		name = 'Przednie lampy',
-		icon = 'lights',
-		key = 'frontlights',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 6, {0, 1.1, 0.5, 0, 0.5, 0.2})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 6)
-		end,
-	},
-	{
-		name = 'Tylne lampy',
-		icon = 'lights',
-		key = 'rearlights',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 5, {0, -1.1, 0.5, 0, -0.5, 0.2})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 5)
-		end,
-	},
-	{
-		name = 'Dach',
-		icon = 'roof',
-		key = 'roof',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 7, {-0.3, 0.4, 1.5, 0, 0, 0.5})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 7)
-		end,
-	},
-	{
-		name = 'Wydechy',
-		icon = 'exhaust',
-		key = 'exhaust',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 13, {-0.7, -1.1, 0.5, -0.2, -0.5, 0})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 13)
-		end,
-	},
-	{
-		name = 'Przedni zderzak',
-		icon = 'bumper',
-		key = 'frontbumper',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 14, {-0.6, 1.1, 0.5, -0.1, 0.5, 0})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 14)
-		end,
-	},
-	{
-		name = 'Tylny zderzak',
-		icon = 'bumper',
-		key = 'rearbumper',
-		items = function(vehicle)
-			return visualUpgrades(vehicle, 15, {-0.6, -1.1, 0.5, -0.1, -0.5, 0})
-		end,
-		remove = function(vehicle)
-			restoreVehicleUpgrade(vehicle, 15)
-		end,
-	},
+
+	-- {
+	-- 	name = 'Koła',
+	-- 	icon = 'wheel',
+	-- 	key = 'wheels',
+	-- 	items = function(vehicle) 
+	-- 		return visualUpgrades(vehicle, 12, {-2, 0.6, 0.5, -1, 0.4, 0})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 12)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Maska',
+	-- 	icon = 'hood',
+	-- 	key = 'hood',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 0, {-0.4, 1, 1.3, -0.15, 0.5, 0.5})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 0)
+	-- 	end,
+	-- },
+	-- 	{
+	-- 	name = 'Wloty',
+	-- 	icon = 'vent',
+	-- 	key = 'vent',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 1, {-0.4, 1, 1.3, -0.15, 0.5, 0.5})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 1)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Spoilery',
+	-- 	icon = 'spoiler',
+	-- 	key = 'spoiler',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 2, {-0.7, -1, 0.9, -0.15, -0.5, 0.3})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 2)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Progi',
+	-- 	icon = 'sideskirt',
+	-- 	key = 'sideskirt',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 3, {-1.5, -0.1, 0.3, 0.9, -0.23, -0.1})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 3)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Lampy',
+	-- 	icon = 'lights',
+	-- 	key = 'lights',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 4, {0, 1.5, 0.5, 0, 0.5, 0.5})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 4)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Przednie lampy',
+	-- 	icon = 'lights',
+	-- 	key = 'frontlights',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 6, {0, 1.1, 0.5, 0, 0.5, 0.2})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 6)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Tylne lampy',
+	-- 	icon = 'lights',
+	-- 	key = 'rearlights',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 5, {0, -1.1, 0.5, 0, -0.5, 0.2})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 5)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Dach',
+	-- 	icon = 'roof',
+	-- 	key = 'roof',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 7, {-0.3, 0.4, 1.5, 0, 0, 0.5})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 7)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Wydechy',
+	-- 	icon = 'exhaust',
+	-- 	key = 'exhaust',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 13, {-0.7, -1.1, 0.5, -0.2, -0.5, 0})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 13)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Przedni zderzak',
+	-- 	icon = 'bumper',
+	-- 	key = 'frontbumper',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 14, {-0.6, 1.1, 0.5, -0.1, 0.5, 0})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 14)
+	-- 	end,
+	-- },
+	-- {
+	-- 	name = 'Tylny zderzak',
+	-- 	icon = 'bumper',
+	-- 	key = 'rearbumper',
+	-- 	items = function(vehicle)
+	-- 		return visualUpgrades(vehicle, 15, {-0.6, -1.1, 0.5, -0.1, -0.5, 0})
+	-- 	end,
+	-- 	remove = function(vehicle)
+	-- 		restoreVehicleUpgrade(vehicle, 15)
+	-- 	end,
+	-- },
 }
 
 function getUpgradeName(upgradeID)
@@ -293,11 +312,11 @@ function getUpgradePrice(upgradeID)
 	return partPrices[upgradeID] or 6969
 end
 
-function getVehicleUpgradeCategories(vehicle)
+function getVehicleUpgradeCategories(vehicle, compatible)
 	local outCategories = {}
 
 	for i, category in ipairs(categories) do
-		local items = category.items(vehicle)
+		local items = category.items(vehicle, compatible)
 		if #items > 0 then
 			table.insert(outCategories, {
 				name = category.name,
@@ -317,10 +336,16 @@ function getVehicleOriginalUpgrades(vehicle)
 		upgrades = {}
 	}
 
-	for i = 0, 16 do
-		local upgrade = getVehicleUpgradeOnSlot(vehicle, i)
+	-- for i = 0, 16 do
+	-- 	local upgrade = getVehicleUpgradeOnSlot(vehicle, i)
+	-- 	if upgrade then
+	-- 		data.upgrades[i] = upgrade
+	-- 	end
+	-- end
+	for i, slot in ipairs(upgradeSlots) do
+		local upgrade = exports['m-upgrades']:getVehicleUpgradeOnSlot(vehicle, slot)
 		if upgrade then
-			data.upgrades[i] = upgrade
+			data.upgrades[slot] = upgrade
 		end
 	end
 
@@ -331,13 +356,14 @@ function restoreVehicleUpgrade(vehicle, slot)
 	if not originalTuning then return end
 
 	local upgrade = originalTuning.upgrades[slot]
-	local currentUpgrade = getVehicleUpgradeOnSlot(vehicle, slot)
-	if currentUpgrade then
-		removeVehicleUpgrade(vehicle, currentUpgrade)
-	end
+	-- local currentUpgrade = getVehicleUpgradeOnSlot(vehicle, slot)
+	-- if currentUpgrade then
+	-- 	removeVehicleUpgrade(vehicle, currentUpgrade)
+	-- end
+	exports['m-upgrades']:removeVehicleUpgradeOnSlot(vehicle, slot)
 
 	if upgrade then
-		addVehicleUpgrade(vehicle, upgrade)
+		exports['m-upgrades']:addVehicleUpgrade(vehicle, upgrade)
 	end
 
 	return upgrade

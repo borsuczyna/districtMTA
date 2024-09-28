@@ -1,0 +1,26 @@
+<meta>
+    <script src="data/lights.lua" type="client" cache="false"/>
+    <script src="data/modes.lua" type="client" cache="false"/>
+    <script src="data/sounds.lua" type="client" cache="false"/>
+
+    <script src="scripts/panel.lua" type="client" cache="false"/>
+    <script src="scripts/sounds.lua" type="client" cache="false"/>
+    <script src="scripts/coronas.lua" type="client" cache="false"/>
+    <script src="scripts/useful.lua" type="client" cache="false"/>
+    <script src="scripts/lights.lua" type="client" cache="false"/>
+
+    <script src="server.lua" type="server"/>
+    <script src="client.lua" type="client" cache="false"/>
+
+    <file src="data/corona.fx"/>
+    <file src="data/blast.png"/>
+    <file src="data/car.png"/>
+    <file src="data/lights.png"/>
+    <file src="data/font.ttf"/>
+
+    <file src="data/sounds/1.wav"/>
+    <file src="data/sounds/2.wav"/>
+    <file src="data/sounds/click.wav"/>
+    <file src="data/sounds/horn-G.mp3"/>
+    <file src="data/sounds/horn-F.mp3"/>
+</meta>

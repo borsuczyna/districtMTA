@@ -2,6 +2,8 @@ let dataCache = {};
 window.dashboard_playerPosition = [0, 0, 0];
 
 window.dashboard_changeTab = function(item) {
+    seasonPass_closeBuyPass();
+    
     let tabs = document.querySelectorAll('#dashboard #list .item');
     let tabsContent = document.querySelectorAll('#dashboard #tabs .tab');
     let currentTab = item.getAttribute('tab');

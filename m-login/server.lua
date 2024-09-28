@@ -77,6 +77,7 @@ addEventHandler('login:register', resourceRoot, function(hash, player, email, lo
         email = email,
         ip = getPlayerIP(player),
         serial = getPlayerSerial(player),
+        detectedDiscordID = getElementData(player, 'player:discordID'),
     })
     if message then
         exports['m-ui']:respondToRequest(hash, {status = 'error', title = 'Błąd rejestracji', message = message})

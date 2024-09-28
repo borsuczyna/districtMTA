@@ -21,6 +21,18 @@ function doesPlayerHaveItem(player, item, count)
     return checkIfPlayerHaveItem(inventory, player, item, count)
 end
 
+function getPlayerItemCount(player, item)
+    local inventory = getPlayerInventory(player)
+    local count = 0
+    for i, v in ipairs(inventory) do
+        if v.item == item then
+            count = count + v.amount
+        end
+    end
+
+    return count
+end
+
 function doesPlayerHaveItems(player, items)
     local inventory = getPlayerInventory(player)
     for item, count in pairs(items) do
@@ -129,7 +141,11 @@ function addPlayerItemsOffline(uid, items)
         local playerItems = getPlayerInventory(player)
 
         for _, item in pairs(items) do
-            playerItems = addInventoryItem(playerItems, item, 1)
+            if type(item) == 'table' then
+                playerItems = addInventoryItem(playerItems, item[1], item[2])
+            else
+                playerItems = addInventoryItem(playerItems, item, 1)
+            end
         end
 
         setElementData(player, 'player:inventory', playerItems, false)
@@ -139,7 +155,11 @@ function addPlayerItemsOffline(uid, items)
     local playerItems = getPlayerItemsOffline(uid)
 
     for _, item in pairs(items) do
-        playerItems = addInventoryItem(playerItems, item, 1)
+        if type(item) == 'table' then
+            playerItems = addInventoryItem(playerItems, item[1], item[2])
+        else
+            playerItems = addInventoryItem(playerItems, item, 1)
+        end
     end
 
     setPlayerItemsOffline(uid, playerItems)
@@ -311,6 +331,19 @@ addEventHandler('inventory:useItem', root, function(hash, player, itemHash)
     local itemName = exports['m-inventory']:getItemName(item)
     exports['m-logs']:sendLog('items', 'info', ('Gracz `%s` użył przedmiotu %s (`%s`)'):format(getPlayerName(player), itemName, itemHash))
 end)
+
+function useItem(player, itemHash)
+    local item = getPlayerItemByHash(player, itemHash)
+    if not item then return end
+
+    local itemData = itemsData[item.item]
+    if not itemData then return end
+
+    local takeAmount = itemData.onUse(player, itemHash, true)
+    if takeAmount then
+        removePlayerItemByHash(player, itemHash, -takeAmount)
+    end
+end
 
 -- TODO: remove
 addCommandHandler('testitem', function(player, cmd, name, count)

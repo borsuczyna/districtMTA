@@ -20,10 +20,25 @@ function initDiscordPresence()
     if not isEnabled then return end
 
     setDiscordApplicationID(applicationID)
+    setElementData(localPlayer, 'player:discordID', getDiscordRichPresenceUserID())
     updateDiscordPresence()
+
     setTimer(updateDiscordPresence, 10000, 0)
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
     initDiscordPresence()
 end)
+
+addCommandHandler("getmyuserid",
+    function ()
+        if isDiscordRichPresenceConnected() then
+            local id = getDiscordRichPresenceUserID() 
+            if id == "" then 
+                outputChatBox("You didn't allow consent to share Discord data! Grant permission in the settings!")
+            else 
+                outputChatBox("Your Discord userid: "..id)
+            end 
+        end 
+    end
+)

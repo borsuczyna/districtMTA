@@ -1,14 +1,31 @@
+local function startsWith(str, start)
+    return str:sub(1, #start) == start
+end
+
 local function assignPlayerInventory(player, data)
     local inventory = fromJSON(data)
+    local itemsToEquip = {}
 
     -- unequip all items
     for i, item in ipairs(inventory) do
+        -- if item.metadata and item.metadata.equipped then
+        --     item.metadata.equipped = false
+        -- end
+
         if item.metadata and item.metadata.equipped then
             item.metadata.equipped = false
+
+            if not startsWith(item.item, 'fishingRod') then
+                table.insert(itemsToEquip, item.hash)
+            end
         end
     end
 
     setElementData(player, 'player:inventory', inventory, false)
+    
+    for i, item in ipairs(itemsToEquip) do
+        exports['m-inventory']:useItem(player, item)
+    end
 end
 
 function getPlayerTicketsCount(result, player)
@@ -40,6 +57,8 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:avatar', data.avatar)
     setElementData(player, 'player:licenses', split(data.licenses, ','))
     setElementData(player, 'player:knownIntros', split(data.knownIntros, ','), false)
+    setElementData(player, 'player:seasonPass:bought', data.seasonPassBought == 1)
+    setElementData(player, 'player:seasonPass', fromJSON(data.seasonPassData))
     triggerClientEvent(player, 'intro:setKnownIntros', root, split(data.knownIntros, ','))
     assignPlayerInventory(player, data.inventory)
 
@@ -48,6 +67,7 @@ function assignPlayerData(player, data)
     if diff > 86400 then
         setElementData(player, 'player:dailyRewardDay', 1)
         exports['m-notis']:addNotification(player, 'error', 'Dzienne nagrody', 'Straciłeś swoją serię dziennych nagród')
+        exports['m-mysql']:execute('UPDATE `m-users` SET dailyRewardDay = 1 WHERE uid = ?', data.uid)
     end
 
     -- settings
@@ -92,6 +112,8 @@ function buildSavePlayerQuery(player)
     local inventory = getElementData(player, 'player:inventory') or {}
     local licenses = table.concat(getElementData(player, 'player:licenses') or {}, ',')
     local knownIntros = table.concat(getElementData(player, 'player:knownIntros') or {}, ',')
+    local seasonPassBought = getElementData(player, 'player:seasonPass:bought') or false
+    local seasonPassData = getElementData(player, 'player:seasonPass') or {}
     local settings = {
         interfaceBlur = getElementData(player, 'player:interfaceBlur') or 0,
         interfaceSize = getElementData(player, 'player:interfaceSize') or 8,
@@ -112,6 +134,8 @@ function buildSavePlayerQuery(player)
         inventory = toJSON(inventory),
         licenses = licenses,
         knownIntros = knownIntros,
+        seasonPassBought = seasonPassBought and 1 or 0,
+        seasonPassData = toJSON(seasonPassData),
     }
 
     local query = 'UPDATE `m-users` SET ' .. table.concat(mapk(saveData, function(value, key)

@@ -62,16 +62,20 @@ seasonPass_loadData = (data) => {
         </div>
     `;
 
+    let previousPageRedeemed = true;
+    
     for (let [index, page] of data.pages.entries()) {
         let redeemed = page.filter((item) => item.redeemed).length;
         let total = page.length;
         let className = index < currentPageIndex ? 'prev' : index > currentPageIndex ? 'next' : 'active';
+        let pageLocked = !previousPageRedeemed;
 
         html += `
-            <div class="page ${className}" data-index="${index}">
+            <div class="page ${className} ${pageLocked ? 'locked' : ''}" data-index="${index}">
                 <div class="d-flex gap-2 align-items-end">
                     <span style="line-height: 1rem; font-size: 1.4rem; font-weight: 700;" class="slant">STRONA ${index + 1}</span>
                     <span style="line-height: 1rem; font-size: 1rem; font-weight: 700;" class="slant">ODEBRANO ${redeemed}/${total}</span>
+                    ${pageLocked ? '<span style="line-height: 1rem; font-size: 1rem; font-weight: 700;" class="slant">ZABLOKOWANA</span>' : ''}
                 </div>
 
                 <div class="page-grid mt-2">
@@ -86,7 +90,7 @@ seasonPass_loadData = (data) => {
             let locked = false;
             let active = currentActiveIndex == index;
 
-            if (!data.bought && !item.free && !item.redeemed) {
+            if ((!data.bought && !item.free && !item.redeemed) || pageLocked) {
                 locked = true;
             }
 
@@ -106,6 +110,8 @@ seasonPass_loadData = (data) => {
                 </div>
             </div>
         `;
+
+        previousPageRedeemed = redeemed == total;
     }
 
     html += `
@@ -115,7 +121,7 @@ seasonPass_loadData = (data) => {
                     ${data.stars} ${star}
                 </div>
                 <div class="d-flex gap-1 align-items-center justify-end">
-                    400
+                    ${data.dists}
                     <img src="/m-dashboard/season-pass/data/4.png" alt="Waluta" style="width: 2.5rem; height: 2.5rem;">
                 </div>
             </div>
@@ -152,12 +158,21 @@ seasonPass_renderItemInfo = () => {
         activeItem.classList.add('active');
     }
 
+    let previousPageData = seasonPassData.pages[activePage.dataset.index - 1];
+    let previousPageRedeemed = previousPageData ? previousPageData.filter((item) => item.redeemed).length == previousPageData.length : true;
+
     let item = seasonPassData.pages[activePage.dataset.index][activeItem.dataset.index];
     let itemInfo = document.querySelector('#dashboard #season-pass #active-season-item');
     let isFree = item.free;
     let canRedeem = !item.redeemed && (isFree || seasonPassData.bought);
     let redeemed = item.redeemed;
-    let onClick = canRedeem ? `seasonPass_redeemItem(this, ${activePage.dataset.index}, ${activeItem.dataset.index})` : 'seasonPass_getPass()';
+    let onClick = canRedeem ? `seasonPass_redeemItem(this, ${activePage.dataset.index}, ${activeItem.dataset.index})` : !redeemed ? 'seasonPass_getPass()' : '';
+    let redeemButtonText = redeemed ? 'ODEBRANO' : canRedeem ? 'ODBIERZ' : 'ZDOBĄDŹ PRZEPUSTKĘ';
+
+    if (!previousPageRedeemed) {
+        onClick = '';
+        redeemButtonText = 'ZABLOKOWANE';
+    }
 
     let html = `
         <img src="/m-dashboard/season-pass/data/${item.image}" alt="${item.name}" class="season-pass-image">
@@ -167,7 +182,7 @@ seasonPass_renderItemInfo = () => {
                 <div class="item-tag">${item.rarity.toUpperCase()}</div>
             </div>
             <div class="item-name">${item.name}</div>
-            <div onclick="${onClick}" class="redeem-button ${!canRedeem ? 'get-pass' : ''}">${redeemed ? 'ODEBRANO' : canRedeem ? 'ODBIERZ' : 'ZDOBĄDŹ PRZEPUSTKĘ'}</div>
+            <div onclick="${onClick}" class="redeem-button ${!canRedeem ? 'get-pass' : ''} ${!previousPageRedeemed ? 'blue-button' : ''}">${redeemButtonText}</div>
         </div>
     `;
 
@@ -184,6 +199,38 @@ seasonPass_getPass = () => {
 
 seasonPass_closeBuyPass = () => {
     document.querySelector('#dashboard #buy-pass').classList.add('d-none');
+}
+
+seasonPass_buyPassForDists = async (button) => {
+    if (isButtonSpinner(button)) return;
+
+    makeButtonSpinner(button);
+    let data = await mta.fetch('dashboard', 'buySeasonPass');
+
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    }
+    
+    makeButtonSpinner(button, false);
+}
+
+seasonPass_usePromoCode = async (button) => {
+    if (isButtonSpinner(button)) return;
+
+    let promoCode = document.querySelector('#dashboard #promo-code').value;
+    if (promoCode == '') {
+        notis_addNotification('error', 'Błąd', 'Wprowadź kod promocyjny');
+        return;
+    }
+
+    makeButtonSpinner(button);
+    let data = await mta.fetch('dashboard', 'useSeasonPassPromoCode', [promoCode]);
+
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    }
+
+    makeButtonSpinner(button, false);
 }
 
 seasonPass_redeemItem = async (button, page, index) => {

@@ -57,11 +57,11 @@ addEventHandler('tuning:removePreview', root, function(key)
     data.remove(vehicle)
 end)
 
-addEventHandler('tuning:updateOriginalTuning', root, function(key, index)
+addEventHandler('tuning:updateOriginalTuning', root, function()
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if not vehicle then return end
 
-    vehicleTuningCategories = getVehicleUpgradeCategories(vehicle)
+    vehicleTuningCategories = getVehicleUpgradeCategories(vehicle, compatibleParts)
     originalTuning = getVehicleOriginalUpgrades(vehicle)
 end)
 
@@ -74,8 +74,8 @@ local function exitGarage()
     setCameraTarget(localPlayer)
 
     local vehicle = getPedOccupiedVehicle(localPlayer)
-    for i = 0, 18 do
-        restoreVehicleUpgrade(vehicle, i)
+    for _,slot in pairs(upgradeSlots) do
+        restoreVehicleUpgrade(vehicle, slot)
     end
 end
 

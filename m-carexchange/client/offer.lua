@@ -99,4 +99,4 @@ local function createCarExchangeMarker(position)
     addEventHandler('onClientMarkerLeave', marker, onMarkerLeave)
 end
 
-createCarExchangeMarker({1486.170, -1711.837, 14.047})
+createCarExchangeMarker({1446.212, -1617.934, 13.539})

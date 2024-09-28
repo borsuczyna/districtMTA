@@ -370,4 +370,4 @@ addCommandHandler('kuppojazd', function(player, cmd, vehicleUid)
     dbExec(connection, 'UPDATE `m-vehicles` SET `owner` = ? WHERE `uid` = ?', uid, vehicleUid)
 end)
 
-createCarExchange({1480.100, -1729.182, 13.383}, {0, 5000}, {1475.449, -1731.258, 12.547, 10, 20, 5})
+createCarExchange({1479.557, -1694.691, 13.383}, {0, 5000}, {1440.669, -1699.689, 14.695-2.5, 78, 75, 5})

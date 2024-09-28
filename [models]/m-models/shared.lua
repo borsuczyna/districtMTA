@@ -146,6 +146,10 @@ models = {
         type = 'object',
         model = 5798,
     },
+    ['market-minipark'] = {
+        type = 'object',
+        model = 5732,
+    },
     ['railway-station'] = {
         custom = true,
         type = 'object',
@@ -614,6 +618,18 @@ models = {
         type = 'object',
         model = 5392,
     },
+    ['jefferson-houses-1'] = {
+        type = 'object',
+        model = 5428,
+    },
+    ['jefferson-houses-2'] = {
+        type = 'object',
+        model = 5429,
+    },
+    ['jefferson-field'] = {
+        type = 'object',
+        model = 17513,
+    },
     ['alahambra-1'] = {
         type = 'object',
         model = 5408,
@@ -847,6 +863,10 @@ models = {
         type = 'object',
         model = 4210,
     },
+    ['5813'] = {
+        type = 'object',
+        model = 5813,
+    },
 
     ['furniture/ufo-lamp'] = {
         type = 'object',
@@ -860,6 +880,62 @@ models = {
         type = 'vehicle',
         model = 600,
         vehicleId = 613,
+        custom = true,
+    },
+    ['vehicles/blista-wagon'] = {
+        name = 'Blista Wagon',
+        type = 'vehicle',
+        model = 418,
+        vehicleId = 614,
+        custom = true,
+    },
+    ['vehicles/cartel-cruiser'] = {
+        name = 'Cartel Cruiser',
+        type = 'vehicle',
+        model = 579,
+        vehicleId = 616,
+        custom = true,
+    },
+    ['vehicles/faggio-principe'] = {
+        name = 'Faggio Principe',
+        type = 'vehicle',
+        model = 462,
+        vehicleId = 617,
+        custom = true,
+    },
+    ['vehicles/lizard'] = {
+        name = 'Lizard',
+        type = 'vehicle',
+        model = 496,
+        vehicleId = 619,
+        custom = true,
+    },
+    ['vehicles/lotus-esprit'] = {
+        name = 'Esprit',
+        type = 'vehicle',
+        model = 494,
+        vehicleId = 620,
+        custom = true,
+    },
+    ['vehicles/previon'] = {
+        name = 'Futo',
+        type = 'vehicle',
+        model = 436,
+        vehicleId = 625,
+        custom = true,
+    },
+    ['vehicles/sentinel-compact'] = {
+        name = 'Sentinel Compact',
+        type = 'vehicle',
+        model = 558,
+        vehicleId = 626,
+        custom = true,
+    },
+
+    -- tuning
+    ['tuning/spoiler'] = {
+        type = 'object',
+        model = 1337,
         custom = true,
     },
 }
@@ -946,7 +1022,7 @@ end
 local _getVehicleName = getVehicleName
 function getVehicleName(vehicle)
     local model = getElementData(vehicle, 'vehicle:model')
-    if not model then
+    if not model or tonumber(model) == 0 then
         return _getVehicleName(vehicle)
     end
 

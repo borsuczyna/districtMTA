@@ -2,7 +2,8 @@ local function generateDiscordConnectionCode()
     local code = ''
     local chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     for i = 1, 8 do
-        code = code .. string.sub(chars, math.random(1, #chars), math.random(1, #chars))
+        local charPos = math.random(1, #chars)
+        code = code .. string.sub(chars, charPos, charPos)
     end
     return code
 end
@@ -26,7 +27,7 @@ local function checkAccountExistsResult(queryResult, hash, data)
                 sameSerial = sameSerial + 1
             end
             if row.username == data.username then
-                sendAccountResponse(hash, {'register', false, 'Login jest już zajęta'})
+                sendAccountResponse(hash, {'register', false, 'Login jest już zajęty'})
                 return
             end
             if row.email == data.email then
@@ -48,8 +49,8 @@ local function checkAccountExistsResult(queryResult, hash, data)
     end
 
     dbQuery(createAccountResult, {hash}, connection,
-    'INSERT INTO `m-users` (username, password, email, ip, serial, discordCode) VALUES (?, ?, ?, ?, ?, ?)',
-    data.username, data.password, data.email, data.ip, data.serial, generateDiscordConnectionCode())
+    'INSERT INTO `m-users` (username, password, email, ip, serial, detectedDiscordID, discordCode) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    data.username, data.password, data.email, data.ip, data.serial, data.detectedDiscordID, generateDiscordConnectionCode())
 end
 
 local function createAccountInternal(data, hash)
@@ -59,7 +60,7 @@ local function createAccountInternal(data, hash)
         return
     end
 
-    dbQuery(checkAccountExistsResult, {hash, data}, connection, 'SELECT * FROM `m-users` WHERE username = ? OR email = ? OR serial = ?', data.username, data.email, data.serial)
+    dbQuery(checkAccountExistsResult, {hash, data}, connection, 'SELECT * FROM `m-users` WHERE username = ? OR email = ? OR serial = ? OR detectedDiscordID = ?', data.username, data.email, data.serial, data.detectedDiscordID)
 end
 
 function createAccount(hash, data)

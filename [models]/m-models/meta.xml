@@ -85,6 +85,9 @@
     <file src='data/decoded/market-station-road.dff'/>
     <file src='data/decoded/market-station-road.txd'/>
     <file src='data/decoded/market-station-fix.col'/>
+    <file src='data/decoded/market-minipark.col'/>
+    <file src='data/decoded/market-minipark.dff'/>
+    <file src='data/decoded/market-minipark.txd'/>
     <file src='data/decoded/railway-station.col'/>
     <file src='data/decoded/railway-station.dff'/>
     <file src='data/decoded/railway-station.txd'/>
@@ -200,6 +203,15 @@
     <file src='data/decoded/glenpark-houses-3.dff'/>
     <file src='data/decoded/glenpark-houses-3.col'/>
     <file src='data/decoded/glenpark-houses-3.txd'/>
+    <file src='data/decoded/jefferson-houses-1.dff'/>
+    <file src='data/decoded/jefferson-houses-1.col'/>
+    <file src='data/decoded/jefferson-houses-1.txd'/>
+    <file src='data/decoded/jefferson-houses-2.dff'/>
+    <file src='data/decoded/jefferson-houses-2.col'/>
+    <file src='data/decoded/jefferson-houses-2.txd'/>
+    <file src='data/decoded/jefferson-field.dff'/>
+    <file src='data/decoded/jefferson-field.col'/>
+    <file src='data/decoded/jefferson-field.txd'/>
     <file src='data/decoded/alahambra-1.txd'/>
     <file src='data/decoded/alahambra-1.dff'/>
     <file src='data/decoded/alahambra-1.col'/>
@@ -361,6 +373,20 @@
 
     <file src='data/decoded/vehicles/destino.dff'/>
     <file src='data/decoded/vehicles/destino.txd'/>
+    <file src='data/decoded/vehicles/blista-wagon.dff'/>
+    <file src='data/decoded/vehicles/blista-wagon.txd'/>
+    <file src='data/decoded/vehicles/cartel-cruiser.dff'/>
+    <file src='data/decoded/vehicles/cartel-cruiser.txd'/>
+    <file src='data/decoded/vehicles/faggio-principe.dff'/>
+    <file src='data/decoded/vehicles/faggio-principe.txd'/>
+    <file src='data/decoded/vehicles/lizard.dff'/>
+    <file src='data/decoded/vehicles/lizard.txd'/>
+    <file src='data/decoded/vehicles/lotus-esprit.dff'/>
+    <file src='data/decoded/vehicles/lotus-esprit.txd'/>
+    <file src='data/decoded/vehicles/previon.dff'/>
+    <file src='data/decoded/vehicles/previon.txd'/>
+    <file src='data/decoded/vehicles/sentinel-compact.dff'/>
+    <file src='data/decoded/vehicles/sentinel-compact.txd'/>
 
     <file src='data/decoded/parking/3985.dff'/>
     <file src='data/decoded/parking/3985.txd'/>
@@ -372,7 +398,14 @@
     <file src='data/decoded/parking/4186.col'/>
     <file src='data/decoded/parking/4210.dff'/>
     <file src='data/decoded/parking/4210.txd'/>
+
+    <file src='data/decoded/5813.dff'/>
+    <file src='data/decoded/5813.txd'/>
+    <file src='data/decoded/5813.col'/>
     
     <file src='data/decoded/furniture/ufo-lamp.dff'/>
     <file src='data/decoded/furniture/ufo-lamp.txd'/>
+
+    <file src='data/decoded/tuning/spoiler.dff'/>
+    <file src='data/decoded/tuning/spoiler.txd'/>
 </meta>

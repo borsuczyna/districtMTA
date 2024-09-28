@@ -869,6 +869,7 @@
         position: absolute;
         transform: translateY(-50%); 
         transition: all 0.3s cubic-bezier(0.1, 0.4, 0.8, 1);
+        z-index: 1001;
     }
 
     #dashboard #season-pass .page.prev {
@@ -972,7 +973,12 @@
         background: linear-gradient(-90deg, #A95014 0%, #FFD04E 25%, #FFEE83 50%, #FFD04E 75%, #A95014 100%);
         text-shadow: 0.1rem 0.1rem 0.2rem #00000055;
         background-size: 200% 200%;
+    }
 
+    #dashboard .blue-button {
+        background: linear-gradient(-90deg, #1474A9 0%, #4E9DFF 25%, #83C3FF 50%, #4E9DFF 75%, #1474A9 100%);
+        text-shadow: 0.1rem 0.1rem 0.2rem #00000055;
+        background-size: 200% 200%;
     }
 
     #dashboard .redeem-button:hover {
@@ -984,6 +990,12 @@
     #dashboard .get-pass:hover {
         text-shadow: 0.1rem 0.1rem 0.2rem #00000055;
         box-shadow: 0 0 2.75rem 0 #ffee5888;
+        background-position: 100% 100%;
+    }
+
+    #dashboard .blue-button:hover {
+        text-shadow: 0 0 0.5rem #ffffff;
+        box-shadow: 0 0 2.75rem 0 #4e9dff88;
         background-position: 100% 100%;
     }
 
@@ -1423,6 +1435,7 @@
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        z-index: 2000;
     }
 
     #dashboard #buy-pass .title {
@@ -1457,7 +1470,12 @@
         Aby zakupić przepustkę sezonową zeskanuj kod QR widoczny powyżej, koszt przepustki wynosi <span class="price">18,00zł z VAT</span>, przepustka jest przedmiotem jednorazowym, który pozwala na odbieranie nagród sezonowych przez cały okres trwania sezonu, po zakończeniu go przepustka zostanie zdezaktywowana<br>
         Kupując przepustkę zgadzasz się na <a href="#">regulamin</a> oraz <a href="#">politykę prywatności</a>
     </div>
-    <div class="redeem-button get-pass" onclick="seasonPass_closeBuyPass()" style="width: 10rem;">Anuluj</div>
+    <input class="simple-input" placeholder="Kod promocyjny" id="promo-code"/>
+    <div class="d-flex gap-2 w-100">
+        <div class="redeem-button get-pass flex-grow-1" style="font-size: 1rem; font-weight: 600;" onclick="seasonPass_buyPassForDists(this)">Zakup za disty</div>
+        <div class="redeem-button flex-grow-1" style="font-size: 1rem; font-weight: 600;" onclick="seasonPass_usePromoCode(this)">Wykorzystaj kod</div>
+        <div class="redeem-button blue-button flex-grow-1" style="font-size: 1rem; font-weight: 600;" onclick="seasonPass_closeBuyPass(this)">Anuluj</div>
+    </div>
 </div>
 
 <script>

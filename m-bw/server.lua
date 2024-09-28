@@ -12,6 +12,6 @@ addEventHandler('bw:respawn', root, function(hash, player)
         return
     end
 
-    spawnPlayer(player, Vector3(getElementPosition(player)))
+    spawnPlayer(player, Vector3(getElementPosition(player)), 0, getElementModel(player))
     exports['m-ui']:respondToRequest(hash, {status = 'success'})
 end)

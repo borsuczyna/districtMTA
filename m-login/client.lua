@@ -123,6 +123,7 @@ end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
     addEventHandler('interfaceLoaded', root, showInterface)
+    
     if exports['m-ui']:isLoaded() then
         showInterface()
     end

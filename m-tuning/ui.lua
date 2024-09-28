@@ -1,16 +1,27 @@
 local tuningUILoaded, tuningUIVisible, tuningHideTimer = false, false, false
+compatibleParts = {}
 
 addEvent('interface:includes-finish', true)
+addEvent('tuning:returnCompatibleUpgrades', true)
 
 function setInterfaceData()
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if not vehicle then return end
 
     exports['m-ui']:triggerInterfaceEvent('tuning', 'play-animation', true)
-    vehicleTuningCategories = getVehicleUpgradeCategories(vehicle)
+    vehicleTuningCategories = {}
     originalTuning = getVehicleOriginalUpgrades(vehicle)
     exports['m-ui']:setInterfaceData('tuning', 'tuning', vehicleTuningCategories)
+
+    triggerServerEvent('tuning:getCompatibleUpgrades', resourceRoot)
 end
+
+addEventHandler('tuning:returnCompatibleUpgrades', resourceRoot, function(compatible)
+    local vehicle = getPedOccupiedVehicle(localPlayer)
+    compatibleParts = compatible
+    vehicleTuningCategories = getVehicleUpgradeCategories(vehicle, compatible)
+    exports['m-ui']:setInterfaceData('tuning', 'tuning', vehicleTuningCategories)
+end)
 
 addEventHandler('interface:includes-finish', root, function(name)
     if name == 'tuning' then

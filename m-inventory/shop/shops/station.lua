@@ -1,7 +1,8 @@
-function createStationShop(name, x, y, z)
+function createStationShop(name, x, y, z, interior)
     local items = {
-        {category = 'Pojazdy', item = 'canister', price = 100},
-        {category = 'Jedzenie', item = 'hotDog', price = 50}
+        {item = 'canister', price = 100},
+        {item = 'hotDog', price = 50},
+        {item = 'nukaCola', price = 20},
     }
     
     local newItems = {}
@@ -14,5 +15,6 @@ function createStationShop(name, x, y, z)
         name = 'Sklep 24/7',
         description = name,
         items = newItems,
+        interior = interior
     }
 end

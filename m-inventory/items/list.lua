@@ -2,6 +2,7 @@ itemsData = {
     m4 = createM4Item(),
     canister = createCanisterItem(),
     spray = createSprayItem(),
+    nukaCola = createNukaColaItem(),
     hotDog = createHotDogItem(),
     potion = createPotionItem(),
     bait = createBaitItem(),
@@ -64,6 +65,13 @@ itemsData = {
 
     -- All fish inside one item, for example selling
     allFish = createFishItem('common', 'Wszystkie ryby', 'Wszystkie typy ryb', 'lb-small-fry'),
+
+    -- traces
+    trace1 = createTraceItem(1, 'Szum UFO', 'Fioletowe ślady do hulajnogi elektrycznej', 'epic'),
+    trace2 = createTraceItem(2, 'Szlamiasty szum', 'Neonowe ślady do hulajnogi elektrycznej', 'uncommon'),
+
+    -- dist
+    dist = createDistItem(),
 }
 
 -- furnitures

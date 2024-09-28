@@ -48,8 +48,16 @@ function createShop(index, data)
 end
 
 shopList = {
-    createStationShop('Idlewood', 1925.296, -1771.964, 13.577),
+    createFoodCart('Idlewood', 2039.889, -1823.895, 13.547, 180),
+    createFoodCart('Market', 979.467, -1444.648, 13.586, -90),
+    createFoodCart('Market', 831.180, -1335.514, 13.547, 90),
+    createFoodCart('Market', 998.031, -1267.614, 15.187, 180),
+    createFoodCart('Glen Park', 2005.898, -1180.841, 19.733, 240),
+
+    createStationShop('Idlewood', 1925.296, -1771.964, 13.577, 0),
+    createStationShop('Glen Park', 2.211, -28.779, 1003.549, 10),
     createFishShop(154.176, -1942.934, 3.769),
+
     createFurnitureShop('toilet', 'Sypialnia', 2054.112, -1075.416, 126.458, 1),
     createFurnitureShop('toilet', 'Salon', 2053.505, -1081.298, 126.458, 1),
     createFurnitureShop('toilet', 'Kuchnia', 1910.776, -1743.806, 114.547, 1),

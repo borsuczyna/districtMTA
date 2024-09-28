@@ -12,11 +12,11 @@ local lockedElementDatas = {
     'player:equippedFishingRod', 'player:bankMoney', 'player:licenses',
     'marker:title', 'marker:desc', 'marker:house', 'marker:longDesc', 'marker:enter', 'marker:target',
     'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
-    'player:holdingPackage',
+    'player:holdingPackage', 'player:scooter-trace',
     'controller', 'element:animations',
     'mission:element', 'missions:vehicleDamageProof', 'marker:manage-faction', 'marker:duty-faction', 'marker:shelf-items',
     'gate:faction', 'gate:object', 'gate:position', 'gate:openBy', 'gate:state', 'gate:time', 'gate:disableCollision',
-    'vehicle:carExchange', 'marker:carExchange:prices', 'colshape:carExchange:prices',
+    'vehicle:carExchange', 'marker:carExchange:prices', 'colshape:carExchange:prices', 'vehicle:custom-upgrades',
     
     'vehicle:uid', 'vehicle:owner', 'vehicle:sharedPlayers', 'vehicle:sharedGroups',
     'vehicle:additionalSeats', 'vehicle:job', 'vehicle:engineCapacity',
@@ -33,8 +33,7 @@ local lockedElementDatas = {
 local selfElementDatas = {
     'player:afk', 'player:gameTime', 'player:gameInterval', 'player:blockedDMs', 'player:blockedDMsReason',
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
-    'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing',
-    'player:controllerMode',
+    'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing', 'player:controllerMode',
     'missions:vehicleExitLocked',
 }
 

@@ -1,6 +1,7 @@
 addEvent('tuning:installItem')
 addEvent('tuning:uninstallItem')
 addEvent('tuning:exitGarage', true)
+addEvent('tuning:getCompatibleUpgrades', true)
 
 local timeouts = {}
 local tuningShops = {
@@ -63,6 +64,23 @@ addEventHandler('tuning:exitGarage', resourceRoot, function()
     setElementFrozen(vehicle, false)
     toggleAllControls(client, true)
     removeElementData(client, 'tuning:oldPosition')
+end)
+
+addEventHandler('tuning:getCompatibleUpgrades', resourceRoot, function()
+    local vehicle = getPedOccupiedVehicle(client)
+    if not vehicle then return end
+
+    -- local upgrades = exports['m-upgrades']:getVehicleCompatibleUpgrades(vehicle, id)
+    -- triggerClientEvent(client, 'tuning:returnCompatibleUpgrades', resourceRoot, upgrades)
+
+    local compatible = {}
+    
+    for _,slot in pairs(upgradeSlots) do
+        local upgrades = exports['m-upgrades']:getVehicleCompatibleUpgrades(vehicle, slot)
+        compatible[slot] = upgrades
+    end
+
+    triggerClientEvent(client, 'tuning:returnCompatibleUpgrades', resourceRoot, compatible)
 end)
 
 local function hitTuningMarker(player, matchingDimension)
@@ -139,13 +157,13 @@ addEventHandler('tuning:installItem', root, function(hash, player, key, index)
     end)
 
     if not data then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu.'})
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu 1.'})
         return
     end
     
     data = data.items[index + 1]
     if not data then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu.'})
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu 2.'})
         return
     end
 

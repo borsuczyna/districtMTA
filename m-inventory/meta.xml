@@ -4,9 +4,11 @@
     <script src='items/server/hotdog.lua' type='server'/>
     <script src='items/server/m4.lua' type='server'/>
     <script src='items/server/canister.lua' type='server'/>
+    <script src='items/server/nukacola.lua' type='server'/>
     <script src='items/server/spray.lua' type='server'/>
     <script src='items/server/potion.lua' type='server'/>
     <script src='items/server/furniture.lua' type='server'/>
+    <script src='items/server/trace.lua' type='server'/>
 
     <script src='items/shared/potion.lua' type='shared' cache='false'/>
     <script src='items/shared/fishingRod.lua' type='shared' cache='false'/>
@@ -15,10 +17,13 @@
     <script src='items/shared/hotdog.lua' type='shared' cache='false'/>
     <script src='items/shared/m4.lua' type='shared' cache='false'/>
     <script src='items/shared/canister.lua' type='shared' cache='false'/>
+    <script src='items/shared/nukacola.lua' type='shared' cache='false'/>
     <script src='items/shared/spray.lua' type='shared' cache='false'/>
     <script src='items/shared/fish.lua' type='shared' cache='false'/>
     <script src='items/shared/reefer.lua' type='shared' cache='false'/>
     <script src='items/shared/furniture.lua' type='shared' cache='false'/>
+    <script src='items/shared/trace.lua' type='shared' cache='false'/>
+    <script src='items/shared/dist.lua' type='shared' cache='false'/>
     
     <script src='items/furnitures.lua' type='shared' cache='false'/>
     <script src='items/list.lua' type='shared' cache='false'/>
@@ -32,6 +37,7 @@
     <!-- shops -->
     <script src='shop/shops/fish.lua' type='shared' cache='false'/>
     <script src='shop/shops/furniture.lua' type='shared' cache='false'/>
+    <script src='shop/shops/foodcart.lua' type='shared' cache='false'/>
     <script src='shop/shops/station.lua' type='shared' cache='false'/>
     
     <script src='shop/shared.lua' type='shared' cache='false'/>
@@ -93,7 +99,12 @@
     <file src='data/icons/white-slurpfish.png'/>
     <file src='data/icons/ws-spicy-fish.png'/>
     <file src='data/icons/yellow-slurpfish.png'/>
+    <file src='data/icons/nukacola.png'/>
     <file src='data/icons/spray.png'/>
+    <file src='data/icons/dist.png'/>
+    
+    <file src='data/icons/traces/1.png'/>
+    <file src='data/icons/traces/2.png'/>
 
     <!-- furniture -->
     <file src='data/icons/furniture/toilet-1.png'/>
@@ -124,4 +135,6 @@
     <export function='getItemName' type='shared'/>
     <export function='getItemIcon' type='shared'/>
     <export function='getFurnitures' type='shared'/>
+    <export function='useItem' type='server'/>
+    <export function='getPlayerItemCount' type='server'/>
 </meta>

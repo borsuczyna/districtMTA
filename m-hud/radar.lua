@@ -70,7 +70,7 @@ function renderRadar()
     -- draw zone name
     local zone = getZoneName(px, py, pz, true)
     dxDrawText(zone, radarX + radarW + 25/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 170), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
-    dxDrawText(zone, radarX + radarW + 25/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 170), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
+    dxDrawText(zone, radarX + radarW + 25/zoom, radarY + radarH - 75/zoom, nil, nil, tocolor(255, 255, 255, 180), 1.2 / zoom, fonts[1], 'left', 'bottom', false, false, false, true)
 
     local zone = getZoneName(px, py, pz, false)
     dxDrawText(zone, radarX + radarW - 15/zoom + 1, radarY + radarH - 75/zoom + 1, nil, nil, tocolor(0, 0, 0, 170), 1.2 / zoom, fonts[2], 'left', 'top', false, false, false, true)

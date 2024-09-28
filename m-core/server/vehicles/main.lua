@@ -50,7 +50,7 @@ local function loadPrivateVehicle(data, player, position)
     local frozen = data.frozen == 1
     local engine = data.engine == 1
     local lightsState = data.lightsState
-    local tuning = map(split(data.tuning, ','), tonumber)
+    local tuning = fromJSON(data.tuning) or {}
     local dirt = map(split(data.dirt, ','), tonumber)
 
     -- local vehicle = createVehicle(data.model, x, y, z, rx, ry, rz, plate)
@@ -91,7 +91,7 @@ local function loadPrivateVehicle(data, player, position)
     setVehicleWheelStates(vehicle, unpack(wheelStates))
 
     for _, tuning in pairs(tuning) do
-        addVehicleUpgrade(vehicle, tuning)
+        exports['m-upgrades']:addVehicleUpgrade(vehicle, tuning)
     end
     
     exports['m-dirt']:setVehicleDirtLevel(vehicle, dirt[1])
@@ -170,7 +170,7 @@ function buildSavePrivateVehicleQuery(vehicle)
     local carExchange = getElementData(vehicle, 'vehicle:carExchange')
     local health = getElementHealth(vehicle)
     local color = {getVehicleColor(vehicle, true)}
-    local tuning = getVehicleUpgrades(vehicle) or {}
+    local tuning = exports['m-upgrades']:getVehicleUpgrades(vehicle) or {}
     local frozen = isElementFrozen(vehicle)
     local engine = getVehicleEngineState(vehicle)
     local lightsState = getVehicleOverrideLights(vehicle)
@@ -206,7 +206,7 @@ function buildSavePrivateVehicleQuery(vehicle)
         frozen = frozen and 1 or 0,
         engine = engine and 1 or 0,
         lightsState = lightsState,
-        tuning = table.concat(tuning, ','),
+        tuning = toJSON(tuning),
         dirt = table.concat(dirt, ','),
     }
 
