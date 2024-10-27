@@ -72,10 +72,6 @@ function enterHouse(player, houseUid)
     end
 end
 
-for k,v in pairs(getElementsByType('player')) do
-    setElementDimension(v, 0)
-end
-
 function getPlayersInHouse(houseId)
     local players = {}
     for k,v in pairs(getElementsByType('player')) do

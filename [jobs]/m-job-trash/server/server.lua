@@ -57,12 +57,11 @@ addEventHandler('jobs:startJob', root, function(job, hash, players)
         }
     })
 
-    exports['m-jobs']:createLobbyMarker(hash, 'cylinder', settings.trashDump.x, settings.trashDump.y, settings.trashDump.z, 4, 255, 200, 55, 0, {
+    exports['m-jobs']:createLobbyMarker(hash, 'cylinder', settings.trashDump.x, settings.trashDump.y, settings.trashDump.z, 7, 255, 200, 55, 0, {
         icon = 'work',
         title = 'Wywóz śmieci',
         desc = 'Oddawanie śmieci',
-        event = 'jobs:trash:dumpTrash',
-        square = {12, 7, -20},
+        event = 'jobs:trash:dumpTrash'
     })
 
     for k,v in pairs(trash) do

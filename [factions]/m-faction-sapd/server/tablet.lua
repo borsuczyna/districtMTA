@@ -26,8 +26,8 @@ addEventHandler('onPlayerVehicleEnter', root, function(vehicle, seat, jacked)
     local hasPermission = exports['m-factions']:doesPlayerHaveAnyFactionPermission(source, 'SAPD', {'tablet', 'manageFaction'})
     if not hasPermission then return end
 
-    exports['m-notis']:addNotification(source, 'info', 'Komputer pokładowy', 'Naciśnij <kbd class="keycap keycap-sm">E</kbd> aby otworzyć komputer pokładowy.')
-    bindKey(source, 'E', 'down', openTablet)
+    exports['m-notis']:addNotification(source, 'info', 'Komputer pokładowy', 'Naciśnij <kbd class="keycap keycap-sm">K</kbd> aby otworzyć komputer pokładowy.')
+    bindKey(source, 'K', 'down', openTablet)
 end)
 
 local timeouts = {}

@@ -3,6 +3,7 @@ local enbClients = {}
 local loadedResources = {}
 
 addEvent('login:spawn', true)
+addEvent('login:onPlayerSpawn')
 addEvent('onAccountResponse', true)
 addEvent('login-spawn:getPlayerHouses', true)
 
@@ -52,7 +53,7 @@ end)
 addEvent('login:login')
 addEventHandler('login:login', resourceRoot, function(hash, player, login, password)
     if getElementData(player, 'player:logged') or getElementData(player, 'player:uid') then
-        exports['m-anticheat']:setPlayerTriggerLocked(player, true)
+        exports['m-anticheat']:setPlayerTriggerLocked(player, true, 'Tried to login while being logged in')
         return
     end
 
@@ -67,7 +68,7 @@ end)
 addEvent("login:register")
 addEventHandler('login:register', resourceRoot, function(hash, player, email, login, password)
     if getElementData(player, 'player:logged') or getElementData(player, 'player:uid') then
-        exports['m-anticheat']:setPlayerTriggerLocked(player, true)
+        exports['m-anticheat']:setPlayerTriggerLocked(player, true, 'Tried to register while being logged in')
         return
     end
 
@@ -128,6 +129,10 @@ addEventHandler('login:spawn', resourceRoot, function(category, index)
     spawnPlayer(client, x, y, z, rot, getElementData(client, 'player:skin'))
     setElementData(client, 'player:spawn', {x, y, z})
     setCameraTarget(client, client)
+    triggerEvent('login:onPlayerSpawn', root, client)
+    triggerClientEvent(client, 'changes:showLastChanges', root)
+
+    exports['m-missions']:setPlayerMission(client, getElementData(client, 'player:loadMission'))
 end)
 
 addEventHandler('login-spawn:getPlayerHouses', resourceRoot, function()

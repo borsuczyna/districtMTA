@@ -1,6 +1,11 @@
+addEvent('missions:startMission', true)
+
 local currentMission = nil
+currentMissionIndex = nil
+repeatingMission = false
 missions = {}
 missionData = {}
+missionVariables = {}
 playedPlaybacks = {}
 
 function addSpecialMissionElement(name, element)
@@ -55,6 +60,7 @@ function stopMission()
     end
 
     calledCustomEvents = {}
+    missionVariables = {}
     currentMission = nil
     setElementData(localPlayer, 'missions:vehicleExitLocked', false)
     setElementData(localPlayer, 'missions:vehicleEnterLocked', false)
@@ -66,6 +72,12 @@ function startMission(id)
 
     stopMission()
     currentMission = id
+    currentMissionIndex = getMissionIndex(id)
+    
+    local missionData = getMissionDataByName(id)
+    -- showMissionName(missionData[2])
+
+    repeatingMission = false
     resetCamera()
     addSpecialMissionElement('me', localPlayer)
     
@@ -77,6 +89,15 @@ function restartMission()
     startMission(currentMission)
 end
 
+function finishMission()
+    if not currentMission then return end
+    stopMission()
+
+    if repeatingMission then
+        triggerServerEvent('missions:stopRepeatingMission', resourceRoot)
+    end
+end
+
 function getCurrentMissionData()
     if not currentMission then return end
     return missions[currentMission]
@@ -86,7 +107,34 @@ function getCurrentMission()
     return currentMission
 end
 
+addEventHandler('missions:startMission', resourceRoot, function(index)
+    if currentMission then
+        exports['m-notis']:addNotification('error', 'Misje', 'Już wykonujesz misję.')
+        return
+    end
+
+    local mission = getMissionByIndex(index)
+    if not mission then return end
+
+    startMission(mission[1])
+    exports['m-notis']:addNotification('info', 'Misje', ('Rozpoczęto misję %s<br>Aby przerwać powtarzanie misji, wpisz /mstop'):format(mission[2]))
+    repeatingMission = true
+end)
+
+addCommandHandler('mstop', function()
+    if not repeatingMission then
+        exports['m-notis']:addNotification('error', 'Misje', 'Przerwanie powtarzania misji jest możliwe tylko podczas powtarzania misji.')
+        return
+    end
+
+    finishMission()
+    triggerServerEvent('missions:stopRepeatingMission', resourceRoot)
+    exports['m-notis']:addNotification('info', 'Misje', 'Przerwano powtarzanie misji.')
+end)
+
 -- debug
 -- addEventHandler('onClientResourceStart', resourceRoot, function()
---     startMission('test4')
+--     if getPlayerName(localPlayer) == 'borsuczyna' then
+--         startMission('investigation')
+--     end
 -- end)

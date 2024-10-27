@@ -1,5 +1,6 @@
 addEvent('missions:receiveServerSideVehicle', true)
 addEvent('missions:madePedSyncer', true)
+addEvent('missions:removedPedFromVehicle', true)
 
 defineMissionAction({
     name = 'createServerSideVehicle',
@@ -97,21 +98,51 @@ defineMissionAction({
     },
     callback = function(ped)
         local ped = getMissionElement(ped)
-        if not ped or getElementType(ped) ~= 'ped' then return end
+        if not ped or (getElementType(ped) ~= 'ped' and getElementType(ped) ~= 'player') then return end
 
         if not isElementSyncer(ped) and ped ~= localPlayer then
             triggerServerEvent('missions:makeMePedSyncer', resourceRoot, ped)
             await(waitForElementSyncer(ped))
         end
         
-        setPedExitVehicle(ped)
+        forceExitVehicle(ped)
     end,
 })
+
+defineMissionAction({
+    name = 'removeFromVehicle',
+    editorName = 'Wysadź peda z pojazdu (force)',
+    arguments = {
+        String('ped'),
+    },
+    callback = function(ped)
+        triggerServerEvent('missions:removePedFromVehicle', resourceRoot, getMissionElement(ped))
+        await(waitForPedExit(getMissionElement(ped)))
+    end,
+})
+
+function forceExitVehicle(ped)
+    local vehicle = getPedOccupiedVehicle(ped)
+    if not vehicle then return end
+
+    setElementVelocity(vehicle, 0, 0, 0)
+    setPedExitVehicle(ped)
+end
 
 function waitForElementSyncer(element)
     return Promise:new(function(resolve, _)
         addEventHandler('missions:madePedSyncer', resourceRoot, function(ped)
             if ped == element then
+                resolve()
+            end
+        end)
+    end)
+end
+
+function waitForPedExit(ped)
+    return Promise:new(function(resolve, _)
+        addEventHandler('missions:removedPedFromVehicle', resourceRoot, function(exitedPed)
+            if exitedPed == ped then
                 resolve()
             end
         end)

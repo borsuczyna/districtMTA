@@ -187,6 +187,11 @@ addEventHandler('inventory:cancelTrading', root, function(hash, player)
     trades[player] = nil
     trades[tradeWith] = nil
 
+    if tradeTimers[player] and isTimer(tradeTimers[player]) then
+        killTimer(tradeTimers[player])
+        tradeTimers[player] = nil
+    end
+
     triggerClientEvent(player, 'trade:hide', resourceRoot)
     triggerClientEvent(tradeWith, 'trade:hide', resourceRoot)
 

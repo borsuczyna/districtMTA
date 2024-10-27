@@ -128,6 +128,11 @@ window.dashboard_setLast10DaysRewards = (last10Days) => {
     let dailyCards = document.querySelectorAll('#dashboard .daily-reward-card');
     let yesterdayReward = dailyCards[0].querySelector('.reward');
 
+    if (last10Days.length == 0) {
+        yesterdayReward.innerText = 'Brak danych';
+        return;
+    }
+    
     yesterdayReward.innerText = last10Days[0].reward;
 }
 

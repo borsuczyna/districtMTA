@@ -110,7 +110,12 @@ addEventHandler('dashboard:redeemSeasonItem', root, function(hash, player, page,
     local previousPageData = passData.pages[page - 1] or {}
     local previousPageRedeemed = true
     for _, item in ipairs(previousPageData) do
-        if not item.redeemed then
+        -- if not item.redeemed then
+        --     previousPageRedeemed = false
+        --     break
+        -- end
+
+        if not item.free and not item.redeemed then
             previousPageRedeemed = false
             break
         end

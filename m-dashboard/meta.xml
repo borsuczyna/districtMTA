@@ -18,13 +18,7 @@
     <file src='data/discord.js'/>
     <file src='data/season-pass.js'/>
 
-    <file src='season-pass/data/1.png'/>
-    <file src='season-pass/data/2.png'/>
-    <file src='season-pass/data/3.png'/>
-    <file src='season-pass/data/4.png'/>
-    <file src='season-pass/data/5.png'/>
-    <file src='season-pass/data/6.png'/>
-    <file src='season-pass/data/7.png'/>
-    <file src='season-pass/data/8.png'/>
-    <file src='season-pass/data/9.png'/>
+    <file src='season-pass/data/*.png'/>
+
+    <export function='addPlayerSeasonPassStars' type='server'/>
 </meta>

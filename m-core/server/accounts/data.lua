@@ -1,3 +1,5 @@
+addEvent('login:onPlayerLogin')
+
 local function startsWith(str, start)
     return str:sub(1, #start) == start
 end
@@ -54,11 +56,16 @@ function assignPlayerData(player, data)
     setElementData(player, 'player:payDutyTime', data.payDutyTime)
     setElementData(player, 'player:dailyRewardDay', data.dailyRewardDay)
     setElementData(player, 'player:dailyRewardRedeem', data.dailyRewardRedeemDate)
+    setElementData(player, 'player:loadMission', data.mission)
     setElementData(player, 'player:avatar', data.avatar)
+    setElementData(player, 'player:collectibles', fromJSON(data.collectibles))
     setElementData(player, 'player:licenses', split(data.licenses, ','))
     setElementData(player, 'player:knownIntros', split(data.knownIntros, ','), false)
     setElementData(player, 'player:seasonPass:bought', data.seasonPassBought == 1)
     setElementData(player, 'player:seasonPass', fromJSON(data.seasonPassData))
+    setElementData(player, 'player:boughtCars', tonumber(data.boughtCars) or 0)
+    setElementData(player, 'player:catchedFishes', tonumber(data.catchedFishes) or 0)
+    setElementData(player, 'player:lastActive', data.lastActiveUnix)
     triggerClientEvent(player, 'intro:setKnownIntros', root, split(data.knownIntros, ','))
     assignPlayerInventory(player, data.inventory)
 
@@ -97,6 +104,8 @@ function assignPlayerData(player, data)
 
     dbExec(connection, 'UPDATE `m-users` SET lastActive = NOW() WHERE uid = ?', data.uid)
     dbQuery(getPlayerTicketsCount, { player }, connection, 'SELECT COUNT(*) as count FROM `m-sapd-tickets` WHERE `user` = ? AND `active` = 1', data.uid)
+
+    triggerEvent('login:onPlayerLogin', root, player)
 end
 
 function buildSavePlayerQuery(player)
@@ -110,10 +119,14 @@ function buildSavePlayerQuery(player)
     local dutyTime = getElementData(player, 'player:dutyTime')
     local payDutyTime = getElementData(player, 'player:payDutyTime')
     local inventory = getElementData(player, 'player:inventory') or {}
+    local collectibles = getElementData(player, 'player:collectibles') or {}
     local licenses = table.concat(getElementData(player, 'player:licenses') or {}, ',')
     local knownIntros = table.concat(getElementData(player, 'player:knownIntros') or {}, ',')
     local seasonPassBought = getElementData(player, 'player:seasonPass:bought') or false
     local seasonPassData = getElementData(player, 'player:seasonPass') or {}
+    local boughtCars = getElementData(player, 'player:boughtCars') or 0
+    local catchedFishes = getElementData(player, 'player:catchedFishes') or 0
+    local mission = exports['m-missions']:getPlayerMission(player) or getElementData(player, 'player:loadMission')
     local settings = {
         interfaceBlur = getElementData(player, 'player:interfaceBlur') or 0,
         interfaceSize = getElementData(player, 'player:interfaceSize') or 8,
@@ -132,10 +145,14 @@ function buildSavePlayerQuery(player)
         payDutyTime = payDutyTime,
         settings = toJSON(settings),
         inventory = toJSON(inventory),
+        collectibles = toJSON(collectibles),
         licenses = licenses,
         knownIntros = knownIntros,
         seasonPassBought = seasonPassBought and 1 or 0,
         seasonPassData = toJSON(seasonPassData),
+        boughtCars = boughtCars,
+        catchedFishes = catchedFishes,
+        mission = mission,
     }
 
     local query = 'UPDATE `m-users` SET ' .. table.concat(mapk(saveData, function(value, key)

@@ -23,7 +23,7 @@ permissions = {
     {name = 'highEquipment', label = 'Dostęp do wysokiego ekwipunku'},
 }
 
-payPerMinute = 13
+payPerMinute = 6200 -- 1$ = 100
 
 function table.find(t, value)
     for k, v in pairs(t) do

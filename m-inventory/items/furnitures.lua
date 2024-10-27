@@ -7,7 +7,7 @@ furnitures = {
         icon = 'toilet-1',
         model = 2525,
         rarity = 'common',
-        price = 60,
+        price = 6000,
     },
     {
         item = 'toilet2',
@@ -17,7 +17,7 @@ furnitures = {
         icon = 'toilet-2',
         model = 2521,
         rarity = 'uncommon',
-        price = 90,
+        price = 9000,
     },
     {
         item = 'toilet3',
@@ -27,7 +27,7 @@ furnitures = {
         icon = 'toilet-3',
         model = 2528,
         rarity = 'rare',
-        price = 120,
+        price = 4000,
     },
     {
         item = 'soap1',
@@ -37,7 +37,7 @@ furnitures = {
         icon = 'soap-1',
         model = 2741,
         rarity = 'common',
-        price = 40,
+        price = 2000,
     },
     {
         item = 'armchair',
@@ -47,7 +47,7 @@ furnitures = {
         icon = 'armchair1',
         model = 'furniture/KomodaZSzklem',
         rarity = 'common',
-        price = 40,
+        price = 6500,
         textures = {'Fotel0', 'Fotel1', 'Fotel2', 'Fotel3'},
     },
     {
@@ -58,7 +58,7 @@ furnitures = {
         icon = 'induction1',
         model = 'furniture/Indukcja',
         rarity = 'common',
-        price = 40,
+        price = 8000,
         textures = {'plytaindukcja'},
     },
     {
@@ -69,7 +69,7 @@ furnitures = {
         icon = 'toilet1',
         model = 'furniture/Kibelek',
         rarity = 'common',
-        price = 40,
+        price = 6500,
         textures = {'kibelek'},
     },
     {
@@ -80,7 +80,7 @@ furnitures = {
         icon = 'cabinetwithglass1',
         model = 'furniture/KomodaZSzklem',
         rarity = 'common',
-        price = 40,
+        price = 12000,
         textures = {'KomodaZSzklem0', 'KomodaZSzklem1', 'KomodaZSzklem2', 'KomodaZSzklem3'},
     },
     {
@@ -91,7 +91,7 @@ furnitures = {
         icon = 'chair1',
         model = 'furniture/Krzeslo',
         rarity = 'common',
-        price = 40,
+        price = 5000,
         textures = {'Krzeslo0', 'Krzeslo1', 'Krzeslo2', 'Krzeslo3'},
     },
     {
@@ -102,7 +102,7 @@ furnitures = {
         icon = 'lamp1',
         model = 'furniture/Lamp',
         rarity = 'common',
-        price = 40,
+        price = 2500,
         textures = {'Lampa0', 'Lampa1'},
     },
     {
@@ -113,7 +113,7 @@ furnitures = {
         icon = 'fridge1',
         model = 'furniture/Lodowka',
         rarity = 'common',
-        price = 40,
+        price = 12000,
         textures = {'lodowka0'},
     },
     {
@@ -124,7 +124,7 @@ furnitures = {
         icon = 'bed1',
         model = 'furniture/Lozko',
         rarity = 'common',
-        price = 40,
+        price =12000,
         textures = {'lozko0', 'lozko1', 'lozko2', 'lozko3'},
     },
     {
@@ -135,7 +135,7 @@ furnitures = {
         icon = 'oven1',
         model = 'furniture/Piec',
         rarity = 'common',
-        price = 40,
+        price = 5000,
         textures = {'piec'},
     },
     {
@@ -146,7 +146,7 @@ furnitures = {
         icon = 'shower1',
         model = 'furniture/Prysznic',
         rarity = 'common',
-        price = 40,
+        price = 10000,
         textures = {'prysznic1', 'prysznic2'},
     },
     {
@@ -157,7 +157,7 @@ furnitures = {
         icon = 'sofa1',
         model = 'furniture/Sofa',
         rarity = 'common',
-        price = 40,
+        price = 6500,
         textures = {'Fotel0', 'Fotel1', 'Fotel2', 'Fotel3'},
     },
     {
@@ -168,7 +168,7 @@ furnitures = {
         icon = 'table1',
         model = 'furniture/Stol',
         rarity = 'common',
-        price = 40,
+        price = 8000,
         textures = {'Stol0', 'Stol1', 'Stol2', 'Stol3'},
     },
     {
@@ -179,7 +179,7 @@ furnitures = {
         icon = 'chair2',
         model = 'furniture/Stolek',
         rarity = 'common',
-        price = 40,
+        price = 4000,
         textures = {'Stolek0', 'Stolek1', 'Stolek2', 'Stolek3'},
     },
     {
@@ -190,7 +190,7 @@ furnitures = {
         icon = 'coffeetable1',
         model = 'furniture/Stolikkawowy',
         rarity = 'common',
-        price = 40,
+        price = 3000,
         textures = {'Stolikkawowy0', 'Stolikkawowy1', 'Stolikkawowy2', 'Stolikkawowy3'},
     },
     {
@@ -201,7 +201,7 @@ furnitures = {
         icon = 'nighttable1',
         model = 'furniture/SzafkaNocnaMini',
         rarity = 'common',
-        price = 40,
+        price = 2500,
         textures = {'SzafkaNocnaMini0', 'SzafkaNocnaMini1', 'SzafkaNocnaMini2', 'SzafkaNocnaMini3'},
     },
     {
@@ -212,7 +212,7 @@ furnitures = {
         icon = 'boxshelf1',
         model = 'furniture/SzafkaPudelkowa',
         rarity = 'common',
-        price = 40,
+        price = 3500,
         textures = {'SzafkaPudelkowa0', 'SzafkaPudelkowa1', 'SzafkaPudelkowa2', 'SzafkaPudelkowa3'},
     },
     {
@@ -223,7 +223,7 @@ furnitures = {
         icon = 'bath1',
         model = 'furniture/wanna',
         rarity = 'common',
-        price = 40,
+        price = 11000,
         textures = {'wanna'},
     },
     {
@@ -234,7 +234,7 @@ furnitures = {
         icon = 'fridgecover1',
         model = 'furniture/ZabudowaLodowki',
         rarity = 'common',
-        price = 40,
+        price = 6000,
         textures = {'ZabudowaLodowki0', 'ZabudowaLodowki2', 'ZabudowaLodowki3'},
     },
     {
@@ -245,7 +245,7 @@ furnitures = {
         icon = 'sink1',
         model = 'furniture/ZlewKuchnia',
         rarity = 'common',
-        price = 40,
+        price = 3500,
         textures = {'zlewkuchnia'},
     },
     {
@@ -256,7 +256,7 @@ furnitures = {
         icon = 'countertop',
         model = 'furniture/Blat',
         rarity = 'common',
-        price = 40,
+        price = 5500,
         textures = {'Blat0', 'Blat1', 'Blat2', 'Blat3'},
     },
     {
@@ -267,7 +267,7 @@ furnitures = {
         icon = 'countertopjoin1',
         model = 'furniture/BlatLaczenie',
         rarity = 'common',
-        price = 40,
+        price = 4000,
         textures = {'Blat0', 'Blat1', 'Blat2', 'Blat3'},
     },
     {
@@ -278,7 +278,7 @@ furnitures = {
         icon = 'countertopleft1',
         model = 'furniture/BlatKoniecLewy',
         rarity = 'common',
-        price = 40,
+        price = 5000,
         textures = {'Blat0', 'Blat1', 'Blat2', 'Blat3'},
     },
     {
@@ -289,7 +289,7 @@ furnitures = {
         icon = 'countertopright1',
         model = 'furniture/BlatKoniecPrawy',
         rarity = 'common',
-        price = 40,
+        price = 4500,
         textures = {'Blat0', 'Blat1', 'Blat2', 'Blat3'},
     },
     {
@@ -300,7 +300,7 @@ furnitures = {
         icon = 'counterjoin1',
         model = 'furniture/SzafkiLaczenie',
         rarity = 'common',
-        price = 40,
+        price = 8000,
         textures = {'Szafki0', 'Szafki1', 'Szafki2', 'Szafki3'},
     },
     {
@@ -311,7 +311,7 @@ furnitures = {
         icon = 'counterdouble1',
         model = 'furniture/SzafkiPodwojna',
         rarity = 'common',
-        price = 40,
+        price = 9000,
         textures = {'Szafki0', 'Szafki1', 'Szafki2', 'Szafki3'},
     },
     {
@@ -322,7 +322,7 @@ furnitures = {
         icon = 'countersingle1',
         model = 'furniture/SzafkiPojedyncza',
         rarity = 'common',
-        price = 40,
+        price = 4500,
         textures = {'Szafki0', 'Szafki1', 'Szafki2', 'Szafki3'},
     },
     {
@@ -333,7 +333,7 @@ furnitures = {
         icon = 'countertablelong1',
         model = 'furniture/SzafkiRozsuwanyDlugi',
         rarity = 'common',
-        price = 40,
+        price = 6500,
         textures = {'Szafki0', 'Szafki1', 'Szafki2', 'Szafki3'},
     },
     {
@@ -344,7 +344,7 @@ furnitures = {
         icon = 'countertableshort1',
         model = 'furniture/SzafkiRozsuwanyKrotki',
         rarity = 'common',
-        price = 40,
+        price = 6000,
         textures = {'Szafki0', 'Szafki1', 'Szafki2', 'Szafki3'},
     },
     {
@@ -355,7 +355,7 @@ furnitures = {
         icon = 'uppercabinet1',
         model = 'furniture/PolkiNadBlatem',
         rarity = 'common',
-        price = 40,
+        price = 6600,
         textures = {'SzafkiNadBlatem0', 'SzafkiNadBlatem1', 'SzafkiNadBlatem2', 'SzafkiNadBlatem3'},
     },
     {
@@ -366,7 +366,7 @@ furnitures = {
         icon = 'countercabinet2',
         model = 'furniture/SzafkaNadBlatemLaczenie',
         rarity = 'common',
-        price = 40,
+        price = 4500,
         textures = {'SzafkiNadBlatem0', 'SzafkiNadBlatem1', 'SzafkiNadBlatem2', 'SzafkiNadBlatem3'},
     },
     {
@@ -377,8 +377,29 @@ furnitures = {
         icon = 'countercabinet3',
         model = 'furniture/SzafkiNadBlatem',
         rarity = 'common',
-        price = 40,
+        price = 6000,
         textures = {'SzafkiNadBlatem0', 'SzafkiNadBlatem1', 'SzafkiNadBlatem2', 'SzafkiNadBlatem3'},
+    },
+
+    {
+        item = 'ufolamp',
+        category = 'event', -- can't be bought
+        name = 'Lampka nocna UFO',
+        description = 'Unosząca się w powietrzu lampka nocna.',
+        icon = 'ufo-lamp',
+        model = 'furniture/ufo-lamp',
+        rarity = 'epic',
+        price = 9999999999,
+    },
+    {
+        item = 'pumpkin-furniture',
+        category = 'event', -- can't be bought
+        name = 'Koszmarna dynia',
+        description = 'Koszmarna dynia na Halloween.',
+        icon = 'dynia1',
+        model = 'halloween1/dynia1',
+        rarity = 'epic',
+        price = 9999999999,
     },
 }
 

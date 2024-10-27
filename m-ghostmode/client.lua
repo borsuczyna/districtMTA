@@ -2,6 +2,8 @@ local elementTypes = {'player', 'vehicle', 'ped'}
 local ghostColShapes = {
     -- vehicle shops exit
     createColSphere(1139.445, -2036.923, 68.738, 10),
+    createColSphere(1895.972, -1878.888, 13.152, 10),
+    createColSphere(1280.164, -1438.338, 12.938, 5),
 
     -- tuner
     createColSphere(983.190, -1265.528, 15.180, 25)
@@ -53,13 +55,17 @@ function toggleCollisionBetweenElements(element, elements)
 
     for _, element2 in ipairs(elements) do
         local ghostMode2 = getElementData(element2, 'element:ghostmode') or isInsideGhostColShape(element2)
+
+        if getElementData(element2, 'player:inv') or getElementData(element, 'player:inv') then
+            break
+        end
         
         if ghostMode1 or ghostMode2 then
             setElementCollidableWith(element, element2, false)
         else
             setElementCollidableWith(element, element2, true)
         end
-
+        
         setElementAlpha(element, ghostMode1 and 200 or 255)
         setElementAlpha(element2, ghostMode2 and 200 or 255)
     end

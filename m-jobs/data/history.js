@@ -22,7 +22,10 @@ function createChart(data) {
             theme: 'dark',
             y: {
                 formatter: function (value) {
-                    return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    // return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    value = value;
+                    return `$${addCents(value)}`;
+
                 },
             },
             marker: {

@@ -1,6 +1,5 @@
 ﻿local sides = 12
 local anglesPositions = {}
-local shader = dxCreateShader('data/shader.fx')
 local fade = 0
 local px, py, pz = 0, 0, 0
 local pDimension = 0
@@ -12,17 +11,48 @@ for i = 1, sides do
     anglesPositions[i] = {math.cos(angle), math.sin(angle)}
 end
 
+local shader = dxCreateShader('data/shader.fx')
 local textures = {
     glow = dxCreateTexture('data/glow.png', 'argb', true, 'wrap'),
     ground = dxCreateTexture('data/ground.png', 'argb', true, 'clamp'),
-    texture = dxCreateTexture('data/texture.png', 'argb', true, 'wrap'),
+    texture = dxCreateTexture('data/texture.png', 'argb', true, 'wrap')
 }
 
 dxSetShaderValue(shader, 'defaultTexture', textures.texture)
 dxSetShaderValue(shader, 'glowTexture', textures.glow)
 
+local requiredResource = getResourceFromName('m-ui')
+
+if not requiredResource or getResourceState(requiredResource) ~= "running" then
+    exportedFonts = {
+        dev_default = 'default-bold',
+        original = {
+            ["title"] = 'default',
+            ["description"] = 'default-bold'
+        }
+    }
+else
+    exportedFonts = {
+        dev_default = 'default-bold',
+        original = {
+            ["title"] = exports['m-ui']:getFont('Inter-Black', 28) or 'default-bold',
+            ["description"] = exports['m-ui']:getFont('Inter-Bold', 25) or 'default-bold'
+        }
+    }
+end
+
+local function handleMarkerFont(font)
+    if exportedFonts.original[font] then
+        return exportedFonts.original[font]
+    else
+        return exportedFonts.dev_default
+    end
+end
+
+local updatedMarkersTextColor = {title = tocolor(255, 255, 255), desc = tocolor(200, 200, 200)}
+
 local function updateMarkerTarget(marker, rt)
-    dxSetRenderTarget(rt, true)
+    dxSetRenderTarget(rt, false)
 
     local r, g, b, a = getMarkerColor(marker)
     if a ~= 0 then
@@ -37,14 +67,14 @@ local function updateMarkerTarget(marker, rt)
         dxDrawImage(100, 0, 200, 200, 'data/icons/' .. icon .. '.png')
     end
 
-    dxDrawText(title, 200, 255, nil, nil, white, 1, exports['m-ui']:getFont('Inter-Bold', 25), 'center', 'bottom')
-    dxDrawText(desc, 200, 255, nil, nil, 0xFFCCCCCC, 1, exports['m-ui']:getFont('Inter-Medium', 23), 'center', 'top')
+    dxDrawText(title, 200, 265, nil, nil, updatedMarkersTextColor.title, 1, handleMarkerFont('title'), 'center', 'bottom')
+    dxDrawText(desc, 200, 265, nil, nil, updatedMarkersTextColor.desc, 2.4, handleMarkerFont('desc'), 'center', 'top')
 
     dxSetRenderTarget()
 end
 
 local function createMarkerTarget(marker)
-    local target = dxCreateRenderTarget(400, 290, true)
+    local target = dxCreateRenderTarget(400, 305, true)
     updateMarkerTarget(marker, target)
 
     targets[marker] = {
@@ -80,6 +110,8 @@ local function isMarkerOnScreen(x, y, z, size)
     return screenX and screenY
 end
 
+local GLOBAL_TEXTURE_SIZE = 4000
+
 local function renderRoundedMarker(marker)
     local x, y, z = getElementPosition(marker)
     z = z + 0.4
@@ -98,7 +130,7 @@ local function renderRoundedMarker(marker)
 
     local radius = size / 2
     local oneSideSize = 1 / sides
-    local textureSide = 5354 / sides
+    local textureSide = GLOBAL_TEXTURE_SIZE / sides
 
     dxSetShaderValue(shader, 'markerSize', size)
     dxSetShaderValue(shader, 'markerColor', r / 255, g / 255, b / 255, 1)
@@ -112,13 +144,12 @@ local function renderRoundedMarker(marker)
         local x1, y1 = x + anglePosition[1] * radius, y + anglePosition[2] * radius
         local x2, y2 = x + nextAnglePosition[1] * radius, y + nextAnglePosition[2] * radius
        
-        -- dxDrawMaterialSectionLine3D(x1, y1, z, x2, y2, z, textureSide * side * size, 0, textureSide * size, 512, true, shader, 0.4, white, 'postfx', x, y, z)
         dxDrawMaterialSectionLine3D(x1, y1, z, x2, y2, z, textureSide * side * size + getTickCount() / 3, 0, textureSide * size, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
     end
     
     local groundZ = getGroundPosition(x, y, z)
-    dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r, g, b, 255), 'prefx', x, y, groundZ)
-    dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r2, g2, b2, fade / 2), 'prefx', x, y, groundZ)
+    dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r, g, b, 0), 'prefx', x, y, groundZ)
+    dxDrawMaterialLine3D(x, y + size * 0.8, groundZ + 0.01, x, y - size * 0.8, groundZ + 0.01, textures.ground, size * 1.6, tocolor(r2, g2, b2, fade / 1.7), 'prefx', x, y, groundZ)
 
     local target = getMarkerTarget(marker)
     local floatZ = fade / 255 * 0.1
@@ -140,19 +171,16 @@ local function renderSquareMarker(marker, size)
     r, g, b = hslToRgb(h, s, l + 0.1, 1)
     local r2, g2, b2 = hslToRgb(h, s, l + 0.2, 1)
 
-    local textureSize = 5354
+    local textureSize = GLOBAL_TEXTURE_SIZE
     local textureSizeX = textureSize / size[1]
     local textureSizeY = textureSize / size[2]
 
     dxSetShaderValue(shader, 'markerSize', (size[1] + size[2]) * 2)
     dxSetShaderValue(shader, 'markerColor', r / 255, g / 255, b / 255, 0.5)
 
-    local width = 5354 * size[1] / 3
-    local length = 5354 * size[2] / 3
-    -- dxDrawMaterialSectionLine3D(x - size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y - size[2] / 2, z, 0, 0, width, 512, true, shader, 0.4, white, 'prefx', x, y, z)
-    -- dxDrawMaterialSectionLine3D(x + size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y + size[2] / 2, z, width, 0, length, 512, true, shader, 0.4, white, 'prefx', x, y, z)
-    -- dxDrawMaterialSectionLine3D(x + size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y + size[2] / 2, z, width + length, 0, width, 512, true, shader, 0.4, tocolor(r, g, b, 255), 'prefx', x, y, z)
-    -- dxDrawMaterialSectionLine3D(x - size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y - size[2] / 2, z, width*2 + length, 0, length, 512, true, shader, 0.4, white, 'prefx', x, y, z)
+    local width = GLOBAL_TEXTURE_SIZE * size[1] / 3
+    local length = GLOBAL_TEXTURE_SIZE * size[2] / 3
+
     dxDrawMaterialSectionLine3D(x - size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y - size[2] / 2, z, 0 + getTickCount() / 3, 0, width, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
     dxDrawMaterialSectionLine3D(x + size[1] / 2, y - size[2] / 2, z, x + size[1] / 2, y + size[2] / 2, z, width + getTickCount() / 3, 0, length, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
     dxDrawMaterialSectionLine3D(x + size[1] / 2, y + size[2] / 2, z, x - size[1] / 2, y + size[2] / 2, z, width + length + getTickCount() / 3, 0, width, 512, true, textures.texture, 0.4, tocolor(r, g, b, 100), 'prefx', x, y, z)
@@ -178,7 +206,7 @@ local function renderMarkers()
         local markerDimension = getElementDimension(marker)
         local markerInterior = getElementInterior(marker)
 
-        if markerDimension == pDimension and markerInterior == pInterior then
+        if markerDimension == pDimension and markerInterior == pInterior and getMarkerType(marker) == 'cylinder' then
             local squareSize = getElementData(marker, 'marker:square')
 
             if squareSize then
@@ -191,14 +219,11 @@ local function renderMarkers()
 
     handleExpiredTargets()
 end
-
 addEventHandler('onClientPreRender', root, renderMarkers)
 
 -- rerender all markers targets on restore
-addEventHandler('onClientRestore', root, function(didClearRenderTargets)
-    if didClearRenderTargets then
-        for marker, target in pairs(targets) do
-            updateMarkerTarget(marker, target.target)
-        end
+addEventHandler('onClientRestore', root, function()
+    for marker, target in pairs(targets) do
+        updateMarkerTarget(marker, target.target)
     end
 end)

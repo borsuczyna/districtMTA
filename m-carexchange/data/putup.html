@@ -79,7 +79,7 @@
         interfaceData = data[0];
 
         document.querySelector('#putUp #vehicle-name').innerText = `(${interfaceData.vehicleUid}) ${interfaceData.vehicleName}`;
-        document.querySelector('#putUp #vehicle-tuning').innerText = interfaceData.tuning > 0 ? interfaceData.tuning.join(', ') : 'Brak';
+        document.querySelector('#putUp #vehicle-tuning').innerText = interfaceData.tuning.length > 0 ? interfaceData.tuning.join(', ') : 'Brak';
         document.querySelector('#putUp #min-price').innerText = fomratNumber(interfaceData.prices[0]);
         document.querySelector('#putUp #max-price').innerText = fomratNumber(interfaceData.prices[1]);
         document.querySelector('#putUp #price').value = interfaceData.prices[0];

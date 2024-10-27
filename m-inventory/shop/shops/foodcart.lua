@@ -3,8 +3,8 @@ local clientSide = localPlayer
 function createFoodCart(name, x, y, z, rot)
     rot = rot or 0
     local items = {
-        {item = 'hotDog', price = 50},
-        {item = 'nukaCola', price = 20}
+        {item = 'hotDog', price = 1000},
+        {item = 'nukaCola', price = 500}
     }
     
     local newItems = {}

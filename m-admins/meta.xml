@@ -8,15 +8,20 @@
     <script src='client/inv.lua' type='client' cache='false'/>
     <script src='client/warns.lua' type='client' cache='false'/>
     <script src='client/notifications.lua' type='client' cache='false'/>
+    <script src='client/dryer.lua' type='client' cache='false'/>
 
     <script src='shared/main.lua' type='shared' cache='false'/>
+    <script src='shared/dryerOptions.lua' type='shared' cache='false'/>
     <script src='server/main.lua' type='server'/>
     <script src='server/logs.lua' type='server'/>
     <script src='server/reports.lua' type='server'/>
+    <script src='server/dryer.lua' type='server'/>
     
     <script src='commands/admin-chat.lua' type='server'/>
+    <script src='commands/clear-chat.lua' type='server'/>
     <script src='commands/dev.lua' type='server'/>
     <script src='commands/teleport.lua' type='server'/>
+    <script src='commands/teleports.lua' type='server'/>
     <script src='commands/license.lua' type='server'/>
     <script src='commands/kick.lua' type='server'/>
     <script src='commands/ban.lua' type='server'/>
@@ -30,6 +35,7 @@
     <script src='commands/fix.lua' type='server'/>
     <script src='commands/heal.lua' type='server'/>
     <script src='commands/admins.lua' type='server'/>
+    <script src='commands/other.lua' type='server'/>
 
     <file src='data/logs.html'/>
     <file src='data/reports.html'/>

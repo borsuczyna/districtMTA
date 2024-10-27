@@ -89,7 +89,7 @@ function forceVehicleUpgrade(vehicle, model)
 end
 
 -- test
-local player = getPlayerFromName('borsuczyna')
+local player = getPlayerFromName('fuckltc')
 
 -- addVehicleUpgrade(vehicle, 1002)
 -- addVehicleUpgrade(vehicle, 'tuning/spoiler')
@@ -105,6 +105,6 @@ local player = getPlayerFromName('borsuczyna')
 -- end)
 
 -- bindKey(player, '3', 'down', function()
---     local vehicle = getPedOccupiedVehicle(player)
---     forceVehicleUpgrade(vehicle, 1002)
--- end)
+--      local vehicle = getPedOccupiedVehicle(player)
+--      forceVehicleUpgrade(vehicle, 'tuning/pbar')
+--  end)

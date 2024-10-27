@@ -68,7 +68,7 @@ local function renderSpeedo()
     local icons = {
         {'handbrake', isElementFrozen(vehicle)},
         {'engine', getVehicleEngineState(vehicle)},
-        {'lights', getVehicleOverrideLights(vehicle) == 2},
+        {'lights', areVehicleLightsOn(vehicle)},
         {'door', isVehicleLocked(vehicle)},
     }
 
@@ -108,6 +108,8 @@ local function renderSpeedo()
         lastArrowAngle = lastArrowAngle + (nextArrowAngle - lastArrowAngle) * 0.1
     elseif speedo == 'old' then
         dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/background.png')
+
+        local speed = math.min(speed, 201)
         dxDrawImage(sx - 255/zoom, sy - 230/zoom, 48/zoom, 214/zoom, 'data/old/gauge.png', math.min(-92 + speed/200 * 184, 92), 0, 90/zoom)
         dxDrawImage(sx - 610/zoom, sy - 238/zoom, 590/zoom, 218/zoom, 'data/old/overlay.png')
         dxDrawImage(sx - 500/zoom, sy - 140/zoom, 33/zoom, 190/zoom, 'data/old/fuel-gauge.png', -100 + (fuel / maxFuel) * 130)
@@ -124,7 +126,8 @@ local function renderSpeedo()
             end
         end
     elseif speedo == 'compact' then
-        dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/background.png')
+       -- dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/background.png')
+        dxDrawImage(sx - 476/zoom + 1, sy - 370/zoom + 1, 456/zoom, 350/zoom, 'data/compact/stripes.png', 0, 0, 0, tocolor(0, 0, 0, 155))
         dxDrawImage(sx - 476/zoom, sy - 370/zoom, 456/zoom, 350/zoom, 'data/compact/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
         dxDrawImage(sx - 400/zoom, sy - 190/zoom, 26/zoom, 153/zoom, 'data/compact/fuel-gauge.png', -227 + (fuel / maxFuel) * 230)
 
@@ -151,12 +154,16 @@ local function renderSpeedo()
             end
         end
 
+        local speed = math.min(speed, 201)
+
         dxDrawImage(sx - 214/zoom, sy - 350/zoom, 40/zoom, 318/zoom, 'data/compact/gauge.png', -113 + speed/200 * 226, 0, 0)
     elseif speedo == 'muscle' then
         local mphSpeed = speed * 0.621371
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/background.png')
         dxDrawImage(sx - 466.5/zoom, sy - 145/zoom, 41/zoom, 111/zoom, 'data/muscle/fuel-gauge.png', 55 - (fuel / maxFuel) * 110, 0, -30/zoom)
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/overlay.png')
+
+        local mphSpeed = math.min(speed, 121)
         dxDrawImage(sx - 214/zoom, sy - 290/zoom, 42/zoom, 191/zoom, 'data/muscle/gauge.png', -135 + mphSpeed/120 * 270, 0, 0)
         dxDrawImage(sx - 528/zoom, sy - 370/zoom, 508/zoom, 350/zoom, 'data/muscle/stripes.png', 0, 0, 0, tocolor(r, g, b, 255))
 

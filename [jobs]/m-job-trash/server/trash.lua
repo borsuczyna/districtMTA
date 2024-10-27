@@ -30,7 +30,7 @@ local function pickUpTrash(player, hash, objectHash)
     setElementFrozen(player, false)
     setPedAnimation(player)
     if playAnimation then
-        setElementData(player, 'player:animation', 'carry')
+        exports['m-anim']:setPedAnimation(player, 'carry')
     end
     toggleAllControls(player, true, false)
     toggleJobControls(player, false)
@@ -43,7 +43,7 @@ local function putBackTrash(player, hash, objectHash)
     local model, offset, attachData, playAnimation = getTrashInfoByModel(model)
 
     if playAnimation then
-        setElementData(player, 'player:animation', 'carry')
+        exports['m-anim']:setPedAnimation(player, 'carry')
     end
     removeElementData(player, 'player:dumpingTrash')
     toggleAllControls(player, true, false)
@@ -65,7 +65,7 @@ end
 local function dumpTrash(player, hash, objectHash)
     setPedAnimation(player)
     setElementFrozen(player, false)
-    removeElementData(player, 'player:animation')
+    exports['m-anim']:removePedAnimation(player, 'carry')
     toggleAllControls(player, true, false)
     toggleJobControls(player, true)
 
@@ -84,7 +84,7 @@ end
 local function returnTrash(player, hash, objectHash)
     setPedAnimation(player)
     setElementFrozen(player, false)
-    removeElementData(player, 'player:animation')
+    exports['m-anim']:removePedAnimation(player, 'carry')
     toggleAllControls(player, true, false)
     toggleJobControls(player, true)
 
@@ -153,7 +153,7 @@ addEventHandler('jobs:trash:putTrash', root, function(hash, player, markerHash)
 
     setElementFrozen(player, true)
     toggleAllControls(player, false, false)
-    removeElementData(player, 'player:animation')
+    exports['m-anim']:removePedAnimation(player, 'carry')
     setElementData(player, 'player:dumpingTrash', true)
     setPedAnimation(player, "CARRY", "putdwn", -1, false)
 
@@ -207,14 +207,17 @@ addEventHandler('jobs:trash:dumpTrash', root, function(hash, player)
     local perPlayerMoney = math.floor(totalMoney / #players)
     local upgradePoints = math.floor(totalMoney * settings.upgradePointChancePerKg * math.random(30, 150)/100 * multiplier)
     local topPoints = math.floor(trashLevel / settings.kgFor1TopPoint * multiplier)
+    local exp = math.floor(trashLevel / settings.kgFor1Exp * multiplier)
 
     for _,player in pairs(players) do
         exports['m-jobs']:giveMoney(player, perPlayerMoney)
         exports['m-jobs']:giveUpgradePoints(player, upgradePoints)
         exports['m-jobs']:giveTopPoints(player, topPoints)
+        exports['m-core']:givePlayerExp(player, exp)
+        setElementData(player, 'player:player:trashDelivered', (getElementData(player, 'player:player:trashDelivered') or 0) + trashLevel)
     end
 
-    exports['m-notis']:addNotification(players, 'success', 'Wywóz śmieci', ('Za oddane śmieci zarobiono $%d + %d punktów ulepszeń (razem $%d)'):format(perPlayerMoney, upgradePoints, totalMoney))
+    exports['m-notis']:addNotification(players, 'success', 'Wywóz śmieci', ('Za oddane śmieci zarobiono %s + %d punktów ulepszeń (razem %s)'):format(addCents(perPlayerMoney), upgradePoints, addCents(totalMoney)))
 end)
 
 -- dont allow entering vehicle while carrying trash
@@ -227,3 +230,7 @@ end)
 addEventHandler('onResourceStart', resourceRoot, function()
     setTimer(updateTrashObjects, 1000, 0)
 end)
+
+function addCents(amount)
+    return '$' .. string.format('%0.2f', amount / 100)
+end

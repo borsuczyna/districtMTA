@@ -3,7 +3,7 @@ local fpsLimit = 100
 
 function updateRealTime()
     local time = getRealTime()
-    setTime(time.hour, time.minute)
+    setTime(time.hour + 2 % 24, time.minute)
 end
 
 addEventHandler('onResourceStart', resourceRoot, function()

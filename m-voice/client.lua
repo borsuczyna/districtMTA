@@ -51,7 +51,7 @@ addEventHandler('onClientPlayerVoiceStart', root, function()
     local x, y, z = getElementPosition(localPlayer)
     local distance = getDistanceBetweenPoints3D(cx, cy, cz, x, y, z)
 
-    if distance > defaultVoiceDistance * 10 then
+    if distance > defaultVoiceDistance then
         cancelEvent()
         return
     end
@@ -66,13 +66,17 @@ end)
 
 addEventHandler('onClientRender', root, function()
     local cx, cy, cz = getCameraMatrix()
-    local count = length(voicePlayers)
 
-    local height = count * (fontHeight + 3/zoom)
+    local height = 1 * (fontHeight + 3/zoom)
     local y = sy/2 - height/2
 
     for player in pairs(voicePlayers) do
+        local dist = getDistanceBetweenPoints3D(cx, cy, cz, getElementPosition(player))
+
         updateVoiceVolume(player, cx, cy, cz)
-        y = drawPlayerVoice(player, y)
+
+        if dist < defaultVoiceDistance then
+            y = drawPlayerVoice(player, y)
+        end
     end
 end)

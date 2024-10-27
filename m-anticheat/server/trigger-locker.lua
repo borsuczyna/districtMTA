@@ -1,5 +1,8 @@
 function setPlayerTriggerLocked(player, state, reason)
     setElementData(player, 'player:triggerLocked', state)
+    -- print trace
+    local trace = debug.traceback()
+    iprint(trace)
 
     if state then
         exports['m-logs']:sendLog('anticheat', 'error', ('Locked player `%s` for all triggers: %s'):format(getPlayerName(player), reason or 'No reason provided'))

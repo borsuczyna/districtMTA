@@ -6,7 +6,7 @@ addCommandHandler('m', function(player, cmd, playerToFind, time, ...)
     end
 
     if not playerToFind or not time then
-        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /mute (gracz) (czas np. 1d) (powód)')
+        exports['m-notis']:addNotification(player, 'error', 'Błąd', 'Niepoprawny format, użycie: /m (gracz) (czas np. 1d) (powód)')
         return
     end
 

@@ -1,6 +1,7 @@
 local startTime = getTickCount()
 
 function ban(player, reason, log)
+    if not player then return end
     local name = getPlayerName(player)
     local serial = getPlayerSerial(player)
     local ip = getPlayerIP(player)
@@ -12,6 +13,7 @@ function ban(player, reason, log)
 end
 
 function kick(player, reason, log)
+    if not player then return end
     local name = getPlayerName(player)
     local serial = getPlayerSerial(player)
     local ip = getPlayerIP(player)

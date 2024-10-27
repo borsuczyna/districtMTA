@@ -8,7 +8,7 @@ local settings = {
 }
 
 function connectDatabase()
-    connection = dbConnect('mysql', 'dbname='..settings.database..';host='..settings.host, settings.user, settings.password)
+    connection = dbConnect('mysql', 'dbname='..settings.database..';host='..settings.host..';unix_socket=/var/run/mysqld/mysqld.sock;', settings.user, settings.password)
 
     if not connection then
         outputDebugString('Failed to connect to the database')

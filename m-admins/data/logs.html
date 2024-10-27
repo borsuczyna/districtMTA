@@ -151,7 +151,7 @@
         row.dataset.category = category;
         let currentCategory = document.querySelector('#admin-logs .category.active').dataset.category;
         if (currentCategory === 'wszystko') {
-            row.classList.toggle('d-none', category == 'money');
+            row.classList.toggle('d-none', category == 'money' || category == 'przelewy');
         } else {
             row.classList.toggle('d-none', category !== currentCategory);
         }

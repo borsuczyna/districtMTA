@@ -48,7 +48,7 @@ function updateHouseRent(id)
             local connection = exports['m-mysql']:getConnection()
             if not connection then return end
 
-            local query = 'UPDATE `m-houses` SET `owner` = NULL, `sharedPlayers` = NULL WHERE `uid` = ?'
+            local query = 'UPDATE `m-houses` SET `owner` = NULL, `sharedPlayers` = "" WHERE `uid` = ?'
             dbExec(connection, query, id)
             
             local player = exports['m-core']:getPlayerByUid(data.owner)

@@ -9,7 +9,6 @@
     <script src='client/main.lua' type='client' cache='false'/>
     <script src='client/commands.lua' type='client' cache='false'/>
     <!-- <script src='client/fly-hack.lua' type='client' cache='false'/> -->
-    <script src='client/speed-hack.lua' type='client' cache='false'/>
     <script src='client/explosions.lua' type='client' cache='false'/>
     <script src='client/world.lua' type='client' cache='false'/>
     
@@ -22,7 +21,6 @@
     
     <export function='loadInterface' type='client'/>
     <export function='createWindow' type='client'/>
-    <export function='setPlayerNametags' type='client'/>
     <export function='getRandomPlayers' type='client'/>
     
     <export function='setPlayerTriggerLocked' type='server'/>

@@ -9,6 +9,7 @@ local logChannels = {
     trade = 'https://discord.com/api/webhooks/1289599701523632150/srfuIX3LU-VQw6QJY55BMpVFLo85MQGhlYr-cHB-12AwkNfZV4JpByra5ay0CmqqEuRj',
     houses = 'https://discord.com/api/webhooks/1289599705055232021/KRZCilbEW9mXEEN8VIfddzG2WlSAEkiXN4ECKb2SjWAIDcrvGcLY_yzK9cM1e7HF1rLF',
     items = 'https://discord.com/api/webhooks/1289599707429208157/1U5mPEfLgJzwBNM1YYl8eCsOuYHvnQiUPYd-gvbMPnb3v9moCbS-kRb1V1zxXWQbMr9H',
+    transfers = 'https://discord.com/api/webhooks/1296561740552867912/CIQN_wthbR2S7mNQ1wR6Gn3GFnPCOllzTu75tH4lB0oKZbX0bTTUPVthehGuhaUmKl_5',
 }
 
 local icons = {

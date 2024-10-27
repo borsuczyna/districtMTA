@@ -176,12 +176,22 @@ addEventHandler('jobs:leavePackage', resourceRoot, function(hash, player, marker
 
     local totalMoney = math.floor(math.random(unpack(settings.moneyPerPackage)) * multiplier)
     local upgradePoints = math.max(math.random(unpack(settings.upgradePointsPerPackage)), 0)
+    local giveExp = math.random(0, 100) > 90
 
     exports['m-jobs']:giveMoney(player, totalMoney)
     if upgradePoints > 0 then
         exports['m-jobs']:giveUpgradePoints(player, upgradePoints)
     end
 
+    if giveExp then
+        exports['m-core']:givePlayerExp(player, 1)
+    end
+
+    setElementData(player, 'player:packagesDelivered', (getElementData(player, 'player:packagesDelivered') or 0) + 1)
     exports['m-jobs']:giveTopPoints(player, 1)
-    exports['m-notis']:addNotification(player, 'success', 'Magazyn', ('Za dostarczenie paczki otrzymujesz $%s%s.'):format(totalMoney, upgradePoints > 0 and (' oraz %s punktów umiejętności'):format(upgradePoints) or ''))
+    exports['m-notis']:addNotification(player, 'success', 'Magazyn', ('Za dostarczenie paczki otrzymujesz %s.'):format(addCents(totalMoney), upgradePoints > 0 and (' oraz %s punktów umiejętności'):format(upgradePoints) or ''))
 end)
+
+function addCents(amount)
+    return '$' .. string.format('%0.2f', amount / 100)
+end

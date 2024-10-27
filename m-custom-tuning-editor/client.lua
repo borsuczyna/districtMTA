@@ -76,11 +76,11 @@ end)
 -- setVehicleDoorOpenRatio(getPedOccupiedVehicle(localPlayer), 1, 1, 1000)
 
 -- editor
-if getPlayerName(localPlayer) ~= 'soth' and getPlayerName(localPlayer) ~= 'neko_' then return end
+if getPlayerName(localPlayer) ~= 'soth' then return end
 local sx, sy = guiGetScreenSize()
 local editing = true
 local editingPosition = {
-    component = 'boot_dummy',
+    component = 'chassis',
     position = Vector3(0, 0, 0),
     -- rotation = Vector3(0, 0, 0),
     scale = Vector3(1, 1, 1)
@@ -127,16 +127,18 @@ local componentNames = {
 }
 local editingVehicle = createVehicle(400, 1942.476, -1806.212, 13.383)
 setCameraTarget(editingVehicle)
+-- setVehicleComponentVisible(editingVehicle, 'bump_rear_dummy', false)
 local editingPart = createObject(1004, 0, 0, 0)
 setElementCollisionsEnabled(editingPart, false)
 if getPlayerName(localPlayer) == 'soth' then
-    setElementData(editingPart, 'element:model', 'tuning/bulbbar')
+    setElementData(editingPart, 'element:model', 'tuning/pack2/Spoilers/Spoiler4')
 end
-local editingPartName = 'spoiler'
+local editingPartName = 'spoiler2'
 local editingModel = 400
 
 addCommandHandler('edit', function(cmd, model)
     setElementModel(editingVehicle, tonumber(model) or 400)
+    -- setVehicleComponentVisible(editingVehicle, 'bump_rear_dummy', false)
     editingModel = tonumber(model) or 400
 end)
 
@@ -173,7 +175,8 @@ function getVehicleComponentsNames(vehicle)
         table.insert(c, k)
     end
 
-    return c
+    -- return c
+    return {'chassis', 'boot_dummy'}
 end
 
 local lastUse = 0
@@ -199,12 +202,12 @@ addEventHandler('onClientRender', root, function()
         local floatValue = editingPosition.position[axis]/max
         
         dxDrawText(axis:upper() .. ': ' .. editingPosition.position[axis], 10, y, sx, sy, tocolor(255, 255, 255), 1.2, 'default-bold')
-        dxDrawRectangle(100, y - 6, 300, 26, tocolor(65,65,65, 150))
-        dxDrawRectangle(250 + (floatValue * 300), y - 6, 6, 26, tocolor(255, 255, 255))
+        dxDrawRectangle(100, y - 6, 700, 26, tocolor(65,65,65, 150))
+        dxDrawRectangle(450 + (floatValue * 700), y - 6, 6, 26, tocolor(255, 255, 255))
 
-        if cx > 100 and cx < 400 and cy > y - 6 and cy < y + 20 then
+        if cx > 100 and cx < 800 and cy > y - 6 and cy < y + 20 then
             if getKeyState('mouse1') then
-                editingPosition.position[axis] = math.min(max, math.max(-max, (cx - 100) / 300 * max)) - max/2
+                editingPosition.position[axis] = math.min(max, math.max(-max, (cx - 100) / 700 * max)) - max/2
                 updateElementPosition(editingVehicle)
             end
         end
@@ -215,12 +218,12 @@ addEventHandler('onClientRender', root, function()
         local floatValue = editingPosition.rotation[axis]/max
         
         dxDrawText(axis:upper() .. ': ' .. editingPosition.rotation[axis], 460, y, sx, sy, tocolor(255, 255, 255), 1.2, 'default-bold')
-        dxDrawRectangle(550, y - 6, 300, 26, tocolor(65,65,65, 150))
-        dxDrawRectangle(700 + (floatValue * 300), y - 6, 6, 26, tocolor(255, 255, 255))
+        dxDrawRectangle(700, y - 6, 700, 26, tocolor(65,65,65, 150))
+        dxDrawRectangle(700 + (floatValue * 700), y - 6, 6, 26, tocolor(255, 255, 255))
 
         if cx > 550 and cx < 850 and cy > y - 6 and cy < y + 20 then
             if getKeyState('mouse1') then
-                editingPosition.rotation[axis] = math.floor(math.min(max, math.max(-max, (cx - 550) / 300 * max)) - max/2)
+                editingPosition.rotation[axis] = math.floor(math.min(max, math.max(-max, (cx - 700) / 700 * max)) - max/2)
                 updateElementPosition(editingVehicle)
             end
         end
@@ -238,12 +241,12 @@ addEventHandler('onClientRender', root, function()
         local floatValue = editingPosition.scale[axis]/max
         
         dxDrawText(axis:upper() .. ': ' .. editingPosition.scale[axis], 920, y, sx, sy, tocolor(255, 255, 255), 1.2, 'default-bold')
-        dxDrawRectangle(1010, y - 6, 300, 26, tocolor(65,65,65, 150))
-        dxDrawRectangle(1160 + (floatValue * 300) - 150, y - 6, 6, 26, tocolor(255, 255, 255))
+        dxDrawRectangle(1010, y - 6, 700, 26, tocolor(65,65,65, 150))
+        dxDrawRectangle(1160 + (floatValue * 700) - 150, y - 6, 6, 26, tocolor(255, 255, 255))
 
-        if cx > 1010 and cx < 1310 and cy > y - 6 and cy < y + 20 then
+        if cx > 1010 and cx < 1710 and cy > y - 6 and cy < y + 20 then
             if getKeyState('mouse1') then
-                local val = math.min(max, math.max(0, (cx - 1010) / 300 * max))
+                local val = math.min(max, math.max(0, (cx - 1010) / 700 * max))
                 val = tonumber(('%.2f'):format(val))
                 editingPosition.scale[axis] = val
                 updateElementPosition(editingVehicle)

@@ -104,6 +104,7 @@
     
     <div class="info d-flex flex-column mt-2 gap-1 align-items-center">
         <span id="price">Cena: $100,000</span>
+        <br>
         <div class="d-flex gap-1">
             <div class="flat-button flat-button-small" onclick="vehicleShops_buyVehicle(this)">Zakup pojazd</div>
             <div class="flat-button flat-button-small" onclick="mta.triggerEvent('vehicle-shop:close')">Zamknij</div>
@@ -166,6 +167,10 @@
         }
     }
 
+    function addCents(amount) {
+        return '$' + (amount / 100).toFixed(2);
+    }
+
     function formatNumber(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -183,7 +188,7 @@
         element.querySelector('#quality').innerText = qualities[data.quality];
         element.querySelector('#count').innerText = data.count;
         element.querySelector('#rotation-time').innerText = timeDifference(new Date(), rotationDate);
-        element.querySelector('#price').innerText = `Cena: $${formatNumber(data.price)}`;
+        element.querySelector('#price').innerText = `Cena: ${addCents(data.price)}`;
 
         shopData = data;
     }

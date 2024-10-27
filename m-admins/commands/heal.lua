@@ -12,12 +12,24 @@ addCommandHandler('heal', function(player, cmd, playerToFind, ...)
             return
         end
 
-        exports['m-notis']:addNotification(foundPlayer, 'success', 'Uleczenie', ('Zostałeś uleczony przez %s'):format(getPlayerName(player)))
-        exports['m-notis']:addNotification(player, 'success', 'Uleczenie', ('Uleczono gracza %s'):format(getPlayerName(foundPlayer)))
-
-        setElementHealth(foundPlayer, 100)
+        if getElementHealth(foundPlayer) <= 0 then
+            exports['m-notis']:addNotification(foundPlayer, 'success', 'Uleczenie', ('Zostałeś uleczony i zrespawnowany przez %s'):format(getPlayerName(player)))
+            exports['m-notis']:addNotification(player, 'success', 'Uleczenie', ('Uleczono i zrespawnowano gracza %s'):format(getPlayerName(foundPlayer)))
+        
+            spawnPlayer(foundPlayer, Vector3(getElementPosition(foundPlayer)), 0, getElementModel(foundPlayer))
+        else
+            exports['m-notis']:addNotification(foundPlayer, 'success', 'Uleczenie', ('Zostałeś uleczony przez %s'):format(getPlayerName(player)))
+            exports['m-notis']:addNotification(player, 'success', 'Uleczenie', ('Uleczono gracza %s'):format(getPlayerName(foundPlayer)))
+            
+            setElementHealth(foundPlayer, 100)
+        end
     else
-        exports['m-notis']:addNotification(player, 'success', 'Uleczenie', 'Zostałeś uleczony')
-        setElementHealth(player, 100)
+        if getElementHealth(player) <= 0 then
+            exports['m-notis']:addNotification(player, 'success', 'Uleczenie', 'Zostałeś uleczony i zrespawnowany')
+            spawnPlayer(player, Vector3(getElementPosition(player)), 0, getElementModel(player))
+        else
+            exports['m-notis']:addNotification(player, 'success', 'Uleczenie', 'Zostałeś uleczony') 
+            setElementHealth(player, 100)
+        end
     end
 end)

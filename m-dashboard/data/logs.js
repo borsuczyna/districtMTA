@@ -16,6 +16,13 @@ let MONEY_LOG = {
     house: 'Mieszkanie',
     repair: 'Naprawa pojazdu',
     atm: 'Bankomat',
+    paint: 'Malowanie pojazdu',
+    achievement: 'Osiągnięcie',
+    stations: 'Stacja benzynowa',
+    tuning: 'Warsztat tuningowy',
+    ticket: 'Mandaty',
+    factions: 'Frakcje',
+    'vehicle-sell': 'Sprzedaż pojazdu',
 }
 
 window.dashboard_renderLogs = (element, data, moneyHistory = false) => {
@@ -50,9 +57,9 @@ window.dashboard_renderLogs = (element, data, moneyHistory = false) => {
     if (moneyHistory) {
         columns.push({ data: moneyHistory ? 'money' : 'uid', render: (data) => {
             if (parseInt(data) > 0) {
-                return `<span class="text-success">+$${data}</span>`;
+                return `<span class="text-success">+$${addCents(data)}</span>`;
             } else {
-                return `<span class="text-danger">-$${Math.abs(data)}</span>`;
+                return `<span class="text-danger">-$${addCents(Math.abs(data))}</span>`;
             }
         } });
     }

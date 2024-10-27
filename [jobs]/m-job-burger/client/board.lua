@@ -44,12 +44,13 @@ addEventHandler('jobs:burger:board', resourceRoot, function(boardId, objectHash,
 end)
 
 function clearBoards()
-    for i, board in ipairs(boards) do
-        if isElement(board) then
+    for i, board in pairs(boards) do
+        if board.object then
             destroyElement(board.object)
-            if board.effect then
-                destroyElement(board.effect)
-            end
+        end
+
+        if board.effect then
+            destroyElement(board.effect)
         end
     end
 end

@@ -3,15 +3,21 @@ addEvent('parking:getVehicle')
 
 local parkings = {
     {
-        putBack = Vector3(1232.219, -2053.544, 58.852),
-        take = Vector3(1230.394, -2058.134, 58.852),
-        takeOut = Vector3(1238.519, -2053.540, 59.836),
-        takeRotation = Vector3(0, 0, -90)
-    },
-    {
         putBack = Vector3(1362.043, -1651.249, 12.383),
         take = Vector3(1359.125, -1647.297, 13.492-1),
         takeOut = Vector3(1362.422, -1643.260, 13.383),
+        takeRotation = Vector3(0, 0, -90)
+    },
+    {
+        putBack = Vector3(1909.975, -1859.318, 12.562),
+        take = Vector3(1907.508, -1867.116, 13.565-1),
+        takeOut = Vector3(1910.553, -1875.750, 13.527),
+        takeRotation = Vector3(0, 0, -90)
+    },
+    {
+        putBack = Vector3(2654.966, -2348.321, 13.633-1),
+        take = Vector3(2653.490, -2355.822, 13.633-1),
+        takeOut = Vector3(2661.730, -2348.471, 13.258),
         takeRotation = Vector3(0, 0, -90)
     },
 }

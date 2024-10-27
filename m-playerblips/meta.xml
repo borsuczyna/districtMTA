@@ -1,0 +1,4 @@
+<meta>
+	<script src="async.lua" type="client"/>
+	<script src="playerblips.lua" type="client"/>
+</meta>

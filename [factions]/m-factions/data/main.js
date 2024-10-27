@@ -30,8 +30,8 @@ factionPanel_renderMainPage = () => {
 
     document.querySelector('#faction-panel #main-page-cards .card[data-card="topWorkedMinutes"] .value').innerText = topWorkedMinutes ? `${topWorkedMinutes.playerName} (${timeToString(topWorkedMinutes.dutyTime)})` : 'Brak';
     document.querySelector('#faction-panel #main-page-cards .card[data-card="totalWorkers"] .value').innerText = factionData.members.length;
-    document.querySelector('#faction-panel #main-page-cards .card[data-card="yourPayment"] .value').innerText = myData ? `$${formatNumber(myData.payTime * factionData.payPerMinute)}` : 'Brak';
-    document.querySelector('#faction-panel #main-page-cards .card[data-card="totalPayment"] .value').innerText = `$${formatNumber(totalPayTime * factionData.payPerMinute)}`;
+    document.querySelector('#faction-panel #main-page-cards .card[data-card="yourPayment"] .value').innerText = myData ? `$${addCents(myData.payTime * factionData.payPerMinute)}` : 'Brak';
+    document.querySelector('#faction-panel #main-page-cards .card[data-card="totalPayment"] .value').innerText = `$${addCents(totalPayTime * factionData.payPerMinute)}`;
     document.querySelector('#faction-panel #main-page-cards .card[data-card="workedMinutes"] .value').innerText = timeToString(myData ? myData.dutyTime : 0);
     document.querySelector('#faction-panel #main-page-cards .card[data-card="totalWorkedMinutes"] .value').innerText = timeToString(totalWorkedMinutes);
 }

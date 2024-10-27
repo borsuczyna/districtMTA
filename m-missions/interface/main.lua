@@ -55,7 +55,7 @@ function toggleMissionEditorUI()
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    toggleMissionEditorUI()
+    -- toggleMissionEditorUI()
     addEventHandler('interfaceLoaded', root, function()
         missionEditorUILoaded = false
         setMissionEditorUIVisible(missionEditorUIVisible)

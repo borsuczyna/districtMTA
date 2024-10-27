@@ -1,7 +1,10 @@
 local vehicleParts = {}
+local lightsStates = {}
 local _getVehicleUpgradeOnSlot = getVehicleUpgradeOnSlot
 local _removeVehicleUpgrade = removeVehicleUpgrade
 local _addVehicleUpgrade = addVehicleUpgrade
+local ambientColor = {0, 0, 0}
+local lastDamageUpdate = 0
 
 local function destroyVehicleTuningPart(vehicle, partName)
     if not vehicleParts[vehicle] then return end
@@ -10,6 +13,35 @@ local function destroyVehicleTuningPart(vehicle, partName)
     if part and isElement(part) then
         destroyElement(part)
         vehicleParts[vehicle][partName] = nil
+    end
+end
+
+local function updateVehicleLightsState(vehicle)
+    if not isElement(vehicle) then return end
+
+    local lastState = lightsStates[vehicle]
+    local currentState = areVehicleLightsOn(vehicle)
+
+    if lastState == currentState then return end
+
+    lightsStates[vehicle] = currentState
+
+    local defaultShader = getVehicleShader(vehicle).default
+    local lightsShader = getLightsShader()
+
+    local parts = vehicleParts[vehicle]
+    if not parts then return end
+
+    for partName, part in pairs(parts) do
+        if part and isElement(part) then
+            if currentState then
+                engineApplyShaderToWorldTexture(lightsShader, 'vehiclelights128', part)
+                engineRemoveShaderFromWorldTexture(defaultShader, 'vehiclelights128', part)
+            else
+                engineApplyShaderToWorldTexture(defaultShader, 'vehiclelights128', part)
+                engineRemoveShaderFromWorldTexture(lightsShader, 'vehiclelights128', part)
+            end
+        end
     end
 end
 
@@ -87,10 +119,18 @@ function addVehicleUpgrade(vehicle, model)
 
     local part = createObject(type(model) == 'number' and model or 1337, 0, 0, 0)
     setElementData(part, 'element:model', model, false)
-
     setElementCollisionsEnabled(part, false)
+    setElementDoubleSided(part, true)
+    
     local shader = getVehicleShader(vehicle)
-    engineApplyShaderToWorldTexture(shader, 'vehiclegrunge256', part)
+    local lightsShader = getLightsShader()
+
+    engineApplyShaderToWorldTexture(shader.default, '*', part)
+    engineRemoveShaderFromWorldTexture(shader.default, 'vehiclegrunge256', part)
+    engineRemoveShaderFromWorldTexture(shader.default, 'vehiclelights128', part)
+    engineApplyShaderToWorldTexture(shader.paint, 'vehiclegrunge256', vehicle)
+    engineApplyShaderToWorldTexture(shader.paint, 'vehiclegrunge256', part)
+    -- engineApplyShaderToWorldTexture(lightsShader, 'vehiclelights128', part)
 
     if not vehicleParts[vehicle] then
         vehicleParts[vehicle] = {}
@@ -114,11 +154,16 @@ function forceVehicleUpgrade(vehicle, model)
     forceVehicleUpgradeWithSlot(vehicle, slotName, model)
 end
 
-local function getVehicleComponentMatrix(vehicle, component, offsetPosition)
+local function getVehicleComponentMatrix(vehicle, component, attachComponent, offsetPosition)
     if not isElement(vehicle) or not isElementStreamedIn(vehicle) then return end
 
     local check = componentsChecks[component]
     if check and not check(vehicle) then return end
+
+    if attachComponent then
+        check = componentsChecks[attachComponent]
+        if check and not check(vehicle) then return end
+    end
 
     local position = Vector3(getVehicleComponentPosition(vehicle, component, 'world'))
     local rotation = Vector3(getVehicleComponentRotation(vehicle, component, 'world'))
@@ -129,10 +174,12 @@ local function getVehicleComponentMatrix(vehicle, component, offsetPosition)
     return matrix
 end
 
+-- iprint(getWorldProperty('Illumination'))
+
 local function renderVehicleTuningPart(vehicle, partName, part, componentData)
     if not isElement(vehicle) or not isElement(part) then return end
 
-    local matrix = getVehicleComponentMatrix(vehicle, componentData.component, componentData.position, componentData.rotation)
+    local matrix = getVehicleComponentMatrix(vehicle, componentData.component, componentData.attach, componentData.position, componentData.rotation)
     if not matrix then
         setElementAlpha(part, 0)
         return
@@ -147,6 +194,28 @@ local function renderVehicleTuningPart(vehicle, partName, part, componentData)
 
     setElementInterior(part, interior)
     setElementDimension(part, dimension)
+
+    if componentData.attach then
+        setVehicleComponentVisible(vehicle, componentData.attach, false)
+    end
+end
+
+local function updatePartDamage(vehicle, partName)
+    local part = vehicleParts[vehicle][partName]
+    if not part then return end
+
+    local componentData = componentsPositions[getElementModel(vehicle)][partName]
+    if not componentData then return end
+
+    local damageCheck = damageChecks[componentData.component] or damageChecks[componentData.attach]
+    local model = tostring(getElementData(part, 'element:model') or getElementModel(part)):gsub('_dam', '')
+    local damageModelExists = doesModelExist(('%s_dam'):format(model))
+
+    if damageModelExists and damageCheck then
+        local damaged = damageCheck(vehicle)
+        local model = (damaged and '%s_dam' or '%s'):format(model)
+        setElementData(part, 'element:model', model, false)
+    end
 end
 
 local function renderVehicleTuningParts(vehicle)
@@ -165,11 +234,15 @@ local function renderVehicleTuningParts(vehicle)
         return
     end
     
+    local x, y, z = getElementPosition(vehicle)
     local shader = getVehicleShader(vehicle)
-    local lighting = getElementLighting(vehicle)
+    local lighting = math.pow(getElementLighting(vehicle) or 1, 0.2) * 0.45
     local r, g, b = getVehicleColor(vehicle, true)
-    dxSetShaderValue(shader, 'gVehicleLighting', (lighting or 1) * 0.8 + 0.1)
-    dxSetShaderValue(shader, 'gVehicleColor', r / 255, g / 255, b / 255, 1)
+    dxSetShaderValue(shader.paint, 'gVehicleLighting', lighting)
+    dxSetShaderValue(shader.paint, 'gVehiclePosition', x, y, z)
+    dxSetShaderValue(shader.paint, 'gVehicleColor', r / 255, g / 255, b / 255, 1)
+    dxSetShaderValue(shader.paint, 'gAmbientColor', ambientColor)
+    dxSetShaderValue(shader.default, 'gVehicleLighting', lighting)
 
     for partName, part in pairs(parts) do
         local componentData = components[partName]
@@ -178,11 +251,35 @@ local function renderVehicleTuningParts(vehicle)
             renderVehicleTuningPart(vehicle, partName, part, componentData)
         end
     end
+
+    updateVehicleLightsState(vehicle)
+end
+
+local function updateVehicleDamage(vehicle)
+    local parts = vehicleParts[vehicle]
+    if not parts then return end
+
+    for partName, _ in pairs(parts) do
+        updatePartDamage(vehicle, partName)
+    end
+end
+
+local function updateVehiclesDamage()
+    for vehicle, parts in pairs(vehicleParts) do
+        updateVehicleDamage(vehicle)
+    end
 end
 
 addEventHandler('onClientPreRender', root, function()
+    ambientColor = getMaterialDiffuseColor()
+    
     for vehicle, parts in pairs(vehicleParts) do
         renderVehicleTuningParts(vehicle)
+    end
+
+    if getTickCount() - lastDamageUpdate > 300 then
+        updateVehiclesDamage()
+        lastDamageUpdate = getTickCount()
     end
 end)
 
@@ -202,6 +299,12 @@ local function syncVehicleUpgrades(vehicle)
             removeVehicleUpgradeOnSlot(vehicle, slotName)
         end
     end
+
+    -- update lights state
+    updateVehicleLightsState(vehicle)
+
+    -- update damage
+    updateVehicleDamage(vehicle)
 end
 
 addEventHandler('onClientElementDataChange', root, function(key, oldValue)
@@ -229,7 +332,7 @@ addEventHandler('onClientElementDestroy', root, function()
 end)
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
-    for _, vehicle in ipairs(getElementsByType('vehicle')) do
+    for _, vehicle in ipairs(getElementsByType('vehicle', root, true)) do
         syncVehicleUpgrades(vehicle)
     end
 end)

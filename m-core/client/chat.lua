@@ -10,7 +10,7 @@ function renderChatBubbles()
     if getElementData(localPlayer, 'player:hiddenNametags') then return end
 
     for player, bubbleData in pairs(chatBubbles) do
-        if isElement(player) then            
+        if isElement(player) then
             local boneX, boneY, boneZ = getPedBonePosition(player, 3)
             local screenX, screenY = getScreenFromWorldPosition(boneX, boneY, boneZ)
 
@@ -30,8 +30,8 @@ function renderChatBubbles()
                 local alpha = math.max(0, math.min(messageBaseAlpha - (messageBaseAlpha * ((distance - messageFadeDistance) / (messageDrawDistance - messageFadeDistance))), messageBaseAlpha))
                 local scale = math.max(0.7, 1 - distance * 0.02)
 
-                dxDrawText(bubbleData.text:gsub('#%x%x%x%x%x%x', ''), screenX + 1, screenY + 1, screenX + 1, screenY + 1, tocolor(0, 0, 0, alpha), scale, exports['m-ui']:getFont('Inter-Medium', 9), 'center', 'center')
-                dxDrawText(bubbleData.text, screenX, screenY, screenX, screenY, tocolor(255, 255, 255, alpha), scale, exports['m-ui']:getFont('Inter-Medium', 9), 'center', 'center')
+                dxDrawText(bubbleData.text:gsub('#%x%x%x%x%x%x', ''), screenX + 1, screenY + 1, screenX + 1, screenY + 1, tocolor(0, 0, 0, alpha), scale, exports['m-ui']:getFont('Inter-Bold', 10), 'center', 'center', false, false, false, false, true)
+                dxDrawText(bubbleData.text, screenX, screenY, screenX, screenY, tocolor(255, 255, 255, alpha), scale, exports['m-ui']:getFont('Inter-Bold', 10), 'center', 'center', false, false, false, false, true)
             end
         end
     end

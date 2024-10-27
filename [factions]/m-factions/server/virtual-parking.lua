@@ -91,12 +91,6 @@ function createVirtualParking(faction, position, positionOut, data)
     }
 end
 
-createVirtualParking('SAPD', {2014.147, -1874.453, 13.281}, {2011.387, -1868.699, 13.3, 359.692, 360.000, 89.392}, {
-    {name = 'Pojazd patrolowy', model = 596, permissions = {'manageFaction', 'defaultEquipment'}, handling = {
-        engineAcceleration = 40,
-    }},
-})
-
 addEventHandler('factions:useVirtualParking', root, function(hash, player, faction, index)
     if isPlayerTimedOut(player) then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Zbyt szybko wykonujesz akcje.'})

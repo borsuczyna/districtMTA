@@ -2,9 +2,11 @@ addEvent('factions:useShelf')
 
 local factionsShelfs = {}
 
-local function onMarkerHit(hitElement, matchingDimension)
+function onShelfMarkerHit(hitElement, matchingDimension)
     if not matchingDimension or getElementType(hitElement) ~= 'player' then return end
     local player = hitElement
+
+    if getPedOccupiedVehicle(player) then return end
 
     local uid = getElementData(player, 'player:uid')
     if not uid then return end
@@ -21,13 +23,21 @@ local function onMarkerHit(hitElement, matchingDimension)
         return exports['m-notis']:addNotification(player, 'error', ('Frakcja %s'):format(faction), 'Nie posiadasz uprawnień do otwarcia tej szafki.')
     end
 
+    local isStorageMarker = getElementData(source, 'marker:shelf-storage')
+    local shelfVehicle = getElementData(source, 'marker:shelf-vehicle')
+
+    if shelfVehicle then
+        setStorageVehicle(player, shelfVehicle)
+    end
+
     triggerClientEvent(player, 'factions:openShelfPanel', resourceRoot, {
         faction = faction,
-        items = getElementData(source, 'marker:shelf-items')
+        items = getElementData(source, 'marker:shelf-items'),
+        isStorage = isStorageMarker
     })
 end
 
-local function onMarkerLeave(leaveElement, matchingDimension)
+function onShelfMarkerLeave(leaveElement, matchingDimension)
     if not matchingDimension or getElementType(leaveElement) ~= 'player' then return end
     local player = leaveElement
 
@@ -42,26 +52,12 @@ function createShelfMarker(faction, position, data)
     setElementData(marker, 'marker:desc', 'Szafka')
     addDestroyOnRestartElement(marker, sourceResource)
 
-    addEventHandler('onMarkerHit', marker, onMarkerHit)
-    addEventHandler('onMarkerLeave', marker, onMarkerLeave)
+    addEventHandler('onMarkerHit', marker, onShelfMarkerHit)
+    addEventHandler('onMarkerLeave', marker, onShelfMarkerLeave)
     factionsShelfs[faction] = data
 end
 
-addEventHandler('factions:useShelf', root, function(hash, player, faction, category, index)
-    if isPlayerTimedOut(player) then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Zbyt szybko wykonujesz akcje.'})
-        return
-    end
-
-    local items = factionsShelfs[faction]
-    if not items then return end
-
-    local category = items[tonumber(category) + 1]
-    if not category then return end
-
-    local item = category.items[tonumber(index) + 1]
-    if not item then return end
-
+function giveStorageItem(player, faction, hash, item, vehicle)
     local playerDuty = getElementData(player, 'player:duty')
     if playerDuty ~= faction then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie jesteś na służbie tej frakcji.'})
@@ -83,6 +79,31 @@ addEventHandler('factions:useShelf', root, function(hash, player, faction, categ
     if item.weapon then
         giveWeapon(player, item.weapon, item.ammo or 0, true)
     end
+    if item.callback then
+        _G[item.callback](player, vehicle)
+    end
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zestaw został pobrany.'})
+end
+
+addEventHandler('factions:useShelf', root, function(hash, player, faction, isStorage, category, index)
+    if isPlayerTimedOut(player) then
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Zbyt szybko wykonujesz akcje.'})
+        return
+    end
+
+    if isStorage then
+        return useStorageItem(hash, player, faction, isStorage, category, index)
+    end
+
+    local items = factionsShelfs[faction]
+    if not items then return end
+
+    local category = items[tonumber(category) + 1]
+    if not category then return end
+
+    local item = category.items[tonumber(index) + 1]
+    if not item then return end
+
+    giveStorageItem(player, faction, hash, item)
 end)

@@ -57,7 +57,9 @@ float gTime : TIME;
 //
 // Strongest light influence
 //
-float4 gLightAmbient : LIGHTAMBIENT;
+// float4 gLightAmbient : LIGHTAMBIENT;
+float4 gLightAmbient = float4(0.3, 0.3, 0.3, 1.0);
+float4 gAmbientColor = float4(1, 0, 0, 1.0);
 float4 gLightDiffuse : LIGHTDIFFUSE;
 float4 gLightSpecular : LIGHTSPECULAR;
 float3 gLightDirection : LIGHTDIRECTION;
@@ -83,7 +85,8 @@ float3 gLightDirection : LIGHTDIRECTION;
 
 int gLighting                      < string renderState="LIGHTING"; >;                        //  = 137,
 
-float4 gGlobalAmbient              < string renderState="AMBIENT"; >;                    //  = 139,
+// float4 gGlobalAmbient              < string renderState="AMBIENT"; >;                    //  = 139,
+float4 gGlobalAmbient = 139;
 
 int gDiffuseMaterialSource         < string renderState="DIFFUSEMATERIALSOURCE"; >;           //  = 145,
 int gSpecularMaterialSource        < string renderState="SPECULARMATERIALSOURCE"; >;          //  = 146,
@@ -269,7 +272,7 @@ float4 MTACalcGTAVehicleDiffuse( float3 WorldNormal, float4 InDiffuse)
     float4 diffuse  = gDiffuseMaterialSource  == 0 ? gMaterialDiffuse  : InDiffuse;
     float4 emissive = gEmissiveMaterialSource == 0 ? gMaterialEmissive : InDiffuse;
 
-    float4 TotalAmbient = ambient * ( gGlobalAmbient + gLightAmbient );
+    float4 TotalAmbient = ambient * ( gGlobalAmbient + gAmbientColor );
 
     // Add the strongest light
     float DirectionFactor = max(0.2, dot(WorldNormal, -gLightDirection ));
@@ -293,11 +296,11 @@ float4 MTACalcGTAVehicleDynamicDiffuse( float3 WorldNormal, float4 InDiffuse, fl
     float4 diffuse  = gDiffuseMaterialSource  == 0 ? gMaterialDiffuse  : InDiffuse;
     float4 emissive = gEmissiveMaterialSource == 0 ? gMaterialEmissive : InDiffuse;
 
-    float4 TotalAmbient = ambient * ( gGlobalAmbient + gLightAmbient );
+    float4 TotalAmbient = ambient * ( gGlobalAmbient + gAmbientColor );
 
     // Add the strongest light
     float DirectionFactor = max(0.2, dot(WorldNormal, -lightDirection ));
-    float4 TotalDiffuse = (diffuse * DirectionFactor );
+    float4 TotalDiffuse = (diffuse * DirectionFactor);
 
     float4 OutDiffuse = saturate(TotalDiffuse + TotalAmbient + emissive);
     OutDiffuse.a *= diffuse.a;
@@ -309,35 +312,42 @@ float4 MTACalcGTAVehicleDynamicDiffuse( float3 WorldNormal, float4 InDiffuse, fl
 // MTACalcGTACompleteDiffuse
 // - Calculate GTA lighting including pointlights for vehicles (all 4 lights)
 //------------------------------------------------------------------------------------------
-float4 MTACalcGTACompleteDiffuse( float3 WorldNormal, float4 InDiffuse )
+float4 MTACalcGTACompleteDiffuse( float3 WorldPos, float3 WorldNormal, float4 InDiffuse )
 {
     // Calculate diffuse color by doing what D3D usually does
     float4 ambient  = InDiffuse;
     float4 diffuse  = gDiffuseMaterialSource  == 0 ? gMaterialDiffuse  : InDiffuse;
     float4 emissive = gEmissiveMaterialSource == 0 ? gMaterialEmissive : InDiffuse;
 
-    float4 TotalAmbient = ambient * ( gGlobalAmbient + gLightAmbient );
+    float4 TotalAmbient = ambient * ( gGlobalAmbient + gAmbientColor );
 
     // Add all the 4 pointlights
     float DirectionFactor=0;
     float4 TotalDiffuse=0;
 
-    if ((gLight1Enable) && (gSpecularMaterialSource == 0)) {
-    DirectionFactor = max(0,dot(WorldNormal, -gLight1Direction ));
-    TotalDiffuse += ( gLight1Diffuse * DirectionFactor );
-                     }
-    if (gLight2Enable) {
-    DirectionFactor = max(0,dot(WorldNormal, -gLight2Direction ));
-    TotalDiffuse += ( gLight2Diffuse * DirectionFactor );
-                     }
-    if (gLight3Enable) {
-    DirectionFactor = max(0,dot(WorldNormal, -gLight3Direction ));
-    TotalDiffuse += ( gLight3Diffuse * DirectionFactor );
-                     }
-    if (gLight4Enable) {
-    DirectionFactor = max(0,dot(WorldNormal, -gLight4Direction ));
-    TotalDiffuse += ( gLight4Diffuse * DirectionFactor );
-                     }	
+    if ((gLight1Enable) && (gSpecularMaterialSource == 0))
+    {
+        DirectionFactor = max(0,dot(WorldNormal, -gLight1Direction ));
+        TotalDiffuse += ( gLight1Diffuse * DirectionFactor );
+    }
+
+    if (gLight2Enable)
+    {
+        DirectionFactor = max(0,dot(WorldNormal, -gLight2Direction ));
+        TotalDiffuse += ( gLight2Diffuse * DirectionFactor );
+    }
+
+    if (gLight3Enable)
+    {
+        DirectionFactor = max(0,dot(WorldNormal, -gLight3Direction ));
+        TotalDiffuse += ( gLight3Diffuse * DirectionFactor );
+    }
+    
+    if (gLight4Enable)
+    {
+        DirectionFactor = max(0,dot(WorldNormal, -gLight4Direction ));
+        TotalDiffuse += ( gLight4Diffuse * DirectionFactor );
+    }	
 					 
     TotalDiffuse *= diffuse;
 	

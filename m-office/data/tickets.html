@@ -49,7 +49,7 @@
 
 <div class="d-flex justify-center mt-2 gap-2">
     <div class="flat-button flat-button-small" onclick="tickets_pay(this)">Opłać</div>
-    <div class="flat-button flat-button-small" onclick="tickets_todo()">Odsiedź wyrok</div>
+    <div class="flat-button flat-button-small" onclick="tickets_jail(this)">Odsiedź wyrok</div>
     <div class="flat-button flat-button-small" onclick="tickets_close()">Zamknij</div>
 </div>
 
@@ -68,7 +68,7 @@
         let tickets = itemsData;
 
         for (let ticket of tickets) {
-            let option = new Option(`${ticket.issuer} - $${formatNumber(ticket.amount)}`, ticket.uid);
+            let option = new Option(`${ticket.issuer == false ? 'Fotoradar' : ticket.issuer} - $${formatNumber(ticket.amount)}`, ticket.uid);
             ticketSelect.add(option);
         }
 
@@ -90,8 +90,32 @@
         mta.triggerEvent('tickets:close');
     }
 
-    tickets_todo = () => {
-        notis_addNotification('info', 'Informacja', 'Ciągle pracujemy nad tą funkcją');
+    tickets_jail = async (button) => {
+        // notis_addNotification('info', 'Informacja', 'Ciągle pracujemy nad tą funkcją');
+        if (isButtonSpinner(button)) return;
+
+        makeButtonSpinner(button);
+        let ticket = document.querySelector('#tickets #ticket').value;
+        if (ticket == '') {
+            notis_addNotification('error', 'Błąd', 'Nie wybrano mandatu');
+            makeButtonSpinner(button, false);
+            return;
+        }
+
+        let data = await mta.fetch('office', 'jailTicket', ticket);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+            
+            if (data.status == 'success') {
+                itemsData = itemsData.filter(x => x.uid != ticket);
+                tickets_reloadTickets();
+            }
+        }
+
+        makeButtonSpinner(button, false);
     }
 
     tickets_pay = async (button) => {
@@ -147,9 +171,15 @@
             return;
         }
 
+        let minutes = ticketData.amount/100 * 20;
+        let hours = Math.floor(minutes / 60);
+        minutes = minutes % 60;
+        let time = `${hours}h ${minutes}m`;
+
         ticketInfo.innerHTML = `
-            <span class="label">Wystawił: ${ticketData.issuer}</span><br>
+            <span class="label">Wystawił: ${ticketData.issuer == false ? 'Fotoradar' : ticketData.issuer ?? 'Fotoradar'}</span><br>
             <span class="label">Kwota: $${formatNumber(ticketData.amount)}</span><br>
+            <span class="label">Czas odsiadki: ${time}</span><br>
             <span class="label">Powód: ${ticketData.reason}</span>
         `;
     }

@@ -5,6 +5,9 @@ ranks = {
         permissions = {
             'logs',
             'reports',
+            'dryer',
+            'teleports',
+            'command:jetpack',
             'command:teleport',
             'command:license',
             'command:spec',
@@ -12,6 +15,8 @@ ranks = {
             'command:fix',
             'command:heal',
             'command:admin',
+            'command:dim',
+            'command:int',
         }
     },
     [2] = {
@@ -20,6 +25,9 @@ ranks = {
         permissions = {
             'logs',
             'reports',
+            'dryer',
+            'teleports',
+            'command:clearchat',
             'command:teleport',
             'command:license',
             'command:kick',
@@ -31,6 +39,8 @@ ranks = {
             'command:fix',
             'command:heal',
             'command:admin',
+            'command:dim',
+            'command:int',
         }
     },
     [3] = {
@@ -40,6 +50,9 @@ ranks = {
             'logs',
             'reports',
             'noclip',
+            'dryer',
+            'teleports',
+            'command:clearchat',
             'command:teleport',
             'command:license',
             'command:kick',
@@ -52,6 +65,8 @@ ranks = {
             'command:fix',
             'command:heal',
             'command:admin',
+            'command:dim',
+            'command:int',
         }
     },
     [4] = {
@@ -61,6 +76,9 @@ ranks = {
             'logs',
             'reports',
             'noclip',
+            'dryer',
+            'teleports',
+            'command:clearchat',
             'command:teleport',
             'command:license',
             'command:kick',
@@ -74,6 +92,8 @@ ranks = {
             'command:fix',
             'command:heal',
             'command:admin',
+            'command:dim',
+            'command:int',
         }
     },
     [5] = {
@@ -83,6 +103,9 @@ ranks = {
             'logs',
             'reports',
             'noclip',
+            'dryer',
+            'teleports',
+            'command:clearchat',
             'command:dev',
             'command:teleport',
             'command:license',
@@ -100,6 +123,8 @@ ranks = {
             'command:fix',
             'command:heal',
             'command:admin',
+            'command:dim',
+            'command:int',
         }
     }
 }
@@ -143,4 +168,15 @@ function htmlEscape(s)
     return s:gsub('[<>&"]', function(c)
         return c == '<' and '&lt;' or c == '>' and '&gt;' or c == '&' and '&amp;' or '&quot;'
     end)
+end
+
+function isPedAiming (thePedToCheck)
+	if isElement(thePedToCheck) then
+		if getElementType(thePedToCheck) == "player" or getElementType(thePedToCheck) == "ped" then
+			if getPedTask(thePedToCheck, "secondary", 0) == "TASK_SIMPLE_USE_GUN" or isPedDoingGangDriveby(thePedToCheck) then
+				return true
+			end
+		end
+	end
+	return false
 end

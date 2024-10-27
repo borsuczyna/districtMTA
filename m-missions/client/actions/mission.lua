@@ -11,6 +11,17 @@ defineMissionAction({
 })
 
 defineMissionAction({
+    name = 'finishMission',
+    editorName = 'Zakończ misję sukcesem',
+    arguments = {},
+    callback = function(reason)
+        exports['m-notis']:addNotification('success', 'Misja', 'Misja zakończona sukcesem')
+        finishMission()
+        triggerServerEvent('missions:finishMission', resourceRoot, currentMissionIndex)
+    end
+})
+
+defineMissionAction({
     name = 'toggleAllControls',
     editorName = 'Zablokuj/odblokuj sterowanie',
     arguments = {

@@ -15,7 +15,11 @@ local function killPlayback(index)
 
     -- destroy vehicles
     for _, vehicleData in pairs(playback.vehicles) do
-        destroyElement(vehicleData.vehicle)
+        if isElementLocal(vehicleData.vehicle) then
+            destroyElement(vehicleData.vehicle)
+            print("Destroyed vehicle")
+        end
+        -- destroyElement(vehicleData.vehicle)
     end
 end
 
@@ -33,7 +37,7 @@ local function stopPlayback(index, trigger)
     local playback = playing[index]
     if not playback then return end
 
-    -- playing[index] = nil
+    playing[index] = nil
 
     -- outputChatBox("Playback have finished", 255, 0, 0)
     if trigger then
@@ -79,7 +83,7 @@ local function setPlaybackNextFrame(index)
             setPedEnterVehicle(playback.ped, getVehicleByIndex(index, playback.enteringVehicle))
 
             if snapshot.insideVehicle then
-                warpPedIntoVehicle(playback.ped, getVehicleByIndex(index, snapshot.insideVehicle))
+                -- warpPedIntoVehicle(playback.ped, getVehicleByIndex(index, snapshot.insideVehicle))
                 playback.enteringVehicle = nil
             end
         elseif playback.exitVehicle and getPedOccupiedVehicle(playback.ped) then
@@ -87,7 +91,7 @@ local function setPlaybackNextFrame(index)
             setPedExitVehicle(playback.ped)
 
             if not snapshot.insideVehicle then
-                removePedFromVehicle(playback.ped)
+                -- removePedFromVehicle(playback.ped)
                 playback.exitVehicle = nil
             end
         else
@@ -100,11 +104,11 @@ local function setPlaybackNextFrame(index)
             if snapshot.type == 'vehicle' then
                 local vehicle = getVehicleByIndex(index, snapshot.insideVehicle)
                 if vehicle then
-                    warpPedIntoVehicle(playback.ped, vehicle)
+                    -- warpPedIntoVehicle(playback.ped, vehicle)
                 end
             else
                 if getPedOccupiedVehicle(playback.ped) then
-                    removePedFromVehicle(playback.ped)
+                    -- removePedFromVehicle(playback.ped)
                 end
 
                 setElementMatrix(playback.ped, unpack(snapshot.matrix))
@@ -144,7 +148,11 @@ local function setPlaybackVehicleNextFrame(index, vehicleIndex)
 
     local snapshot = vehicleData.data[vehicleData.index]
     if not snapshot then
-        destroyElement(vehicleData.vehicle)
+        -- destroyElement(vehicleData.vehicle)
+        if isElementLocal(vehicleData.vehicle) then
+            destroyElement(vehicleData.vehicle)
+            print("Destroyed vehicle")
+        end
         playback.vehicles[vehicleIndex] = nil
         return
     end
@@ -193,7 +201,17 @@ local function updatePlaybacks()
 end
 
 local function createPlaybackVehicle(index, data)
-    local vehicle = createVehicle(data.model, 0, 0, 0)
+    local vehicle;
+
+    local playback = playing[index]
+    if playback.ped == localPlayer then
+        vehicle = getPedOccupiedVehicle(localPlayer)
+    elseif getPedOccupiedVehicle(playback.ped) then
+        vehicle = getPedOccupiedVehicle(playback.ped)
+    else
+        vehicle = createVehicle(data.model, 0, 0, 0)
+    end
+
     setElementMatrix(vehicle, unpack(data.matrix))
 
     for i = 0, 6 do
@@ -233,7 +251,7 @@ local function createPlaybackVehicle(index, data)
 end
 
 function startPlayback(name, defaultPed)
-    local file = fileOpen("recordings/" .. name .. ".json")
+    local file = fileOpen("recordings/" .. name .. ".json", true)
     if not file then
         return print("Failed to open file")
     end

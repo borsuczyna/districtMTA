@@ -9,11 +9,9 @@ defineMissionAction({
     callback = function(specialId)
         local element = getMissionElement(specialId)
 
-        if not isElementLocal(element) then
+        if isElement(element) and not isElementLocal(element) then
             triggerServerEvent('missions:destroyMissionElement', resourceRoot, element, specialId)
-            print('destroying element', specialId)
             await(waitForElementDestroy(specialId))
-            print('destroyed element', specialId)
             return
         end
 

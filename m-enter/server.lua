@@ -20,7 +20,7 @@ local enters = {
         longDescrption = 'Wyście z przebieralni',
     },
     {
-        marker = {1113.453, -1835.986, 16.600},
+        marker = {1153.985, -1771.820, 16.599},
         interior = 0,
         target = {209.912, 142.263, 1003.023},
         targetInterior = 3,
@@ -31,14 +31,14 @@ local enters = {
     {
         marker = {208.447, 142.263, 1003.023},
         interior = 3,
-        target = {1111.955, -1836.037, 16.601},
+        target = {1154.776, -1767.460, 16.594},
         targetInterior = 0,
         name = 'Wyjście',
         description = 'Szkoła jazdy',
         longDescrption = 'Wyście ze szkoły jazdy',
     },
     {
-        marker = {1119.206, -1370.383, 13.984},
+        marker = {2618.697, -2362.868, 17.99},
         interior = 0,
         dimension = 0,
         target = {2255.866, -223.291, 96.190},
@@ -52,7 +52,7 @@ local enters = {
         marker = {2257.462, -223.382, 96.186},
         interior = 5,
         dimension = 5,
-        target = {1119.024, -1372.255, 13.984},
+        target = {2618.673, -2364.698, 17.991},
         targetInterior = 0,
         targetDimension = 0,
         name = 'Wyjście',
@@ -104,6 +104,11 @@ addEventHandler('enter:interior', resourceRoot, function(id)
     end
 
     if exports['m-anticheat']:isPlayerTriggerLocked(client) then return end
+    
+    local job = getElementData(client, 'player:job')
+    if job then
+        exports['m-jobs']:leaveJob(client)
+    end
 
     local enter = enters[id]
     if not enter then return end

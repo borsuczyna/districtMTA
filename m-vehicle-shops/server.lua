@@ -171,6 +171,7 @@ addEventHandler('vehicle-shops:buyVehicle', root, function(hash, player, shopId,
     -- local vehicleName = getVehicleNameFromModel(getElementModel(vehicle))
     local vehicleName = exports['m-models']:getVehicleName(vehicle)
     exports['m-core']:givePlayerMoney(player, 'vehicle-buy', 'Zakup pojazdu ' .. vehicleName .. ' w sklepie', -data.price)
+    setElementData(player, 'player:boughtCars', (getElementData(player, 'player:boughtCars') or 0) + 1)
 
     decreaseVehicleCount(shopId, vehicleId)
 

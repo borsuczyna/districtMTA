@@ -1,0 +1,14 @@
+<meta>
+    <script src='useful.lua' type='shared' cache='false'/>
+
+    <script src='client/stretcher.lua' type='client' cache='false'/>
+    
+    <script src='server/main.lua' type='server'/>
+    <script src='server/stretcher.lua' type='server'/>
+    <script src='server/plank.lua' type='server'/>
+    <script src='server/r1.lua' type='server'/>
+
+    <export function='useStretcher' type='server'/>
+    <export function='usePlank' type='server'/>
+    <export function='useR1Bag' type='server'/>
+</meta>

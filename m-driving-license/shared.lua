@@ -67,6 +67,35 @@ local defaultRoute = {
     }
 }
 
+local defaultRouteL = {
+    vehicle = 593,
+    spawn = {1970.507, -2438.260, 14.006, 0, 0, 180},
+    finish = {
+        interior = 3,
+        dimension = 0,
+        position = {210.098, 142.230, 1003.023},
+    },
+    checkpoints = {
+        -- {text, x, y, z, distance, angle, possible angle difference}
+        {'Odpal silnik w samolocie oraz udaj się na pas startowy', 1955.427, -2493.914, 13.539, 10},
+        {false, 1667.261, -2494.010, 55.039, 10},
+        {false, 1392.415, -2487.119, 81.039, 10},
+        {false, 1138.243, -2246.134, 161.404, 10},
+        {false, 1111.413, -1890.712, 150.904, 10},
+        {false, 1108.390, -1395.642, 269.949, 10},
+        {false, 1397.462, -1114.169, 319.449, 10},
+        {false, 1647.793, -561.311, 281.994, 10},
+        {false, 1919.084, 7.290, 372.994, 10},
+        {false, 2655.085, 123.579, 372.994, 10},
+        {false, 2745.409, -1102.703, 252.994, 10},
+        {false, 2738.339, -1695.359, 252.994, 10},
+        {false, 2268.796, -2175.185, 252.994, 10},
+        {false, 1819.590, -2493.337, 51.994, 10},
+        {'Kończymy egzamin, udaj się do ostatniego punktu', 1474.139, -2491.310, 50.055, 10},
+    },
+    callbacks = {}
+}
+
 local examMarkers = {
     {221.137, 147.822, 1003.023, 3},
     {215.873, 147.662, 1003.023, 3},
@@ -77,6 +106,7 @@ examsData = {
     A = defaultRoute,
     B = defaultRoute,
     C = defaultRoute,
+    L1 = defaultRouteL,
 }
 
 function destroyAllExamElements()
@@ -129,6 +159,6 @@ addEventHandler('onClientResourceStart', resourceRoot, function()
 end)
 
 if not localPlayer then
-    local blip = createBlip(1113.683, -1835.972, 16.600, 52, 2, 255, 0, 0, 255, 0, 9999)
+    local blip = createBlip(1153.985, -1771.820, 16.599, 52, 2, 255, 0, 0, 255, 0, 9999)
     setElementData(blip, 'blip:hoverText', 'Ośrodek szkolenia kierowców')
 end

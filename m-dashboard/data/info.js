@@ -46,16 +46,42 @@ window.dashboard_renderAccount = (data) => {
     setData('Ostatnie logowanie', new Date(data.lastActive).toLocaleString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }));
     setData('Ilość pojazdów', data.vehiclesCount);
     setData('Organizacja', data.organization);
+    dashboard_setMissions(data.missions);
 
     setArcPercent(document.querySelector('#dashboard .level-card .level'), data.exp / data.nextLevelExp * 99.99);
     
     document.querySelector('#dashboard .level-card .level-text').innerText = data.level;
     document.querySelector('#dashboard .level-card .level-text').style.fontSize = (data.level >= 1000 && '2.5rem' || data.level >= 100 && '3rem' || '4.1rem');
     
-    document.querySelectorAll('#dashboard .money-card .money')[0].innerText = `\$${data.money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-    document.querySelectorAll('#dashboard .money-card .money')[1].innerText = `\$${data.bankMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    document.querySelectorAll('#dashboard .money-card .money')[0].innerText = `\$${addCents(data.money).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    document.querySelectorAll('#dashboard .money-card .money')[1].innerText = `\$${addCents(data.bankMoney).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     document.querySelector('#dashboard #username').innerText = data.username;
     document.querySelector('#dashboard #rank').innerHTML = `<span style="color: rgb(${data.rankColor.join(', ')})">${htmlEscape(data.rank)}</span>`;
+}
+
+window.dashboard_setMissions = (missions) => {
+    let list = document.querySelector('#dashboard #missions-list');
+    list.innerHTML = '';
+
+    for (const mission of missions) {
+        let item = document.createElement('div');
+        item.className = 'item d-flex gap-2 update';
+        item.innerHTML = `
+            <img src="/m-missions/data/backgrounds/${mission.icon ?? '1.png'}" class="mission-image"/>
+            <div class="d-flex flex-column w-100">
+                <div class="d-flex justify-between">
+                    <div class="title">${mission.title}</div>
+                    ${mission.passed ? `
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="date">Wykonano</div>
+                        <div class="nice-button button-sm" onclick="dashboard_repeatMission(this, ${mission.id})">Powtórz</div>
+                    </div>` : ''}
+                </div>
+                <div class="description">${mission.description}</div>
+            </div>
+        `;
+        list.appendChild(item);
+    }
 }
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -87,4 +113,17 @@ function setArcStartAndEndAngle(element, start, end) {
 
 function setArcPercent(element, percent) {
     setArcStartAndEndAngle(element, 0, percent * 3.6);
+}
+
+dashboard_repeatMission = async (button, index) => {
+    if (isButtonSpinner(button)) return;
+
+    makeButtonSpinner(button);
+    let data = await mta.fetch('missions', 'restartMission', index);
+
+    if (data == null) {
+        notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+    }
+
+    makeButtonSpinner(button, false);
 }

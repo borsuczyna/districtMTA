@@ -168,9 +168,6 @@ addEventHandler('onVehicleEnter', root, function(player, seat)
     local job = getElementData(player, 'player:job')
     if job ~= 'courier' then return end
 
-    local jobVehicle = exports['m-jobs']:getLobbyData(player, 'trashmaster')
-    if jobVehicle ~= vehicle then return end
-
     local upgrades = getElementData(player, 'player:job-upgrades-cache') or {}
     local modelHandling = getModelHandling(getElementModel(vehicle))
     local multiplier = table.find(upgrades, 'kierowca') and 1.15 or 1
@@ -191,6 +188,17 @@ end)
 addEventHandler('onVehicleStartEnter', root, function(player, seat, jacked)
     if seat ~= 0 then return end
     if not isCourierVehicle(source) then return end
+
+    if getElementData(player, 'player:job') ~= 'courier' then
+        cancelEvent()
+        exports['m-notis']:addNotification(player, 'error', 'Kurier', 'Nie jesteś zatrudniony jako kurier')
+    end
+
+    local jobVehicle = getElementData(player, 'player:jobVehicle')
+    if jobVehicle ~= source then
+        cancelEvent()
+        exports['m-notis']:addNotification(player, 'error', 'Kurier', 'Nie możesz wsiąść do tego pojazdu')
+    end
 
     local vehicleLoaded = exports['m-jobs']:getLobbyData(player, 'vehicle:loaded')
     if not vehicleLoaded then

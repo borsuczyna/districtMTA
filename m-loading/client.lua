@@ -74,6 +74,7 @@ end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
     setPlayerHudComponentVisible('all', false)
+    setPlayerHudComponentVisible('crosshair', true)
 
     addEventHandler('interfaceLoaded', root, function()
         loadingLoaded = false

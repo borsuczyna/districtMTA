@@ -5,6 +5,9 @@ addEvent('interface:load', true)
 addEvent('login:hideLoginPanel', true)
 addEvent('core:enbDetected', true)
 
+setPlayerHudComponentVisible('all', false)
+setPlayerHudComponentVisible('crosshair', false)
+
 function setUpdates()
     local updates = exports['m-updates']:getUpdates()
     exports['m-ui']:setInterfaceData('login', 'updates', updates)

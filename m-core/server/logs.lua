@@ -27,7 +27,7 @@ function addMoneyLog(player, type, details, amount)
     local playerName = getPlayerName(player)
     local playerID = getElementData(player, 'player:id')
     local playerUID = getElementData(player, 'player:uid')
-    local message = ('%s(#ffffff%d%s) #dddddd%s - %s%s%s#dddddd - %s'):format(color, playerID, color, playerName, amount > 0 and '#2ecc71' or '#DA4A4A', amount > 0 and '+$' or '-$', math.abs(amount), details)
+    local message = ('%s(#ffffff%d%s) #dddddd%s - %s%s#dddddd - %s'):format(color, playerID, color, playerName, amount > 0 and '#2ecc71' or '#DA4A4A', addCents(amount), details)
     exports['m-admins']:addLog('money', message, {})
 end
 
@@ -58,4 +58,9 @@ end
 
 function getLogType(name)
     return USER_LOG[name]
+end
+
+function addCents(amount)
+    local char = amount < 0 and '-' or '+'
+    return ('%s$%0.2f'):format(char, math.abs(amount) / 100)
 end

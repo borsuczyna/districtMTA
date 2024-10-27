@@ -11,6 +11,16 @@ defineMissionAction({
     end
 })
 
+defineMissionAction({
+    name = 'moveToNormalDimension',
+    editorName = 'Przenieś do normalnego wymiaru',
+    arguments = {},
+    callback = function(specialId)
+        triggerServerEvent('missions:moveToNormalDimension', resourceRoot)
+        await(waitForMissionDimensionChange())
+    end
+})
+
 function waitForMissionDimensionChange()
     return Promise:new(function(resolve, _)
         addEventHandler('missions:movedToMissionDimension', resourceRoot, function()

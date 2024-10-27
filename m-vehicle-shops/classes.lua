@@ -13,7 +13,7 @@ function CheapCar(models, position, exitPosition)
         quality = {0, 1, 2},
         fuel = {0, 50},
         maxFuel = {30, 60, 5},
-        engineCapacity = {1, 2, 0.1},
+        engineCapacity = {1.2, 2.0, 0.2},
         mileage = {80000, 240000, 1},
         fuelType = {'petrol', 'diesel'},
         rotationTime = 20,
@@ -29,10 +29,26 @@ function GoodCar(models, position, exitPosition)
         quality = {3},
         fuel = {60, 60},
         maxFuel = {30, 60, 5},
-        engineCapacity = {1.8, 2, 0.1},
+        engineCapacity = {1.8, 2.2, 0.2},
         mileage = {10000, 30000, 1},
         fuelType = {'petrol', 'diesel'},
         rotationTime = 20,
+        countSpawn = {1, 5},
+    }
+end
+
+function LuxuryCar(models, position, exitPosition)
+    return {
+        models = models,
+        position = position,
+        exitPosition = exitPosition,
+        quality = {3},
+        fuel = {60, 60},
+        maxFuel = {50, 75, 5},
+        engineCapacity = {1.8, 3, 0.2},
+        mileage = {0, 1, 1},
+        fuelType = {'petrol', 'diesel'},
+        rotationTime = 60,
         countSpawn = {1, 5},
     }
 end
@@ -41,6 +57,7 @@ end
 
 function randomWithStep(first, last, stepSize)
     local steps = (last - first) / stepSize
+    local steps = math.abs(steps)
     local step = math.random(0, steps)
     return first + step * stepSize
 end

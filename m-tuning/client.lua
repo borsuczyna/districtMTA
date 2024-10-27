@@ -74,7 +74,7 @@ local function exitGarage()
     setCameraTarget(localPlayer)
 
     local vehicle = getPedOccupiedVehicle(localPlayer)
-    for _,slot in pairs(upgradeSlots) do
+    for _,slot in pairs(exports['m-upgrades']:getUpgradeSlots()) do
         restoreVehicleUpgrade(vehicle, slot)
     end
 end

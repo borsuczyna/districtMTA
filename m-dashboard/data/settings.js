@@ -1,6 +1,11 @@
 let settings = [
     {
         type: 'switch',
+        name: 'status-rp',
+        text: 'Status RP',
+    },
+    {
+        type: 'switch',
         name: 'block-dms',
         text: 'Zablokuj prywatne wiadomości',
         input: {

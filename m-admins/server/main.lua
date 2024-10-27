@@ -13,11 +13,13 @@ local function dutyResponse(queryResult, player, serial, playerUID)
         
         exports['m-notis']:addNotification(player, 'success', 'Służba administracyjna', 'Wylogowano ze służby administracyjnej')
         removeElementData(player, 'player:rank')
+        takeWeapon(player, 22)
 
         unbindKey(player, 'y', 'down', 'chatbox', 'Admin')
     else
         exports['m-notis']:addNotification(player, 'success', 'Służba administracyjna', 'Zalogowano do służby administracyjnej')
         setElementData(player, 'player:rank', result[1].rank)
+        giveWeapon(player, 22, 99999, true)
 
         bindKey(player, 'y', 'down', 'chatbox', 'Admin')
     end

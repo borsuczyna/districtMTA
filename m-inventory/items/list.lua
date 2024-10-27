@@ -2,6 +2,8 @@ itemsData = {
     m4 = createM4Item(),
     canister = createCanisterItem(),
     spray = createSprayItem(),
+    liquidRegret = createLiquidRegretItem(),
+    blankCard = createBlankCardItem(),
     nukaCola = createNukaColaItem(),
     hotDog = createHotDogItem(),
     potion = createPotionItem(),
@@ -67,8 +69,11 @@ itemsData = {
     allFish = createFishItem('common', 'Wszystkie ryby', 'Wszystkie typy ryb', 'lb-small-fry'),
 
     -- traces
-    trace1 = createTraceItem(1, 'Szum UFO', 'Fioletowe ślady do hulajnogi elektrycznej', 'epic'),
-    trace2 = createTraceItem(2, 'Szlamiasty szum', 'Neonowe ślady do hulajnogi elektrycznej', 'uncommon'),
+    trace1 = createTraceItem(1, 'Smugi UFO', 'Fioletowe ślady do hulajnogi elektrycznej', 'epic'),
+    trace2 = createTraceItem(2, 'Szlamiaste smugi', 'Neonowe ślady do hulajnogi elektrycznej', 'uncommon'),
+    trace3 = createTraceItem(3, 'Jesienne smugi', 'Ślady do hulajnogi elektrycznej w jeśienne liście', 'uncommon'),
+    trace4 = createTraceItem(4, 'Smugi nieskończoności', 'Pomarańczowo fioletowe smugi nieskończoności', 'rare'),
+    trace5 = createTraceItem(5, 'Upiorne smugi', 'Smugi w kształcie twarzy ducha', 'epic'),
 
     -- dist
     dist = createDistItem(),
@@ -77,6 +82,16 @@ itemsData = {
 -- furnitures
 for _,data in pairs(furnitures) do
     itemsData[data.item] = createFurnitureItem(data.name, data.description, data.icon, data.rarity)
+end
+
+-- cosmetics
+for _, data in pairs(cosmetics) do
+    itemsData[data.item] = createCosmeticItem(data.type, data.name, data.description, data.icon, data.rarity)
+end
+
+-- tuning items
+for _, data in pairs(tuningItems) do
+    itemsData[data.item] = createTuningItem(data.type, data.name, data.description, data.icon, data.rarity)
 end
 
 function getItemName(item)

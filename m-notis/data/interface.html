@@ -26,6 +26,7 @@
         padding: 0.625rem;
         padding-left: 0.9rem;
         position: relative;
+        cursor: pointer;
     }
 
     #notis .notification .title {
@@ -163,6 +164,7 @@
     function notis_removeNotification(notification) {
         notification.classList.remove('appear');
         notification.classList.add('disappear');
+        setTimer('notis', notis_removeNotificationInternal, 500, notification);
     }
 
     window.notis_addNotification = (type, title, description, time = 5000) => {
@@ -173,6 +175,7 @@
 
         let notification = document.createElement('div');
         notification.classList.add('notification', type, 'appear');
+        notification.onclick = () => notis_removeNotification(notification);
         notification.innerHTML = `
             <span class="title">${title}</span>
             <span class="description">${description}</span>
@@ -181,7 +184,7 @@
 
         document.getElementById('notis-wrapper').appendChild(notification);
         setTimer('notis', notis_removeNotification, time, notification);
-        setTimer('notis', notis_removeNotificationInternal, time + 500, notification);
+        // setTimer('notis', notis_removeNotificationInternal, time + 500, notification);
         notis_hudVisibilityChanged();
     }
 

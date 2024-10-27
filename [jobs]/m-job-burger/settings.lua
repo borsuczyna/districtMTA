@@ -19,7 +19,7 @@ settings = {
     burnTime = 7000,
 
     npcSpawnInterval = {10000, 55000},
-    orderMoney = {5, 10},
+    orderMoney = {300, 600}, -- w groszach, $1 = 100
 
     elements = {
         -- salad

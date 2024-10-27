@@ -87,6 +87,16 @@ jobs = {
             },
         }
     },
+    wheelsupplier = {
+        name = 'Dostawca opon',
+        background = 'trash',
+        description = 'Praca dostawcy opon polega na rozwożeniu opon do klienta.',
+        coop = false,
+        minLobbySize = 1,
+        lobbySize = 1,
+        minLevel = 1,
+        upgrades = {},
+    },
     warehouse = {
         name = 'Magazynier',
         background = 'warehouse',
@@ -114,6 +124,26 @@ jobs = {
                 description = 'Zwiększa zarobki o 10%',
                 points = 30
             },
+        }
+    },
+
+    pilotl1 = {
+        name = 'Pilot L1',
+        background = 'warehouse',
+        description = 'Praca pilota L1 polega na dostarczaniu paczek po miastach Los Santos, San Fierro i Las Venturas.',
+        coop = false,
+        minLobbySize = 1,
+        lobbySize = 1,
+        minLevel = 1,
+        upgrades = {
+            
+            {
+                name = 'Biznesmen',
+                key = 'biznesmen',
+                description = 'Zwiększa zarobki o 5%',
+                points = 15
+            },
+
         }
     },
 }

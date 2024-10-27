@@ -110,7 +110,8 @@ window.inventory_hideOptions = () => {
     optionsEl.style.opacity = 0;
     optionsEl.classList.remove('show');
     hideOptionsTimer = setTimeout(() => {
-        optionsEl.style.display = 'none';
+        if (!optionsEl.classList.contains('show'))
+            optionsEl.style.display = 'none';
     }, 200);
 
     if (waitingForCount) {

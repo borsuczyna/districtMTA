@@ -45,7 +45,7 @@
     let paymentData = {};
 
     payment_renderPayment = () => {
-        document.querySelector('#payment #text').innerText = `Dostępna kwota do wypłaty z frakcji ${paymentData.faction}: $${paymentData.payment}`;
+        document.querySelector('#payment #text').innerText = `Dostępna kwota do wypłaty z frakcji ${paymentData.faction}: $${addCents(paymentData.payment)}`;
     }
 
     payment_close = () => {

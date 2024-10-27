@@ -92,4 +92,5 @@ addEventHandler('house-create:create', root, function(data)
     if not data then return end
     setClipboard(data)
     triggerServerEvent('house:create', resourceRoot, data)
+    exports['m-notis']:addNotification('success', 'Domek', 'Stworzono domek')
 end)

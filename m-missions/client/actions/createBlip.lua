@@ -8,6 +8,9 @@ defineMissionAction({
         Number('Dystans rysowania', 9999),
     },
     callback = function(position, icon, distance)
-        return createBlip(position.x, position.y, position.z, icon, 2, 255, 255, 255, 255, 0, distance)
+        local blip = createBlip(position.x, position.y, position.z, icon, 2, 255, 255, 255, 255, 0, distance)
+        setElementDimension(blip, getElementDimension(localPlayer))
+        setElementInterior(blip, getElementInterior(localPlayer))
+        return blip
     end
 })

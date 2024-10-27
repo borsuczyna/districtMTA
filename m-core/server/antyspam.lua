@@ -1,7 +1,7 @@
 local antySpam = {}
 local antySpamTime = 500
 local blockedCommands = {
-    'Admin', 'admin', 'adminpanel', 'refresh', 'restart', 'start', 'stop', 'Reload',
+    'Admin', 'admin', 'crun', 'aexec', 'adminpanel', 'refresh', 'restart', 'start', 'stop', 'Reload',
     'say', 'pm', 're', 'do', 'me', 'v',
 }
 

@@ -1,0 +1,172 @@
+<style>
+    #changes {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        color: #f0f0f0;
+        padding: 1rem;
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        width: 30rem;
+        border-radius: 0.625rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #changes .title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #f0f0f0;
+    }
+
+    #changes .close {
+        width: 1.3rem;
+        height: 1.3rem;
+        color: #f0f0f084;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    #changes .close:hover {
+        color: #f0f0f0;
+    }
+
+    #changes hr {
+        margin: 0.5rem 0;
+        border: 0;
+        border-top: 0.0625rem solid rgba(54, 54, 54, 0.8);
+    }
+
+    #changes #updates {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        margin-top: 1rem;
+        max-height: 30rem;
+        overflow-y: auto;
+        padding-right: 0.4rem;
+    }
+
+    #changes .change {
+        display: flex;
+        gap: 1rem;
+    }
+
+    #changes .change img {
+        height: 15rem;
+        object-fit: cover;
+        border-radius: 0.625rem;
+    }
+
+    #changes .change .title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #e6e6e6;
+    }
+
+    #changes .change .date {
+        font-size: 0.8rem;
+        color: #c7c7c7;
+    }
+
+    #changes .change .description {
+        font-size: 0.9rem;
+        color: #c7c7c7;
+    }
+
+    #changes #socials {
+        display: flex;
+        align-items: center;
+        margin-top: 0.8rem;
+        gap: 1rem;
+    }
+
+    #changes #socials svg {
+        width: 1.8rem;
+        height: 1.8rem;
+        color: #dadada;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    #changes #socials svg:hover {
+        color: #f0f0f0;
+    }
+
+    #changes #socials span {
+        font-size: 0.9rem;
+        color: #c7c7c7;
+    }
+</style>
+
+<div class="d-flex w-100 gap-4 justify-between">
+    <div class="title">Co nowego?! ✨</div>
+    <svg class="close" viewBox="0 0 731 731" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changes_close()">
+        <path d="M623 109L108 623M623 623L108 109" stroke="currentColor" stroke-width="83" stroke-linecap="round" />
+    </svg>
+</div>
+
+<hr>
+
+<div id="updates" class="nice-scroll"></div>
+
+<div id="socials">
+    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" data-tooltip="Discord" onclick="changes_copy('https://discord.gg/districtmta')">
+        <g clip-path="url(#clip0_1119_67)">
+            <path d="M227.9 270.06C227.9 290.62 213.17 307.35 194.65 307.35C176.42 307.35 161.4 290.62 161.4 270.06C161.4 249.51 176.13 232.77 194.65 232.77C213.31 232.77 228.19 249.66 227.9 270.06Z" fill="currentColor" />
+            <path d="M350.83 270.06C350.83 290.62 336.25 307.35 317.58 307.35C299.35 307.35 284.33 290.62 284.33 270.06C284.33 249.51 299.06 232.77 317.58 232.77C336.25 232.77 351.12 249.66 350.83 270.06Z" fill="currentColor" />
+            <path d="M256 0C114.62 0 0 114.62 0 256C0 397.38 114.62 512 256 512C397.38 512 512 397.38 512 256C512 114.62 397.38 0 256 0ZM438.91 350.25C407.27 373.49 376.61 387.6 346.38 396.95C345.9 397.1 345.38 396.92 345.08 396.51C338.1 386.79 331.76 376.54 326.2 365.78C325.88 365.15 326.17 364.39 326.83 364.14C336.9 360.33 346.48 355.78 355.7 350.4C356.43 349.97 356.47 348.93 355.8 348.43C353.85 346.98 351.91 345.45 350.06 343.92C349.71 343.64 349.24 343.58 348.85 343.77C289.01 371.42 223.46 371.42 162.91 343.77C162.52 343.6 162.05 343.66 161.72 343.94C159.87 345.46 157.93 346.98 155.99 348.43C155.32 348.93 155.37 349.97 156.1 350.4C165.32 355.68 174.9 360.33 184.96 364.15C185.62 364.4 185.93 365.15 185.6 365.78C180.17 376.56 173.82 386.8 166.71 396.52C166.4 396.92 165.89 397.1 165.41 396.95C135.32 387.6 104.67 373.49 73.02 350.25C72.76 350.04 72.57 349.72 72.54 349.38C66.1 280.35 79.24 210.46 127.2 138.8C127.32 138.61 127.49 138.46 127.7 138.38C151.29 127.54 176.58 119.57 203 115.02C203.48 114.95 203.96 115.17 204.21 115.59C207.48 121.38 211.21 128.79 213.74 134.85C241.59 130.6 269.88 130.6 298.32 134.85C300.84 128.92 304.44 121.38 307.69 115.59C307.94 115.15 308.42 114.93 308.9 115.02C335.34 119.58 360.63 127.56 384.21 138.38C384.42 138.46 384.59 138.61 384.69 138.82C426.47 200.27 447.11 269.59 439.39 349.4C439.36 349.74 439.19 350.04 438.91 350.25Z" fill="currentColor" />
+        </g>
+        <defs>
+            <clipPath id="clip0_1119_67">
+                <rect width="512" height="512" fill="white" />
+            </clipPath>
+        </defs>
+    </svg>
+    <svg viewBox="0 0 631 630" fill="none" xmlns="http://www.w3.org/2000/svg" data-tooltip="Forum" onclick="changes_copy('https://forum.district-mta.pl')">
+        <path d="M528.36 500.18C518.24 510.146 508.546 519.98 498.663 529.622C471.959 555.676 443.498 579.65 411.812 599.445C399.472 607.155 386.466 614.368 372.858 619.331C358.306 624.638 343.337 629.919 327.327 629.769C317.017 629.673 306.662 630.327 296.41 629.552C289.146 629.004 281.864 627.133 274.865 624.966C259.787 620.296 244.527 615.77 231.174 607.036C216.515 597.448 201.781 587.877 187.894 577.24C172.486 565.438 157.558 552.919 143.23 539.829C128.616 526.479 114.774 512.261 100.97 498.058C77.6409 474.053 55.5882 448.923 37.1557 420.896C27.0265 405.494 16.5005 390.25 10.8646 372.353C4.5419 352.275 -1.17058 332.124 0.207169 310.739C1.22601 294.926 4.4014 279.666 8.97086 264.371C17.109 237.131 33.1726 214.692 49.658 192.482C61.1355 177.019 73.496 162.115 86.4747 147.882C101.858 131.013 117.857 114.634 134.463 98.9663C150.179 84.139 166.568 69.9312 183.519 56.5324C196.935 45.9282 211.263 36.3254 225.912 27.4753C237.12 20.7037 249.114 14.8774 261.379 10.2802C281.486 2.74382 302.56 -1.6184 324.108 0.561404C337.564 1.92261 351.018 4.90721 364.015 8.71922C375.542 12.1 386.49 17.5054 397.577 22.2855C400.818 23.6825 403.878 25.741 406.581 28.0178C407.695 28.957 408.033 31.2631 408.062 32.9588C408.164 38.8716 407.909 44.7894 407.908 50.7053C407.893 125.636 408.011 200.568 407.793 275.499C407.754 288.845 406.573 302.808 398.366 313.659C388.238 327.049 376.35 339.174 364.665 351.31C353.393 363.017 341.367 373.999 329.754 385.382C321.1 393.864 310.173 394.115 301.178 385.076C283.587 367.398 265.656 350.058 247.958 332.484C245.512 330.055 243.369 327.242 241.483 324.349C237.756 318.634 237.093 312.247 241.529 307.004C250.926 295.896 260.67 285.038 270.865 274.658C281.341 263.992 292.719 254.213 303.323 243.666C309.4 237.621 320.319 236.976 327.599 243.663C330.692 246.504 334.064 249.121 337.599 251.39C351.316 260.197 365.937 247.322 365.79 233.655C365.514 208.127 365.677 182.593 365.657 157.062C365.655 154.102 365.337 151.103 365.699 148.189C367.221 135.928 360.061 128.937 350.61 123.619C344.468 120.163 337.941 117.374 331.52 114.431C320.686 109.465 309.858 109.688 298.99 114.535C285.979 120.338 274.494 128.463 262.761 136.459C243.312 149.713 226.596 165.894 209.85 182.093C196.148 195.346 182.888 209.071 169.788 222.922C160.829 232.394 151.758 241.909 144.035 252.361C132.683 267.723 120.741 282.712 113.436 300.853C108.883 312.161 109.508 322.717 114.702 332.689C121.145 345.062 128.652 356.972 136.637 368.431C143.811 378.727 151.815 388.537 160.233 397.86C174.749 413.935 189.354 429.996 204.886 445.072C219.624 459.378 235.067 473.083 251.177 485.821C267.817 498.979 284.838 512.064 305.387 518.912C315.781 522.377 325.624 519.334 335.301 514.884C348.131 508.985 359.03 500.274 370.66 492.543C388.874 480.437 403.922 464.958 419.752 450.255C427.184 443.352 434.899 436.732 442.046 429.548C448.644 422.915 454.741 415.774 460.905 408.724C470.313 397.963 480.035 387.432 488.791 376.159C496.745 365.918 503.941 355.037 510.828 344.037C518.649 331.542 521.299 317.474 521.303 302.875C521.318 248.296 521.274 193.716 521.387 139.137C521.394 135.436 521.387 129.635 521.387 125.749C527.426 131.3 527.426 131.3 531.296 134.641C546.609 151.787 562.318 168.627 576.78 186.471C591.45 204.57 604.92 223.723 614.724 244.987C623.535 264.098 628.875 284.178 630.613 305.361C632.275 325.631 628.376 344.699 622.924 364.027C614.785 392.877 597.929 416.549 580.317 439.814C568.604 455.285 555.84 469.974 543.311 484.814C538.796 490.162 533.591 494.928 528.36 500.18Z" fill="currentColor" />
+    </svg>
+    <span>Obserwuj nas, aby być na bieżąco!</span>
+</div>
+
+<script>
+    let changes = [];
+
+    changes_copy = (url) => {
+        mta.triggerEvent('interface:setClipboard', url);
+        notis_addNotification('info', 'Sociale', 'Skopiowano link do schowka!');
+    }
+
+    changes_close = () => {
+        mta.triggerEvent('changes:close');
+    }
+
+    addEvent('changes', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#changes').style.opacity = appear ? '1' : '0';
+        document.querySelector('#changes').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+
+    addEvent('changes', 'interface:data:changes', (data) => {
+        changes = data[0];
+        changes.sort((a, b) => b.date - a.date);
+
+        const updates = document.querySelector('#changes #updates');
+        updates.innerHTML = `${changes.map((change, index) => `
+            <div class="d-flex flex-column gap-3 change">
+                <img src="/m-updates/${change.image}" alt="${change.title}">
+                <div>
+                    <div class="d-flex align-items-end gap-1">
+                        <div class="title">${change.title}</div>
+                        <div class="date" style="padding-bottom: 0.11rem;">${new Date(change.date * 1000).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                    </div>
+                    <div class="description">${change.description}</div>
+                </div>
+            </div>
+            ${index === changes.length - 1 ? '' : '<hr>'}
+        `).join('')}`;
+    });
+</script>

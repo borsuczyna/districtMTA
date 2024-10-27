@@ -18,6 +18,11 @@ function changeRemSize(size) {
     setRemSize(currentSize + size);
 }
 
+function addCents(value) {
+    let cents = (value % 100).toString().padStart(2, '0');
+    return `${Math.floor(value / 100)}.${cents}`;
+}
+
 function generateHash(length = 16) {
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let hash = '';

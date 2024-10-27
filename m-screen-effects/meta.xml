@@ -1,0 +1,19 @@
+<meta>
+    <script src='syncAnimations.lua' type='server' />
+
+    <script src='utils.lua' type='client' cache='false' />
+    <script src='applyEffect.lua' type='client' cache='false' />
+    
+    <file src='tex/color.png' />
+
+    <file src='shaders/colors.fx' />
+    <file src='shaders/wobble.fx' />
+    <file src='shaders/esotropiaH.fx' />
+    <file src='shaders/esotropiaV.fx' />
+    <file src='shaders/shake.fx' />
+
+    <export function='addDrunkEffect' type='client' />
+    <export function='addMariEffect' type='client' />
+    <export function='addHeroinEffect' type='client' />
+    <export function='addCrackEffect' type='client' />
+</meta>

@@ -54,6 +54,6 @@ function renderNotification()
         v.y = math.min(v.y + 0.15, 0)
 
         dxDrawImage(0, 0 + (25/zoom) * v.y, 1920/zoom, 22/zoom, 'data/background.png', 0, 0, 0, tocolor(v.color[1], v.color[2], v.color[3], 240 * v.alpha))
-        dxDrawText(v.text, sx/2, 9/zoom + (22/zoom) * v.y, nil, nil, tocolor(v.color[1], v.color[2], v.color[3], 255 * v.alpha), 1, exports['m-ui']:getFont('Inter-Regular', 7/zoom), 'center', 'center', false, false)
+        dxDrawText(v.text, sx/2, 9/zoom + (22/zoom) * v.y, nil, nil, tocolor(v.color[1], v.color[2], v.color[3], 255 * v.alpha), 1, exports['m-ui']:getFont('Inter-Regular', 10/zoom), 'center', 'center', false, false)
     end
 end

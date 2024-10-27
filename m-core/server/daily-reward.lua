@@ -1,14 +1,13 @@
 local seed = 32130
 local dailyRewards = {
-    {type = 'money', text = '$%d w kasiorce', count = 100},
-    {type = 'exp', text = '%d expa', count = 10},
-    {type = 'custom kurwo', text = 'jebac cie chuj cie to %d xd', count = 10},
+    {type = 'money', text = '$%d', count = 100},
+    {type = 'exp', text = '%d exp', count = 10},
 }
 
 local specialDayRewards = {
-    [6] = {type = 'money', text = '$%d w kasiorce', count = 10000, callback = function(player)
-        print('special reward for day 6')
-    end},
+    -- [6] = {type = 'money', text = '$%d w kasiorce', count = 10000, callback = function(player)
+    --     print('special reward for day 6')
+    -- end},
 }
 
 function pseudoMathRandom(a, b, seed)
@@ -45,7 +44,7 @@ function givePlayerReward(player, reward)
         reward.callback(player)
     else
         if reward.type == 'money' then
-            givePlayerMoney(player, 'daily reward', 'Nagroda dzienna', count)
+            givePlayerMoney(player, 'daily reward', 'Nagroda dzienna', count*100)
         elseif reward.type == 'exp' then
             givePlayerExp(player, count)
         end

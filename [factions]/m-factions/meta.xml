@@ -16,6 +16,7 @@
     <script src='server/payment.lua' type='server'/>
     <script src='server/gates.lua' type='server'/>
     <script src='server/virtual-parking.lua' type='server'/>
+    <script src='server/vehicle-storage.lua' type='server'/>
 
     <file src='data/interface.html'/>
     <file src='data/shelf.html'/>
@@ -31,5 +32,7 @@
     <export function='createManagePanel' type='server'/>
     <export function='createDutyMarker' type='server'/>
     <export function='createGate' type='server'/>
+    <export function='createVirtualParking' type='server'/>
+    <export function='createVehicleStorage' type='server'/>
     <export function='doesPlayerHaveAnyFactionPermission' type='server'/>
 </meta>

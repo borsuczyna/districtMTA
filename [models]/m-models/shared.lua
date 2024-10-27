@@ -9,7 +9,6 @@ models = {
         custom = true,
         type = 'object',
         model = 1337,
-        txd = 'int-2-3',
     },
     ['int-3'] = {
         custom = true,
@@ -32,22 +31,34 @@ models = {
         type = 'object',
         model = 1337,
     },
-    ['spawn-ls'] = {
-        custom = false,
+    ['karabin'] = {
+        custom = true,
         type = 'object',
-        model = 4825,
+        model = 1337,
+        txd = 'karabin',
     },
-    ['spawn-road'] = {
-        custom = false,
+    ['karabin-podstawa'] = {
+        custom = true,
         type = 'object',
-        model = 4823,
+        model = 1337,
+        txd = 'karabin',
     },
-    ['spawn-garage'] = {
-        custom = false,
-        type = 'object',
-        model = 4824,
-        txd = 'spawn-ls',
-    },
+    -- ['spawn-ls'] = {
+    --     custom = false,
+    --     type = 'object',
+    --     model = 4825,
+    -- },
+    -- ['spawn-road'] = {
+    --     custom = false,
+    --     type = 'object',
+    --     model = 4823,
+    -- },
+    -- ['spawn-garage'] = {
+    --     custom = false,
+    --     type = 'object',
+    --     model = 4824,
+    --     txd = 'spawn-ls',
+    -- },
     ['building-fix'] = {
         custom = false,
         type = 'object',
@@ -134,21 +145,17 @@ models = {
         type = 'object',
         model = 5795,
     },
-    ['market-station'] = {
-        type = 'object',
-        model = 5773,
-    },
-    ['market-station-fix'] = {
-        type = 'object',
-        model = 5772,
-    },
-    ['market-station-road'] = {
-        type = 'object',
-        model = 5798,
-    },
     ['market-minipark'] = {
         type = 'object',
         model = 5732,
+    },
+    ['market-road-1'] = {
+        type = 'object',
+        model = 5862,
+    },
+    ['market-road-2'] = {
+        type = 'object',
+        model = 6301,
     },
     ['railway-station'] = {
         custom = true,
@@ -425,6 +432,10 @@ models = {
         model = 1337,
         txd = 'car_repair_shop',
     },
+    ['ammu_nation_ls'] = {
+        type = 'object',
+        model = 4552,
+    },
     ['5521_banner_removed'] = {
         custom = false,
         type = 'object',
@@ -440,6 +451,17 @@ models = {
         type = 'object',
         model = 1337,
         txd = 'ufo',
+    },
+    ['ufo3'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+        txd = 'ufo',
+    },
+    ['pumpkin'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
     },
     ['407'] = {
         custom = false,
@@ -490,10 +512,7 @@ models = {
         model = 1337,
         txd = 'box'
     },
-    ['5131'] = {
-        type = 'object',
-        model = 5131,
-    },
+
     ['5411'] = {
         type = 'object',
         model = 5411,
@@ -501,10 +520,6 @@ models = {
     ['5461'] = {
         type = 'object',
         model = 5461,
-    },
-    ['5810'] = {
-        type = 'object',
-        model = 5810,
     },
     ['5995'] = {
         type = 'object',
@@ -533,6 +548,10 @@ models = {
     ['5435'] = {
         type = 'object',
         model = 5435,
+    },
+    ['5151'] = {
+        type = 'object',
+        model = 5151,
     },
     ['5495'] = {
         type = 'object',
@@ -581,31 +600,31 @@ models = {
         model = 1337,
         custom = true,
     },
-    ['6280'] = {
-        type = 'object',
-        model = 6280,
-        txd = 'molo',
-    },
-    ['6293'] = {
-        type = 'object',
-        model = 6293,
-        txd = 'molo',
-    },
-    ['6314'] = {
-        type = 'object',
-        model = 6314,
-        txd = 'molo',
-    },
-    ['6417'] = {
-        type = 'object',
-        model = 6417,
-        txd = 'molo',
-    },
-    ['6428'] = {
-        type = 'object',
-        model = 6428,
-        txd = 'molo',
-    },
+    -- ['6280'] = {
+    --     type = 'object',
+    --     model = 6280,
+    --     txd = 'molo',
+    -- },
+    -- ['6293'] = {
+    --     type = 'object',
+    --     model = 6293,
+    --     txd = 'molo',
+    -- },
+    -- ['6314'] = {
+    --     type = 'object',
+    --     model = 6314,
+    --     txd = 'molo',
+    -- },
+    -- ['6417'] = {
+    --     type = 'object',
+    --     model = 6417,
+    --     txd = 'molo',
+    -- },
+    -- ['6428'] = {
+    --     type = 'object',
+    --     model = 6428,
+    --     txd = 'molo',
+    -- },
     ['glenpark-houses-1'] = {
         type = 'object',
         model = 5443,
@@ -643,6 +662,49 @@ models = {
         model = 5501,
         txd = 'alahambra-2',
     },
+
+    -- samd
+    ['deskamd'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['lifepack'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['nosze'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['plecak'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['punktmedyczny'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['szyny'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['szynyotwarte'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    ['torbar1'] = {
+        custom = true,
+        type = 'object',
+        model = 1337,
+    },
+    
     -- ['alahambra-4'] = {
     --     type = 'object',
     --     model = 5502,
@@ -653,10 +715,49 @@ models = {
         model = 5397,
     },
 
+    ['przecho/5149'] = {
+        type = 'object',
+        model = 5149,
+    },
+    ['przecho/5187'] = {
+        type = 'object',
+        model = 5187,
+    },
+
+    -- 5113, 5144, 5173, 5188, 17601, 17602, 17927
+    ['5113'] = {
+        type = 'object',
+        model = 5113,
+    },
+    ['5144'] = {
+        type = 'object',
+        model = 5144,
+    },
+    ['5173'] = {
+        type = 'object',
+        model = 5173,
+    },
+    ['5188'] = {
+        type = 'object',
+        model = 5188,
+    },
+    ['17601'] = {
+        type = 'object',
+        model = 17601,
+    },
+    ['17602'] = {
+        type = 'object',
+        model = 17602,
+    },
+    ['17927'] = {
+        type = 'object',
+        model = 17927,
+    },
+
     -- {3980, 'city_hall_3d.dff', 'city_hall_3d.txd', 'city_hall_3d.col', true, true},
 	-- {4002, 'city_hall_3d_2.dff', false, 'city_hall_3d_2.col', true, true},
 	-- {4163, 'city_hall_3d_road.dff', false, 'city_hall_3d_road.col', true, true},
-    
+
     ['models/city_hall_3d'] = {
         type = 'object',
         model = 3980,
@@ -668,6 +769,30 @@ models = {
     ['models/city_hall_3d_road'] = {
         type = 'object',
         model = 4163,
+    },
+    ['models/SaraBuilding'] = {
+        type = 'object',
+        model = 4018,
+        txd = 'models/Sara',
+    },
+    ['models/SaraGround'] = {
+        type = 'object',
+        model = 4027,
+        txd = 'models/Sara',
+    },
+    ['models/SaraBuildingLOD'] = {
+        type = 'object',
+        model = 4075,
+        txd = 'models/Sara',
+    },
+    ['models/SaraGroundLOD'] = {
+        type = 'object',
+        model = 4076,
+        txd = 'models/Sara',
+    },
+    ['models/magazyn-ls'] = {
+        type = 'object',
+        model = 5131,
     },
     
     -- {6053, 'auto_dealership.dff', 'auto_dealership.txd', 'auto_dealership.col', true, true},
@@ -700,6 +825,11 @@ models = {
     ['models/police_station_ls'] = {
         type = 'object',
         model = 5134,
+    },
+    ['models/police_station_ls_celldoor'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
     },
     ['models/police_station_ls_lod'] = {
         type = 'object',
@@ -837,6 +967,14 @@ models = {
         type = 'weapon',
         model = 349,
     },
+    ['weapons/ak47'] = {
+        type = 'weapon',
+        model = 355,
+    },
+    ['weapons/colt45'] = {
+        type = 'weapon',
+        model = 346,
+    },
 
     ['speedcamera'] = {
         type = 'object',
@@ -868,11 +1006,11 @@ models = {
     --     model = 5813,
     -- },
 
-    -- ['furniture/ufo-lamp'] = {
-    --     type = 'object',
-    --     model = 2000,
-    --     custom = true,
-    -- },
+    ['furniture/ufo-lamp'] = {
+        type = 'object',
+        model = 2000,
+        custom = true,
+    },
     ['furniture/Blat'] = {
         type = 'object',
         model = 2000,
@@ -1060,6 +1198,133 @@ models = {
         txd = 'furniture/textures'
     },
 
+    -- cosmetics
+    ['cosmetics/AlienGlasses'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+    ['cosmetics/FoilHat'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+    ['cosmetics/Nerka'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+
+    ['halloween1/dynia1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/dynia2'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/dynia3'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/dynia4'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/maskakrzyk'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/maskakrzyk2'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/torbanaleb'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/uszykrolika1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/uszykrolika2'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'halloween1/tekstury'
+    },
+    ['halloween1/plecak'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+    },
+
+    -- skins
+    ['skins/sapd/cadet'] = {
+        type = 'skin',
+        model = 265,
+    },
+    ['skins/sapd/crpl1'] = {
+        type = 'skin',
+        model = 266,
+    },
+    ['skins/sapd/crpl2'] = {
+        type = 'skin',
+        model = 267,
+    },
+    ['skins/sapd/po1'] = {
+        type = 'skin',
+        model = 280,
+    },
+    ['skins/sapd/po2'] = {
+        type = 'skin',
+        model = 281,
+    },
+    ['skins/sapd/po3'] = {
+        type = 'skin',
+        model = 282,
+    },
+    ['skins/sapd/po31'] = {
+        type = 'skin',
+        model = 283,
+    },
+    ['skins/sapd/sgt1'] = {
+        type = 'skin',
+        model = 284,
+    },
+    ['skins/sapd/sgt2'] = {
+        type = 'skin',
+        model = 285,
+    },
+    ['skins/sapd/zarzad'] = {
+        type = 'skin',
+        model = 286,
+    },
+    ['skins/1'] = {
+        type = 'skin',
+        model = 308,
+    },
+    ['skins/3'] = {
+        type = 'skin',
+        model = 309,
+    },
+
     -- vehicles
     ['vehicles/destino'] = {
         name = 'Destino',
@@ -1117,6 +1382,10 @@ models = {
         vehicleId = 626,
         custom = true,
     },
+    ['vehicles/dune'] = {
+        type = 'vehicle',
+        model = 403
+    },
 
     -- tuning
     ['tuning/spoiler'] = {
@@ -1129,6 +1398,108 @@ models = {
         model = 1337,
         custom = true,
     },
+    ['tuning/fbump1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/mtxd',
+    },
+    ['tuning/fbump1_dam'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/mtxd',
+    },
+    ['tuning/rbump1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/mtxd',
+    },
+    ['tuning/hoodvent1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/mtxd',
+    },
+    ['tuning/pbar'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/mtxd'
+    },
+    ['tuning/BumperRear1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/BumperRear1'
+    },
+
+    ['tuning/pack2/Bodykit/BumperFront2'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Bodykit/BumperFront2_dam'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Bodykit/BumperRear1'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Bodykit/BumperRear1_dam'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Bodykit/BumperRear2'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    -- ['tuning/pack2/Bodykit/BumperRear2_dam'] = {
+    --     type = 'object',
+    --     model = 1337,
+    --     custom = true,
+    --     txd = 'tuning/pack2/CarParts'
+    -- },
+    ['tuning/pack2/Spoilers/Spoiler'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Spoilers/Spoiler2'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Spoilers/Spoiler3'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+    ['tuning/pack2/Spoilers/Spoiler4'] = {
+        type = 'object',
+        model = 1337,
+        custom = true,
+        txd = 'tuning/pack2/CarParts'
+    },
+
+    -- ['infernus'] = {
+    --     type = 'vehicle',
+    --     model = 411,
+    -- },
 }
 
 local vehicleNames = {}
@@ -1137,6 +1508,10 @@ for key, value in pairs(models) do
     if value.type == 'vehicle' and value.name and value.vehicleId then
         vehicleNames[value.vehicleId] = value.name
     end
+end
+
+function doesModelExist(model)
+    return models[model] ~= nil
 end
 
 function getModelsCount()
@@ -1159,7 +1534,8 @@ function encodeFileIn(path, pathOut, hash)
         fileDelete(pathOut)
     end
     
-    local newData = teaEncode(data, hash)
+    -- local newData = teaEncode(data, hash)
+    local newData = encodeString('tea', data, {key = hash})
     local newFile = fileCreate(pathOut)
     fileWrite(newFile, newData)
     fileClose(newFile)
@@ -1173,8 +1549,23 @@ function decodeFileIn(path, hash)
     local data = fileRead(file, size)
     fileClose(file)
     
-    return data
     -- return teaDecode(data, hash)
+    local newData = decodeString('tea', data, {key = hash})
+    if fileExists('data/temp.dat') then
+        fileDelete('data/temp.dat')
+    end
+
+    local newFile = fileCreate('data/temp.dat')
+    fileWrite(newFile, newData)
+    fileClose(newFile)
+
+    return 'data/temp.dat'
+end
+
+function clearDecodeFileIn()
+    if fileExists('data/temp.dat') then
+        fileDelete('data/temp.dat')
+    end
 end
 
 function createCustomObject(model, x, y, z, rx, ry, rz)
@@ -1217,7 +1608,7 @@ function getVehicleName(vehicle)
         return _getVehicleName(vehicle)
     end
 
-    return vehicleNames[model] or 'Unknown'
+    return vehicleNames[model] or _getVehicleName(vehicle)
 end
 
 local _getVehicleNameFromModel = getVehicleNameFromModel

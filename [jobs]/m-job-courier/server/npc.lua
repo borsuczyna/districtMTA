@@ -37,19 +37,24 @@ function giveJobReward(players)
     local multiplier = exports['m-jobs']:getJobMultiplier('courier')
     local perPlayerMoney = math.floor(totalMoney / #players)
     local upgradePoints = math.max(math.random(unpack(settings.upgradePointsPerPackage)), 0)
+    local giveExp = math.random(0, 100) > 75
 
     for _,player in pairs(players) do
         exports['m-jobs']:giveMoney(player, perPlayerMoney)
         if upgradePoints > 0 then
             exports['m-jobs']:giveUpgradePoints(player, upgradePoints)
         end
+        if giveExp then
+            exports['m-core']:givePlayerExp(player, 1)
+        end
         exports['m-jobs']:giveTopPoints(player, 1)
+        setElementData(player, 'player:deliveredCourierPackages', (getElementData(player, 'player:deliveredCourierPackages') or 0) + 1)
     end
 
     if upgradePoints > 0 then
-        exports['m-notis']:addNotification(players, 'success', 'Kurier', ('Za dostarczoną paczke otrzymujesz $%d + %d punktów ulepszeń (razem $%d)'):format(perPlayerMoney, upgradePoints, totalMoney))
+        exports['m-notis']:addNotification(players, 'success', 'Kurier', ('Za dostarczoną paczke otrzymujesz $%.2f + %d punktów ulepszeń (razem $%.2f)'):format(perPlayerMoney/100, upgradePoints, totalMoney/100))
     else
-        exports['m-notis']:addNotification(players, 'success', 'Kurier', ('Za dostarczoną paczke otrzymujesz $%d (razem $%d)'):format(perPlayerMoney, totalMoney))
+        exports['m-notis']:addNotification(players, 'success', 'Kurier', ('Za dostarczoną paczke otrzymujesz $%.2f (razem $%.2f)'):format(perPlayerMoney/100, totalMoney/100))
     end
 end
 

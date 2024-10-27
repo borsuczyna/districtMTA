@@ -103,6 +103,8 @@ addEventHandler('fishing:catchFish', resourceRoot, function(success)
         
         exports['m-inventory']:addPlayerItem(player, fish, 1)
         exports['m-notis']:addNotification(player, 'info', 'Łowienie', 'Złowiono ' .. itemName .. ' x1.')
+        setElementData(player, 'player:catchedFishes', (getElementData(player, 'player:catchedFishes') or 0) + 1)
+        setElementData(player, 'player:catchedFishesSession', (getElementData(player, 'player:catchedFishesSession') or 0) + 1)
 
         local fishingRod = getElementData(player, 'player:equippedFishingRod')
         if not fishingRod then return end

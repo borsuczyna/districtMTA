@@ -1,5 +1,6 @@
 addEvent('missions:requestServerSideVehicle', true)
 addEvent('missions:requestServerSidePed', true)
+addEvent('missions:requestServerSideWeapon', true)
 addEvent('missions:warpIntoMissionVehicle', true)
 addEvent('missions:destroyMissionElements', true)
 addEvent('missions:destroyMissionElement', true)
@@ -8,12 +9,18 @@ addEvent('missions:setLightsState', true)
 addEvent('missions:makeMePedSyncer', true)
 addEvent('missions:removePedFromVehicle', true)
 addEvent('missions:moveToMissionDimension', true)
+addEvent('missions:moveToNormalDimension', true)
 addEvent('missions:moveOutOfMissionDimension', true)
+addEvent('missions:finishMission', true)
+addEvent('missions:restartMission')
+addEvent('missions:stopRepeatingMission', true)
 
 local missionElements = {}
+local missionsTimeouts = {}
 missions = {}
 
 local function isMissionElement(player, element)
+    if element == player then return true end
     if not missionElements[player] then return false end
 
     for _, missionElements in pairs(missionElements[player]) do
@@ -39,7 +46,9 @@ local function destroyMissionElements(player)
     if not missionElements[player] then return end
 
     for _, element in pairs(missionElements[player]) do
-        destroyElement(element)
+        if isElement(element) then
+            destroyElement(element)
+        end
     end
 
     missionElements[player] = nil
@@ -86,6 +95,23 @@ addEventHandler('missions:requestServerSidePed', resourceRoot, function(mission,
     setElementDimension(ped, 7000 + uid)
 
     triggerClientEvent(client, 'missions:receiveServerSidePed', resourceRoot, mission, index, ped)
+end)
+
+addEventHandler('missions:requestServerSideWeapon', resourceRoot, function(mission, ped, index)
+    local uid = getElementData(client, 'player:uid')
+    if not uid then return end
+
+    if not missions[mission] then return end
+
+    local weapon = missions[mission].allowedWeapons[index]
+    if not weapon then return end
+
+    missionElements[client]["me"] = client
+    local pedElement = missionElements[client][ped]
+    if not pedElement then return end
+
+    giveWeapon(pedElement, weapon.id, weapon.ammo, true)
+    triggerClientEvent(client, 'missions:receiveWeaponGiven', resourceRoot, mission, index)
 end)
 
 addEventHandler('missions:warpIntoMissionVehicle', resourceRoot, function(ped, vehicle, seat)
@@ -149,14 +175,59 @@ addEventHandler('missions:moveToMissionDimension', resourceRoot, function()
     triggerClientEvent(client, 'missions:movedToMissionDimension', resourceRoot)
 end)
 
+addEventHandler('missions:moveToNormalDimension', resourceRoot, function()
+    setElementDimension(client, 0)
+    triggerClientEvent(client, 'missions:movedToMissionDimension', resourceRoot)
+end)
+
 addEventHandler('missions:moveOutOfMissionDimension', resourceRoot, function()
     removePedFromVehicle(client)
     setElementDimension(client, 0)
+    setElementInterior(client, 0)
     triggerClientEvent(client, 'missions:movedOutOfMissionDimension', resourceRoot)
+end)
+
+addEventHandler('missions:stopRepeatingMission', resourceRoot, function()
+    local x, y, z = unpack(getElementData(client, 'player:spawn'))
+    setElementPosition(client, x, y, z)
+end)
+
+addEventHandler('missions:finishMission', resourceRoot, function(index)
+    if missionsTimeouts[client] and missionsTimeouts[client] > getTickCount() then return end
+
+    local currentMission = getPlayerMission(client)
+    if currentMission ~= index then return end
+    
+    setPlayerMission(client)
+    missionsTimeouts[client] = getTickCount() + 35000
+    exports['m-dashboard']:addPlayerSeasonPassStars(client, 8)
+    exports['m-notis']:addNotification(client, 'success', 'Misje', 'Za ukończenie misji otrzymujesz 8 gwiazdek przepustki sezonowej!')
 end)
 
 addEventHandler('onVehicleStartExit', root, function(ped)
     if getElementData(ped, 'missions:vehicleExitLocked') then
         cancelEvent()
     end
+end)
+
+addEventHandler('missions:restartMission', resourceRoot, function(hash, player, index)
+    local uid = getElementData(player, 'player:uid')
+    if not uid then return end
+
+    exports['m-notis']:addNotification(player, 'warning', 'Misje', 'Powtarzanie misji jest obecnie wyłączone z powodów technicznych.')
+    if true then return end
+
+    local currentMission = getPlayerMission(player)
+    -- if currentMission < index then
+    --     exports['m-notis']:addNotification(player, 'error', 'Misje', 'Nie możesz ponownie rozpocząć misji, której nie ukończyłeś.')
+    --     return
+    -- end
+
+    triggerClientEvent(player, 'missions:startMission', resourceRoot, index)
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Sukces'})
+end)
+
+-- on player quit
+addEventHandler('onPlayerQuit', root, function()
+    destroyMissionElements(source)
 end)

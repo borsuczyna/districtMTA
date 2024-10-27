@@ -67,5 +67,9 @@ addEventHandler('factions:payOutPayment', root, function(hash, player)
 
     exports['m-core']:givePlayerMoney(player, 'factions', ('Wypłata z frakcji %s'):format(playerFaction), payAmount)
     setElementData(player, 'player:payDutyTime', 0)
-    exports['m-ui']:respondToRequest(hash, {status = 'success', message = ('Wypłacono %d$'):format(payAmount)})
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = ('Wypłacono %s'):format(addCents(payAmount))})
 end)
+
+function addCents(amount)
+    return '$' .. string.format('%0.2f', amount / 100)
+end

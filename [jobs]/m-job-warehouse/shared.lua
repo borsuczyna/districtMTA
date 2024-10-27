@@ -1,11 +1,11 @@
 settings = {
     jobStart = Vector3(2255.055, -222.137, 96.190),
-    blipPosition = Vector3(1118.947, -1370.447, 13.984),
+    blipPosition = Vector3(2618.697, -2362.868, 17.99),
     packagePosition = Vector3(2255.714, -200.529, 96.181),
     interior = 5,
     dimension = 5,
     packageAttach = {24, 0.12, 0.05, -0.2, -15 - 95, -3, 0},
-    moneyPerPackage = {15, 30},
+    moneyPerPackage = {1070, 1160}, -- w groszach, 1$ = 100
     upgradePointsPerPackage = {-5, 1},
 
     shelfs = {

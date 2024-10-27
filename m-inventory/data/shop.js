@@ -52,7 +52,7 @@ function updateSelectedItems() {
     }, 0);
 
     if (isNaN(totalPrice)) totalPrice = 'Zależy od towaru';
-    else totalPrice = `${totalPrice >= 0 ? '$' : '-$'}${Math.abs(totalPrice)}`;
+    else totalPrice = `${totalPrice >= 0 ? '$' : '-$'}${addCents(Math.abs(totalPrice))}`;
 
     element.querySelector('#total-price').innerText = `Cena: ${totalPrice}`;
 }
@@ -111,9 +111,9 @@ window.inventory_renderShopItems = (element, items, myItems = false) => {
                             <span class="label" style="font-weight: 600; color: #ffffffdd;">
                                 ${
                                     !myItems ?
-                                    `${typeof item.price == 'number' ? `$${item.price} za sztukę` : 'Zależy od towaru'}` :
+                                    `${typeof item.price == 'number' ? `$${addCents(item.price)} za sztukę` : 'Zależy od towaru'}` :
                                     (
-                                        typeof item.price == 'number' ? `${item.count} x $${item.price} = $${item.total}` : 'Zależy od towaru'
+                                        typeof item.price == 'number' ? `${item.count} x $${addCents(item.price)} = $${addCents(item.total)}` : 'Zależy od towaru'
                                     )
                                 }
                             </span>

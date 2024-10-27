@@ -83,7 +83,9 @@ function renderRadar()
     local function drawBlip(v)
         local bx, by, bz = getElementPosition(v)
         local blipIcon = getBlipIcon(v)
-        local size = blipIcon == 0 and 36/zoom or 45/zoom
+        local r, g, b = getBlipColor(v)
+        local size = 45/zoom
+        local size = blipIcon == 1 and 36/zoom or 45/zoom
         local visible = getBlipVisibleDistance(v)
 
         if not (blipIcon == 46 or blipIcon == 47) or getKeyState('k') then
@@ -96,7 +98,12 @@ function renderRadar()
                             local angle = findRotation(x, y, bx, by)
                             angle = angle - cz + 180
                             local x, y = getPointFromDistanceRotation(radarX + radarW/2, radarY + radarH/2, dist, angle)
-                            dxDrawImage(x - size/2, y - (size*1.15)/2, size, size*1.15, 'data/images/blips/'..blipIcon..'.png')
+
+                            if blipIcon == 1 or blipIcon == 0 then
+                                dxDrawImage(x - (size*1.2)/2, y - (size*1.3)/2, size*1.2, size*1.3, 'data/images/blips/'..blipIcon..'.png', 0, 0, 0, tocolor(r, g, b, 255))
+                            else
+                                dxDrawImage(x - (size*1.2)/2, y - (size*1.3)/2, size*1.2, size*1.3, 'data/images/blips/'..blipIcon..'.png', 0, 0, 0)
+                            end
                         end
                     end
                 end
@@ -111,16 +118,9 @@ function renderRadar()
         local icon = getBlipIcon(v)
         local interior = getElementInterior(v)
         local dimension = getElementDimension(v)
-        if icon ~= 0 and interior == pinterior and dimension == pdimension then
-            drawBlip(v)
-        end
-    end
+        local attachedTo = getElementAttachedTo(v)
 
-    for k,v in pairs(blips) do
-        local icon = getBlipIcon(v)
-        local interior = getElementInterior(v)
-        local dimension = getElementDimension(v)
-        if icon == 0 and interior == pinterior and dimension == pdimension then
+        if interior == pinterior and dimension == pdimension and attachedTo ~= localPlayer then
             drawBlip(v)
         end
     end

@@ -58,7 +58,8 @@ window.dashboard_getVehicleDetails = (id) => {
 
 window.dashboard_vehicleDetails = function(id, data) {
     let vehicle = dataCache.vehicles.find(v => v.uid == id);
-    let vehicleName = window.vehicleNames[parseInt(vehicle.model) - 400];
+    // let vehicleName = window.vehicleNames[parseInt(vehicle.model) - 400];
+    let vehicleName = vehicle.modelName;
 
     let details = document.querySelector('#dashboard #tabs #vehicle-details');
     let position = data?.position || vehicle.position.split(',').map(v => parseFloat(v));

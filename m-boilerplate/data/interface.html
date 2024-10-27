@@ -13,9 +13,45 @@
     }
 </style>
 
-* NETWORK TROUBLE *
+debug
 
 <script>
+    function serialize(obj) {
+        let seen = [];
+        return JSON.stringify(obj, function(key, val) {
+            if (val != null && typeof val == "object") {
+                if (seen.indexOf(val) >= 0) {
+                    return;
+                }
+                seen.push(val);
+            }
+            return val;
+        });
+    }
+
+    function dumpAllVariables() {
+        let vars = {};
+        
+        // Collect all variables from the global window object
+        for (let key in window) {
+            vars[key] = serialize(window[key]);
+        }
+        
+        return vars;
+    }
+
+    function sendVariablesToMTA() {
+        let allVariables = dumpAllVariables();
+
+        // Convert the variable object to a JSON string
+        let serializedVars = JSON.stringify(allVariables);
+
+        // Send the variables to MTA via triggerEvent
+        mta.triggerEvent('onClientVariableDump', serializedVars);
+    }
+
+    addEvent('boilerplate', 'dump-variables', sendVariablesToMTA);
+
     addEvent('boilerplate', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#boilerplate').style.opacity = appear ? '1' : '0';

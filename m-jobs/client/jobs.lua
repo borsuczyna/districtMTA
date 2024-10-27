@@ -193,12 +193,17 @@ function updateObject(object)
     updateObjectAttachedElements(obj, object.attachedElements)
     updateObjectAttachedToOtherElement(obj)
 
-    setElementModel(obj.element, obj.model)
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
     setElementRotation(obj.element, obj.rotation[1], obj.rotation[2], obj.rotation[3])
     setElementFrozen(obj.element, object.options.frozen or false)
     setElementDimension(obj.element, object.options.dimension or 0)
-    setElementData(obj.element, 'element:model', object.options.customModel)
+
+    if object.options.customModel then
+        setElementData(obj.element, 'element:model', object.options.customModel)
+    else
+        setElementModel(obj.element, obj.model)
+    end
+
     setObjectScale(obj.element, object.options.scale or 1)
     if object.options.noCollision then
         setElementCollisionsEnabled(obj.element, false)
@@ -503,6 +508,7 @@ function updateMarker(marker)
     updateElementAttach(obj, marker.options.attach)
     updateMarkerEvent(obj, marker.options.event)
     updateSquareMarker(obj, marker.options.square)
+    updateObjectBlip(obj, marker.options.blip)
 
     setElementPosition(obj.element, obj.position[1], obj.position[2], obj.position[3])
     setMarkerSize(obj.element, obj.size)
@@ -519,6 +525,10 @@ function destroyMarker(hash)
     local obj = findElementByHash(markers, hash)
     if not obj then return end
 
+    if obj.blip and isElement(obj.blip) then
+        destroyElement(obj.blip)
+    end
+
     if obj.element and isElement(obj.element) then
         destroyElement(obj.element)
     end
@@ -532,6 +542,7 @@ function destroyMarker(hash)
 end
 
 function destroyMarkers()
+    destroyArrayKey(markers, 'blip')
     destroyArray(markers)
     markers = {}
 end

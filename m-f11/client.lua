@@ -37,6 +37,8 @@ function updateF11Data()
     for i, blip in ipairs(blips) do
         local attachedTo = getElementAttachedTo(blip)
         local interior = getElementInterior(attachedTo or blip)
+        local blipID = getBlipIcon(blip)
+
         if interior == myInterior then
             table.insert(thisInteriorBlips, blip)
         end

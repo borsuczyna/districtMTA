@@ -10,10 +10,12 @@ local lockedElementDatas = {
     'player:attachedVehicle', 'player:attachVehicle', 'player:occupiedVehicle',
     'player:job', 'player:job-hash', 'player:job-players', 'player:job-end', 'player:job-earned', 'player:job-start',
     'player:equippedFishingRod', 'player:bankMoney', 'player:licenses',
+    'player:jailedPosition', 'player:jail', 'player:jailedBy', 'player:jailReason', 'player:handcuffed', 'player:handcuffing',
+    'player:mission', 'player:loadMission', 'player:cosmetics',
     'marker:title', 'marker:desc', 'marker:house', 'marker:longDesc', 'marker:enter', 'marker:target',
-    'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation',
-    'player:holdingPackage', 'player:scooter-trace',
-    'controller', 'element:animations',
+    'player:house', 'player:editingFurnitures', 'player:holdingFurniture', 'player:animation', 'player:lastActive',
+    'player:holdingPackage', 'player:scooter-trace', 'player:mysticHat', 'player:boughtCars', 'player:catchedFishes', 'player:catchedFishesSession',
+    'controller', 'element:animations', 'player:afkNow', 'player:deliveredBurgerOrders', 'player:deliveredCourierPackages', 'player:trashDelivered', 'player:packagesDelivered',
     'mission:element', 'missions:vehicleDamageProof', 'marker:manage-faction', 'marker:duty-faction', 'marker:shelf-items',
     'gate:faction', 'gate:object', 'gate:position', 'gate:openBy', 'gate:state', 'gate:time', 'gate:disableCollision',
     'vehicle:carExchange', 'marker:carExchange:prices', 'colshape:carExchange:prices', 'vehicle:custom-upgrades',
@@ -25,16 +27,19 @@ local lockedElementDatas = {
 
     'element:model', 'element:ghostmode',
     'blip:hoverText', 'redirected', 'area:hoverText', 'area:className',
+    'speedcamera:limit',
 
     'repair:colShape', 'repair:marker', 'repair:state', 'repair:data', 'repair:render', 
     'repair:vehicle', 'repair:time', 'vehicle:repairing', 'player:knownIntros',
+
+    'data',
 }
 
 local selfElementDatas = {
     'player:afk', 'player:gameTime', 'player:gameInterval', 'player:blockedDMs', 'player:blockedDMsReason',
     'player:hiddenHUD', 'player:hiddenRadar', 'player:hiddenNametags',
     'player:blockedPremiumChat', 'player:interfaceSize', 'player:typing', 'player:controllerMode',
-    'missions:vehicleExitLocked',
+    'missions:vehicleExitLocked', 'player:inv'
 }
 
 local selfVehicleElementDatas = {

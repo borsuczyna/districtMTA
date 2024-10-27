@@ -49,7 +49,7 @@ end
 
 function updateHud(avatar)
     if not hudVisible then return end
-    
+
     setPlayerHudComponentVisible('all', false)
     setPlayerHudComponentVisible('crosshair', true)
 

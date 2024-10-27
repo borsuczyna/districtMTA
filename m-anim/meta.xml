@@ -15,6 +15,8 @@
 
     <file src='animations/kiwanie.json'/>
     <file src='animations/odlatuje.json'/>
+    <file src='animations/carry.json'/>
+    <file src='animations/carry2.json'/>
     <file src='animations/carry-burger.json'/>
     <file src='animations/inspect.json'/>
     <file src='animations/gada.json'/>

@@ -149,7 +149,8 @@ function giveMoney(player, amount)
     local jobName = getJobName(job)
 
     dbExec(connection, 'INSERT INTO `m-jobs-money-history` (user, job, money) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE money = money + ?', uid, job, amount, amount)
-    exports['m-core']:addMoneyLog(player, 'job', ('Wypłata z pracy %s'):format(jobName), amount)
+    -- exports['m-core']:addMoneyLog(player, 'job', ('Wypłata z pracy %s'):format(jobName), amount)
+    exports['m-core']:givePlayerMoney(player, 'job', ('Wypłata z pracy %s'):format(jobName), amount)
 
     local earned = getElementData(player, 'player:job-earned') or 0
     setElementData(player, 'player:job-earned', earned + amount)
@@ -204,6 +205,12 @@ end
 
 addEventHandler('onVehicleStartEnter', root, function(ped, jacked, door)
     local jobVehicle = getElementData(source, 'vehicle:job')
+
+    if getElementData(ped, 'player:job') and not jobVehicle then
+        cancelEvent()
+        return
+    end
+    
     if not jobVehicle then return end
 
     local players = jobVehicle.players

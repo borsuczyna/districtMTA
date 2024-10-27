@@ -273,11 +273,6 @@
             id: data.id,
         };
 
-        if (data.onclick) {
-            blip.addEventListener('click', data.onclick.bind(null, blipData));
-            map.holding = false;
-        }
-
         map.blips.push(blipData);
 
         // requestAnimationFrame(updateMap.bind(null, map));

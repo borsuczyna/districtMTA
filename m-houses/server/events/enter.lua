@@ -13,7 +13,8 @@ addEventHandler('houses:enterHouse', resourceRoot, function(hash, player, houseU
     if not house then return end
 
     local canEnter = not house.owner or house.owner == uid or table.find(house.sharedPlayers, uid) or not house.locked
-    if not canEnter then
+    local isInside = getElementData(player, 'player:house')
+    if not canEnter and not isInside then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie masz dostępu do tego domu.'})
         return
     end

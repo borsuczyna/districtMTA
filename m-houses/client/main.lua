@@ -5,6 +5,7 @@ addEvent('houses:hideInterface')
 local currentHouseId = nil
 
 addEventHandler('onClientMarkerHit', root, function(element, matchingDimension)
+    if not source then return end
     if element ~= localPlayer or not matchingDimension or getPedOccupiedVehicle(localPlayer) then return end
 
     local houseId = getElementData(source, 'marker:house')
@@ -31,6 +32,7 @@ addEventHandler('houses:getData', resourceRoot, function(data)
 
     data.interiorData = interiorData
     data.furnitureData = exports['m-inventory']:getFurnitures()
+    data.furnitureShops = exports['m-furniture-shop']:getShops()
     setHousesUIVisible(true, data)
 end)
 

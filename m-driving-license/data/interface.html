@@ -56,6 +56,7 @@
         justify-content: center;
         align-items: center;
         transition: background 0.2s, color 0.2s, border 0.2s;
+        cursor: pointer;
     }
 
     #driving-license .category-item:hover {
@@ -68,6 +69,7 @@
         background: rgba(43, 43, 43, 0.9);
         border: 0.0625rem solid rgba(66, 66, 66, 0.6);
         color: #fff;
+        cursor: default;
     }
 
     #driving-license #questions {
@@ -170,6 +172,7 @@
                 <div onclick="drivingLicense_setCategory(this)" class="category-item">A</div>
                 <div onclick="drivingLicense_setCategory(this)" class="category-item active">B</div>
                 <div onclick="drivingLicense_setCategory(this)" class="category-item">C</div>
+                <div onclick="drivingLicense_setCategory(this)" class="category-item">L1</div>
             </div>
         </div>
     </div>
@@ -274,6 +277,14 @@
             name: 'Samochody ciężarowe',
             description: 'Kategoria C umożliwia prowadzenie samochodów ciężarowych o dopuszczalnej masie całkowitej powyżej 3,5 tony. Wymagane jest ukończenie kursu prawa jazdy kategorii C oraz zdanie egzaminu praktycznego.',
             cost: 2000,
+            preview: '/m-jobs/data/images/burger.png',
+            questions: defaultQuestions
+        },
+        L1: {
+            id: 'Kategoria L1',
+            name: 'Samoloty',
+            description: 'Kategoria L1 umożliwia latanie samolotami o dopuszczalnej masie całkowitej poniżej 4 ton. Wymagane jest ukończenie kursu prawa jazdy kategorii C oraz zdanie egzaminu praktycznego.',
+            cost: 5000,
             preview: '/m-jobs/data/images/burger.png',
             questions: defaultQuestions
         }

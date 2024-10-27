@@ -7,7 +7,7 @@ function stopAnimation(player)
         end
 
         playingPlayersAnimations[player] = nil
-        unbindKey(player, 'enter', 'down', stopAnimation)
+        unbindKey(player, 'space', 'down', stopAnimation)
     end
 end
 
@@ -19,12 +19,16 @@ addEventHandler('animpanel:playAnimation', resourceRoot, function(category, inde
     local arg = clone(animation)
     table.remove(arg, 1)
 
-    if category ~= 'Samochód' and getPedOccupiedVehicle(client) then
-        exports['m-notis']:addNotification(client, 'error', 'Animacje', 'Nie możesz użyć tej animacji będąc w pojeździe.')
-        return
-    elseif category == 'Samochód' and not getPedOccupiedVehicle(client) then
-        exports['m-notis']:addNotification(client, 'error', 'Animacje', 'Nie możesz użyć tej animacji nie będąc w pojeździe.')
-        return
+    local vehicle = getPedOccupiedVehicle(client)
+
+    if vehicle then
+        if category ~= 'Samochód' then
+            return exports['m-notis']:addNotification(client, 'error', 'Animacje', 'Nie możesz użyć teraz tej animacji w pojeździe.')
+        end
+    end
+
+    if vehicle and getVehicleType(vehicle) ~= 'Automobile' then
+        return exports['m-notis']:addNotification(client, 'error', 'Animacje', 'Nie możesz użyć teraz tej animacji.')
     end
 
     if not playingPlayersAnimations[client] then
@@ -33,5 +37,5 @@ addEventHandler('animpanel:playAnimation', resourceRoot, function(category, inde
     table.insert(playingPlayersAnimations[client], arg)
 
     setPedAnimation(client, arg[1], arg[2], arg[3] and arg[3] or -1, not arg[4], false, false, true)
-    bindKey(client, 'enter', 'down', stopAnimation, client)
+    bindKey(client, 'space', 'down', stopAnimation, client)
 end)

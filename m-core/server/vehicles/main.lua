@@ -51,7 +51,7 @@ local function loadPrivateVehicle(data, player, position)
     local engine = data.engine == 1
     local lightsState = data.lightsState
     local tuning = fromJSON(data.tuning) or {}
-    local dirt = map(split(data.dirt, ','), tonumber)
+    -- local dirt = map(split(data.dirt, ','), tonumber)
 
     -- local vehicle = createVehicle(data.model, x, y, z, rx, ry, rz, plate)
     local vehicle = createVehicle(400, x, y, z, rx, ry, rz, plate)
@@ -68,10 +68,14 @@ local function loadPrivateVehicle(data, player, position)
     setElementData(vehicle, 'vehicle:engineCapacity', tonumber(data.engineCapacity))
     setElementData(vehicle, 'vehicle:mileage', tonumber(data.mileage))
     setElementData(vehicle, 'vehicle:carExchange', data.exchangeData and fromJSON(data.exchangeData) or false)
+    
+    local ownerName = exports['m-core']:getPlayerNameByUid(data.owner)
+    setElementData(vehicle, 'vehicle:owner', data.owner)
+    setElementData(vehicle, 'vehicle:ownerName', ownerName)
+    
     setElementHealth(vehicle, health)
     setVehicleColor(vehicle, unpack(color))
     setVehicleHeadLightColor(vehicle, color[13] or 255, color[14] or 255, color[15] or 255)
-    setElementData(vehicle, 'vehicle:owner', data.owner)
     setElementFrozen(vehicle, frozen)
     setVehicleEngineState(vehicle, engine)
     setVehicleOverrideLights(vehicle, lightsState)
@@ -94,11 +98,14 @@ local function loadPrivateVehicle(data, player, position)
         exports['m-upgrades']:addVehicleUpgrade(vehicle, tuning)
     end
     
-    exports['m-dirt']:setVehicleDirtLevel(vehicle, dirt[1])
-    exports['m-dirt']:setVehicleDirtProgress(vehicle, dirt[2])
+    -- exports['m-dirt']:setVehicleDirtLevel(vehicle, dirt[1])
+    -- exports['m-dirt']:setVehicleDirtProgress(vehicle, dirt[2])
 
     if data.lastDriver then
+        local lastDriverName = exports['m-core']:getPlayerNameByUid(data.lastDriver)
+        
         setElementData(vehicle, 'vehicle:lastDriver', data.lastDriver)
+        setElementData(vehicle, 'vehicle:lastDriverName', lastDriverName)
     end
 
     if data.sharedPlayers then
@@ -174,7 +181,8 @@ function buildSavePrivateVehicleQuery(vehicle)
     local frozen = isElementFrozen(vehicle)
     local engine = getVehicleEngineState(vehicle)
     local lightsState = getVehicleOverrideLights(vehicle)
-    local dirt = {exports['m-dirt']:getVehicleDirtLevel(vehicle), exports['m-dirt']:getVehicleDirtProgress(vehicle)}
+    local sharedPlayers = getElementData(vehicle, 'vehicle:sharedPlayers')
+    -- local dirt = {exports['m-dirt']:getVehicleDirtLevel(vehicle), exports['m-dirt']:getVehicleDirtProgress(vehicle)}
     local r, g, b = getVehicleHeadLightColor(vehicle)
     table.insert(color, r); table.insert(color, g); table.insert(color, b)
 
@@ -207,7 +215,8 @@ function buildSavePrivateVehicleQuery(vehicle)
         engine = engine and 1 or 0,
         lightsState = lightsState,
         tuning = toJSON(tuning),
-        dirt = table.concat(dirt, ','),
+        sharedPlayers = sharedPlayers and table.concat(sharedPlayers, ',') or '',
+        -- dirt = table.concat(dirt, ','),
     }
 
     local query = 'UPDATE `m-vehicles` SET ' .. table.concat(mapk(saveData, function(value, key)
@@ -422,6 +431,111 @@ function createPrivateVehicle(player, hash, data)
     dbQuery(createPrivateVehicleResult, {player, hash, Vector3(x, y, z), Vector3(rx, ry, rz), 'Pomyślnie zakupiono pojazd'}, connection, query, data.model, positionString, rotationString, data.fuel, data.maxFuel, data.engineCapacity, data.mileage, data.fuelType, color, wheels, panels, doors, lights, uid, randomPlate())
 end
 
+-- command /vdodaj [gracz] to add player as .sharedPlayers
+addCommandHandler('vdodaj', function(player, command, target)
+    local vehicle = getPedOccupiedVehicle(player)
+    if not vehicle then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Nie jesteś w żadnym pojeździe.')
+        return
+    end
+
+    local uid = getElementData(vehicle, 'vehicle:uid')
+    if not uid then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Możesz współdzielić tylko prywatne pojazdy.')
+        return
+    end
+
+    local owner = getElementData(vehicle, 'vehicle:owner')
+    if owner ~= getElementData(player, 'player:uid') then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Nie jesteś właścicielem tego pojazdu.')
+        return
+    end
+    
+    local targetPlayer = exports['m-core']:getPlayerFromPartialName(target)
+    if not targetPlayer then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Nie znaleziono gracza o podanej nazwie.')
+        return
+    end
+
+    local targetUid = getElementData(targetPlayer, 'player:uid')
+    if not targetUid then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Ten gracz nie jest zalogowany.')
+        return
+    end
+
+    local sharedPlayers = getElementData(vehicle, 'vehicle:sharedPlayers') or {}
+    if table.find(sharedPlayers, targetUid) then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Ten gracz już ma dostęp do tego pojazdu.')
+        return
+    end
+
+    table.insert(sharedPlayers, targetUid)
+    setElementData(vehicle, 'vehicle:sharedPlayers', sharedPlayers)
+
+    local vehicleUid = getElementData(vehicle, 'vehicle:uid')
+    local vehicleName = exports['m-models']:getVehicleName(vehicle)
+
+    local messageA = ('Gracz %s udostępnił Ci pojazd %s (%s)'):format(htmlEscape(getPlayerName(player)), vehicleName, vehicleUid)
+    local messageB = ('Udostępniłeś pojazd %s (%s) graczowi %s'):format(vehicleName, vehicleUid, htmlEscape(getPlayerName(targetPlayer)))
+    exports['m-notis']:addNotification(player, 'info', 'Współdzielenie pojazdu', messageB)
+    exports['m-notis']:addNotification(targetPlayer, 'info', 'Współdzielenie pojazdu', messageA)
+end)
+
+-- /vusun [gracz] to remove player from .sharedPlayers
+addCommandHandler('vusun', function(player, command, target)
+    local vehicle = getPedOccupiedVehicle(player)
+    if not vehicle then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Nie jesteś w żadnym pojeździe.')
+        return
+    end
+
+    local uid = getElementData(vehicle, 'vehicle:uid')
+    if not uid then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Możesz współdzielić tylko prywatne pojazdy.')
+        return
+    end
+
+    local owner = getElementData(vehicle, 'vehicle:owner')
+    if owner ~= getElementData(player, 'player:uid') then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Nie jesteś właścicielem tego pojazdu.')
+        return
+    end
+    
+    local targetPlayer = exports['m-core']:getPlayerFromPartialName(target)
+    if not targetPlayer then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Nie znaleziono gracza o podanej nazwie.')
+        return
+    end
+
+    local targetUid = getElementData(targetPlayer, 'player:uid')
+    if not targetUid then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Ten gracz nie jest zalogowany.')
+        return
+    end
+
+    local sharedPlayers = getElementData(vehicle, 'vehicle:sharedPlayers') or {}
+    if not table.find(sharedPlayers, targetUid) then
+        exports['m-notis']:addNotification(player, 'error', 'Współdzielenie pojazdu', 'Ten gracz nie ma dostępu do tego pojazdu.')
+        return
+    end
+
+    table.remove(sharedPlayers, table.find(sharedPlayers, targetUid))
+    setElementData(vehicle, 'vehicle:sharedPlayers', sharedPlayers)
+    
+    local playerVehicle = getPedOccupiedVehicle(targetPlayer)
+    if playerVehicle == vehicle then
+        removePedFromVehicle(targetPlayer)
+    end
+
+    local vehicleUid = getElementData(vehicle, 'vehicle:uid')
+    local vehicleName = exports['m-models']:getVehicleName(vehicle)
+
+    local messageA = ('Gracz %s usunął Cię z dostępu do pojazdu %s (%s)'):format(htmlEscape(getPlayerName(player)), vehicleName, vehicleUid)
+    local messageB = ('Usunąłeś graczowi %s dostęp do pojazdu %s (%s)'):format(htmlEscape(getPlayerName(targetPlayer)), vehicleName, vehicleUid)
+    exports['m-notis']:addNotification(player, 'info', 'Współdzielenie pojazdu', messageB)
+    exports['m-notis']:addNotification(targetPlayer, 'info', 'Współdzielenie pojazdu', messageA)
+end)
+
 addEventHandler('onResourceStart', resourceRoot, loadPrivateVehicles)
 addEventHandler('onResourceStop', resourceRoot, saveAllPrivateVehicles)
 addEventHandler('onVehicleStartEnter', root, tryVehicleStartEnter)
@@ -434,3 +548,9 @@ end)
 addEventHandler('onVehicleExit', root, function(player, seat)
     setElementData(player, 'player:occupiedVehicle', false)
 end)
+
+function htmlEscape(s)
+    return s:gsub('[<>&"]', function(c)
+        return c == '<' and '&lt;' or c == '>' and '&gt;' or c == '&' and '&amp;' or '&quot;'
+    end)
+end

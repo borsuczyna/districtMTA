@@ -161,22 +161,13 @@ addEventHandler('carExchange:putUp', root, function(hash, player, vehicleUid, am
         return
     end
 
-    local tuning = {}
-
-    for i = 0, 16 do
-        local value = getVehicleUpgradeOnSlot(vehicle, i)
-        if value and value ~= 0 then
-            table.insert(tuning, getPartName(value))
-        end
-    end
-
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wystawiłeś pojazd na giełdę.'})
     setElementData(vehicle, 'vehicle:carExchange', {
-        price = tonumber(amount),
+        price = tonumber(amount) * 100,
         owner = owner,
         ownerName = getPlayerName(player),
         vehicleName = exports['m-models']:getVehicleName(vehicle),
-        tuning = tuning,
+        tuning = getVehicleTuning(vehicle),
         carExchangeIndex = carExchangeIndex
     })
 end)
@@ -291,12 +282,12 @@ addEventHandler('carExchange:sendCarExchangeOffer', root, function(hash, player,
     awaitingOffers[targetPlayer] = {
         player = player,
         vehicle = vehicleUid,
-        price = tonumber(price),
+        price = tonumber(price) * 100,
         expires = getTickCount() + 30000
     }
 
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wysłano ofertę.'})
-    exports['m-notis']:addNotification(targetPlayer, 'info', 'Giełda', ('Otrzymałeś ofertę kupna pojazdu od %s.<br>Pojazd: (%d) %s<br>Aby zakupić pojazd wpisz /kuppojazd %d<br><br>Przed kupnem sprawdź czy UID pojazdu się zgadza, administracja nie odpowiada za oszustwa!'):format(getPlayerName(player), vehicleUid, exports['m-models']:getVehicleName(vehicle), vehicleUid), 30000)
+    exports['m-notis']:addNotification(targetPlayer, 'info', 'Giełda', ('Otrzymałeś ofertę kupna pojazdu od %s.<br>Pojazd: (%d) %s<br>Cena: %s<br>Aby zakupić pojazd wpisz /kuppojazd %d<br><br>Przed kupnem sprawdź czy UID pojazdu się zgadza, administracja nie odpowiada za oszustwa!'):format(getPlayerName(player), vehicleUid, exports['m-models']:getVehicleName(vehicle), addCents(price * 100), vehicleUid), 30000)
 end)
 
 -- buy
@@ -369,5 +360,9 @@ addCommandHandler('kuppojazd', function(player, cmd, vehicleUid)
     exports['m-notis']:addNotification(targetPlayer, 'success', 'Giełda', 'Pomyślnie sprzedałeś pojazd.')
     dbExec(connection, 'UPDATE `m-vehicles` SET `owner` = ? WHERE `uid` = ?', uid, vehicleUid)
 end)
+
+function addCents(amount)
+    return '$' .. string.format('%0.2f', amount / 100)
+end
 
 createCarExchange({1479.557, -1694.691, 13.383}, {0, 5000}, {1440.669, -1699.689, 14.695-2.5, 78, 75, 5})

@@ -90,7 +90,7 @@ local function renderRenderTarget()
 
         dxDrawRoundedRectangle(7, 70, 788, fontsHeights[2] + 17, tocolor(35, 35, 35, 245), 15)
         dxDrawText('Cena', 18, 78, 785, 432, tocolor(255, 255, 255, 230), 1, fonts[2], 'left', 'top', false, false, false, true)
-        dxDrawText('$' .. formatNumber(carExchange.price), 18, 78, 785, 432, tocolor(255, 255, 255, 230), 1, fonts[2], 'right', 'top', false, false, false, true)
+        dxDrawText(addCents(carExchange.price), 18, 78, 785, 432, tocolor(255, 255, 255, 230), 1, fonts[2], 'right', 'top', false, false, false, true)
         
         dxDrawRoundedRectangle(7, 135, 788, fontsHeights[2] + 17, tocolor(35, 35, 35, 245), 15)
         dxDrawText('Przebieg', 18, 143, 785, 432, tocolor(255, 255, 255, 230), 1, fonts[2], 'left', 'top', false, false, false, true)
@@ -225,3 +225,10 @@ addEventHandler('onClientRestore', root, function()
 end)
 
 addEventHandler('onClientPreRender', root, render)
+
+function addCents(amount)
+    -- return '$' .. string.format('%0.2f', amount / 100)
+    local value = ('%0.2f'):format(amount / 100)
+    local integer, decimal = value:match('(%d+)%.(%d+)')
+    return ('%s.%s $'):format(formatNumber(integer), decimal)
+end

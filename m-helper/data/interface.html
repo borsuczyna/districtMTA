@@ -71,7 +71,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 0.9rem;
     }
 
     #helper .level {
@@ -129,7 +128,6 @@
         background: rgba(34, 34, 34, 0.5);
         border-bottom: 0.0625rem solid rgba(54, 54, 54, 0.45);
         color: #ffffffb1;
-        cursor: pointer;
     }
 
     #helper .item:last-child {
@@ -143,7 +141,6 @@
     #helper .item.active {
         background: rgba(44, 44, 44, 0.8);
         color: #fff;
-        cursor: default;
     }
 
     #helper #view {
@@ -192,6 +189,10 @@
     }
 
     #helper #map-1 {
+        height: 10rem;
+    }
+
+    #helper #map-2 {
         height: 10rem;
     }
 
@@ -303,8 +304,8 @@
                 
                 <h2>Zarobienie pierwszych pieniędzy</h2>
                 <p>Dobra jeżeli zdałeś już prawo jazdy to pora zacząć prawdziwą rozgrywke lecz pewnie zastanawias się jak dostać się do jakieś pracy, a więc przychodze z odpowiedzią na serwerze znajdują się hulajnogi są oczywiście płatne lecz w Dashboardzie możesz odebrać darmowe sianko.</p>
-                <p>Hulajnoge znajdziesz: <a href="#" onclick="helper_focusMapBlip('scooter')">Hulajnogi</a> </p>
-                <p>Jak masz już hulajnoge to na sam start najlepiej jest udać się do pracy burgerowni w której możesz pracować sam lub ze swoim znajmomym. Praca znajduje się tutaj <a href="#" onclick="helper_focusMapBlip('job-burger')">Pracownik burgerowni</a>. </p> 
+                <p>Hulajnoge znajdziesz między innymi tutaj <a href="#" onclick="helper_focusMapBlip('scooter')">Hulajnogi czy też na spawnach lub w różnych popularnych miejscach</a> </p>
+                <p>Jak masz już hulajnoge to na sam start najlepiej jest udać się do pracy burgerowni w której możesz pracować sam lub ze swoim znajmomym. Praca znajduje się tutaj <a href="#" onclick="helper_focusMapBlip('job-burger')">Pracownik burgerowni</a> lub też możesz iść do pracy magazyniera która znajduje się tutaj <a href="#" onclick="helper_focusMapBlip('job-box')">Pracownik burgerowni</a>. </p> 
 
                 <h2>Zakup pierwszego pojazdu</h2>
                 <p>Gratulacje zarobiłeś swoje pierwsze pieniądze, czas kupić własną bestie którą możesz kupić w różnych miejscach w całym San Andreans lecz my zalecamy na sam start kupić samochód z najtańszego salonu który znajduje się <a href="#" onclick="helper_focusMapBlip('poor-cardealer')">Cygan</a>. </p>
@@ -313,18 +314,24 @@
             </div>
             <div class="tab" data-tab="test">
                 <h2>Zarobki</h2>
-                <p> Na naszym serwerze zarobki zostały zoptymalizowane w taki sposób aby gracz nie musiał pracować 4 dni na najtańszy pojazd lecz też żeby nie trzeba było grać pół roku bez przerwy aby kupić super samochód. Również tak samo jest to zastosowane w tuningach mechanicznych oraz wizualny aby nie kosztował jeden tuning tyle co dobry samochód </p>
+                <p> Na naszym serwerze zarobki są zbalansowane w taki sposób, aby gracze nie musieli poświęcać czterech dni na zdobycie najtańszego pojazdu, ani grać przez pół roku bez przerwy, by kupić super samochód. Te same zasady dotyczą tuningów mechanicznych i wizualnych, dzięki czemu koszt jednego tuningu nie przewyższy ceny dobrego samochodu. </p>
                 <p> Aktualny spis pracy to: </p>
-                <p> - Borsuk Homoseksualista </p>
-                <p> - Fixly Ruchacz Mały </p>
-                <p> - Neko Alfons I Pedofil </p>
+                <p> - Burgerownia <a href="#" onclick="helper_focusMapBlip('job-burger')"> </p>
+                <p> - Kurier <a href="#" onclick="helper_focusMapBlip('job-courier')"> </p>
+                <p> - Magazynier <a href="#" onclick="helper_focusMapBlip('job-box')"> </p>
+                <p> - Śmieciarki <a href="#" onclick="helper_focusMapBlip('job-garbage')"></a> </p>
+                <p> - Rafineria </p>
+                <p> - Opony </p>
+
+                <div id="map-2" class="mb-3"></div>
             </div>
             <div class="tab" data-tab="premium">
                 <h2>Premium</h2>
                 <p>Premium na serwerze daje dużo korzyści zarobkowych oraz eventowych. Posiadając premium masz aż do 25% lepszy zarobek jak i drop EXP'a który pomoże ci w dalszym rozwoju swoich planów, aut czy też posiadłości a nawet możesz spieniężyć swoje punkty premium innym graczom. Premium również też odzieli cię innym kolorem nick przez co będzie widać że jesteś premium graczem.</p>
-                <p>Chcą zakupić owe premium wejdź na strone www.districtmta.pl i wejdz w kategorie sklep a tam możesz już wybrać dogodną ilość twoich punktów premium</p>
+                <p>Chcą zakupić owe premium wejdź na strone https://forum.district-mta.pl i wejdz w kategorie sklep a tam możesz już wybrać dogodną ilość twoich punktów premium</p>
             </div>
             <div class="tab" data-tab="updates">
+                </div>
                 <h2>Aktualizacje</h2>
                 <p>Historia aktualizacji</p>
 
@@ -338,29 +345,50 @@
     let startTick = new Date().getTime();
     let startMap = [
         {
-            x: 500,
-            y: 500,
+            x: 1110.263,
+            y: -1837.194,
             blip: 42,
             name: 'Ośrodek szkoleniowy',
             id: 'driving-school'
         },
         {
-            x: 1206.442,
-            y: -905.916,
+            x: 1206.763,
+            y: -908.107,
             blip: 40,
             name: 'Pracownik burgerowni',
             id: 'job-burger'
         },
         {
-            x: 1159.161,
-            y: -2080.825,
+            x: 2141.894,
+            y: -2268.325,
+            blip: 40,
+            name: 'Kurier',
+            id: 'job-courier'
+        },
+        {
+            x: 2161.458,
+            y: -1964.054,
+            blip: 40,
+            name: 'Magazynier',
+            id: 'job-garbage'
+        },
+        {
+            x: 2618.775,
+            y: -2367.869,
+            blip: 40,
+            name: 'Magazynier',
+            id: 'job-box'
+        },
+        {
+            x: 1885.585,
+            y: -1866.281,
             blip: 38,
             name: 'Cygan',
             id: 'poor-cardealer'
         },
-        {
-            x: 1169.619,
-            y: -1696.329,
+        { 
+            x: 1168.036,
+            y: -1694.432,
             blip: 42,
             name: 'Hulajnoga',
             id: 'scooter'
@@ -383,7 +411,6 @@
 
     window.helper_setLevel = (level) => {
         document.querySelector('#helper .level-box').innerText = level;
-        document.querySelector('#helper .level-box').style.fontSize = (level >= 1000 && '0.6rem' || level >= 100 && '0.7rem' || '0.9rem')
     }
 
     window.helper_setProgress = (progress) => {
@@ -427,8 +454,19 @@
             y: 1500,
             limitBounds: true,
             bounds: { x: 1400, y: 1400 },
-            texture: 'map-dark.png?v1.01',
-            background: 'rgba(255, 255, 255, 0.1)',
+            texture: 'map-transparent.png?v1.01'
+        });
+
+        createMap({
+            element: document.querySelector('#helper #map-2'),
+            minZoom: 1.5,
+            zoom: 2.5,
+            maxZoom: 4,
+            x: 1500,
+            y: 1500,
+            limitBounds: true,
+            bounds: { x: 1400, y: 1400 },
+            texture: 'map-transparent.png?v1.01'
         });
 
         for (let blip of startMap) {
@@ -449,6 +487,7 @@
         if (!blipData) return;
         
         mapGoToPosition(document.querySelector('#helper #map-1'), blipData.x, blipData.y, 500);
+        mapGoToPosition(document.querySelector('#helper #map-2'), blipData.x, blipData.y, 500);
 
         let startTab = document.querySelector('#helper .tab[data-tab="start"]');
         startTab.scrollTo({

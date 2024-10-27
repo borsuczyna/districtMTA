@@ -6,7 +6,7 @@ local weathersData = {
         cities = {'Los Santos', 'San Fierro', 'Red County', 'Flint County'},
         weathers = {
             {icon = 'sunny', name = 'Słonecznie', weathers = {0, 1, 11}, chance = 50},
-            {icon = 'rain', name = 'Deszczowo', weathers = {8, 16}, chance = 10},
+            {icon = 'rain', name = 'Deszczowo', weathers = {8, 16}, chance = 2},
             {icon = 'partialyCloudy', name = 'Częściowe zachmurzenie', weathers = {4, 3}, chance = 35},
         },
     },

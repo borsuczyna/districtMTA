@@ -1,9 +1,10 @@
 local settings = {
-    enginePrice = 2,
-    doorPrice = 50,
-    panelPrice = 30,
-    lightPrice = 20,
-    wheelPrice = 40,
+    -- $1 - 100
+    enginePrice = 200,
+    doorPrice = 5000,
+    panelPrice = 3000,
+    lightPrice = 2000,
+    wheelPrice = 4000,
 }
 
 function getAngleCosSin(angle)

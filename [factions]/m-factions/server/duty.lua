@@ -18,6 +18,7 @@ local function onMarkerHit(hitElement, matchingDimension)
         removeElementData(player, 'player:duty')
         exports['m-notis']:addNotification(player, 'info', ('Frakcja %s'):format(faction), 'Zszedłeś ze służby.')
         takeAllWeapons(player)
+        setElementModel(player, getElementData(player, 'player:skin'))
     else
         setElementData(player, 'player:duty', faction)
         exports['m-notis']:addNotification(player, 'info', ('Frakcja %s'):format(faction), 'Wszedłeś na służbę.')

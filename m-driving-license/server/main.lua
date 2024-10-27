@@ -6,6 +6,7 @@ local licenseCosts = {
     A = 1000,
     B = 100,
     C = 2000,
+    L1 = 5000,
 }
 
 addEventHandler('drivingLicense:start', root, function(hash, player, category)
@@ -19,12 +20,12 @@ addEventHandler('drivingLicense:start', root, function(hash, player, category)
         return
     end
 
-    if getPlayerMoney(player) < licenseCosts[category] then
+    if getPlayerMoney(player) < licenseCosts[category] * 100 then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie posiadasz wystarczającej ilości gotówki.'})
         return
     end
 
-    exports['m-core']:givePlayerMoney(player, 'license', 'Egzamin na prawo jazdy kategorii ' .. category, -licenseCosts[category])
+    exports['m-core']:givePlayerMoney(player, 'license', 'Egzamin na prawo jazdy kategorii ' .. category, -licenseCosts[category] * 100)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Rozpoczęto egzamin na prawo jazdy kategorii ' .. category .. '.'})
     playersThatPaid[player] = category
 end)

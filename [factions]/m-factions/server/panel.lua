@@ -8,6 +8,7 @@ addEvent('factions:editRank')
 local timeouts = {}
 local fullNames = {
     SAPD = 'San Andreas Police Department',
+    ERS = 'Emergency Rescue Service',
 }
 
 function isPlayerTimedOut(player)

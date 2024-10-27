@@ -51,6 +51,20 @@ function fetchDataResult(queryHandle, data, client, hash, requestId)
         result[1].nextLevelExp = exports['m-core']:getNextLevelExp(level)
         result[1].money = getPlayerMoney(client)
         result[1].bankMoney = getElementData(client, 'player:bankMoney') or 0
+        
+        local missions = {}
+        local playerMission = exports['m-missions']:getPlayerMission(client) or 1
+        for k,v in pairs(exports['m-missions']:getMissionList()) do
+            table.insert(missions, {
+                id = k,
+                title = v[2],
+                description = playerMission > k and v[3] or 'Nie wykonano',
+                icon = v[4],
+                passed = playerMission > k
+            })
+        end
+
+        result[1].missions = missions
     end
 
     -- triggerClientEvent(client, 'dashboard:fetchDataResult', resourceRoot, data, result)

@@ -59,6 +59,10 @@
         cursor: pointer;
     }
 
+    #inventory .item.empty {
+        cursor: default;
+    }
+
     #inventory .item img {
         width: 70%;
         height: 70%;
@@ -707,7 +711,7 @@
 
     addEvent('inventory', 'mousedown', (event) => {
         if (!event.target.closest('#inventory-options'))
-        inventory_hideOptions();
+            inventory_hideOptions();
     });
 
     addEvent('inventory', 'interface:data:itemsData', (data) => {

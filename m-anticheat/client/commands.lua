@@ -13,6 +13,8 @@
 --     {'record', 'm-record'},
 --     {'play', 'm-record'},
 --     {'kuppojazd', 'm-carexchange'},
+--     {'zakuj', 'm-faction-sapd'},
+--     {'odkuj', 'm-faction-sapd'},
 -- }
 
 -- function checkCommandHandlers()

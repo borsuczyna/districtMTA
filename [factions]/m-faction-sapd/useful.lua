@@ -25,3 +25,9 @@ function dxDrawRoundedRectangle(x, y, rx, ry, color, radius)
         dxDrawCircle(x, y + ry, radius, 90, 180, color, color, 7)
     end
 end
+
+function htmlEscape(s)
+    return s:gsub('[<>&"]', function(c)
+        return c == '<' and '&lt;' or c == '>' and '&gt;' or c == '&' and '&amp;' or '&quot;'
+    end)
+end

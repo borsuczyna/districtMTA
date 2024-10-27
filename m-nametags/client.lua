@@ -1,5 +1,5 @@
 local fonts = {
-    [1] = exports['m-ui']:getFont('Inter-Medium', 12),
+    [1] = exports['m-ui']:getFont('Inter-SemiBold', 11),
     [2] = exports['m-ui']:getFont('Inter-Regular', 9),
     [3] = exports['m-ui']:getFont('Inter-Black', 12),
 }
@@ -50,37 +50,37 @@ function renderNametag(player)
     local rank = getElementData(player, 'player:rank')
     local organization = getElementData(player, 'player:organization')
     local premium = getElementData(player, 'player:premium-end')
+    local rp = getElementData(player, 'player:statusRP')
     local afk = getElementData(player, 'player:afk')
     local mute = getElementData(player, 'player:mute')
-    local typing = getElementData(player, 'player:typing')
     local color = getPlayerColor(player)
 
     local icons = {}
 
     if rank then
-        table.insert(icons, {rank, getRankColor(rank)})
+        table.insert(icons, {'rank', getRankColor(rank)})
     end
 
     if premium then
-        table.insert(icons, {'premium', tocolor(255, 204, 0, 200)})
+        table.insert(icons, {'premium', tocolor(255, 200, 0, 225)})
+    end
+
+    if rp then
+        table.insert(icons, {'rp', tocolor(125, 255, 125, 225)})
     end
 
     if afk then
-        table.insert(icons, {'afk', tocolor(255, 0, 0, 200)})
+        table.insert(icons, {'afk', tocolor(155, 155, 155, 225)})
     end
 
     if mute then
-        table.insert(icons, {'mute', tocolor(255, 0, 0, 200)})
+        table.insert(icons, {'mute', tocolor(255, 55, 55, 225)})
     end
 
-    if typing then
-        table.insert(icons, {'chat', tocolor(100, 155, 255, 200)})
-    end
-
-    local iconsWidth = #icons * 25*scale + (#icons - 1) * 5*scale
+    local iconsWidth = #icons * 32*scale + (#icons - 1) * 1*scale
 
     for i, icon in ipairs(icons) do
-        dxDrawImage(x - iconsWidth/2 + (i-1) * (25*scale + 5*scale), y - 48*scale, 25*scale, 25*scale, 'img/'..icon[1]..'.png', 0, 0, 0, icon[2])
+        dxDrawImage(x - iconsWidth/2 + (i-1) * (32*scale + 1*scale), y - 55*scale, 32*scale, 32*scale, 'img/'..icon[1]..'.png', 0, 0, 0, icon[2])
     end
     
     if organization then
@@ -108,15 +108,6 @@ function renderNametags()
 end
 
 addEventHandler('onClientResourceStart', resourceRoot, function()
+    setPedTargetingMarkerEnabled(false)
     addEventHandler('onClientRender', root, renderNametags, true, 'high+9999')
 end)
-
--- on chat toggle 
-setTimer(function()
-    local typing = getElementData(localPlayer, 'player:typing')
-    local typingLocal = isChatBoxInputActive()
-
-    if typing ~= typingLocal then
-        setElementData(localPlayer, 'player:typing', typingLocal)
-    end
-end, 300, 0)

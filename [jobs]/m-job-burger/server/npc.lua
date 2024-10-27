@@ -148,6 +148,7 @@ function finishOrder(npcs, player, npc)
     local perPlayerMoney = math.floor(money / #players)
     
     local giveUpgradePoints = math.random(0, 100) > 95
+    local giveExp = math.random(0, 100) > 95
     
     for _, player in pairs(players) do
         exports['m-jobs']:giveMoney(player, perPlayerMoney)
@@ -155,17 +156,24 @@ function finishOrder(npcs, player, npc)
         if giveUpgradePoints then
             exports['m-jobs']:giveUpgradePoints(player, 1)
         end
+
+        if giveExp then
+            exports['m-core']:givePlayerExp(player, 1)
+        end
+
+        setElementData(player, "player:deliveredBurgerOrders", (getElementData(player, "player:deliveredBurgerOrders") or 0) + 1)
     end
 
-    local message = ('Za dostarczone zamówienie zarobiono $%d'):format(perPlayerMoney)
+    local message = ('Za dostarczone zamówienie zarobiono %s'):format(addCents(perPlayerMoney))
     if giveUpgradePoints then
-        message = message .. (' + 1 punktów ulepszeń (razem $%d)'):format(money)
-    else
-        message = message .. (' (razem $%d)'):format(money)
+        message = message .. (' + 1 punktów ulepszeń')
+    end
+    if giveExp then
+        message = message .. (' + 1 expa')
     end
 
+    message = message .. (' (razem %s)'):format(addCents(money))
     exports['m-notis']:addNotification(players, 'success', 'Zamówienie', message)
-    -- :D
 end
 
 function tryGiveOrder(npcs, carryData, player, npc)
@@ -249,3 +257,7 @@ addEventHandler('jobs:burger:addRandomNpc', resourceRoot, function(lobby)
     addLobbyNpc(lobby)
     exports['m-jobs']:setLobbyTimer(lobby, 'jobs:burger:addRandomNpc', math.random(unpack(settings.npcSpawnInterval)))
 end)
+
+function addCents(amount)
+    return '$' .. string.format('%0.2f', amount / 100)
+end

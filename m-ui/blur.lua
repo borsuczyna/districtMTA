@@ -28,7 +28,8 @@ local function renderblurShaderH()
     local interior = getElementInterior(localPlayer)
     local dimension = getElementDimension(localPlayer)
 
-    if getElementData(localPlayer, 'player:spawn') and radarVisible and interior == 0 and dimension == 0 then
+    local uid = getElementData(localPlayer, 'player:uid') or 0
+    if getElementData(localPlayer, 'player:spawn') and radarVisible and interior == 0 and d(imension == 0 or dimension == 7000 + uid) then
         local interfaceSize = getElementData(localPlayer, 'player:interfaceSize')
         
         if interfaceSize and tonumber(interfaceSize) then

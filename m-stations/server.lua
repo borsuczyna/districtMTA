@@ -1,10 +1,19 @@
 addEvent('stations:refill')
 
 local fuelPrices = {
-    petrol = 2,
-    diesel = 1.5,
-    lpg = 1,
+    petrol = 532,
+    diesel = 538,
+    lpg = 279,
 }
+
+local function updateFuelPrices()
+    fuelPrices.petrol = math.random(500, 600)
+    fuelPrices.diesel = math.random(520, 600)
+    fuelPrices.lpg = math.random(250, 450)
+end
+
+setTimer(updateFuelPrices, 360000, 0)
+updateFuelPrices()
 
 local fuelNames = {
     petrol = 'Benzyna',
@@ -16,6 +25,12 @@ local stations = {
     {1938.679, -1772.928, 13.383, false},
     {1944.479, -1772.928, 13.383, false},
     {1876.290, -1289.317, 13.391, false},
+    {1382.704, 462.469, 19.864+0.1, false},
+    {658.717, -570.661, 16.333, false},
+    {659.047, -559.975, 16.336, false},
+    {1380.415, 457.352, 19.916, false},
+    {-88.762, -1163.543, 1.981, false},
+    {-94.031, -1175.565, 1.980, false}
 }
 
 local timeouts = {}
@@ -64,10 +79,10 @@ local function hitStationMarker(player, matchingDimension)
     local lpg = getElementData(vehicle, 'vehicle:lpg')
     local lpgFuel = getElementData(vehicle, 'vehicle:lpgFuel')
 
-    table.insert(fuels, {name = fuelNames[fuelType], price = fuelPrices[fuelType], amount = fuel, max = maxFuel})
+    table.insert(fuels, {name = fuelNames[fuelType], price = ('%.2f'):format(fuelPrices[fuelType] / 100), amount = fuel, max = maxFuel})
 
     if lpg then
-        table.insert(fuels, {name = fuelNames.lpg, price = fuelPrices.lpg, amount = lpgFuel, max = 25})
+        table.insert(fuels, {name = fuelNames.lpg, price = ('%.2f'):format(fuelPrices.lpg / 100), amount = lpgFuel, max = 25})
     end
 
     triggerClientEvent(player, 'stations:showFuelStationsUi', resourceRoot, {
@@ -88,7 +103,6 @@ local function createStation(position)
     setElementData(marker, 'marker:icon', 'station')
     setElementData(marker, 'marker:title', 'Stacja paliw')
     setElementData(marker, 'marker:desc', 'Dystrybutor paliwa')
-    setElementData(marker, 'marker:square', position[4] and {5, 3} or {3, 5})
     local blip = createBlipAttachedTo(marker, 54, 2, 255, 255, 255, 255, 0, 9999)
     setElementData(blip, 'blip:hoverText', 'Stacja paliw')
 
@@ -147,7 +161,7 @@ addEventHandler('stations:refill', root, function(hash, player, fuelName, amount
         fuel = lpgFuel
     end
 
-    price = fuelPrices[selectedFuel] * amount
+    price = math.floor(fuelPrices[selectedFuel] * amount)
     if getPlayerMoney(player) < price then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie masz wystarczająco pieniędzy.'})
         return

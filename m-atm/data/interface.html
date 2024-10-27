@@ -79,6 +79,7 @@
         background: rgba(62, 62, 62, 0.4);
         border-bottom: 0.125rem solid rgba(54, 54, 54, 0.45);
         transition: background 0.2s, color 0.2s, border-bottom 0.2s;
+        cursor: pointer;
     }
 
     #atm .nav-item:hover {
@@ -91,6 +92,7 @@
         background: rgba(62, 62, 62, 0.7);
         border-bottom: 0.125rem solid rgba(123, 123, 123, 0.9);
         color: #fff;
+        cursor: default;
     }
 
     #atm .body {
@@ -125,6 +127,7 @@
         color: #ffffffcd;
         font-size: 1.1rem;
         transition: background 0.2s, color 0.2s, border 0.2s;
+        cursor: pointer;
     }
 
     #atm .number:hover {
@@ -151,7 +154,7 @@
 
 <div class="d-flex flex-column align-items-center">
     <div class="d-flex justify-center align-items-center">
-        <h1 id="bank-money">$23,280</h1>
+        <h1 id="bank-money">$0</h1>
     </div>
     <span class="label">Gotówka w banku</span>
 
@@ -182,7 +185,7 @@
                     <div class="number" onclick="atm_numberAction(this)">7</div>
                     <div class="number" onclick="atm_numberAction(this)">8</div>
                     <div class="number" onclick="atm_numberAction(this)">9</div>
-                    <div class="number" onclick="atm_numberAction(this)">C</div>
+                    <div class="number" onclick="atm_numberAction(this)">.</div>
                     <div class="number" onclick="atm_numberAction(this)">0</div>
                     <div class="number" onclick="atm_numberAction(this)">CE</div>
                 </div>
@@ -208,7 +211,7 @@
                     <div class="number" onclick="atm_numberAction(this)">7</div>
                     <div class="number" onclick="atm_numberAction(this)">8</div>
                     <div class="number" onclick="atm_numberAction(this)">9</div>
-                    <div class="number" onclick="atm_numberAction(this)">C</div>
+                    <div class="number" onclick="atm_numberAction(this)">.</div>
                     <div class="number" onclick="atm_numberAction(this)">0</div>
                     <div class="number" onclick="atm_numberAction(this)">CE</div>
                 </div>
@@ -241,6 +244,7 @@
     let waiting = false;
 
     function updateBankMoney(money) {
+        money = addCents(money);
         let formattedNumber = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         document.querySelector('#bank-money').innerText = `$${formattedNumber}`;
     }
@@ -249,7 +253,7 @@
         if (waiting) return;
 
         if (type === 'deposit' || type === 'withdraw') {
-            let amount = parseInt(document.querySelector('#atm-deposit-input').value);
+            let amount = parseFloat(document.querySelector('#atm-deposit-input').value);
             if (isNaN(amount) || amount <= 0) {
                 notis_addNotification('error', 'Błąd', 'Wpisano nieprawidłową kwotę');
                 return;
@@ -272,7 +276,7 @@
                 }
             }
         } else if (type === 'transfer') {
-            let amount = parseInt(document.querySelector('#transfer-amount').value);
+            let amount = parseFloat(document.querySelector('#transfer-amount').value);
             let uid = parseInt(document.querySelector('#transfer-uid').value);
             if (isNaN(amount) || amount <= 0 || isNaN(uid) || uid <= 0) {
                 notis_addNotification('error', 'Błąd', 'Wpisano nieprawidłowe dane');
@@ -312,9 +316,9 @@
                 let date = new Date(log.date).toLocaleString('pl-PL', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
                 if (money > 0) {
-                    money = `+$${money}`;
+                    money = `+$${addCents(money)}`;
                 } else {
-                    money = `-$${Math.abs(money)}`;
+                    money = `-$${addCents(Math.abs(money))}`;
                 }
 
                 html += `
@@ -377,10 +381,21 @@
         
         if (element.innerText === 'C') {
             input.value = value.slice(0, -1);
+        } else if (element.innerText === '.') {
+            if (!value.includes('.')) {
+                input.value = value + element.innerText + '0';
+            }
         } else if (element.innerText === 'CE') {
             input.value = '';
         } else {
-            input.value = value + element.innerText;
+            // if it has . and last character is 0, remove it
+            if (value.includes('.') && value[value.length - 1] === '0') {
+                input.value = value.slice(0, -1) + element.innerText;
+            } else if (value.includes('.') && value.split('.')[1].length >= 2) {
+                return;
+            } else {
+                input.value = value + element.innerText;
+            }
         }
     }
     

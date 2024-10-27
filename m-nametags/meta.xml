@@ -1,16 +1,11 @@
 <meta>
 	<include resource='m-ui'/>
 
-	<script src="client.lua" type="client"/>
+	<script src='client.lua' type='client' cache='false'/>
 
-	<file src='img/1.png'/>
-	<file src='img/2.png'/>
-	<file src='img/3.png'/>
-	<file src='img/4.png'/>
-	<file src='img/5.png'/>
+	<file src='img/rank.png'/>
 	<file src='img/afk.png'/>
 	<file src='img/premium.png'/>
-	<file src='img/voice.png'/>
+	<file src='img/rp.png'/>
 	<file src='img/mute.png'/>
-	<file src='img/chat.png'/>
 </meta>

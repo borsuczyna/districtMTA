@@ -1,3 +1,5 @@
+addEvent('onClientVariableDump', true)
+
 local boilerplateUILoaded, boilerplateUIVisible, boilerplateHideTimer = false, false, false
 
 function setInterfaceData()
@@ -26,7 +28,7 @@ function setBoilerplateUIVisible(visible)
         killTimer(boilerplateTimer)
     end
 
-    showCursor(visible, false)
+    -- showCursor(visible, false)
 
     if not boilerplateUILoaded and visible then
         showBoilerplateInterface()
@@ -60,4 +62,13 @@ end)
 
 addEventHandler('onClientResourceStop', resourceRoot, function()
     exports['m-ui']:destroyInterfaceElement('boilerplate')
+end)
+
+addCommandHandler('debugme', function()
+    exports['m-ui']:triggerInterfaceEvent('boilerplate', 'dump-variables')
+end)
+
+addEventHandler('onClientVariableDump', root, function(variables)
+    setClipboard(variables)
+    outputChatBox('Zmienne zostały zapisane do schowka.')
 end)

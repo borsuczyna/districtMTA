@@ -142,6 +142,18 @@ function setHouseData(data) {
         y: data.position[1],
         hoverTooltip: data.name,
     });
+
+    for (let shop of data.furnitureShops) {
+        createMapBlip({
+            element: document.querySelector('#houses #house-map'),
+            icon: `/m-hud/data/images/blips/17.png`,
+            size: 12,
+            class: 'blip',
+            x: shop[0],
+            y: shop[1],
+            hoverTooltip: 'Sklep z meblami',
+        });
+    }
 }
 
 window.houses_renderHouseOptions = function() {

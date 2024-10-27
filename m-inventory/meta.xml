@@ -1,14 +1,20 @@
 <meta>
     <!-- items -->
+    <script src='items/client/liquid-regret.lua' type='client' cache='false'/>
+
     <script src='items/server/fishingRod.lua' type='server'/>
     <script src='items/server/hotdog.lua' type='server'/>
     <script src='items/server/m4.lua' type='server'/>
     <script src='items/server/canister.lua' type='server'/>
+    <script src='items/server/liquid-regret.lua' type='server'/>
+    <script src='items/server/blank-card.lua' type='server'/>
     <script src='items/server/nukacola.lua' type='server'/>
     <script src='items/server/spray.lua' type='server'/>
     <script src='items/server/potion.lua' type='server'/>
     <script src='items/server/furniture.lua' type='server'/>
     <script src='items/server/trace.lua' type='server'/>
+    <script src='items/server/cosmetic.lua' type='server'/>
+    <script src='items/server/tuning.lua' type='server'/>
 
     <script src='items/shared/potion.lua' type='shared' cache='false'/>
     <script src='items/shared/fishingRod.lua' type='shared' cache='false'/>
@@ -17,15 +23,21 @@
     <script src='items/shared/hotdog.lua' type='shared' cache='false'/>
     <script src='items/shared/m4.lua' type='shared' cache='false'/>
     <script src='items/shared/canister.lua' type='shared' cache='false'/>
+    <script src='items/shared/liquid-regret.lua' type='shared' cache='false'/>
+    <script src='items/shared/blank-card.lua' type='shared' cache='false'/>
     <script src='items/shared/nukacola.lua' type='shared' cache='false'/>
     <script src='items/shared/spray.lua' type='shared' cache='false'/>
     <script src='items/shared/fish.lua' type='shared' cache='false'/>
     <script src='items/shared/reefer.lua' type='shared' cache='false'/>
     <script src='items/shared/furniture.lua' type='shared' cache='false'/>
     <script src='items/shared/trace.lua' type='shared' cache='false'/>
+    <script src='items/shared/cosmetic.lua' type='shared' cache='false'/>
+    <script src='items/shared/tuning.lua' type='shared' cache='false'/>
     <script src='items/shared/dist.lua' type='shared' cache='false'/>
     
     <script src='items/furnitures.lua' type='shared' cache='false'/>
+    <script src='items/cosmetics.lua' type='shared' cache='false'/>
+    <script src='items/tuning.lua' type='shared' cache='false'/>
     <script src='items/list.lua' type='shared' cache='false'/>
     
     <!--  crafting -->
@@ -35,6 +47,8 @@
     <script src='crafting/server.lua' type='server'/>
 
     <!-- shops -->
+    <script src='shop/shops/ammu-nation.lua' type='shared' cache='false'/>
+    <script src='shop/shops/blank-card.lua' type='shared' cache='false'/>
     <script src='shop/shops/fish.lua' type='shared' cache='false'/>
     <script src='shop/shops/furniture.lua' type='shared' cache='false'/>
     <script src='shop/shops/foodcart.lua' type='shared' cache='false'/>
@@ -57,96 +71,8 @@
     <file src='data/crafting.js'/>
     <file src='data/shop.js'/>
     
-    <file src='data/icons/reefer.png'/>
-    <file src='data/icons/m4.png'/>
-    <file src='data/icons/canister.png'/>
-    <file src='data/icons/wire.png'/>
-    <file src='data/icons/worm.png'/>
-    <file src='data/icons/hot-dog.png'/>
-    <file src='data/icons/fishing-rod.png'/>
-    <file src='data/icons/potion.png'/>
-    <file src='data/icons/flopper.png'/>
-    <file src='data/icons/atlantic-hop-flopper.png'/>
-    <file src='data/icons/bb-shield-fish.png'/>
-    <file src='data/icons/black-slurpfish.png'/>
-    <file src='data/icons/black-small-fry.png'/>
-    <file src='data/icons/blue-flopper.png'/>
-    <file src='data/icons/blue-slurpfish.png'/>
-    <file src='data/icons/blue-small-fry.png'/>
-    <file src='data/icons/bs-shield-fish.png'/>
-    <file src='data/icons/chinhook-hop-flopper.png'/>
-    <file src='data/icons/chum-hop-flopper.png'/>
-    <file src='data/icons/coho-hop-flopper.png'/>
-    <file src='data/icons/cuddle-jellyfish.png'/>
-    <file src='data/icons/dark-vanguard-jellyfish.png'/>
-    <file src='data/icons/drift-hop-flopper.png'/>
-    <file src='data/icons/drift-spicy-fish.png'/>
-    <file src='data/icons/green-flopper.png'/>
-    <file src='data/icons/gs-shield-fish.png'/>
-    <file src='data/icons/lb-shield-fish.png'/>
-    <file src='data/icons/lb-small-fry.png'/>
-    <file src='data/icons/molten-spicy-fish.png'/>
-    <file src='data/icons/orange-flopper.png'/>
-    <file src='data/icons/peely-jellyfish.png'/>
-    <file src='data/icons/ps-shield-fish.png'/>
-    <file src='data/icons/pt-small-fry.png'/>
-    <file src='data/icons/purple-jellyfish.png'/>
-    <file src='data/icons/purple-slurpfish.png'/>
-    <file src='data/icons/sb-spicy-fish.png'/>
-    <file src='data/icons/slurp-jellyfish.png'/>
-    <file src='data/icons/southern-spicy-fish.png'/>
-    <file src='data/icons/tan-small-fry.png'/>
-    <file src='data/icons/white-slurpfish.png'/>
-    <file src='data/icons/ws-spicy-fish.png'/>
-    <file src='data/icons/yellow-slurpfish.png'/>
-    <file src='data/icons/nukacola.png'/>
-    <file src='data/icons/spray.png'/>
-    <file src='data/icons/dist.png'/>
-    
-    <file src='data/icons/traces/1.png'/>
-    <file src='data/icons/traces/2.png'/>
-
-    <!-- furniture -->
-    <!-- <file src='data/icons/furniture/toilet-1.png'/>
-    <file src='data/icons/furniture/toilet-2.png'/>
-    <file src='data/icons/furniture/toilet-3.png'/>
-    <file src='data/icons/furniture/soap-1.png'/> -->
-
-    <file src='data/icons/furniture/armchair1.png'/>
-    <file src='data/icons/furniture/bath1.png'/>
-    <file src='data/icons/furniture/bed1.png'/>
-    <file src='data/icons/furniture/boxshelf1.png'/>
-    <file src='data/icons/furniture/cabinetwithglass1.png'/>
-    <file src='data/icons/furniture/chair1.png'/>
-    <file src='data/icons/furniture/chair2.png'/>
-    <file src='data/icons/furniture/coffeetable1.png'/>
-    <file src='data/icons/furniture/countercabinet2.png'/>
-    <file src='data/icons/furniture/countercabinet3.png'/>
-    <file src='data/icons/furniture/counterdouble1.png'/>
-    <file src='data/icons/furniture/counterjoin1.png'/>
-    <file src='data/icons/furniture/countersingle1.png'/>
-    <file src='data/icons/furniture/countertablelong1.png'/>
-    <file src='data/icons/furniture/countertableshort1.png'/>
-    <file src='data/icons/furniture/countertop.png'/>
-    <file src='data/icons/furniture/countertopjoin1.png'/>
-    <file src='data/icons/furniture/countertopleft1.png'/>
-    <file src='data/icons/furniture/countertopright1.png'/>
-    <file src='data/icons/furniture/fridge1.png'/>
-    <file src='data/icons/furniture/fridgecover1.png'/>
-    <file src='data/icons/furniture/induction1.png'/>
-    <file src='data/icons/furniture/lamp1.png'/>
-    <file src='data/icons/furniture/nighttable1.png'/>
-    <file src='data/icons/furniture/oven1.png'/>
-    <file src='data/icons/furniture/shower1.png'/>
-    <file src='data/icons/furniture/sink1.png'/>
-    <file src='data/icons/furniture/soap-1.png'/>
-    <file src='data/icons/furniture/sofa1.png'/>
-    <file src='data/icons/furniture/table1.png'/>
-    <file src='data/icons/furniture/toilet-1.png'/>
-    <file src='data/icons/furniture/toilet-2.png'/>
-    <file src='data/icons/furniture/toilet-3.png'/>
-    <file src='data/icons/furniture/toilet1.png'/>
-    <file src='data/icons/furniture/uppercabinet1.png'/>
+    <file src='data/icons/*.png'/>
+    <file src='data/icons/**/*.png'/>
 
     <export function='doesPlayerHaveItem' type='server'/>
     <export function='doesPlayerHaveItems' type='server'/>

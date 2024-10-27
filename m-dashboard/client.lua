@@ -19,6 +19,9 @@ addEvent('avatars:onPlayerAvatarChange', true)
 
 function updateDashboardData()
     local settings = {
+        ['status-rp'] = {
+            value = getElementData(localPlayer, 'player:statusRP')
+        },
         ['block-dms'] = {
             value = getElementData(localPlayer, 'player:blockedDMs'),
             input = getElementData(localPlayer, 'player:blockedDMsReason') or ''
@@ -152,7 +155,9 @@ end)
 addEventHandler('dashboard:setSetting', root, function(setting, value, input)
     local boolValue = tonumber(value) == 1
     
-    if setting == 'block-dms' then
+    if setting == 'status-rp' then
+        setElementData(localPlayer, 'player:statusRP', boolValue)
+    elseif setting == 'block-dms' then
         setElementData(localPlayer, 'player:blockedDMs', boolValue)
         setElementData(localPlayer, 'player:blockedDMsReason', #input > 0 and input or nil)
     elseif setting == 'hide-hud' then

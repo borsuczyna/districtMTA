@@ -9,15 +9,15 @@ local fontHeight = dxGetFontHeight(1, font)
 local missionTarget = false
 local DEBUG_SKIP_VOICE = false
 
-bindKey('r', 'down', function()
-    if DEBUG_SKIP_VOICE then
-        DEBUG_SKIP_VOICE = false
-        outputChatBox('Debugowanie głosu wyłączone')
-    else
-        DEBUG_SKIP_VOICE = true
-        outputChatBox('Debugowanie głosu włączone')
-    end
-end)
+-- bindKey('r', 'down', function()
+--     if DEBUG_SKIP_VOICE then
+--         DEBUG_SKIP_VOICE = false
+--         outputChatBox('Debugowanie głosu wyłączone')
+--     else
+--         DEBUG_SKIP_VOICE = true
+--         outputChatBox('Debugowanie głosu włączone')
+--     end
+-- end)
 
 local function urlEncode(str)
     if (str) then
@@ -36,16 +36,16 @@ local function playTTS(text, lang)
 end
 
 local function updatePedVoice(ped, fft)
-    local openMouthValue = math.sqrt(fft[15]) * 256
-    local boneId = 8
-    local x, y, z = getElementBonePosition(ped, boneId)
-    if not x or not y or not z or not openMouthValue or openMouthValue ~= openMouthValue then
-        return
-    end
+    -- local openMouthValue = math.sqrt(fft[15]) * 256
+    -- local boneId = 8
+    -- local x, y, z = getElementBonePosition(ped, boneId)
+    -- if not x or not y or not z or not openMouthValue or openMouthValue ~= openMouthValue then
+    --     return
+    -- end
     
-    local rx, ry, rz = getElementBoneRotation(ped, boneId)
-    setElementBoneRotation(ped, boneId, rx, ry + openMouthValue / 3, rz)
-    updateElementRpHAnim(ped)
+    -- local rx, ry, rz = getElementBoneRotation(ped, boneId)
+    -- setElementBoneRotation(ped, boneId, rx, ry + openMouthValue / 3, rz)
+    -- updateElementRpHAnim(ped)
 end
 
 function renderVoiceLines()
@@ -85,29 +85,31 @@ function renderVoiceLines()
             end
 
             local color = lineColors[i % #lineColors]
+            dxDrawText(line.text, 2, y + 2, sx + 2, sy + 2, tocolor(0, 0, 0, 155), 1/zoom, font, 'center', 'center', false, false, false, true)
             dxDrawText(line.text, 0, y, sx, sy, color, 1/zoom, font, 'center', 'center', false, false, false, true)
             y = y + fontHeight / zoom + 44/zoom
         end
     end
 
     if missionTarget then
-        dxDrawText(missionTarget, 1, y + 1, sx + 1, sy + 1, tocolor(0, 0, 0, 0), 1/zoom, fontBold, 'center', 'center', false, false, false, true)
-        dxDrawText(missionTarget, 0, y, sx, sy, tocolor(255, 85, 85, 255), 1/zoom, fontBold, 'center', 'center', false, false, false, true)
+        dxDrawText(missionTarget, 2, y + 2, sx + 2, sy + 2, tocolor(0, 0, 0, 155), 1/zoom, fontBold, 'center', 'center', false, false, false, true)
+        dxDrawText(missionTarget, 0, y, sx, sy, tocolor(255, 170, 85, 255), 1/zoom, fontBold, 'center', 'center', false, false, false, true)
     end
 end
 
 function pedTellVoiceLine(ped, line, text)
-    -- if DEBUG_SKIP_VOICE then
-    --     setTimer(triggerEvent, 10, 1, 'missions:onVoiceLineFinish', resourceRoot, line)
-    --     return
-    -- end
+    if DEBUG_SKIP_VOICE then
+        setTimer(triggerEvent, 10, 1, 'missions:onVoiceLineFinish', resourceRoot, line)
+        return
+    end
 
     local sound;
 
-    local path = ('data/voice/%s.wav'):format(line)
+    local path = ('data/voice/%s.mp3'):format(line)
     if line ~= '' and fileExists(path) then
         sound = playSound(path)
     else
+        print('Playing TTS for', path)
         local url = playTTS(text, 'pl')
         -- sound = playSound3D(url, 0, 0, 0, false)
         sound = playSound(url)

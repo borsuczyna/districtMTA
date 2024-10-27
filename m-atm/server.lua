@@ -48,7 +48,7 @@ addEventHandler('atm:deposit', root, function(hash, player, amount)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    amount = tonumber(amount)
+    amount = math.floor(tonumber(amount) * 100)
     if amount <= 0 then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Kwota musi być większa od zera.'})
         return
@@ -65,7 +65,7 @@ addEventHandler('atm:deposit', root, function(hash, player, amount)
     local bankMoney = getElementData(player, 'player:bankMoney') or 0
     setElementData(player, 'player:bankMoney', bankMoney + amount)
     exports['m-core']:updatePlayerMoney(player)
-    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie zdeponowano ' .. amount .. '$.', balance = getElementData(player, 'player:bankMoney')})
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie zdeponowano ' .. addCents(amount) .. '.', balance = getElementData(player, 'player:bankMoney')})
 end)
 
 addEventHandler('atm:withdraw', root, function(hash, player, amount)
@@ -80,7 +80,7 @@ addEventHandler('atm:withdraw', root, function(hash, player, amount)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    amount = tonumber(amount)
+    amount = math.floor(tonumber(amount) * 100)
     if amount <= 0 then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Kwota musi być większa od zera.'})
         return
@@ -96,7 +96,7 @@ addEventHandler('atm:withdraw', root, function(hash, player, amount)
 
     setElementData(player, 'player:bankMoney', bankMoney - amount)
     exports['m-core']:updatePlayerMoney(player)
-    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wypłacono ' .. amount .. '$.', balance = getElementData(player, 'player:bankMoney')})
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie wypłacono ' .. addCents(amount) .. '.', balance = getElementData(player, 'player:bankMoney')})
 end)
 
 function transferLookForPlayer(query, hash, player, target, amount)
@@ -127,7 +127,7 @@ function transferLookForPlayer(query, hash, player, target, amount)
         exports['m-core']:givePlayerBankMoney(result[1].uid, 'transfer', 'Przelew od gracza ' .. getPlayerName(player), amount)
     end
 
-    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie przelano ' .. amount .. '$.', balance = getElementData(player, 'player:bankMoney')})
+    exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Pomyślnie przelano ' .. addCents(amount) .. '.', balance = getElementData(player, 'player:bankMoney')})
 end
 
 addEventHandler('atm:transfer', root, function(hash, player, target, amount)
@@ -142,7 +142,7 @@ addEventHandler('atm:transfer', root, function(hash, player, target, amount)
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    amount = tonumber(amount)
+    amount = math.floor(tonumber(amount) * 100)
     target = tonumber(target)
 
     if uid == target then
@@ -163,3 +163,7 @@ addEventHandler('atm:transfer', root, function(hash, player, target, amount)
 
     dbQuery(transferLookForPlayer, {hash, player, target, amount}, connection, 'SELECT `username`, `uid` FROM `m-users` WHERE uid = ?', target)
 end)
+
+function addCents(amount)
+    return '$' .. string.format('%0.2f', amount / 100)
+end

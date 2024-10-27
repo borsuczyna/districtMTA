@@ -1,8 +1,8 @@
 function createStationShop(name, x, y, z, interior)
     local items = {
-        {item = 'canister', price = 100},
-        {item = 'hotDog', price = 50},
-        {item = 'nukaCola', price = 20},
+        {item = 'canister', price = 5499},
+        {item = 'hotDog', price = 1000},
+        {item = 'nukaCola', price = 500},
     }
     
     local newItems = {}

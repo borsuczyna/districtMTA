@@ -1,7 +1,7 @@
 ﻿<style>
     #animpanel {
         position: absolute;
-        left: 50%;
+        right: 1.6rem;
         top: 50%;
         text-align: center;
         background: rgba(26, 26, 26, 0.9);
@@ -13,7 +13,7 @@
         gap: 0.625rem;
         padding: 0.625rem;
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
+        transform: translateY(-50%) scale(0.9);
         transition: opacity 0.2s, transform 0.2s;
     }
 
@@ -21,7 +21,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.35rem;
-        max-height: 20rem;
+        max-height: 12rem;
         overflow-y: auto;
     }
 
@@ -75,7 +75,7 @@
 <select id="category" onchange="animpanel_reloadAnimations()"></select>
 <div id="anim-list" class="nice-scroll pr-1"></div>
 <div id="tip">
-    Naciśnij <kbd class="keycap keycap-sm">ENTER</kbd> aby zatrzymać animację
+    Naciśnij <kbd class="keycap keycap-sm">SPACJĘ</kbd> aby zatrzymać animację
 </div>
 
 <script>
@@ -92,7 +92,21 @@
         }
 
         $('#animpanel #category').select2();
+        animpanel_restoreState();
         category.dispatchEvent(new Event('change'));
+    }
+
+    function animpanel_saveState() {
+        let selectedCategory = document.querySelector('#animpanel #category').value;
+        localStorage.setItem('animpanelSelectedCategory', selectedCategory);
+    }
+
+    function animpanel_restoreState() {
+        let savedCategory = localStorage.getItem('animpanelSelectedCategory');
+        if (savedCategory) {
+            document.querySelector('#animpanel #category').value = savedCategory;
+            animpanel_reloadAnimations();
+        }
     }
 
     animpanel_reloadAnimations = () => {
@@ -125,9 +139,10 @@
     addEvent('animpanel', 'play-animation', async (appear) => {
         await new Promise(resolve => setTimeout(resolve, 100));
         document.querySelector('#animpanel').style.opacity = appear ? '1' : '0';
-        document.querySelector('#animpanel').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
-    
+        document.querySelector('#animpanel').style.transform = appear ? 'translateY(-50%) scale(1)' : 'translateY(-50%) scale(0.9)';
+
         if (!appear) {
+            animpanel_saveState();
             $('#animpanel #category').select2('close');
         }
     });

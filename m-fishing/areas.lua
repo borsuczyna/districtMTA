@@ -17,11 +17,15 @@ function isPlayerInFishingArea(player)
 end
 
 local function getRandomPosition()
-    local x = math.random(-3000, 3000)
-    local y = math.random(-3750, -3004)
-    if x > 145 and x < 857 then
-        y = math.random(-3750, -2204)
-    end
+    -- local x = math.random(-3000, 3000)
+    -- local y = math.random(-3750, -3004)
+    -- if x > 145 and x < 857 then
+    --     y = math.random(-3750, -2204)
+    -- end
+
+    -- {3153.860, -2080.200, 16.109},
+    local x = math.random(3150, 3800)
+    local y = math.random(-3000, 3000)
 
     if isPointInsideFishingArea(x, y, 160) then
         return getRandomPosition()

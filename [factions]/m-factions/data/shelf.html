@@ -31,7 +31,7 @@
 </style>
 
 <div class="d-flex gap-4 align-items-center mb-2">
-    <span class="label">Szafka</span>
+    <span class="label">Wyposażenie</span>
     <div class="line"></div>
 </div>
 
@@ -78,7 +78,7 @@
 
         makeButtonSpinner(button);
         let category = document.querySelector('#category').value;
-        let data = await mta.fetch('factions', 'useShelf', [itemsData.faction, category, index]);
+        let data = await mta.fetch('factions', 'useShelf', [itemsData.faction, itemsData.isStorage, category, index]);
 
         if (data == null) {
             notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');

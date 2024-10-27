@@ -7,6 +7,8 @@ addCommandHandler('inv', function(player)
 
     local alpha = (getElementAlpha(player) == 255) and 0 or 255
     setElementAlpha(player, alpha)
+    setElementData(player, 'player:inv', (getElementAlpha(player) == 255 and false or true))
+
     triggerClientEvent(root, 'inv:elementCollision', resourceRoot, player, alpha == 0)
 
     local message = (alpha == 0) and 'niewidzialny' or 'widzialny'

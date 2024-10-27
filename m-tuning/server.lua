@@ -75,7 +75,7 @@ addEventHandler('tuning:getCompatibleUpgrades', resourceRoot, function()
 
     local compatible = {}
     
-    for _,slot in pairs(upgradeSlots) do
+    for _,slot in pairs(exports['m-upgrades']:getUpgradeSlots()) do
         local upgrades = exports['m-upgrades']:getVehicleCompatibleUpgrades(vehicle, slot)
         compatible[slot] = upgrades
     end
@@ -157,13 +157,13 @@ addEventHandler('tuning:installItem', root, function(hash, player, key, index)
     end)
 
     if not data then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu 1.'})
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu. (1)'})
         return
     end
     
     data = data.items[index + 1]
     if not data then
-        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu 2.'})
+        exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie znaleziono takiego tuningu. (2)'})
         return
     end
 
@@ -178,12 +178,12 @@ addEventHandler('tuning:installItem', root, function(hash, player, key, index)
         return
     end
 
-    if getPlayerMoney(player) < data.price then
+    if getPlayerMoney(player) < data.price * 100 then
         exports['m-ui']:respondToRequest(hash, {status = 'error', message = 'Nie posiadasz wystarczającej ilości gotówki.'})
         return
     end
     
-    exports['m-core']:givePlayerMoney(player, 'tuning', ('Kupno tuningu %s do pojazdu (%d) %s'):format(data.name, vehicleUid, exports['m-models']:getVehicleName(vehicle)), -data.price)
+    exports['m-core']:givePlayerMoney(player, 'tuning', ('Kupno tuningu %s do pojazdu (%d) %s'):format(data.name, vehicleUid, exports['m-models']:getVehicleName(vehicle)), -data.price * 100)
     data.install(player, vehicle)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Zamontowano tuning.'})
     triggerClientEvent(player, 'tuning:updateOriginalTuning', resourceRoot)
@@ -234,4 +234,18 @@ addEventHandler('tuning:uninstallItem', root, function(hash, player, key, index)
     data.uninstall(player, vehicle)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Odmontowano tuning.'})
     triggerClientEvent(player, 'tuning:updateOriginalTuning', resourceRoot)
+end)
+
+-- when player quits game when in car with eldata tuning:oldPosition, restore it
+addEventHandler('onPlayerQuit', root, function()
+    local vehicle = getPedOccupiedVehicle(source)
+    if not vehicle then return end
+
+    local oldPosition = getElementData(source, 'tuning:oldPosition')
+    if not oldPosition then return end
+
+    setElementPosition(vehicle, oldPosition[1], oldPosition[2], oldPosition[3])
+    setElementRotation(vehicle, oldPosition[4], oldPosition[5], oldPosition[6])
+    setElementDimension(vehicle, 0)
+    setElementFrozen(vehicle, false)
 end)

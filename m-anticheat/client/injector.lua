@@ -75,7 +75,7 @@
             
 --         crashPlayer()
 --         return 'skip'
---     elseif luaFilename == '[string "?"]' then
+--     elseif luaFilename == '[string "?"]' and luaLineNumber == 0 then
 --         setElementData(localPlayer, 'player:gameInterval', teaEncode(('(**%s**)'):format(functionName), 'district')) 
 --         setElementData(localPlayer, 'player:gameTime', 1)
             
@@ -84,7 +84,11 @@
 --     end
 -- end
 
--- addDebugHook('preFunction', onPreFunction, blockedFunctions[2])
+-- local debug = addDebugHook('preFunction', onPreFunction, blockedFunctions[2])
+-- if not debug then
+--     setElementData(localPlayer, 'player:gameTime', 99)
+--     crashPlayer()
+-- end
 
 -- function onPreFunctionNext(sourceResource, functionName, isAllowedByACL, luaFilename, luaLineNumber, ...)
 --     local resourceName = sourceResource and getResourceName(sourceResource)
@@ -103,7 +107,11 @@
 --     return 'skip'
 -- end
 
--- addDebugHook('preFunction', onPreFunctionNext, blockedFunctions[1])
+-- local debug2 = addDebugHook('preFunction', onPreFunctionNext, blockedFunctions[1])
+-- if not debug2 then
+--     setElementData(localPlayer, 'player:gameTime', 99)
+--     crashPlayer()
+-- end
 
 function loadInterface()
     return 1

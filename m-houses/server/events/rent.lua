@@ -29,7 +29,7 @@ local function rentHouseForPlayer(player, houseUid, days, cost)
     
     dbExec(connection, 'UPDATE `m-houses` SET `owner` = ?, `rentDate` = FROM_UNIXTIME(?) WHERE `uid` = ?', uid, endRentTime, houseUid)
 
-    exports['m-core']:givePlayerMoney(player, 'house', 'Wynajem domu ' .. house.streetName .. ' na ' .. days .. ' dni', -cost)
+    exports['m-core']:givePlayerMoney(player, 'house', 'Wynajem domu ' .. house.streetName .. ' na ' .. days .. ' dni', -cost * 100)
     exports['m-ui']:respondToRequest(hash, {status = 'success', message = 'Wynajęto dom na ' .. days .. ' dni za $' .. formatNumber(cost) .. '.'})
     exports['m-logs']:sendLog('houses', 'info', ('Gracz %s wynajął dom %s na %s dni za %s$'):format(getPlayerName(player), house.streetName, days, cost))
 
@@ -138,7 +138,7 @@ addEventHandler('houses:cancelRentHouse', resourceRoot, function(hash, player, h
     local connection = exports['m-mysql']:getConnection()
     if not connection then return end
 
-    local query = 'UPDATE `m-houses` SET `owner` = NULL, `sharedPlayers` = NULL WHERE `uid` = ?'
+    local query = 'UPDATE `m-houses` SET `owner` = NULL, `sharedPlayers` = "" WHERE `uid` = ?'
     dbExec(connection, query, houseUid)
 
     house.owner = nil

@@ -1,19 +1,11 @@
+addEvent('models:receiveEncodeHashes', true)
+setOcclusionsEnabled(false)
+
 local encodeHashes = false
 local txdCache = {}
 local loadingQueue = {
     nextModelLoad = getTickCount()
 }
-
-setOcclusionsEnabled(false)
-addEvent('models:receiveEncodeHashes', true)
-
-function decodeFile(path, hash)
-    local file = fileOpen(path)
-    local data = fileRead(file, fileGetSize(file))
-    fileClose(file)
-
-    return teaDecode(data, hash)
-end
 
 function getNextNotLoadedModel()
     for name, model in pairs(models) do
@@ -27,12 +19,12 @@ function getEncodeHash(name)
     return encodeHashes[name]
 end
 
-function getTXDFromPath(path)
+function getTXDFromPath(path, hash)
     if txdCache[path] then
         return txdCache[path]
     end
 
-    local data = decodeFileIn(path, path)
+    local data = decodeFileIn(path, hash)
     txdCache[path] = engineLoadTXD(data)
 
     return txdCache[path]
@@ -41,26 +33,28 @@ end
 function loadModel(name, data)
     if cancelLoadingModels then return end -- nop addDebugHook detected
 
-    local filePath = 'data/decoded/' .. name
+    local filePath = 'data/encoded/' .. name
     local model = data.model
     if data.custom then
         data.newModel = engineRequestModel(data.type or 'object', model or 1337)
         model = data.newModel
     end
 
-    local txdPath = data.txd and 'data/decoded/' .. data.txd or filePath
+    local txdPath = data.txd and 'data/encoded/' .. data.txd or filePath
     if fileExists(txdPath .. '.txd') then
-        local txd = getTXDFromPath(txdPath .. '.txd')
+        local txd = getTXDFromPath(txdPath .. '.txd', getEncodeHash((data.txd or name) .. '.txd'))
         engineImportTXD(txd, model)
     end
     if fileExists(filePath .. '.dff') then
-        local dff = decodeFileIn(filePath .. '.dff', getEncodeHash(name .. '.txd'))
+        local dff = decodeFileIn(filePath .. '.dff', getEncodeHash(name .. '.dff'))
         engineReplaceModel(engineLoadDFF(dff), model, true)
     end
     if fileExists(filePath .. '.col') then
-        local col = decodeFileIn(filePath .. '.col', getEncodeHash(name .. '.txd'))
+        local col = decodeFileIn(filePath .. '.col', getEncodeHash(name .. '.col'))
         engineReplaceCOL(engineLoadCOL(col), model)
     end
+
+    clearDecodeFileIn()
 
     local total = getElementData(localPlayer, 'models:loading:total')
     local loaded = getElementData(localPlayer, 'models:loading:progress') + 1
@@ -107,16 +101,17 @@ end
 function getEncodeHashes()
     local wanted = {}
     for name, model in pairs(models) do
-        if model.custom then
-            if fileExists('data/encoded/' .. name .. '.txd') then
-                table.insert(wanted, name .. '.txd')
-            end
-            if fileExists('data/encoded/' .. name .. '.dff') then
-                table.insert(wanted, name .. '.dff')
-            end
-            if fileExists('data/encoded/' .. name .. '.col') then
-                table.insert(wanted, name .. '.col')
-            end
+        if fileExists('data/encoded/' .. name .. '.txd') then
+            table.insert(wanted, name .. '.txd')
+        end
+        if fileExists('data/encoded/' .. name .. '.dff') then
+            table.insert(wanted, name .. '.dff')
+        end
+        if fileExists('data/encoded/' .. name .. '.col') then
+            table.insert(wanted, name .. '.col')
+        end
+        if model.txd then
+            table.insert(wanted, model.txd .. '.txd')
         end
     end
 

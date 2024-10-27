@@ -58,8 +58,9 @@ function nextCheckpoint()
     end
 
     local text, x, y, z = unpack(checkpoint)
-    local marker = createMarker(x, y, z - 0.8, 'cylinder', 3.5, 255, 0, 0, 0)
-    examBlip = createBlipAttachedTo(marker, 41, 2, 255, 0, 0, 255, 0, 9999.0, localPlayer)
+    local vehicleType = getVehicleType(examVehicle)
+    local marker = createMarker(x, y, z - 0.8, vehicleType == 'Plane' and 'ring' or 'cylinder', 3.5, 255, 0, 0, vehicleType == 'Plane' and 255 or 0)
+    examBlip = createBlipAttachedTo(marker, 41, 2, 255, 0, 0, 255, 0, 99999, localPlayer)
     setElementData(marker, 'marker:icon', 'none')
     setElementData(marker, 'marker:title', '')
     setElementData(marker, 'marker:desc', '')

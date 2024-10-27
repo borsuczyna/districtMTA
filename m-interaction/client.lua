@@ -19,7 +19,7 @@ local options = {
     },
     {
         text = function(vehicle)
-            local state = getVehicleOverrideLights(vehicle) == 2
+            local state = areVehicleLightsOn(vehicle)
             return state and 'Wyłącz światła' or 'Włącz światła'
         end,
         icon = 'headlights',

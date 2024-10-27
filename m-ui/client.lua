@@ -372,7 +372,7 @@ end
 local failedAttempts = 0
 
 setTimer(function()
-    local functions = {'loadInterface', 'createWindow', 'setPlayerNametags', 'getRandomPlayers'}
+    local functions = {'loadInterface', 'createWindow', 'getRandomPlayers'}
     
     for _, functionName in pairs(functions) do
         local result = exports['m-anticheat'][functionName]()
