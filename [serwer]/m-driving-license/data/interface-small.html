@@ -1,0 +1,59 @@
+<style>
+    #driving-license-small {
+        position: absolute;
+        left: 50%;
+        top: 1rem;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 1rem;
+        max-width: 40rem;
+        transform: translateX(-50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+</style>
+
+<div id="info-text"></div>
+
+<script>
+    window.driverLicenseSmall_setInfoTextInner = function(text) {
+        let element = document.querySelector('#driving-license-small #info-text');
+        element.innerHTML = text;
+    }
+
+    window.driverLicenseSmall_setInfoText = async function(text) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        let element = document.querySelector('#driving-license-small');
+        let opacity = element.style.opacity;
+        
+        if (opacity == '1') {
+            element.style.opacity = '0';
+            element.style.transform = 'translateX(-50%) scale(0.9)';
+            setTimer('driving-license-small', driverLicenseSmall_setInfoText, 300, text);
+        } else {
+            element.style.opacity = '1';
+            element.style.transform = 'translateX(-50%) scale(1)';
+            driverLicenseSmall_setInfoTextInner(text);
+        }
+    }
+
+    window.driverLicenseSmall_hide = function() {
+        let element = document.querySelector('#driving-license-small');
+        element.style.opacity = '0';
+        element.style.transform = 'translateX(-50%) scale(0.9)';
+    }
+
+    // driverLicenseSmall_setInfoText('Skręć w lewo');
+    // setTimer('driving-license-small', driverLicenseSmall_setInfoText, 1000, 'Skręć w prawo');
+    addEvent('driving-license-small', 'interface:data:text', driverLicenseSmall_setInfoText);
+    addEvent('driving-license-small', 'play-animation', (appear) => {
+        if (!appear) {
+            driverLicenseSmall_hide();
+        }
+    });
+</script>

@@ -1,0 +1,10 @@
+<meta>
+    <script src='messages/auth.lua' type='server'/>
+    <script src='messages/connectAccount.lua' type='server'/>
+    <script src='messages/clearAvatar.lua' type='server'/>
+    <script src='messages/payment.lua' type='server'/>
+    
+    <script src='main.lua' type='server'/>
+
+    <export function='createPayment' type='server'/>
+</meta>

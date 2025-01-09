@@ -1,0 +1,117 @@
+<meta>
+    <min_mta_version server='1.6.0-9.22195'/>
+
+    <script src='client/afk.lua' type='client' cache='false'/>
+    <script src='client/cursor.lua' type='client' cache='false'/>
+    <script src='client/chat.lua' type='client' cache='false'/>
+    <script src='client/weapons.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
+    
+    <!-- vehicles -->
+    <script src='client/vehicles/damage.lua' type='client' cache='false'/>
+    <script src='client/vehicles/attach.lua' type='client' cache='false'/>
+    
+    <script src='server/main.lua' type='server'/>
+    <script src='server/id.lua' type='server'/>
+    <script src='server/logs.lua' type='server'/>
+    <script src='server/chat.lua' type='server'/>
+    <script src='server/afk.lua' type='server'/>
+    <script src='server/antyspam.lua' type='server'/>
+    <script src='server/whitelist.lua' type='server'/>
+    <script src='server/premium.lua' type='server'/>
+    <script src='server/exp.lua' type='server'/>
+    <script src='server/money.lua' type='server'/>
+    <script src='server/blips.lua' type='server'/>
+    <script src='server/time.lua' type='server'/>
+    <script src='server/daily-reward.lua' type='server'/>
+    <script src='server/daily-tasks.lua' type='server'/>
+    <script src='server/achievements.lua' type='server'/>
+    <script src='server/handling.lua' type='server'/>
+    <script src='server/weapons.lua' type='server'/>
+    <script src='server/license.lua' type='server'/>
+    
+    <!-- accounts -->
+    <script src='server/accounts/main.lua' type='server'/>
+    <script src='server/accounts/create.lua' type='server'/>
+    <script src='server/accounts/login.lua' type='server'/>
+    <script src='server/accounts/data.lua' type='server'/>
+    <script src='server/accounts/punishment/main.lua' type='server'/>
+    <script src='server/accounts/punishment/ban.lua' type='server'/>
+    <script src='server/accounts/punishment/mute.lua' type='server'/>
+    <script src='server/accounts/punishment/license.lua' type='server'/>
+    
+    <!-- vehicles -->
+    <script src='server/vehicles/main.lua' type='server'/>
+    <script src='server/vehicles/damage.lua' type='server'/>
+    <script src='server/vehicles/engine.lua' type='server'/>
+    <script src='server/vehicles/fuel-mileage.lua' type='server'/>
+    <script src='server/vehicles/attach.lua' type='server'/>
+    
+    <script src='shared/players.lua' type='shared' cache='false'/>
+    <script src='shared/useful.lua' type='shared' cache='false'/>
+    <script src='shared/vehicles.lua' type='shared' cache='false'/>
+    <script src='shared/exp.lua' type='shared' cache='false'/>
+    <script src='shared/daily-reward.lua' type='shared' cache='false'/>
+    <script src='shared/daily-tasks.lua' type='shared' cache='false'/>
+    <script src='shared/license.lua' type='shared' cache='false'/>
+    
+    <export function='removeHex' type='shared'/>
+    
+    <export function='getPlayerFromPartialName' type='shared'/>
+    <export function='getPlayerById' type='shared'/>
+    
+    <export function='addUserLog' type='server'/>
+    <export function='addMoneyLog' type='server'/>
+    <export function='addMoneyLogByUid' type='server'/>
+    <export function='givePlayerBankMoney' type='server'/>
+    <export function='getLogType' type='server'/>
+    
+    <export function='createAccount' type='server'/>
+    <export function='loginToAccount' type='server'/>
+    <export function='assignPlayerData' type='server'/>
+    <export function='savePlayerData' type='server'/>
+    <export function='getPlayerByUid' type='shared'/>
+    <export function='getPlayerById' type='shared'/>
+    <export function='getPlayerFromPartialName' type='shared'/>
+    <export function='findVehicle' type='shared'/>
+    <export function='tempBan' type='server'/>
+    <export function='permBan' type='server'/>
+    <export function='mutePlayer' type='server'/>
+    <export function='unmutePlayer' type='server'/>
+    <export function='unbanPlayer' type='server'/>
+    <export function='checkBan' type='server'/>
+    <export function='takeLicense' type='server'/>
+    <export function='returnLicense' type='server'/>
+    <export function='getPlayerTakenLicense' type='server'/>
+    <export function='isPlayerHaveTakenLicense' type='server'/>
+    <export function='getNextLevelExp' type='shared'/>
+    <export function='givePlayerExp' type='server'/>
+    <export function='givePlayerMoney' type='server'/>
+    <export function='updatePlayerMoney' type='server'/>
+    <export function='getVehicleByUid' type='server'/>
+    <export function='getPlayerNameByUid' type='server'/>
+    <export function='getPlayerDailyRewardDay' type='shared'/>
+    <export function='canPlayerRedeemDailyReward' type='shared'/>
+    <export function='redeemDailyReward' type='server'/>
+    <export function='getDailyRewardAtDay' type='server'/>
+    <export function='getPlayerLast10DailyRewards' type='server'/>
+    <export function='getPlayerLast10DaysDailyTasks' type='server'/>
+    <export function='claimDailyTask' type='server'/>
+    <export function='getPlayerAchievements' type='server'/>
+    <export function='updatePlayerAchievements' type='server'/>
+    <export function='updatePlayerAchievement' type='server'/>
+    <export function='enterAdditionalSeat' type='server'/>
+    <export function='allowVehicleAttach' type='server'/>
+    <export function='disAllowVehicleAttach' type='server'/>
+    <export function='putVehicleIntoParking' type='server'/>
+    <export function='getVehicleFromParking' type='server'/>
+    <export function='createPrivateVehicle' type='server'/>
+    <export function='getPlayerVehicles' type='server'/>
+    <export function='addPlayerLicense' type='server'/>
+    <export function='removePlayerLicense' type='server'/>
+    <export function='doesPlayerHaveLicense' type='shared'/>
+    <export function='getPlayerColor' type='server'/>
+    <export function='getVehicleByUid' type='server'/>
+    
+    <export function='premiumChatDiscord' http='true'/>
+</meta>

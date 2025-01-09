@@ -1,5 +1,0 @@
-<map edf:definitions="editor_main">
-    <removeWorldObject id="removeWorldObject (Streetlamp1) (1)" radius="4.9006982" interior="-1" model="1232" lodModel="0" posX="2332.2344" posY="-1510.5156" posZ="25.625" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
-    <removeWorldObject id="removeWorldObject (lamppost1) (1)" radius="6.0116315" interior="-1" model="1297" lodModel="0" posX="2305.5859" posY="-1544.1797" posZ="27.21875" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
-    <removeWorldObject id="removeWorldObject (lamppost1) (4)" radius="6.0116315" interior="-1" model="1297" lodModel="0" posX="2300.3672" posY="-1512.9609" posZ="29.09375" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
-</map>

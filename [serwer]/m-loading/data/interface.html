@@ -1,0 +1,332 @@
+<style>
+    #loading {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/m-loading/data/bg.png?v2');
+        background-position: center;
+        background-size: cover;
+        opacity: 0;
+        transition: opacity 0.6s cubic-bezier(0.4, 0.22, 0.22, 1);
+    }
+
+    #loading .item {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 35rem;
+        height: 20rem;
+        border-radius: 0.5rem;
+        background-position: center;
+        background-size: cover;
+        mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2));
+        mask-size: 1000% 1000%;
+        mask-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding: 0.6rem;
+        transition: mask-size 2s cubic-bezier(0.4, 0.22, 0.22, 1), transform 2s cubic-bezier(0.4, 0.22, 0.22, 1), opacity 2s cubic-bezier(0.4, 0.22, 0.22, 1), filter 2s cubic-bezier(0.4, 0.22, 0.22, 1);
+    }
+
+    #loading .item-left {
+        transform: translate(calc(-50% - 34rem), -50%) scale(0.7);
+        mask-size: 100% 100%;
+        opacity: 0.8;
+        filter: blur(0.4rem);
+    }
+
+    #loading .item-right {
+        transform: translate(calc(-50% + 34rem), -50%) scale(0.7);
+        mask-size: 100% 100%;
+        opacity: 0.8;
+        filter: blur(0.4rem);
+    }
+
+    #loading .item-left-hide {
+        transform: translate(calc(-50% - 50rem), -50%) scale(0.2);
+        mask-size: 100% 100%;
+        opacity: 0;
+        filter: blur(1rem);
+    }
+
+    #loading .item-right-hide {
+        transform: translate(calc(-50% + 50rem), -50%) scale(0.2);
+        mask-size: 100% 100%;
+        opacity: 0;
+        filter: blur(1rem);
+    }
+
+    #loading .list {
+        position: absolute;
+        top: calc(50% + 12rem);
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    #loading .dot {
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 1rem;
+        background-color: rgba(255, 255, 255, 0.3);
+        transition: all 0.5s;
+    }
+
+    #loading .dot.active {
+        background-color: #FFAC4A;
+        width: 1.5rem;
+    }
+
+    #loading .title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0.125rem 0.125rem 0.125rem rgba(0, 0, 0, 0.5);
+    }
+
+    #loading .description {
+        font-size: 1rem;
+        color: rgb(217, 217, 217);
+        text-shadow: 0.0625rem 0.0625rem 0.0625rem rgba(0, 0, 0, 0.5);
+    }
+
+    #loading.visible {
+        opacity: 1;
+    }
+
+    #loading .progress {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 25rem;
+        height: 0.8rem;
+        background-color: rgba(54, 54, 54, 0.5);
+        border-radius: 1rem;
+        transition: bottom 0.6s ease-in-out;
+    }
+
+    #loading .progress-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #ffab48 0.01%, #fc8c5b 100%);
+        border-radius: 1rem;
+        box-shadow: 0px 0px 1.325rem #FFAC4Aaa;
+    }
+
+    #loading .progress.hidden {
+        display: none;
+    }
+
+    #loading .text {
+        position: absolute;
+        left: 50%;
+        bottom: 2.2rem;
+        transform: translateX(-50%);
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.818);
+        text-shadow: 0.125rem 0.125rem 0.125rem rgba(0, 0, 0, 0.5);
+        transition: bottom 0.6s ease-in-out;
+    }
+
+    #loading .text.disappear {
+        bottom: -3rem !important;
+    }
+
+    #loading .progress.disappear {
+        bottom: -5rem !important;
+    }
+
+    #loading:has(.progress.hidden) .text {
+        bottom: 1rem;
+    }
+</style>
+
+<div class="item item-left">
+    <div class="title"></div>
+    <div class="description"></div>
+</div>
+<div class="item item-right">
+    <div class="title"></div>
+    <div class="description"></div>
+</div>
+<div class="item item-right-hide">
+    <div class="title"></div>
+    <div class="description"></div>
+</div>
+<div class="item">
+    <div class="title"></div>
+    <div class="description"></div>
+</div>
+
+<div class="list"></div>
+
+<div class="progress">
+    <div class="progress-bar"></div>
+</div>
+
+<div class="text text-center">Ładowanie kogoś pod chuja</div>
+
+<script>
+    let maxImages = 3;
+    let data = [
+        ['Bezpieczeństwo konta', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non turpis non nisi gravida lobortis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec non molestie augue. Duis tincidunt quam ullamcorper erat lobortis viverra. Sed non justo eros. Aliquam rhoncus turpis eu tortor sagittis tincidunt. Curabitur pharetra at nisl iaculis imperdiet.'],
+        ['Testowa informacja', 'Lorem ipsum dolor sit amet, eros. Aliquam rhoncus turpis eu tortor sagittis tincidunt. Curabitur pharetra at nisl iaculis imperdiet.'],
+        ['Administracja', 'Lorem ipsum dolor sit amet, lobortis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec non molestie augue. Duis tincidunt quam ullamcorper erat lobortis viverra. Sed non justo eros. Aliquam rhoncus turpis eu tortor sagittis tincidunt. Curabitur pharetra at nisl iaculis imperdiet.'],
+    ]
+
+    function getNextImage(id) {
+        let nextId = id + 1;
+        if (nextId > maxImages) {
+            nextId = 1;
+        }
+        return nextId;
+    }
+
+    function getCurrentImageId(element) {
+        let backgroundImage = element.style.backgroundImage;
+        let id = backgroundImage.split('bg-')[1].split('.png')[0];
+        return parseInt(id);
+    }
+
+    function setImageId(element, id) {
+        element.style.backgroundImage = `url('/m-loading/data/bg-${id}.png')`;
+        updateTitleAndDescription(element);
+    }
+
+    function updateTitleAndDescription(element) {
+        let id = getCurrentImageId(element);
+        let [title, description] = data[id - 1];
+        element.querySelector('.title').innerText = title;
+        element.querySelector('.description').innerText = description;
+    }
+
+    function nextImage(element, cantBe) {
+        let id = getCurrentImageId(element);
+        let nextId = getNextImage(id);
+        setImageId(element, nextId);
+
+        if (nextId == cantBe) {
+            nextId = getNextImage(nextId);
+            setImageId(element, nextId);
+        }
+    }
+
+    function getLoadingElements() {
+        let leftHide = document.querySelector('#loading .item-left-hide');
+        let left = document.querySelector('#loading .item-left');
+        let right = document.querySelector('#loading .item-right');
+        let rightHide = document.querySelector('#loading .item-right-hide');
+        let center = document.querySelector('#loading .item:not(.item-left):not(.item-right):not(.item-right-hide):not(.item-left-hide)');
+        return [leftHide, right, rightHide, center, left];
+    }
+
+    function nextDot() {
+        let dots = document.querySelectorAll('#loading .dot');
+        let active = document.querySelector('#loading .dot.active');
+        let next = active.nextElementSibling;
+        if (!next) {
+            next = dots[0];
+        }
+        active.classList.remove('active');
+        next.classList.add('active');
+    }
+
+    window.loading_swapImages = () => {
+        let [leftHide, right, rightHide, center, left] = getLoadingElements();
+
+        leftHide.classList.remove('item-left-hide');
+        leftHide.classList.add('item-right-hide');
+        nextImage(leftHide, getCurrentImageId(right));
+    }
+
+    function changeLoadingImage() {
+        let [leftHide, right, rightHide, center, left] = getLoadingElements();
+
+        center.classList.add('item-left');
+        right.classList.remove('item-right');
+        left.classList.remove('item-left');
+        left.classList.add('item-left-hide');
+        rightHide.classList.add('item-right');
+        rightHide.classList.remove('item-right-hide');
+        nextDot();
+
+        setTimer('loading', loading_swapImages, 2000);
+        setTimer('loading', changeLoadingImage, 6000);
+    }
+
+    function firstLoad() {
+        let [leftHide, right, rightHide, center, left] = getLoadingElements();
+
+        setImageId(left, 1);
+        setImageId(center, 2);
+        setImageId(right, 3);
+        setImageId(rightHide, 2);
+
+        let dots = document.querySelector('#loading .list');
+        for (let i = 0; i < maxImages; i++) {
+            let dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i == 0) {
+                dot.classList.add('active');
+            }
+            dots.appendChild(dot);
+        }
+    }
+
+    window.loading_setProgress = (progress, time) => {
+        let bar = document.querySelector('#loading .progress-bar');
+        bar.style.width = `${progress}%`;
+        bar.style.transition = `width ${time}ms linear`;
+    }
+
+    addEvent('loading', 'interface:visible', async (name, visible) => {
+        if (name == 'loading') {
+            let loading = document.querySelector('#loading');
+            if (visible) {
+                await new Promise(resolve => setTimeout(resolve, 10));
+                loading.classList.add('visible');
+            }
+        }
+    });
+
+    addEvent('loading', 'interface:data:loading-data', async (data) => {
+        data = data[0];
+        let loadingIsVisible = document.querySelector('#loading').classList.contains('visible');
+
+        if (!loadingIsVisible) {
+            if (data.time && data.time > 0)
+                setTimer('loading', loading_setProgress, 100, data.progress ?? 100, data.time);
+            else if (data.progress) {
+                loading_setProgress(data.progress, 0);
+            }
+
+            document.querySelector('#loading .text').innerHTML = data.text;
+
+            document.querySelector('#loading .progress').classList.toggle('hidden', data.time == 0);
+            document.querySelector('#loading .progress').classList.add('disappear');
+            document.querySelector('#loading .text').classList.add('disappear');
+            
+            await new Promise(resolve => setTimeout(resolve, 10));
+            document.querySelector('#loading .progress').classList.remove('disappear');
+            document.querySelector('#loading .text').classList.remove('disappear');
+        } else {
+            loading_setProgress(data.progress, data.time ?? 0);
+            document.querySelector('#loading .text').innerHTML = data.text;
+        }
+    });
+    
+    addEvent('loading', 'interface:data:loading-hide', async () => {
+        document.querySelector('#loading .progress').classList.add('disappear');
+        document.querySelector('#loading .text').classList.add('disappear');
+        document.querySelector('#loading').classList.remove('visible');
+    });
+
+    firstLoad();
+    setTimer('loading', changeLoadingImage, 5000);
+</script>

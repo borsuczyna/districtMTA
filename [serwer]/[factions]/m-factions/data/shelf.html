@@ -1,0 +1,110 @@
+<style>
+    #shelf {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 0.625rem;
+        min-width: 24rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #shelf .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+
+    #shelf #items {
+        display: flex;
+        gap: 0.325rem;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>
+
+<div class="d-flex gap-4 align-items-center mb-2">
+    <span class="label">Wyposażenie</span>
+    <div class="line"></div>
+</div>
+
+<select id="category" onchange="shelf_reloadItems()"></select>
+<div id="items" class="mt-2"></div>
+
+<div class="d-flex justify-center mt-2 gap-2">
+    <div class="flat-button flat-button-small" onclick="shelf_close()">Zamknij</div>
+</div>
+
+<script>
+    let itemsData = {};
+
+    $('#shelf #category').select2();
+
+    shelf_renderCategories = () => {
+        const categorySelect = document.querySelector('#category');
+        
+        for (let index in itemsData.items) {
+            const item = itemsData.items[index];
+            categorySelect.append(new Option(item.name, index));
+        }
+
+        // trigger change event to load items
+        $('#shelf #category').trigger('change');
+    }
+
+    shelf_reloadItems = () => {
+        const itemsContainer = document.querySelector('#items');
+        let category = itemsData.items[document.querySelector('#category').value];
+
+        itemsContainer.innerHTML = category.items.map((item, index) => {
+            return `
+                <div class="d-flex gap-2 align-items-center item justify-between">
+                    <span>${item.item}</span>
+                    <div class="flat-button flat-button-small" onclick="shelf_takeItem(this, ${index})">Weź</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    shelf_takeItem = async (button, index) => {
+        if (isButtonSpinner(button)) return;
+
+        makeButtonSpinner(button);
+        let category = document.querySelector('#category').value;
+        let data = await mta.fetch('factions', 'useShelf', [itemsData.faction, itemsData.isStorage, category, index]);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        }
+        
+        makeButtonSpinner(button, false);
+    }
+
+    shelf_close = () => {
+        mta.triggerEvent('factions:closeShelf');
+    }
+
+    addEvent('shelf', 'interface:data:items', (data) => {
+        itemsData = data[0];
+        shelf_renderCategories();
+    });
+
+    addEvent('shelf', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#shelf').style.opacity = appear ? '1' : '0';
+        document.querySelector('#shelf').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+        
+        if (!appear) {
+            $('#shelf #category').select2('close');
+        }
+    });
+</script>

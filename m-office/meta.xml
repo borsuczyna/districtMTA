@@ -1,7 +1,0 @@
-<meta>
-    <script src='server.lua' type='server'/>
-    
-    <script src='tickets.lua' type='client' cache='false'/>
-
-    <file src='data/tickets.html'/>
-</meta>

@@ -1,0 +1,472 @@
+<style>
+    #houses #houses-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        /* background: rgba(26, 26, 26, 0.9); */
+        background: linear-gradient(45deg, #262626cb, #222222cb);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #houses .left-side {
+        border-radius: 0.5rem;
+    }
+
+    #houses .preview {
+        width: 20rem;
+        height: 12rem;
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+
+    #houses .cost {
+        font-size: 1.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: end;
+        gap: 0.2rem;
+    }
+
+    #houses .cost .small {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+        font-weight: normal;
+        color: #d0d0d0;
+    }
+
+    #houses .item {
+        font-size: 1rem;
+        font-weight: normal;
+        color: #d0d0d0;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    #houses .item svg {
+        width: 1.1em;
+        height: 1.1em;
+        fill: #d0d0d0;
+    }
+
+    #houses .features {
+        font-size: 1.2rem;
+        color: #d0d0d0;
+    }
+
+    #houses .features .item svg {
+        width: 1.0rem;
+        height: 1.0rem;
+        fill: #d0d0d0;
+    }
+
+    #houses .title {
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    #houses .description {
+        font-size: 0.9rem;
+        color: #c6c6c6;
+        font-weight: normal;
+        max-width: 35rem;
+    }
+
+    #houses .line {
+        width: 100%;
+        height: 0.0625rem;
+        background: #535353;
+    }
+
+    #houses #house-map {
+        width: 100%;
+        flex: 1;
+        height: auto;
+        flex-grow: 1;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    #houses #icons {
+        overflow-x: auto;
+    }
+
+    #houses .icon {
+        width: 2.8rem;
+        height: 2.8rem;
+        min-width: 2.8rem;
+        min-height: 2.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(80, 80, 80, 0.4);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.6);
+        border-radius: 0.5rem;
+        color: #d0d0d0;
+        transition: background 0.2s, border 0.2s, color 0.2s;
+        cursor: pointer;
+    }
+
+    #houses .icon:hover {
+        background: rgba(80, 80, 80, 0.6);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.8);
+        color: #fff;
+    }
+
+    #houses .icon svg {
+        width: 1.3rem;
+        height: 1.3rem;
+        transition: fill 0.2s;
+    }
+
+    #houses #rent-house-time {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(26, 26, 26, 0.8);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        backdrop-filter: blur(0.625rem);
+        box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s;
+    }
+
+    #houses #edit-tenants {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(26, 26, 26, 0.8);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        backdrop-filter: blur(0.625rem);
+        box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s;
+    }
+
+    #houses #edit-tenants .list {
+        max-height: 20rem;
+        overflow-y: auto;
+        gap: 0.4rem;
+        min-width: 14rem;
+    }
+
+    #houses #edit-tenants .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0.6rem;
+        background: rgba(62, 62, 62, 0.5);
+        border: 0.0625rem solid rgba(71, 71, 71, 0.6);
+        border-radius: 0.375rem;
+    }
+
+    #houses #edit-tenants .item svg {
+        width: 0.7rem;
+        height: 0.7rem;
+        fill: #fefefeb0;
+    }
+
+    #houses #furnitures {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(26, 26, 26, 0.8);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        backdrop-filter: blur(0.625rem);
+        box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s;
+    }
+
+    #houses #furnitures .description {
+        font-size: 1.1rem;
+        color: #c6c6c6;
+        font-weight: normal;
+    }
+
+    #houses #furnitures .description small {
+        font-size: 0.9rem;
+        color: #c6c6c6;
+        font-weight: normal;
+    }
+
+    #houses #furnitures .list {
+        max-height: 20rem;
+        overflow-y: auto;
+        gap: 0.4rem;
+        min-width: 14rem;
+    }
+
+    #houses #furnitures .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0.6rem;
+        background: rgba(62, 62, 62, 0.5);
+        border: 0.0625rem solid rgba(71, 71, 71, 0.6);
+        border-radius: 0.375rem;
+    }
+
+    #houses #textures {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(26, 26, 26, 0.8);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        backdrop-filter: blur(0.625rem);
+        box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s;
+    }
+
+    #houses #textures .description {
+        font-size: 1rem;
+        color: #c6c6c6;
+        font-weight: normal;
+    }
+
+    #houses #textures .list {
+        max-height: 15.2rem;
+        overflow-y: auto;
+        gap: 0.4rem;
+        min-width: 16rem;
+    }
+    
+    #houses #textures .texture-list {
+        max-height: 18rem;
+        overflow-y: auto;
+        gap: 0.4rem;
+        display: grid;
+        min-width: 16rem;
+        grid-template-columns: repeat(2, 0.5fr);
+    }
+
+    #houses #textures .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0.6rem;
+        background: rgba(62, 62, 62, 0.5);
+        border: 0.0625rem solid rgba(71, 71, 71, 0.6);
+        border-radius: 0.375rem;
+        transition: background 0.2s, border 0.2s;
+    }
+
+    #houses #textures .item:hover {
+        background: rgba(62, 62, 62, 0.8);
+        border: 0.0625rem solid rgba(71, 71, 71, 0.9);
+    }
+
+    #houses #textures .texture {
+        border-radius: 0.375rem;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    #houses #textures .texture img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 0.375rem;
+    }
+
+    #houses .texture-small {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.375rem;
+    }
+</style>
+
+<div id="houses-wrapper">
+    <div class="d-flex gap-3 h-100">
+        <div class="d-flex flex-column left-side">
+            <img src="" class="preview">
+            <div class="d-flex flex-column gap-2 text-start mt-2">
+                <div class="cost">
+                    <div id="cost">$0</div>
+                    <div class="small">/dzień</div>
+                </div>
+                <div class="item">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g id="Pin"><path d="m32 0a24.0319 24.0319 0 0 0 -24 24c0 17.23 22.36 38.81 23.31 39.72a.99.99 0 0 0 1.38 0c.95-.91 23.31-22.49 23.31-39.72a24.0319 24.0319 0 0 0 -24-24zm0 35a11 11 0 1 1 11-11 11.0066 11.0066 0 0 1 -11 11z"/></g></svg>
+                    <div id="street"></div>
+                </div>
+                <div class="item">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" data-name="glyph">
+                        <path d="m59.91513 27.79185a5.80619 5.80619 0 0 0 -5.531-4.79087c-3.62066-.11006-5.471 3.13053-5.9411 4.81089l-2.33045 6.94129c-3.13058-1.22026-9.22166-1.70033-14.15258-1.89037-3.88584.08843-11.88565.82122-14.07258 1.88048l-2.31042-6.8814c-.49008-1.73036-2.36048-4.95093-5.96112-4.86088a5.803 5.803 0 0 0 .29 11.60211l3.86076 10.512a4.17526 4.17526 0 0 0 4.38084 2.66039c8.11155.00118 19.59305-.00073 27.705.00007a4.18157 4.18157 0 0 0 4.38084-2.65056l3.86079-10.5219a5.84646 5.84646 0 0 0 5.82102-6.81125z" />
+                        <path d="m39.2213 49.77589 1.32026 3.62067a2.237 2.237 0 0 0 2.10042 1.4703h1.0102a2.23246 2.23246 0 0 0 2.23039-2.23046v-2.86051c-1.10291-.00123-6.66127 0-6.66127 0z" />
+                        <path d="m18.11743 49.77589v2.86051a2.23246 2.23246 0 0 0 2.23039 2.23046h1.01018a2.21582 2.21582 0 0 0 2.0804-1.46029l1.34028-3.63068c-1.14668-.00056-6.66125 0-6.66125 0z" />
+                        <path d="m17.48731 27.27173 1.6803 4.99092c2.82036-.773 9.29685-1.30375 12.86242-1.40018a66.708 66.708 0 0 1 12.80236 1.41019l1.70032-5.05092c.89095-3.551 5.35776-7.967 10.80207-5.56091-3.64378-11.59237-17.71428-17.24058-26.03513-7.6913a13.48013 13.48013 0 0 1 -3.56047 3.07037c-1.79029 1.40025-5.421.66006-6.59116.29-2.83054-1.19022-5.341-1.3302-7.4614-.41a7.66732 7.66732 0 0 0 -3.93073 4.08076c4.04398-.21149 7.14121 3.76821 7.73142 6.27107z" />
+                    </svg>
+                    <div id="furnitured"></div>
+                </div>
+                <div class="item">
+                    <svg viewBox="0 0 461 461" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M230.431 239.282C296.26 239.282 350.072 185.47 350.072 119.641C350.072 53.812 296.26 0 230.431 0C164.602 0 110.791 53.812 110.791 119.641C110.791 185.47 164.603 239.282 230.431 239.282Z" fill="currentColor" />
+                        <path d="M435.754 334.89C432.619 327.053 428.44 319.739 423.738 312.947C399.705 277.42 362.612 253.91 320.816 248.163C315.592 247.641 309.845 248.685 305.665 251.82C283.722 268.016 257.6 276.375 230.432 276.375C203.264 276.375 177.142 268.016 155.199 251.82C151.019 248.685 145.272 247.118 140.048 248.163C98.2523 253.91 60.6363 277.42 37.1263 312.947C32.4243 319.739 28.2443 327.576 25.1103 334.89C23.5433 338.025 24.0653 341.682 25.6323 344.817C29.8123 352.131 35.0363 359.446 39.7383 365.715C47.0523 375.642 54.8893 384.523 63.7713 392.882C71.0853 400.196 79.4443 406.988 87.8043 413.78C129.077 444.605 178.71 460.8 229.91 460.8C281.11 460.8 330.743 444.604 372.016 413.78C380.375 407.511 388.734 400.196 396.049 392.882C404.408 384.523 412.767 375.641 420.082 365.715C425.306 358.923 430.009 352.131 434.188 344.817C436.799 341.682 437.321 338.024 435.754 334.89Z" fill="currentColor" />
+                    </svg>
+                    <div id="owner"></div>
+                </div>
+                <div class="item">
+                    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M160.001 53.3333C160.001 41.5513 150.449 32 138.667 32C126.885 32 117.334 41.5513 117.334 53.3333V74.6667C117.334 86.4487 126.885 96 138.667 96C150.449 96 160.001 86.4487 160.001 74.6667V53.3333Z" fill="currentColor" />
+                        <path d="M394.667 53.3333C394.667 41.5513 385.115 32 373.333 32C361.551 32 352 41.5513 352 53.3333V74.6667C352 86.4487 361.551 96 373.333 96C385.115 96 394.667 86.4487 394.667 74.6667V53.3333Z" fill="currentColor" />
+                        <path d="M42.666 192V437.333C42.666 460.896 61.77 480 85.3327 480H426.666C450.229 480 469.333 460.896 469.333 437.333V192H42.666ZM170.666 405.333C170.666 417.12 161.119 426.667 149.333 426.667H127.999C116.213 426.667 106.666 417.12 106.666 405.333V384C106.666 372.213 116.213 362.667 127.999 362.667H149.333C161.119 362.667 170.666 372.213 170.666 384V405.333ZM170.666 288C170.666 299.787 161.119 309.333 149.333 309.333H127.999C116.213 309.333 106.666 299.787 106.666 288V266.667C106.666 254.88 116.213 245.333 127.999 245.333H149.333C161.119 245.333 170.666 254.88 170.666 266.667V288ZM287.999 405.333C287.999 417.12 278.453 426.667 266.666 426.667H245.333C233.546 426.667 223.999 417.12 223.999 405.333V384C223.999 372.213 233.546 362.667 245.333 362.667H266.666C278.453 362.667 287.999 372.213 287.999 384V405.333ZM287.999 288C287.999 299.787 278.453 309.333 266.666 309.333H245.333C233.546 309.333 223.999 299.787 223.999 288V266.667C223.999 254.88 233.546 245.333 245.333 245.333H266.666C278.453 245.333 287.999 254.88 287.999 266.667V288ZM405.333 405.333C405.333 417.12 395.786 426.667 383.999 426.667H362.666C350.879 426.667 341.333 417.12 341.333 405.333V384C341.333 372.213 350.879 362.667 362.666 362.667H383.999C395.786 362.667 405.333 372.213 405.333 384V405.333ZM405.333 288C405.333 299.787 395.786 309.333 383.999 309.333H362.666C350.879 309.333 341.333 299.787 341.333 288V266.667C341.333 254.88 350.879 245.333 362.666 245.333H383.999C395.786 245.333 405.333 254.88 405.333 266.667V288Z" fill="currentColor" />
+                        <path d="M469.333 170.667V106.667C469.333 83.104 450.229 64 426.666 64H415.999V74.6667C415.999 98.1973 396.863 117.333 373.333 117.333C349.802 117.333 330.666 98.1973 330.666 74.6667V64H181.333V74.6667C181.333 98.1973 162.197 117.333 138.666 117.333C115.135 117.333 95.9994 98.1973 95.9994 74.6667V64H85.3327C61.77 64 42.666 83.104 42.666 106.667V170.667H469.333Z" fill="currentColor" />
+                    </svg>
+                    <div id="rent-to"></div>
+                </div>
+                <div class="d-flex gap-3 features">
+                    <div class="item" data-tooltip="Sypialnie">
+                        <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M508 318V444C508 453.936 499.936 462 490 462C480.064 462 472 453.936 472 444V426H40V444C40 453.936 31.936 462 22 462C12.064 462 4 453.936 4 444V318C4 288.228 28.228 264 58 264H454C483.772 264 508 288.228 508 318Z" fill="currentColor" />
+                            <path d="M58 228V120C58 110.064 66.064 102 76 102H436C445.936 102 454 110.064 454 120V228H400V210C400 190.146 383.854 174 364 174H310C290.146 174 274 190.146 274 210V228H238V210C238 190.146 221.854 174 202 174H148C128.146 174 112 190.146 112 210V228H58Z" fill="currentColor" />
+                        </svg>
+                        <div id="beds"></div>
+                    </div>
+                    <div class="item" data-tooltip="Garaże">
+                        <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M466.013 154.356L266.013 38.6871C259.819 35.1043 252.183 35.1043 245.987 38.6871L45.9868 154.356C39.8079 157.93 36 164.53 36 171.669V456.001C36 467.045 44.9564 476 56.0002 476H116V456V436V415.999V335.999V256C116 244.954 124.956 236 136 236H376.001C387.047 236 396.001 244.954 396.001 256V336V416V436V456.001V476H456.001C467.047 476 476 467.045 476 456.001V171.669C476 164.53 472.194 157.93 466.013 154.356Z" fill="currentColor" />
+                        </svg>
+                        <div id="garages"></div>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-1">
+                    <div class="nice-button" style="flex: 3;" id="main-button" onclick="houses_useMainButton(this)"></div>
+                    <div class="flat-button" style="flex: 1;" onclick="houses_closeGui(this)">Anuluj</div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-2 justify-between text-start">
+            <div>
+                <div class="title">Testowy domek</div>
+                <div class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed voluptates similique maiores commodi dolore! Deserunt architecto at consequuntur, sequi modi earum accusantium totam iure repellendus. Animi maiores enim pariatur quos illo debitis, temporibus expedita error ratione. Aperiam nisi libero iste, voluptate ducimus magni nobis ipsa rem. Necessitatibus nisi animi explicabo?</div>
+            </div>
+            <div class="line"></div>
+            <div class="d-flex flex-column gap-1" style="flex: 1;">
+                <div id="house-map"></div>
+                <div class="d-flex justify-between mt-2">
+                    <div class="d-flex gap-2 nice-scroll" id="icons"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="rent-house-time">
+    <div class="description">
+        Na ile dni chcesz wynająć ten dom?
+    </div>
+
+    <input type="number" id="rent-house-time-input" class="simple-input mt-2 mb-1" placeholder="Ilość dni" min="1" max="120" value="1">
+    <div class="d-flex gap-2 mt-2">
+        <div class="nice-button flat-button-small" style="flex: 1;" onclick="houses_confirmRentHouse(this)" id="rent-house-time-button">Wynajmij</div>
+        <div class="flat-button flat-button-small" style="flex: 1;" onclick="houses_appearRentHouseTime(false)">Anuluj</div>
+    </div>
+</div>
+
+<div id="edit-tenants">
+    <div class="description">
+        Dodaj lub usuń lokatorów
+    </div>
+
+    <div class="d-flex flex-column mt-2 list pr-1 nice-scroll"></div>
+
+    <input type="text" class="simple-input mt-3" style="height: 0.6rem;" placeholder="Nazwa lub ID lokatora" id="new-tenant-name">
+    
+    <div class="d-flex gap-2 mt-2">
+        <div class="nice-button flat-button-small" style="flex: 1;" onclick="window.houses_addTenant(this)">Dodaj</div>
+        <div class="flat-button flat-button-small" style="flex: 1;" onclick="window.houses_appearEditTenants(false)">Anuluj</div>
+    </div>
+</div>
+
+<div id="furnitures">
+    <div class="description">
+        Lista aktualnych mebli<br>
+        <small>Meble ustawia się z menu ekwipunku</small>
+    </div>
+
+    <div class="d-flex flex-column mt-2 list pr-1 nice-scroll"></div>
+
+    <div class="d-flex gap-2 mt-2">
+        <div class="nice-button flat-button-small" style="flex: 1;" onclick="window.houses_editFurnitures(this)">Tryb edycji</div>
+        <div class="flat-button flat-button-small" style="flex: 1;" onclick="window.houses_appearFurnitureMenu(false)">Anuluj</div>
+    </div>
+</div>
+
+<div id="textures">
+    <div class="d-flex gap-2">
+        <div>
+            <div class="description">
+                Zmień wystrój domu
+            </div>
+        
+            <div class="d-flex flex-column mt-2 list pr-1 nice-scroll"></div>
+        
+            <div class="d-flex gap-2 mt-2">
+                <div class="nice-button flat-button-small" style="flex: 1;" onclick="window.houses_resetTextures(this)">Resetuj</div>
+                <div class="flat-button flat-button-small" style="flex: 1;" onclick="window.houses_appearTexturesMenu(false)">Anuluj</div>
+            </div>
+        </div>
+        <div class="d-none">
+            <div class="description">
+                Wybierz teksturę
+            </div>
+
+            <div class="texture-list mt-2 nice-scroll pr-1"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadIncludes() {
+        let tasks = [];
+
+        tasks.push(include('/m-houses/data/textures.js'));
+        tasks.push(include('/m-houses/data/main.js'));
+        tasks.push(include('/m-houses/data/rent.js'));
+        tasks.push(include('/m-houses/data/options.js'));
+        tasks.push(include('/m-houses/data/furniture.js'));
+
+        await Promise.all(tasks);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        finishIncludes('houses');
+    }
+
+    loadIncludes();
+</script>

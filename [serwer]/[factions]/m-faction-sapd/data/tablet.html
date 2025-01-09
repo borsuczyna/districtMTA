@@ -1,0 +1,359 @@
+<style>
+    #tablet {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(0, 0, 0, 0.9);
+        border-radius: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 1.6rem;
+        min-width: 24rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #tablet #screen {
+        background: #001443;
+        height: 30rem;
+        width: 50rem;
+    }
+
+    #tablet .pattern {
+        background: repeating-linear-gradient(10deg, #001443 0, #001443 0.8rem, #fff 0.9rem, #fff 2rem);
+        width: 2rem;
+        height: 100%;
+    }
+
+    #tablet .pattern-reverse {
+        background: repeating-linear-gradient(-10deg, #001443 0, #001443 0.8rem, #fff 0.9rem, #fff 2rem);
+        width: 2rem;
+        height: 100%;
+    }
+
+    #tablet .title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    #tablet .tab {
+        display: none;
+        overflow-y: auto;
+        width: 100%;
+        padding-right: 0.5rem;
+    }
+
+    #tablet .tab.active {
+        display: block;
+    }
+
+    #tablet .items {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #tablet .item {
+        background: #fff;
+        color: #001443;
+        font-size: 1rem;
+        font-weight: 800;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    #tablet .item:hover {
+        transform: translateY(-0.2rem);
+    }
+
+    #tablet input, #tablet textarea {
+        background: #fff;
+        color: #001443;
+        font-size: 1rem;
+        font-weight: 800;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    /* custom scroll */
+    #tablet ::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    #tablet ::-webkit-scrollbar-track {
+        background: #001443;
+    }
+
+    #tablet ::-webkit-scrollbar-thumb {
+        background: #fff;
+        border-radius: 0.25rem;
+    }
+
+    #tablet ::-webkit-scrollbar-thumb:hover {
+        background: #ccc;
+    }
+
+    /* table */
+    #tablet .nice-table-wrapper {
+        background: none;
+        border: 1px solid #fff;
+        width: 100%;
+    }
+
+    #tablet .text-overflow {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<div id="screen" class="d-flex justify-between gap-4">
+    <div class="pattern h-100"></div>
+    <div class="d-flex flex-column align-items-center gap-4 p-2 flex-grow-1">
+        <div class="d-flex flex-column">
+            <span class="title">SAPD</span>
+            <span class="label" id="title">Zalogowano jako borsuczyna#00011</span>
+        </div>
+        <div class="tab active" data-tab="main">
+            <div class="d-flex justify-center">
+                <div class="items">
+                    <div class="item" onclick="tablet_goToTab('users-search')">BAZA UŻYTKOWNIKÓW</div>
+                    <div class="item" onclick="tablet_goToTab('vehicles-search')">BAZA POJAZDÓW</div>
+                    <div class="item" onclick="tablet_goToTab('ticket')">WYSTAW MANDAT</div>
+                    <div class="item" onclick="mta.triggerEvent('tablet:hide')">WYLOGUJ</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="ticket">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <h3>WYSTAW MANDAT</h3>
+                <input id="ticket-name" type="text" style="width: calc(100% - 2rem);" placeholder="NAZWA UŻYTKOWNIKA LUB ID">
+                <input id="ticket-amount" type="number" style="width: calc(100% - 2rem);" placeholder="KWOTA MANDATU">
+                <textarea id="ticket-reason" placeholder="POWÓD MANDATU" style="resize: none; width: calc(100% - 2rem);"></textarea>
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_issueTicket(this)">WYSTAW</div>
+                    <div class="item" onclick="tablet_goToTab('main')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="users-search">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <input id="search-user-input" type="text" placeholder="NAZWA UŻYTKOWNIKA">
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_searchUser(this)">SZUKAJ</div>
+                    <div class="item" onclick="tablet_goToTab('main')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="vehicles-search">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <input id="search-vehicle-input" type="text" placeholder="REJESTRACJA POJAZDU">
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_searchVehicle(this)">SZUKAJ</div>
+                    <div class="item" onclick="tablet_goToTab('main')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="users">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <h3>LISTA UŻYTKOWNIKÓW</h3>
+                <div class="nice-table-wrapper" style="width: calc(100% - 2rem);">
+                    <table id="users-list">
+                        <thead>
+                            <tr>
+                                <th>UID</th>
+                                <th>Nick</th>
+                                <th>Ostatnio online</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_goToTab('users-search')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="vehicles">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <h3>LISTA POJAZDÓW</h3>
+                <div class="nice-table-wrapper" style="width: calc(100% - 2rem);">
+                    <table id="vehicles-list">
+                        <thead>
+                            <tr>
+                                <th>UID</th>
+                                <th>Model</th>
+                                <th>Rejestracja</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_goToTab('vehicles-search')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="user-info">
+            <div class="d-flex flex-column align-items-center w-100">
+                <h3>INFORMACJE O UŻYTKOWNIKU</h3>
+                <div class="d-flex flex-column gap-1 align-items-start w-100">
+                    <span>Nick: <span id="user-info-nick"></span></span>
+                    <span>UID: <span id="user-info-uid"></span></span>
+                    <span>Ostatnio online: <span id="user-info-last-online"></span></span>
+                    <span>Licencje: <span id="user-info-licenses"></span></span>
+
+                    <h4>Historia</h4>
+                    <div class="nice-table-wrapper" style="width: calc(100% - 2rem);">
+                        <table id="user-info-logs">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Dodane przez</th>
+                                    <th>Informacja</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <div class="item" onclick="tablet_goToTab('add-user-log')">DODAJ WPIS</div>
+                    <div class="item" onclick="tablet_goToTab('users-search')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="vehicle-info">
+            <div class="d-flex flex-column align-items-center w-100">
+                <h3>INFORMACJE O POJEŹDZIE</h3>
+                <div class="d-flex flex-column gap-1 align-items-start w-100">
+                    <span>UID: <span id="vehicle-info-uid"></span></span>
+                    <span>Model: <span id="vehicle-info-model"></span></span>
+                    <span>Rejestracja: <span id="vehicle-info-plate"></span></span>
+                    <span>Właściciel: <span id="vehicle-info-owner"></span></span>
+
+                    <h4>Historia</h4>
+                    <div class="nice-table-wrapper" style="width: calc(100% - 2rem);">
+                        <table id="vehicle-info-logs">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Dodane przez</th>
+                                    <th>Informacja</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <div class="item" onclick="tablet_goToTab('add-vehicle-log')">DODAJ WPIS</div>
+                    <div class="item" onclick="tablet_goToTab('vehicles-search')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="log-info">
+            <div class="d-flex flex-column align-items-center w-100">
+                <h3>INFORMACJE O WPISIE</h3>
+                <div class="d-flex flex-column gap-1 align-items-start w-100">
+                    <span>Dodane przez: <span id="log-info-added"></span></span>
+                    <span>Data dodania: <span id="log-info-added-by"></span></span>
+                    <span>Szczegóły: <span id="log-info-info"></span></span>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <div class="item" id="loginfo-goback" onclick="tablet_goToTab('user-info')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="add-user-log">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <h3>DODAJ WPIS</h3>
+                <textarea id="add-user-log-info" placeholder="Informacja" style="resize: none; width: calc(100% - 2rem);"></textarea>
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_addUserLog(this)">DODAJ</div>
+                    <div class="item" onclick="tablet_goToTab('user-info')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="add-vehicle-log">
+            <div class="d-flex flex-column align-items-center gap-2">
+                <h3>DODAJ WPIS</h3>
+                <textarea id="add-vehicle-log-info" placeholder="Informacja" style="resize: none; width: calc(100% - 2rem);"></textarea>
+                <div class="d-flex gap-2">
+                    <div class="item" onclick="tablet_addVehicleLog(this)">DODAJ</div>
+                    <div class="item" onclick="tablet_goToTab('vehicle-info')">POWRÓT</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab" data-tab="loading">
+            <div class="d-flex justify-center gap-4 align-items-center pt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+                <span style="font-size: 1.3rem;">Ładowanie...</span>
+            </div>
+        </div>
+    </div>
+    <div class="pattern-reverse h-100"></div>
+</div>
+
+<script>
+    tablet_goToTab = (tab) => {
+        document.querySelectorAll('#tablet .tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`#tablet .tab[data-tab="${tab}"]`).classList.add('active');
+    }
+
+    async function loadIncludes() {
+        let tasks = [];
+
+        tasks.push(include('/m-faction-sapd/data/users.js'));
+        tasks.push(include('/m-faction-sapd/data/vehicles.js'));
+        tasks.push(include('/m-faction-sapd/data/ticket.js'));
+
+        await Promise.all(tasks);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        finishIncludes('tablet');
+    }
+
+    tablet_showList = (selector, data, columns, pageLength = 7, columnDefs = [], descending = true) => {
+        let table = document.querySelector(selector);
+
+        new DataTable(table, {
+            ...defaultTableData,
+            destroy: true,
+            data: data,
+            columns: columns,
+            order: [[0, descending ? 'desc' : 'asc']],
+            columnDefs: columnDefs,
+            pageLength: pageLength
+        });
+    }
+
+    addEvent('tablet', 'interface:data:data', async (data) => {
+        document.querySelector('#tablet #title').innerText = `Zalogowano jako ${data[0].nickname}#${data[0].uid.toString().padStart(5, '0')}`;
+    });
+
+    addEvent('tablet', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#tablet').style.opacity = appear ? '1' : '0';
+        document.querySelector('#tablet').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+
+    loadIncludes();
+</script>

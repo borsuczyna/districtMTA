@@ -1,0 +1,13 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='interface.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='reefer.lua' type='server'/>
+    <script src='server.lua' type='server'/>
+    <script src='areas.lua' type='server'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/target.png'/>
+    <file src='data/flopper.png'/>
+    <file src='data/flopper-outline.png'/>
+</meta>

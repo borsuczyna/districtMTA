@@ -1,0 +1,10 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='ui.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/categories.js'/>
+    <file src='data/items.js'/>
+</meta>

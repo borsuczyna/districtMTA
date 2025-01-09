@@ -1,0 +1,28 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='shader.lua' type='client' cache='false'/>
+    <script src='diffuse.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/mta-helper.fx'/>
+    <file src='data/paint.fx'/>
+    <file src='data/default.fx'/>
+    <file src='data/lights.fx'/>
+    <file src='data/env.png'/>
+
+    <export function='getVehicleUpgrades' type='shared'/>
+    <export function='addVehicleUpgrade' type='shared'/>
+    <export function='forceVehicleUpgrade' type='shared'/>
+    <export function='forceVehicleUpgrade' type='shared'/>
+    <export function='removeVehicleUpgradeOnSlot' type='shared'/>
+    <export function='removeVehicleUpgrade' type='shared'/>
+    <export function='getVehicleUpgradeOnSlot' type='shared'/>
+    <export function='getVehicleCompatibleUpgrades' type='shared'/>
+    <export function='getUpgradeName' type='shared'/>
+    <export function='getUpgradePrice' type='shared'/>
+    <export function='getUpgradeSlots' type='shared'/>
+    <export function='isItemUpgrade' type='shared'/>
+
+    <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
+</meta>

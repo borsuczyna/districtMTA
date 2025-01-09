@@ -1,5 +1,0 @@
-<meta>
-    <script src='client.lua' type='client' cache='false'/>
-
-    <file src='data/interface.html'/>
-</meta>

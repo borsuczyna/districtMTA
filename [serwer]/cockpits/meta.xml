@@ -1,0 +1,4 @@
+<meta>
+	<info name="Cockpits" version="0.1.2" type="misc" author="orangeppop" description="Adds 3D cockpits to all but 9 of the GTA vehicles."/>
+	<script src="cockpits.lua" type="client"/>
+</meta>

@@ -1,0 +1,134 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='interiors.lua' type='shared' cache='false'/>
+
+    <script src='client/interface.lua' type='client' cache='false'/>
+    <script src='client/textures.lua' type='client' cache='false'/>
+    <script src='client/furniture-editor.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/interior.lua' type='client' cache='false'/>
+    
+    <script src='server/events/door.lua' type='server'/>
+    <script src='server/events/rent.lua' type='server'/>
+    <script src='server/events/enter.lua' type='server'/>
+    <script src='server/events/tenants.lua' type='server'/>
+    <script src='server/events/bell.lua' type='server'/>
+    <script src='server/events/kick.lua' type='server'/>
+    <script src='server/events/furniture.lua' type='server'/>
+    <script src='server/events/texture.lua' type='server'/>
+    <script src='server/interior.lua' type='server'/>
+    <script src='server/main.lua' type='server'/>
+
+    <script src='server/furniture/positions.lua' type='server'/>
+    <script src='server/furniture/house.lua' type='server'/>
+    <script src='server/furniture/main.lua' type='server'/>
+    
+    <script src='server/textures/main.lua' type='server'/>
+
+    <file src='data/main.js'/>
+    <file src='data/rent.js'/>
+    <file src='data/options.js'/>
+    <file src='data/furniture.js'/>
+    <file src='data/textures.js'/>
+    <file src='data/interface.html'/>
+    <file src='data/doorbell.wav'/>
+    <file src='data/shader.fx'/>
+
+    <file src='data/previews/1.png'/>
+    <file src='data/previews/2.png'/>
+    <file src='data/previews/3.png'/>
+    <file src='data/previews/4.png'/>
+    <file src='data/previews/5.png'/>
+    <file src='data/previews/6.png'/>
+
+    <file src='data/textures/furniture.png'/>
+    <file src='data/textures/remove.png'/>
+    <file src='data/textures/paint.png'/>
+    <file src='data/textures/check.png'/>
+    <file src='data/textures/dot.png'/>
+    <file src='data/textures/rotate.png'/>
+    <file src='data/textures/position.png'/>
+    <file src='data/textures/close.png'/>
+    
+    <file src='data/textures/interior/floor-1.png'/>
+    <file src='data/textures/interior/floor-2.png'/>
+    <file src='data/textures/interior/floor-3.png'/>
+    <file src='data/textures/interior/floor-4.png'/>
+    <file src='data/textures/interior/floor-5.png'/>
+    <file src='data/textures/interior/wall-1.png'/>
+    <file src='data/textures/interior/wall-2.png'/>
+    <file src='data/textures/interior/wall-3.png'/>
+    <file src='data/textures/interior/wall-4.png'/>
+
+    <file src='data/furniture-textures/Blat0.png'/>
+    <file src='data/furniture-textures/Blat1.png'/>
+    <file src='data/furniture-textures/Blat2.png'/>
+    <file src='data/furniture-textures/Blat3.png'/>
+    <file src='data/furniture-textures/Fotel0.png'/>
+    <file src='data/furniture-textures/Fotel1.png'/>
+    <file src='data/furniture-textures/Fotel2.png'/>
+    <file src='data/furniture-textures/Fotel3.png'/>
+    <file src='data/furniture-textures/kibelek.png'/>
+    <file src='data/furniture-textures/KomodaZSzklem0.png'/>
+    <file src='data/furniture-textures/KomodaZszklem1.png'/>
+    <file src='data/furniture-textures/KomodaZSzklem2.png'/>
+    <file src='data/furniture-textures/KomodaZSzklem3.png'/>
+    <file src='data/furniture-textures/Krzeslo0.png'/>
+    <file src='data/furniture-textures/Krzeslo1.png'/>
+    <file src='data/furniture-textures/Krzeslo2.png'/>
+    <file src='data/furniture-textures/Krzeslo3.png'/>
+    <file src='data/furniture-textures/kuchniaodsuwana1.png'/>
+    <file src='data/furniture-textures/kuchniaodsuwana2.png'/>
+    <file src='data/furniture-textures/Lampa0.png'/>
+    <file src='data/furniture-textures/Lampa1.png'/>
+    <file src='data/furniture-textures/lodowka0.png'/>
+    <file src='data/furniture-textures/lozko0.png'/>
+    <file src='data/furniture-textures/lozko1.png'/>
+    <file src='data/furniture-textures/lozko2.png'/>
+    <file src='data/furniture-textures/lozko3.png'/>
+    <file src='data/furniture-textures/piec.png'/>
+    <file src='data/furniture-textures/plytaindukcja.png'/>
+    <file src='data/furniture-textures/posciel.png'/>
+    <file src='data/furniture-textures/prysznic1.png'/>
+    <file src='data/furniture-textures/prysznic2.png'/>
+    <file src='data/furniture-textures/Stol0.png'/>
+    <file src='data/furniture-textures/Stol1.png'/>
+    <file src='data/furniture-textures/Stol2.png'/>
+    <file src='data/furniture-textures/Stol3.png'/>
+    <file src='data/furniture-textures/Stolek0.png'/>
+    <file src='data/furniture-textures/Stolek1.png'/>
+    <file src='data/furniture-textures/Stolek2.png'/>
+    <file src='data/furniture-textures/Stolek3.png'/>
+    <file src='data/furniture-textures/Stolikkawowy0.png'/>
+    <file src='data/furniture-textures/Stolikkawowy1.png'/>
+    <file src='data/furniture-textures/Stolikkawowy2.png'/>
+    <file src='data/furniture-textures/Stolikkawowy3.png'/>
+    <file src='data/furniture-textures/SzafkaNocnaMini0.png'/>
+    <file src='data/furniture-textures/SzafkaNocnaMini1.png'/>
+    <file src='data/furniture-textures/SzafkaNocnaMini2.png'/>
+    <file src='data/furniture-textures/SzafkaNocnaMini3.png'/>
+    <file src='data/furniture-textures/SzafkaPudelkowa0.png'/>
+    <file src='data/furniture-textures/SzafkaPudelkowa1.png'/>
+    <file src='data/furniture-textures/SzafkaPudelkowa2.png'/>
+    <file src='data/furniture-textures/SzafkaPudelkowa3.png'/>
+    <file src='data/furniture-textures/Szafki0.png'/>
+    <file src='data/furniture-textures/Szafki1.png'/>
+    <file src='data/furniture-textures/Szafki2.png'/>
+    <file src='data/furniture-textures/Szafki3.png'/>
+    <file src='data/furniture-textures/SzafkiNadBlatem0.png'/>
+    <file src='data/furniture-textures/SzafkiNadBlatem1.png'/>
+    <file src='data/furniture-textures/SzafkiNadBlatem2.png'/>
+    <file src='data/furniture-textures/SzafkiNadBlatem3.png'/>
+    <file src='data/furniture-textures/wanna.png'/>
+    <file src='data/furniture-textures/ZabudowaLodowki0.png'/>
+    <file src='data/furniture-textures/ZabudowaLodowki2.png'/>
+    <file src='data/furniture-textures/ZabudowaLodowki3.png'/>
+    <file src='data/furniture-textures/zlewkuchnia.png'/>
+
+    <export function='useFurniture' type='server'/>
+    <export function='getInteriors' type='shared'/>
+    <export function='getPlayerHouses' type='shared'/>
+    <export function='getPlayerOwnedHouses' type='shared'/>
+
+    <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
+</meta>

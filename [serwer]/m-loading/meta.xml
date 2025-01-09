@@ -1,0 +1,18 @@
+<meta>
+    <download_priority_group>9997</download_priority_group>
+
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+    <script src='downloading.lua' type='client' cache='false'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/bg.png'/>
+    <file src='data/bg-1.png'/>
+    <file src='data/bg-2.png'/>
+    <file src='data/bg-3.png'/>
+
+    <export function='setLoadingVisible' type='shared'/>
+    <export function='isLoadingVisible' type='client'/>
+    <export function='setLoadingText' type='client'/>
+    <export function='setLoadingProgress' type='client'/>
+</meta>

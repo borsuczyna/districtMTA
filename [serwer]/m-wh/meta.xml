@@ -1,0 +1,5 @@
+﻿<meta>
+    <info author="THEGizmo" name="Opcja Pomocnicza (WH)" version="1.5.0" type="script" />
+
+	<script src="wh_c.lua" type="client" cache="false" />
+</meta>

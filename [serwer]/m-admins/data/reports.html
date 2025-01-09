@@ -1,0 +1,273 @@
+<style>
+    #admin-reports {
+        --window-x: calc(100% - 31rem);
+        --window-y: calc(50% - 9.5rem);
+        --window-width: 30rem;
+        --window-height: 17rem;
+    }
+
+    #admin-reports .window {
+        background-color: rgba(27, 27, 27, 0.4);
+        border-radius: 0.5rem;
+        position: fixed;
+        top: var(--window-y);
+        left: var(--window-x);
+        width: var(--window-width);
+        height: var(--window-height);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #admin-reports .top {
+        background-color: rgba(27, 27, 27, 0.8);
+        padding: 0.3rem;
+        font-size: 0.7rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+    }
+
+    #admin-reports .rows {
+        padding: 0.6rem;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 1);
+        font-weight: 500;
+        text-shadow: 0.0625rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.6);
+        overflow-y: auto;
+        overflow-x: auto;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    #admin-reports .rows div {
+        display: flex;
+        gap: 0.2rem;
+        justify-content: space-between;
+        text-wrap: nowrap;
+    }
+
+    #admin-reports .categories {
+        display: flex;
+        justify-content: space-around;
+        font-size: 0.7rem;
+        gap: 0.1rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    #admin-reports .category {
+        background-color: rgba(27, 27, 27, 0.45);
+        color: rgba(255, 255, 255, 0.9);
+        flex: 1;
+        padding: 0.3rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    #admin-reports .category:hover {
+        background-color: rgba(27, 27, 27, 0.7);
+    }
+
+    #admin-reports .category.active {
+        background-color: rgba(27, 27, 27, 0.8);
+        cursor: default;
+    }
+
+    #admin-reports .rows div {
+        position: relative;
+    }
+
+    #admin-reports .rows div:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    #admin-reports .icons {
+        display: flex;
+        gap: 0.2rem;
+        align-items: center;
+    }
+
+    #admin-reports .icon {
+        position: relative;
+        cursor: pointer;
+    }
+
+    #admin-reports .rows .accepted {
+        background-color: rgba(0, 255, 0, 0.3);
+    }
+</style>
+
+<div class="window nice-scroll" id="admin-reports">
+    <div class="top">Reporty (/reports)</div>
+    <div class="rows"></div>
+</div>
+
+<script>
+    let iconsList = {
+        'trash': `<svg style="width: 0.8rem !important; height: 0.8rem !important;" viewBox="0 0 24 24" version="1.1">
+            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <rect x="0" y="0" width="24" height="24" opacity="0.8"/>
+                <path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="currentColor" opacity="0.8" fill-rule="nonzero"/>
+                <path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="currentColor" opacity="0.8"/>
+            </g>
+        </svg>`,
+        'teleport': `<svg style="width: 0.8rem !important; height: 0.8rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(255%,255%,255%);fill-opacity:0.8;" d="M 11.6875 1.066406 C 10.8125 1.179688 10.015625 2.167969 9.949219 3.476562 L 9.949219 3.480469 C 9.949219 3.535156 9.945312 3.589844 9.945312 3.648438 C 9.945312 4.414062 10.210938 5.09375 10.601562 5.5625 L 11.074219 6.132812 L 10.34375 6.269531 C 9.839844 6.367188 9.472656 6.632812 9.15625 7.066406 C 9.046875 7.214844 8.949219 7.382812 8.859375 7.566406 C 6.160156 7.261719 4.269531 6.578125 4.269531 5.785156 C 4.269531 4.972656 6.269531 4.285156 9.085938 4.003906 C 9.074219 3.886719 9.070312 3.769531 9.070312 3.648438 C 9.070312 3.609375 9.070312 3.570312 9.074219 3.53125 C 4.550781 3.847656 1.230469 4.898438 1.230469 6.140625 C 1.230469 7.328125 4.253906 8.339844 8.453125 8.703125 C 8.445312 8.738281 8.433594 8.773438 8.425781 8.808594 C 8.316406 9.265625 8.234375 9.757812 8.179688 10.261719 C 8.179688 10.261719 8.179688 10.261719 8.175781 10.261719 C 8.15625 10.433594 8.140625 10.605469 8.125 10.78125 L 8.128906 10.78125 C 8.066406 11.519531 8.046875 12.273438 8.039062 12.980469 L 9.722656 12.980469 L 9.820312 14.3125 C 6.621094 14.078125 4.269531 13.328125 4.269531 12.445312 C 4.269531 11.824219 5.433594 11.277344 7.234375 10.929688 C 7.25 10.738281 7.265625 10.546875 7.285156 10.359375 C 3.703125 10.796875 1.230469 11.726562 1.230469 12.800781 C 1.230469 14.121094 4.96875 15.222656 9.90625 15.460938 L 10.183594 19.199219 C 10.675781 19.324219 11.351562 19.394531 12.015625 19.390625 C 12.660156 19.386719 13.292969 19.3125 13.722656 19.203125 L 13.96875 15.460938 C 18.90625 15.21875 22.636719 14.121094 22.636719 12.800781 C 22.636719 11.722656 20.144531 10.789062 16.539062 10.355469 C 16.554688 10.542969 16.566406 10.730469 16.574219 10.917969 C 18.398438 11.269531 19.574219 11.816406 19.574219 12.445312 C 19.574219 13.328125 17.238281 14.078125 14.046875 14.3125 L 14.132812 12.980469 L 15.734375 12.980469 C 15.734375 12.273438 15.730469 11.515625 15.6875 10.773438 C 15.679688 10.601562 15.667969 10.429688 15.652344 10.257812 C 15.605469 9.734375 15.539062 9.226562 15.4375 8.761719 C 15.433594 8.742188 15.429688 8.722656 15.425781 8.703125 C 19.621094 8.335938 22.636719 7.328125 22.636719 6.140625 C 22.636719 4.886719 19.261719 3.828125 14.679688 3.523438 C 14.683594 3.5625 14.683594 3.605469 14.683594 3.648438 C 14.683594 3.765625 14.679688 3.878906 14.667969 3.996094 C 17.539062 4.269531 19.574219 4.960938 19.574219 5.785156 C 19.574219 6.574219 17.714844 7.253906 15.046875 7.558594 C 14.953125 7.359375 14.847656 7.179688 14.730469 7.019531 C 14.410156 6.589844 14.023438 6.328125 13.457031 6.238281 L 12.710938 6.121094 L 13.183594 5.53125 C 13.507812 5.125 13.742188 4.5625 13.796875 3.925781 C 13.804688 3.835938 13.808594 3.742188 13.808594 3.648438 C 13.808594 3.613281 13.804688 3.574219 13.804688 3.539062 C 13.804688 3.519531 13.804688 3.496094 13.800781 3.472656 C 13.734375 2.078125 12.839844 1.070312 11.875 1.070312 C 11.757812 1.070312 11.691406 1.066406 11.6875 1.066406 Z M 9.117188 16.679688 C 4.566406 16.992188 1.21875 18.042969 1.21875 19.292969 C 1.21875 20.792969 6.011719 22.003906 11.921875 22.003906 C 17.832031 22.003906 22.625 20.792969 22.625 19.292969 C 22.625 18.046875 19.296875 16.996094 14.765625 16.683594 L 14.734375 17.148438 C 17.566406 17.429688 19.566406 18.128906 19.566406 18.949219 C 19.566406 20.015625 16.144531 20.882812 11.921875 20.882812 C 7.699219 20.882812 4.277344 20.015625 4.277344 18.949219 C 4.277344 18.125 6.300781 17.425781 9.152344 17.144531 Z M 9.117188 16.679688 " opacity="0.8"/>
+        </svg>`,
+        'checkmark': `<svg style="width: 0.8rem !important; height: 0.8rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M20.285 2L9 13.567L3.714 8.556L0 12.272L9 21L24 5.715L20.285 2Z" fill="#fff" opacity="0.8" />
+        </svg>`,
+        'close': `<svg style="width: 0.8rem !important; height: 0.8rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M14.8487 12.0004L23.7626 3.0871C24.0791 2.77057 24.0791 2.25836 23.7626 1.94193L22.059 0.237724C21.9073 0.0861017 21.7014 0.000732422 21.4865 0.000732422C21.2716 0.000732422 21.0657 0.0861017 20.9139 0.237724L12 9.15175L3.08609 0.237724C2.93436 0.0861017 2.72847 0.000732422 2.51351 0.000732422C2.2986 0.000732422 2.09265 0.0861017 1.94098 0.237724L0.237396 1.94193C-0.0791319 2.25836 -0.0791319 2.77057 0.237396 3.0871L9.15132 12.0005L0.238281 20.9128C-0.0780902 21.2293 -0.0780902 21.7415 0.238281 22.058L1.94197 23.7622C2.09359 23.9138 2.29954 23.9992 2.5145 23.9992C2.72946 23.9992 2.93535 23.9138 3.08713 23.7622L12 14.8492L20.9128 23.7622C21.0646 23.9138 21.2705 23.9992 21.4854 23.9992C21.7004 23.9992 21.9063 23.9138 22.058 23.7622L23.7616 22.058C24.078 21.7415 24.078 21.2293 23.7616 20.9128L14.8487 12.0004Z" fill="#fff" opacity="0.8" transform="scale(0.9) translate(2 2)" />
+        </svg>`
+    }
+
+    function setIcons(element, icons) {
+        element.innerHTML = '';
+        icons.forEach((icon) => {
+            let iconDom = document.createElement('span');
+            iconDom.innerHTML = iconsList[icon[0]];
+            iconDom.classList.add('icon');
+            iconDom.onclick = () => {
+                let args = [...icon.slice(1)];
+                if (args[0] == 'removeReport') {
+                    adminReports_rejectReport(args[1]);
+                    return;
+                }
+                
+                mta.triggerEvent('reports:iconClick', ...args);
+            }
+            element.appendChild(iconDom);
+        });
+    }
+
+    window.adminReports_addReport = (hash, data) => {
+        let rows = document.querySelector('#admin-reports .rows');
+        const atBottom = rows.scrollHeight - rows.scrollTop >= rows.clientHeight - 1;
+
+        const row = document.createElement('div');
+        const span = document.createElement('span');
+        const iconsDom = document.createElement('span');
+        iconsDom.classList.add('icons');
+        span.innerHTML = applyHexColor(`#cccccc(${data.reporterId}) #eeeeee${htmlEscape(data.reporterName)} #ff8800-> #cccccc(${data.targetId}) #eeeeee${htmlEscape(data.targetName)}: ${htmlEscape(data.reason)}`);
+
+        setIcons(iconsDom, [
+            ['checkmark', 'acceptReport', hash],
+            ['close', 'rejectReport', hash],
+        ]);
+
+        row.appendChild(span);
+        row.appendChild(iconsDom);
+        row.dataset.reporter = data.reporterUid;
+        row.dataset.target = data.targetUid;
+        row.dataset.hash = hash;
+
+        rows.appendChild(row);
+
+        if (atBottom) {
+            rows.scrollTop = rows.scrollHeight;
+        }
+    }
+
+    window.adminReports_rejectReport = (hash) => {
+        let rows = document.querySelector('#admin-reports .rows');
+        const atBottom = rows.scrollHeight - rows.scrollTop >= rows.clientHeight - 1;
+
+        document.querySelectorAll('#admin-reports .rows div').forEach((el) => {
+            if (el.dataset.hash === hash) {
+                el.remove();
+            }
+        });
+
+        if (atBottom) {
+            rows.scrollTop = rows.scrollHeight;
+        }
+    }
+
+    window.adminReports_acceptReport = (hash) => {
+        let rows = document.querySelector('#admin-reports .rows');
+        const atBottom = rows.scrollHeight - rows.scrollTop >= rows.clientHeight - 1;
+
+        document.querySelectorAll('#admin-reports .rows div').forEach((el) => {
+            if (el.dataset.hash === hash) {
+                el.classList.add('accepted');
+                setIcons(el.querySelector('.icons'), [
+                    ['teleport', 'teleportTo', el.dataset.reporter],
+                    ['teleport', 'teleportTo', el.dataset.target],
+                    ['trash', 'removeReport', hash],
+                ]);
+            }
+        });
+
+        if (atBottom) {
+            rows.scrollTop = rows.scrollHeight;
+        }
+    }
+
+    window.adminReports_setCategory = (category) => {
+        document.querySelectorAll('#admin-reports .category').forEach((el) => {
+            el.classList.remove('active');
+        });
+        category.classList.add('active');
+
+        document.querySelectorAll('#admin-reports .rows div').forEach((el) => {
+            if (category.dataset.category === 'wszystko' || el.dataset.category === category.dataset.category) {
+                el.style.display = 'block';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+
+        document.querySelector('#admin-reports .rows').scrollTop = document.querySelector('#admin-reports .rows').scrollHeight;
+    }
+
+    addEvent('admin-reports', 'mousedown', (e) => {
+        if (e?.target?.classList.contains('top') && e?.target?.closest('#admin-reports')) {
+            let dom = e.target.parentElement.getBoundingClientRect();
+            e.target.parentElement.dataset.dragging = true;
+            e.target.parentElement.dataset.draggingX = e.clientX - dom.x;
+            e.target.parentElement.dataset.draggingY = e.clientY - dom.y;
+        }
+    });
+
+    addEvent('admin-reports', 'mouseup', (e) => {
+        if (e?.target?.classList.contains('top') && e?.target?.closest('#admin-reports')) {
+            e.target.parentElement.dataset.dragging = false;
+        }
+    });
+
+    addEvent('admin-reports', 'mousemove', (e) => {
+        let window = document.querySelector('#admin-reports .window');
+        if (window.dataset.dragging === 'true') {
+            window.style.left = e.clientX - window.dataset.draggingX + 'px';
+            window.style.top = e.clientY - window.dataset.draggingY + 'px';
+        }
+    });
+
+    addEvent('admin-reports', 'interface:data:addReport', async (data) => {
+        data = data[0];
+        adminReports_addReport(data.hash, data);
+    });
+
+    addEvent('admin-reports', 'interface:data:rejectReport', async (data) => {
+        data = data[0];
+        adminReports_rejectReport(data.hash);
+    });
+
+    addEvent('admin-reports', 'interface:data:acceptReport', async (data) => {
+        data = data[0];
+        adminReports_acceptReport(data.hash);
+    });
+
+    // adminReports_addReport('hash', {
+    //     reporterId: 1,
+    //     reporterName: 'Reporter',
+    //     reporterUid: 1,
+    //     targetId: 2,
+    //     targetName: 'Target',
+    //     targetUid: 2,
+    //     reason: 'Powód',
+    // });
+</script>

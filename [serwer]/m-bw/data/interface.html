@@ -1,0 +1,83 @@
+<style>
+    #bw {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-size: 2rem;
+        color: #DA4A4A;
+        font-weight: bold;
+        text-align: center;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.2s, transform 0.2s;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    #bw .top {
+        font-size: 2rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    #bw .bottom {
+        font-size: 1.4rem;
+        font-weight: 300;
+        color: #f0f0f0;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<div class="d-flex gap-3 align-items-center">
+    <div class="d-flex flex-column">
+        <div class="top">Jesteś nieprzytomny</div>
+        <div class="bottom" id="time-left">Pozostały czas: 1:00</div>
+    </div>
+</div>
+
+<script>
+    let countdownActive = false;
+
+    function startCountdown(seconds) {
+        countdownActive = true;
+
+        const timeLeftElement = document.getElementById('time-left');
+        const startTime = Date.now();
+        const endTime = startTime + seconds * 1000;
+
+        function updateCountdown() {
+            if (!countdownActive) return;
+
+            const currentTime = Date.now();
+            const remainingTime = Math.max(0, Math.floor((endTime - currentTime) / 1000));
+            const minutes = Math.floor(remainingTime / 60);
+            const secs = remainingTime % 60;
+
+            timeLeftElement.textContent = `Pozostały czas: ${minutes}:${secs < 10 ? '0' + secs : secs}`;
+
+            if (remainingTime > 0) {
+                requestAnimationFrame(updateCountdown); 
+            } else {
+                mta.fetch('bw', 'respawn');
+            }
+        }
+
+        requestAnimationFrame(updateCountdown);
+    }
+
+    function stopCountdown() {
+        countdownActive = false;
+    }
+
+    addEvent('bw', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const bwElement = document.querySelector('#bw');
+        bwElement.style.opacity = appear ? '1' : '0';
+        bwElement.style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+        
+        if (appear) {
+            startCountdown(300);
+        } else {
+            stopCountdown();
+        }
+    });
+</script>

@@ -1,0 +1,370 @@
+<style>
+    #hud {
+        position: absolute;
+        top: 3rem;
+        right: 2rem;
+    }
+
+    #hud .avatar-box {
+        position: relative;
+        border-radius: 50%;
+        width: 8rem;
+        height: 8rem;
+    }
+
+    #hud .avatar {
+        background-image: url('/m-hud/data/images/user.png?v2');
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    #hud .level {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 60%);
+        color: #ffffff;
+        padding: 0.4rem;
+        border-radius: 50%;
+        border: 0.125rem solid #383838;
+        background: #2a2a2a;
+        box-shadow: 0 0 0.125rem 0 rgba(0, 0, 0, 0.5);
+        font-size: 0.9rem;
+        font-weight: 500;
+        width: 1rem;
+        height: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+
+    #hud .border {
+        background-color: #2a2a2a;
+        border-radius: 50%;
+        width: calc(100% + 0.6rem);
+        height: calc(100% + 0.6rem);
+        transform: translate(-0.3rem, -0.3rem);
+        position: absolute;
+    }
+
+    #hud .exp {
+        color: #FFB155;
+        width: calc(100% + 2.2rem);
+        height: calc(100% + 2.2rem);
+        transform: translate(-1.1rem, -1.1rem);
+        position: absolute;
+    }
+
+    #hud .health {
+        color: #DA4A4A;
+        width: calc(100% + 1.6rem);
+        height: calc(100% + 1.6rem);
+        transform: translate(-0.8rem, -0.8rem);
+        position: absolute;
+    }
+
+    #hud .nickname {
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: bold;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+    }
+
+    #hud .money {
+        color: #2ecc71;
+        font-size: 1rem;
+        font-weight: bold;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease-in-out;
+    }
+
+    #hud .money-change {
+        display: none;
+        color: #2ecc71;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease-in-out;
+    }
+
+    #hud .money-change.appear {
+        animation: money-change-animation 0.5s ease-in-out forwards;
+    }
+
+    #hud .money-change.disappear {
+        animation: money-change-animation-reverse 0.5s ease-in-out forwards;
+    }
+
+    #hud .money-change.negative {
+        color: #DA4A4A;
+    }
+
+    #hud .fw-bold {
+        font-weight: bold;
+    }
+
+    @keyframes money-change-animation {
+        0% {
+            opacity: 0;
+            transform: translateY(-0.75rem);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes money-change-animation-reverse {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-0.75rem);
+        }
+    }
+
+    #hud .job {
+        background: linear-gradient(-90deg, rgba(12, 12, 12, 0.5) 0%, rgba(12, 12, 12, 0) 100%);
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        margin-top: 0.5rem;
+        width: 20rem;
+        color: #ffffff;
+        text-shadow: 0.1rem 0.1rem 0.03rem rgba(0, 0, 0, 0.3);
+    }
+
+    #hud .title {
+        color: #FFAB48;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-shadow: 0.07rem 0.07rem 0.07rem #222222ba;
+    }
+
+    #hud span {
+        font-size: 0.94rem;
+    }
+
+    #hud #stars svg {
+        color: #FFAB48;
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+</style>
+
+<div class="d-flex flex-column align-items-end">
+    <div class="d-flex flex-column gap-3 align-items-center">
+        <div class="avatar-box">
+            <div class="border"></div>
+            <svg class="exp" viewBox="0 0 110 110"><defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+                <path fill="currentColor" filter="url(#glow)" transform="translate(5, 5)"/>
+            </svg>
+            <svg class="health" viewBox="0 0 110 110"><defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+                <path fill="currentColor" filter="url(#glow)" transform="translate(5, 5)"/>
+            </svg>
+            <div class="avatar"></div>
+            <div class="level">0</div>
+        </div>
+        <div class="d-flex flex-column gap-1">
+            <div class="d-flex gap-1 mt-1 mt-2 justify-center" id="stars">
+                <!-- <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.8327 24.1737C63.4113 22.8778 62.2618 21.9603 60.9073 21.8378L42.4324 20.1605L35.131 3.06644C34.5919 1.81056 33.3653 1 32.0001 1C30.6348 1 29.4078 1.81056 28.8721 3.06644L21.5707 20.1605L3.09286 21.8378C1.73835 21.9628 0.591357 22.8802 0.167522 24.1737C-0.253872 25.4696 0.135295 26.8911 1.15973 27.7895L15.1253 40.0353L11.0075 58.1714C10.7063 59.5049 11.2239 60.8838 12.3303 61.6836C12.9251 62.1158 13.6238 62.3316 14.325 62.3316C14.9275 62.3316 15.5306 62.1714 16.0692 61.8492L32.0001 52.3236L47.9281 61.8492C49.0966 62.5474 50.5658 62.4834 51.6699 61.6836C52.7763 60.8838 53.2939 59.5049 52.9926 58.1714L48.8749 40.0353L62.8404 27.7895C63.8644 26.8911 64.254 25.4726 63.8327 24.1737Z" fill="currentColor" />
+                </svg>
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.8327 24.1737C63.4113 22.8778 62.2618 21.9603 60.9073 21.8378L42.4324 20.1605L35.131 3.06644C34.5919 1.81056 33.3653 1 32.0001 1C30.6348 1 29.4078 1.81056 28.8721 3.06644L21.5707 20.1605L3.09286 21.8378C1.73835 21.9628 0.591357 22.8802 0.167522 24.1737C-0.253872 25.4696 0.135295 26.8911 1.15973 27.7895L15.1253 40.0353L11.0075 58.1714C10.7063 59.5049 11.2239 60.8838 12.3303 61.6836C12.9251 62.1158 13.6238 62.3316 14.325 62.3316C14.9275 62.3316 15.5306 62.1714 16.0692 61.8492L32.0001 52.3236L47.9281 61.8492C49.0966 62.5474 50.5658 62.4834 51.6699 61.6836C52.7763 60.8838 53.2939 59.5049 52.9926 58.1714L48.8749 40.0353L62.8404 27.7895C63.8644 26.8911 64.254 25.4726 63.8327 24.1737Z" fill="currentColor" />
+                </svg>
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.8327 24.1737C63.4113 22.8778 62.2618 21.9603 60.9073 21.8378L42.4324 20.1605L35.131 3.06644C34.5919 1.81056 33.3653 1 32.0001 1C30.6348 1 29.4078 1.81056 28.8721 3.06644L21.5707 20.1605L3.09286 21.8378C1.73835 21.9628 0.591357 22.8802 0.167522 24.1737C-0.253872 25.4696 0.135295 26.8911 1.15973 27.7895L15.1253 40.0353L11.0075 58.1714C10.7063 59.5049 11.2239 60.8838 12.3303 61.6836C12.9251 62.1158 13.6238 62.3316 14.325 62.3316C14.9275 62.3316 15.5306 62.1714 16.0692 61.8492L32.0001 52.3236L47.9281 61.8492C49.0966 62.5474 50.5658 62.4834 51.6699 61.6836C52.7763 60.8838 53.2939 59.5049 52.9926 58.1714L48.8749 40.0353L62.8404 27.7895C63.8644 26.8911 64.254 25.4726 63.8327 24.1737Z" fill="currentColor" />
+                </svg>
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.8327 24.1737C63.4113 22.8778 62.2618 21.9603 60.9073 21.8378L42.4324 20.1605L35.131 3.06644C34.5919 1.81056 33.3653 1 32.0001 1C30.6348 1 29.4078 1.81056 28.8721 3.06644L21.5707 20.1605L3.09286 21.8378C1.73835 21.9628 0.591357 22.8802 0.167522 24.1737C-0.253872 25.4696 0.135295 26.8911 1.15973 27.7895L15.1253 40.0353L11.0075 58.1714C10.7063 59.5049 11.2239 60.8838 12.3303 61.6836C12.9251 62.1158 13.6238 62.3316 14.325 62.3316C14.9275 62.3316 15.5306 62.1714 16.0692 61.8492L32.0001 52.3236L47.9281 61.8492C49.0966 62.5474 50.5658 62.4834 51.6699 61.6836C52.7763 60.8838 53.2939 59.5049 52.9926 58.1714L48.8749 40.0353L62.8404 27.7895C63.8644 26.8911 64.254 25.4726 63.8327 24.1737Z" fill="currentColor" />
+                </svg>
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.8327 24.1737C63.4113 22.8778 62.2618 21.9603 60.9073 21.8378L42.4324 20.1605L35.131 3.06644C34.5919 1.81056 33.3653 1 32.0001 1C30.6348 1 29.4078 1.81056 28.8721 3.06644L21.5707 20.1605L3.09286 21.8378C1.73835 21.9628 0.591357 22.8802 0.167522 24.1737C-0.253872 25.4696 0.135295 26.8911 1.15973 27.7895L15.1253 40.0353L11.0075 58.1714C10.7063 59.5049 11.2239 60.8838 12.3303 61.6836C12.9251 62.1158 13.6238 62.3316 14.325 62.3316C14.9275 62.3316 15.5306 62.1714 16.0692 61.8492L32.0001 52.3236L47.9281 61.8492C49.0966 62.5474 50.5658 62.4834 51.6699 61.6836C52.7763 60.8838 53.2939 59.5049 52.9926 58.1714L48.8749 40.0353L62.8404 27.7895C63.8644 26.8911 64.254 25.4726 63.8327 24.1737Z" fill="currentColor" />
+                </svg> -->
+            </div>
+            <div class="d-flex flex-column text-center">
+                <div class="nickname">-</div>
+                <div class="money">$0</div>
+                <div class="money-change">$0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="job d-flex flex-column gap-1 align-items-end d-none" id="job-details">
+        <div class="title" id="job-name">Magazynier</div>
+        <span id="worked-time">Aktualnie przepracowano: 0h 0m</span>
+        <span id="earned">Zarobiono: $0</span>
+
+        <div id="job-coop" class="d-none">
+            <div class="title mt-1 text-end">Współpraca</div>
+            <span id="coop-with"></span>
+        </div>
+
+        <div id="end-job" class="mt-1 d-none">
+            <div class="nice-button button-sm" onclick="hud_endJob()">Zakończ pracę</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.hud_setStarCount = (count) => {
+        let stars = document.querySelector('#stars');
+        stars.innerHTML = `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M63.8327 24.1737C63.4113 22.8778 62.2618 21.9603 60.9073 21.8378L42.4324 20.1605L35.131 3.06644C34.5919 1.81056 33.3653 1 32.0001 1C30.6348 1 29.4078 1.81056 28.8721 3.06644L21.5707 20.1605L3.09286 21.8378C1.73835 21.9628 0.591357 22.8802 0.167522 24.1737C-0.253872 25.4696 0.135295 26.8911 1.15973 27.7895L15.1253 40.0353L11.0075 58.1714C10.7063 59.5049 11.2239 60.8838 12.3303 61.6836C12.9251 62.1158 13.6238 62.3316 14.325 62.3316C14.9275 62.3316 15.5306 62.1714 16.0692 61.8492L32.0001 52.3236L47.9281 61.8492C49.0966 62.5474 50.5658 62.4834 51.6699 61.6836C52.7763 60.8838 53.2939 59.5049 52.9926 58.1714L48.8749 40.0353L62.8404 27.7895C63.8644 26.8911 64.254 25.4726 63.8327 24.1737Z" fill="currentColor" />
+        </svg>`.repeat(count);
+
+        stars.classList.toggle('mt-2', count > 0);
+    }
+
+    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+            x: centerX + (radius * Math.cos(angleInRadians)),
+            y: centerY + (radius * Math.sin(angleInRadians))
+        };
+    }
+
+    function setArcStartAndEndAngle(element, start, end) {
+        const radius = 50;
+        const centerX = 50;
+        const centerY = 50;
+        const startCoords = polarToCartesian(centerX, centerY, radius, end);
+        const endCoords = polarToCartesian(centerX, centerY, radius, start);
+
+        const largeArcFlag = end - start <= 180 ? "0" : "1";
+
+        const d = [
+            "M", centerX, centerY,
+            "L", startCoords.x, startCoords.y,
+            "A", radius, radius, 0, largeArcFlag, 0, endCoords.x, endCoords.y,
+            "Z"
+        ].join(" ");
+
+        element.querySelector('path').setAttribute('d', d);
+    }
+
+    function setArcPercent(element, percent, maxAnglePercent = 100) {
+        const start = 193;
+        const end = 527;
+        const angle = start + (end - start) * (maxAnglePercent / 100) * percent / 100;
+        setArcStartAndEndAngle(element, start, angle);
+    }
+
+    window.hud_setLevel = (level) => {
+        document.querySelector('#hud .level').textContent = level;
+        document.querySelector('#hud .level').style.fontSize = (level >= 1000 && '0.6rem' || level >= 100 && '0.7rem' || '0.9rem');
+    }
+
+    window.hud_setHealth = (health) => {
+        setArcPercent(document.querySelector('#hud .health'), health, 35);
+    }
+
+    window.hud_setExp = (exp) => {
+        setArcPercent(document.querySelector('#hud .exp'), exp, 30);
+    }
+
+    window.hud_setNickname = (nickname) => {
+        nickname = nickname.toString().replace(/#[0-9a-fA-F]{6}/g, '');
+        document.querySelector('#hud .nickname').textContent = `${nickname}`;
+    }
+
+    window.hud_setMoney = (money) => {        
+        let moneyElement = document.querySelector('#hud .money');
+        let moneyChangeElement = document.querySelector('#hud .money-change');
+        let currentMoney = moneyElement.textContent.replace(/\D/g, '');
+        let change = money - currentMoney;
+
+        if (change != 0) {
+            moneyChangeElement.innerText = `${change > 0 ? '+ ' : '- '}$ ${addCents(Math.abs(change)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;   
+            moneyChangeElement.style.display = 'block';
+            moneyChangeElement.classList.add('appear');
+            moneyChangeElement.classList.toggle('negative', change < 0);
+        }
+
+        money = addCents(money);
+        money = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        moneyElement.textContent = `$ ${money}`;
+        
+        setTimer('hud', (element) => {
+            element.classList.remove('appear');
+            element.classList.add('disappear');
+        }, 1500, moneyChangeElement);
+
+        setTimer('hud', (element) => {
+            element.classList.remove('disappear');
+            element.style.display = 'none';
+        }, 2000, moneyChangeElement);
+    }
+
+    window.hud_setAvatar = (avatar) => {
+        if (avatar.length > 100) {
+            document.querySelector('#hud .avatar').style.backgroundImage = `url('data:image/png;base64,${avatar}')`;
+        } else {
+            avatar = `/${avatar.slice(1)}`;
+            document.querySelector('#hud .avatar').style.backgroundImage = `url('${avatar}')`;
+        }
+    }
+
+    window.hud_setJobDetails = (job) => {
+        document.querySelector('#hud .job').classList.toggle('d-none', !job);
+        window.jobData = job;
+        if (!job) return;
+
+        let workedTime = [];
+        if (job.workedTime > 3600) {
+            workedTime.push(`${Math.floor(job.workedTime / 3600)}h`);
+            job.workedTime %= 3600;
+        }
+        if (job.workedTime > 60) {
+            workedTime.push(`${Math.floor(job.workedTime / 60)}m`);
+            job.workedTime %= 60;
+        }
+        if (job.workedTime > 0) {
+            workedTime.push(`${job.workedTime}s`);
+        }
+
+        let jobDetails = document.querySelector('#hud .job');
+        jobDetails.querySelector('#worked-time').textContent = `Aktualnie przepracowano: ${workedTime.join(' ')}`;
+        jobDetails.querySelector('#earned').textContent = `Zarobiono: $${addCents(job.earned)}`;
+        jobDetails.querySelector('#job-name').textContent = job.name;
+
+        let jobCoop = jobDetails.querySelector('#job-coop');
+        jobCoop.classList.toggle('d-none', !(job.coop && job.coop.length > 0));
+        if (job.coop && job.coop.length > 0) {
+            jobCoop.querySelector('#coop-with').textContent = job.coop.join(', ');
+        }
+
+        let endJob = jobDetails.querySelector('#end-job');
+        endJob.classList.toggle('d-none', !job.endJob);
+    }
+
+    window.hud_endJob = async () => {
+        let data = await mta.fetch('jobs', 'endJobI');
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            makeButtonSpinner(button, false);
+        }
+    }
+
+    addEvent('hud', 'interface:data:hud:data', (data) => {
+        let { money, health, level, exp, nickname, wantedStars } = data[0];
+
+        window.hud_setHealth(health);
+        window.hud_setExp(exp);
+        window.hud_setLevel(level);
+        window.hud_setNickname(nickname);
+        window.hud_setMoney(money);
+        window.hud_setStarCount(wantedStars);
+    });
+
+    addEvent('hud', 'interface:data:hud:job', (data) => {
+        window.hud_setJobDetails(data[0]);
+    });
+</script>

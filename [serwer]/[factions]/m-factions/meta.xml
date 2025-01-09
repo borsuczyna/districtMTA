@@ -1,0 +1,38 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    
+    <script src='client/panel.lua' type='client' cache='false'/>
+    <script src='client/shelf.lua' type='client' cache='false'/>
+    <script src='client/payment.lua' type='client' cache='false'/>
+    <script src='client/virtual-parking.lua' type='client' cache='false'/>
+
+    <script src='server/main.lua' type='server'/>
+    <script src='server/permissions.lua' type='server'/>
+    <script src='server/members.lua' type='server'/>
+    <script src='server/ranks.lua' type='server'/>
+    <script src='server/duty.lua' type='server'/>
+    <script src='server/shelf.lua' type='server'/>
+    <script src='server/panel.lua' type='server'/>
+    <script src='server/payment.lua' type='server'/>
+    <script src='server/gates.lua' type='server'/>
+    <script src='server/virtual-parking.lua' type='server'/>
+    <script src='server/vehicle-storage.lua' type='server'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/shelf.html'/>
+    <file src='data/virtual-parking.html'/>
+    <file src='data/payment.html'/>
+    <file src='data/permissions.js'/>
+    <file src='data/main.js'/>
+    <file src='data/members.js'/>
+    <file src='data/ranks.js'/>
+    <file src='data/sapd-logo.png'/>
+
+    <export function='createShelfMarker' type='server'/>
+    <export function='createManagePanel' type='server'/>
+    <export function='createDutyMarker' type='server'/>
+    <export function='createGate' type='server'/>
+    <export function='createVirtualParking' type='server'/>
+    <export function='createVehicleStorage' type='server'/>
+    <export function='doesPlayerHaveAnyFactionPermission' type='server'/>
+</meta>

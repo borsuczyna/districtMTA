@@ -1,0 +1,80 @@
+<meta>
+    <download_priority_group>9998</download_priority_group>
+    <script src='blur.lua' type='client' cache='false'/>
+    <script src='controller.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='fonts.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/blurH.fx'/>
+    <file src='data/blurV.fx'/>
+    <file src='data/mask.fx'/>
+    <file src='data/main.html'/>
+    <file src='data/js/main.js'/>
+    <file src='data/js/event.js'/>
+    <file src='data/js/interface.js'/>
+    <file src='data/js/variables.js'/>
+    <file src='data/js/fetch.js'/>
+    <file src='data/js/range.js'/>
+    <file src='data/js/tables.js'/>
+    <file src='data/js/jquery.js'/>
+    <file src='data/js/charts.js'/>
+    <file src='data/js/nice-table.js'/>
+    <file src='data/js/tooltips.js'/>
+    <file src='data/js/controller.js'/>
+    <file src='data/js/coloris.js'/>
+    <file src='data/js/select2.js'/>
+
+    <file src='data/css/style.css'/>
+    <file src='data/css/switch.css'/>
+    <file src='data/css/input.css'/>
+    <file src='data/css/range.css'/>
+    <file src='data/css/button.css'/>
+    <file src='data/css/tables.css'/>
+    <file src='data/css/charts.css'/>
+    <file src='data/css/scroll.css'/>
+    <file src='data/css/nice-table.css'/>
+    <file src='data/css/tooltip.css'/>
+    <file src='data/css/coloris.css'/>
+    <file src='data/css/select2.css'/>
+    
+    <file src='data/images/background.png'/>
+    <file src='data/images/spinner.png'/>
+    <file src='data/images/cursor-default.png'/>
+    <file src='data/images/cursor-pointer.png'/>
+    <file src='data/images/cursor-controller.png'/>
+
+    <file src='data/css/fonts/Inter-Black.ttf'/>
+    <file src='data/css/fonts/Inter-Bold.ttf'/>
+    <file src='data/css/fonts/Inter-ExtraBold.ttf'/>
+    <file src='data/css/fonts/Inter-ExtraLight.ttf'/>
+    <file src='data/css/fonts/Inter-Light.ttf'/>
+    <file src='data/css/fonts/Inter-Medium.ttf'/>
+    <file src='data/css/fonts/Inter-Regular.ttf'/>
+    <file src='data/css/fonts/Inter-SemiBold.ttf'/>
+    <file src='data/css/fonts/Inter-Thin.ttf'/>
+    <file src='data/css/fonts/Inter.ttf'/>
+    <file src='data/css/fonts/Exo2.ttf'/>
+    <file src='data/css/fonts/DigitalNumbers-Regular.ttf'/>
+
+    <export function='isLoaded' type='client'/>
+    <export function='setInterfaceVisible' type='client'/>
+    <export function='isInterfaceVisible' type='client'/>
+    <export function='isAnySingleInterfaceVisible' type='client'/>
+    <export function='addSingleInterface' type='client'/>
+    <export function='loadInterfaceElement' type='client'/>
+    <export function='loadInterfaceElementFromCode' type='client'/>
+    <export function='loadInterfaceElementFromFile' type='client'/>
+    <export function='destroyInterfaceElement' type='client'/>
+    <export function='executeJavascript' type='client'/>
+    <export function='setInterfaceData' type='client'/>
+    <export function='setRemSize' type='client'/>
+    <export function='addEventHandlerToInterfaceElement' type='client'/>
+    <export function='triggerInterfaceEvent' type='client'/>
+    <export function='setInterfaceZIndex' type='client'/>
+    <export function='getFont' type='client'/>
+    <export function='respondToRequest' type='server'/>
+    <export function='setBlurQuality' type='client'/>
+    <export function='getControllerButton' type='client'/>
+    <export function='setCursorAlpha' type='client'/>
+</meta>

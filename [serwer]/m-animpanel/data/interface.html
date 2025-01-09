@@ -1,0 +1,149 @@
+﻿<style>
+    #animpanel {
+        position: absolute;
+        right: 1.6rem;
+        top: 50%;
+        text-align: center;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        gap: 0.625rem;
+        padding: 0.625rem;
+        opacity: 0;
+        transform: translateY(-50%) scale(0.9);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #animpanel #anim-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        max-height: 12rem;
+        overflow-y: auto;
+    }
+
+    #animpanel #anim-list .item {
+        color: #e3e3e3;
+        padding: 0.3rem 0.5rem;
+        border-radius: 0.5rem;
+        background: rgba(57, 57, 57, 0.45);
+        border: 0.0625rem solid rgba(61, 61, 61, 0.6);
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    #animpanel #anim-list svg {
+        cursor: pointer;
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+
+    #animpanel #category {
+        width: 24rem;
+        background: red !important;
+    }
+
+    #animpanel .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+
+    #animpanel #tip {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    #animpanel #tip kbd {
+        margin: 0 0.4rem;
+    }
+</style>
+
+<div class="d-flex gap-4 align-items-center">
+    <span class="label">Animacje</span>
+    <div class="line"></div>
+</div>
+<select id="category" onchange="animpanel_reloadAnimations()"></select>
+<div id="anim-list" class="nice-scroll pr-1"></div>
+<div id="tip">
+    Naciśnij <kbd class="keycap keycap-sm">SPACJĘ</kbd> aby zatrzymać animację
+</div>
+
+<script>
+    let anims = [];
+
+    $('#animpanel #category').select2();
+
+    animpanel_renderCategories = () => {
+        let category = document.querySelector('#animpanel #category');
+        
+        for (let anim of anims) {
+            let option = new Option(anim.name, anim.name);
+            category.add(option);
+        }
+
+        $('#animpanel #category').select2();
+        animpanel_restoreState();
+        category.dispatchEvent(new Event('change'));
+    }
+
+    function animpanel_saveState() {
+        let selectedCategory = document.querySelector('#animpanel #category').value;
+        localStorage.setItem('animpanelSelectedCategory', selectedCategory);
+    }
+
+    function animpanel_restoreState() {
+        let savedCategory = localStorage.getItem('animpanelSelectedCategory');
+        if (savedCategory) {
+            document.querySelector('#animpanel #category').value = savedCategory;
+            animpanel_reloadAnimations();
+        }
+    }
+
+    animpanel_reloadAnimations = () => {
+        let category = document.querySelector('#animpanel #category').value;
+        let list = document.querySelector('#anim-list');
+        let categoryAnims = anims.find(a => a.name == category).items;
+
+        list.innerHTML = categoryAnims.map((anim, index) => {
+            return `
+                <div class="d-flex justify-between item">
+                    <span>${anim[1]}</span>
+                    <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" data-tooltip="Odtwórz animację" onclick="animpanel_playAnimation('${anim.name}', ${index})">
+                        <path d="M74 44L438 256L74 468V44Z" fill="currentColor" />
+                    </svg>
+                </div>
+            `;
+        }).join('');
+    }
+
+    animpanel_playAnimation = (name, index) => {
+        let category = document.querySelector('#animpanel #category').value;
+        mta.triggerEvent('animpanel:playAnimation', category, index);
+    }
+
+    addEvent('animpanel', 'interface:data:anims', (data) => {
+        anims = data[0];
+        animpanel_renderCategories();
+    });
+
+    addEvent('animpanel', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#animpanel').style.opacity = appear ? '1' : '0';
+        document.querySelector('#animpanel').style.transform = appear ? 'translateY(-50%) scale(1)' : 'translateY(-50%) scale(0.9)';
+
+        if (!appear) {
+            animpanel_saveState();
+            $('#animpanel #category').select2('close');
+        }
+    });
+</script>

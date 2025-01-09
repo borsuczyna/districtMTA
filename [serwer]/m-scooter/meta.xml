@@ -1,0 +1,17 @@
+<meta>
+    <script src="interface.lua" type="client" cache="false"/>
+    <script src="client.lua" type="client" cache="false"/>
+    <script src="rent.lua" type="client" cache="false"/>
+    <script src="server.lua" type="server"/>
+    
+    <file src="data/escooterrental.txd"/>
+    <file src="data/escooterrental.dff"/>
+    <file src="data/escooterrental.col"/>
+	<file src="data/foldedscooter.dff"/>
+    <file src="data/foldedscooter.col"/>
+    <file src="data/448.dff"/>
+    <file src="data/448.txd"/>
+    <file src="data/bike.ifp"/>
+    <file src="data/interface.html"/>
+    <min_mta_version client="1.5.7-9.20642"></min_mta_version>
+</meta>

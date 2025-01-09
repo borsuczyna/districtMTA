@@ -1,0 +1,160 @@
+<style>
+    #clothing {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 30rem;
+        padding: 1.25rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #clothing h2 {
+        margin: 0;
+        margin-bottom: 1.25rem;
+    }
+
+    #clothing .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+        transform: translateY(-0.425rem);
+    }
+
+    #clothing .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #clothing .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #clothing .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+
+    #clothing .nice-table-wrapper {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    .text-start {
+        text-align: start !important;
+    }
+</style>
+
+<div class="d-flex justify-between">
+    <h2>Przebieralnia</h2>
+    <div class="d-flex logo justify-end">
+        <span>
+            <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+            <span class="gradient-text text-glow">MTA</span>
+        </span>
+        <img src="/m-login/data/logo.png" style="width: 3rem;"/>
+    </div>
+</div>
+
+<div class="nice-table-wrapper striped" style="width: auto;">
+    <table id="clothing-table">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Skin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let waiting = false;
+
+    function loadClothes(data) {
+        let clothesTable = document.querySelector('#clothing #clothing-table');
+
+        new DataTable(clothesTable, {
+            ...defaultTableData,
+            destroy: true,
+            data: data,
+            columns: [
+                { data: 'model' },
+                { data: 'name' },
+                { data: 'model', render: (data) => `<div class="flat-button flat-button-small" onclick="clothing_setClothes(this, ${data})">Ubierz</div>` }
+            ],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: [0], className: 'text-start' },
+                { targets: [2], orderable: false }
+            ],
+            pageLength: 7
+        });
+    }
+
+    window.clothing_setClothes = async (button, model) => {
+        if (waiting || isButtonSpinner(button)) return;
+        
+        makeButtonSpinner(button);
+        waiting = true;
+        let data = await mta.fetch('clothing', 'setClothes', model);
+        makeButtonSpinner(button, false);
+        waiting = false;
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        }
+    }
+
+    addEvent('clothing', 'interface:data:clothes', (data) => {
+        loadClothes(data[0]);
+    });
+
+    addEvent('clothing', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#clothing').style.opacity = appear ? '1' : '0';
+        document.querySelector('#clothing').style.transform = appear ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(0.8)';
+    });
+</script>

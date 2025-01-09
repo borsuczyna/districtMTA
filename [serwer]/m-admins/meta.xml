@@ -1,0 +1,53 @@
+<meta>
+    <min_mta_version server='1.3.1' /> 
+    <include resource='m-ui'/>
+
+    <script src='client/noclip.lua' type='client' cache='false'/>
+    <script src='client/logs.lua' type='client' cache='false'/>
+    <script src='client/reports.lua' type='client' cache='false'/>
+    <script src='client/inv.lua' type='client' cache='false'/>
+    <script src='client/warns.lua' type='client' cache='false'/>
+    <script src='client/notifications.lua' type='client' cache='false'/>
+    <script src='client/dryer.lua' type='client' cache='false'/>
+
+    <script src='shared/main.lua' type='shared' cache='false'/>
+    <script src='shared/dryerOptions.lua' type='shared' cache='false'/>
+    <script src='server/main.lua' type='server'/>
+    <script src='server/logs.lua' type='server'/>
+    <script src='server/reports.lua' type='server'/>
+    <script src='server/dryer.lua' type='server'/>
+    
+    <script src='commands/admin-chat.lua' type='server'/>
+    <script src='commands/clear-chat.lua' type='server'/>
+    <script src='commands/dev.lua' type='server'/>
+    <script src='commands/teleport.lua' type='server'/>
+    <script src='commands/teleports.lua' type='server'/>
+    <script src='commands/license.lua' type='server'/>
+    <script src='commands/kick.lua' type='server'/>
+    <script src='commands/ban.lua' type='server'/>
+    <script src='commands/warn.lua' type='server'/>
+    <script src='commands/mute.lua' type='server'/>
+    <script src='commands/jetpack.lua' type='server'/>
+    <script src='commands/inv.lua' type='server'/>
+    <script src='commands/spec.lua' type='server'/>
+    <script src='commands/cv.lua' type='server'/>
+    <script src='commands/rank.lua' type='server'/>
+    <script src='commands/fix.lua' type='server'/>
+    <script src='commands/heal.lua' type='server'/>
+    <script src='commands/admins.lua' type='server'/>
+    <script src='commands/other.lua' type='server'/>
+
+    <file src='data/logs.html'/>
+    <file src='data/reports.html'/>
+    <file src='data/overlay.png'/>
+    <file src='data/background.png'/>
+    <file src='data/warn.mp3'/>
+
+    <export function='getRankName' type='shared'/>
+    <export function='getRankColor' type='shared'/>
+    <export function='getRankPermissions' type='shared'/>
+    <export function='doesPlayerHavePermission' type='shared'/>
+    <export function='addLog' type='shared'/>
+
+    <min_mta_version client='1.5.8' server='1.5.8' />
+</meta>

@@ -1,0 +1,457 @@
+<style>
+    #scoreboard {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #scoreboard-inner {
+        background: rgba(22, 22, 22, 0.85);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        color: rgba(255, 255, 255, 0.85);
+        transform: rotateX(-90deg);
+        transition: transform 0.3s;
+    }
+
+    #scoreboard #top-bar {
+        padding: 0.625rem 1.125rem 0.625rem 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    #scoreboard .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+    }
+
+    #scoreboard .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #scoreboard .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #scoreboard .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+
+    #scoreboard .search {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border: 0.0625rem solid #474747;
+        border-radius: 0.8125rem;
+        padding: 0.413rem 0.625rem;
+        background: linear-gradient(90deg, rgba(39, 39, 39, 0.85) 0%, rgba(48, 48, 48, 0.85) 100%);
+        width: 18rem;
+    }
+
+    #scoreboard .category {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    #scoreboard .category svg {
+        transform: translateY(0.1rem);
+    }
+
+    #scoreboard .search input {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.8rem;
+    }
+
+    #scoreboard .online {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 900;
+        font-size: 1.4rem;
+        text-align: right;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    #scoreboard #player-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.05rem;
+        max-height: 35rem;
+        overflow-y: auto;
+    }
+
+    /* scroll styling */
+    #scoreboard #player-list::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    #scoreboard #player-list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 0.25rem;
+    }
+
+    #scoreboard #player-list::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    #scoreboard #player-list::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0.25rem;
+    }
+
+    #scoreboard #player-list .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.625rem 1.25rem;
+    }
+
+    #scoreboard #player-list .item.me {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    #scoreboard #player-list .item .id {
+        font-weight: 900;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        position: absolute;
+        transform: translateX(-50%);
+    }
+
+    #scoreboard #player-list .item .avatar {
+        position: relative;
+        border-radius: 50%;
+        border: 0.125rem solid #727272;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    #scoreboard #player-list .item .avatar img {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: none;
+        background: #424242;
+    }
+
+    #scoreboard #player-list .item .avatar .shield {
+        position: absolute;
+        bottom: -0.45rem;
+        right: -0.1rem;
+        color: white;
+        font-size: 0.8rem;
+        scale: 0.8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #scoreboard #player-list .item .avatar .shield span {
+        position: absolute;
+        transform: translate(0.02rem, 0);
+        font-size: 0.8rem;
+        font-weight: 900;
+    }
+
+    #scoreboard #player-list .item .avatar.admin, #scoreboard #player-list .item .avatar.admin .shield span {
+        border: 0.125rem solid #e93737;
+        color: #8f1717;
+    }
+
+    #scoreboard #player-list .item .nickname {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #ffffffdd;
+        width: 8rem;
+        max-width: 8rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #scoreboard #player-list .item .status {
+        font-weight: 500;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.85);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    #scoreboard #player-list .item .status span {
+        width: 9.5rem;
+        max-width: 9.5rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #scoreboard #player-list .item .organization {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.85);
+        text-align: center;
+        width: 12rem;
+        max-width: 12rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #scoreboard #player-list .item .level {
+        font-weight: 900;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    #scoreboard #player-list .item .level span:nth-child(2) {
+        font-weight: 500;
+        font-size: 0.75rem;
+    }
+
+    #scoreboard #player-list .item .ping {
+        font-weight: 500;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    #player-list-no-results {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.65);
+        padding: 1rem;
+        padding-bottom: 2rem;
+    }
+
+    #scoreboard #player-list-tip {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.85);
+        padding: 0.5rem;
+    }
+
+    .gap-half {
+        gap: 0.3rem;
+    }
+
+    #scoreboard.perspective {
+        perspective: 45rem;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+<div id="scoreboard-inner">
+    <div id="top-bar">
+        <div class="d-flex gap-2 logo">
+            <img src="/m-login/data/logo.png" style="width: 3rem;"/>
+            <span>
+                <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+                <span class="gradient-text text-glow">MTA</span>
+            </span>
+        </div>
+        <div class="search">
+            <input type="text" class="form-control" placeholder="Wpisz nick lub ID..." oninput="scoreboard_updateFilter()">
+            <div class="category" onclick="scoreboard_nextCategory()">
+                <span>Wszyscy</span>
+                <svg viewBox="0 0 23 23" fill="none" style="width: 1.2rem; height: 1.2rem;">
+                    <path d="M4.64892 6C3.16246 6 1.95744 7.18197 1.95744 8.64C1.95744 10.098 3.16246 11.28 4.64892 11.28C6.13538 11.28 7.3404 10.098 7.3404 8.64C7.3404 7.18197 6.13538 6 4.64892 6Z" fill="#BCBCBC" />
+                    <path d="M4.64892 12.72C3.47861 12.72 2.3828 12.9511 1.55241 13.3584C0.765923 13.7441 0 14.4102 0 15.36C0 16.3098 0.765923 16.9759 1.55241 17.3616C2.3828 17.7689 3.47861 18 4.64892 18C5.45671 18 6.22287 17.8901 6.88916 17.6919L8.31132 17.2689L7.10453 16.4182C6.54412 16.0231 6.36168 15.6471 6.36168 15.36C6.36168 15.0729 6.54412 14.6969 7.10453 14.3018L8.31132 13.4511L6.88916 13.0281C6.22287 12.8299 5.45671 12.72 4.64892 12.72Z" fill="#BCBCBC" />
+                    <path d="M15.6595 8.64C15.6595 7.18197 16.8645 6 18.351 6C19.8375 6 21.0425 7.18197 21.0425 8.64C21.0425 10.098 19.8375 11.28 18.351 11.28C16.8645 11.28 15.6595 10.098 15.6595 8.64Z" fill="#BCBCBC" />
+                    <path d="M16.1108 13.0281C16.7771 12.8299 17.5433 12.72 18.3511 12.72C19.5214 12.72 20.6172 12.9511 21.4476 13.3584C22.2341 13.7441 23 14.4102 23 15.36C23 16.3098 22.2341 16.9759 21.4476 17.3616C20.6172 17.7689 19.5214 18 18.3511 18C17.5433 18 16.7771 17.8901 16.1108 17.6919L14.6887 17.2689L15.8955 16.4182C16.4559 16.0231 16.6383 15.6471 16.6383 15.36C16.6383 15.0729 16.4559 14.6969 15.8955 14.3018L14.6887 13.4511L16.1108 13.0281Z" fill="#BCBCBC" />
+                    <path d="M11.5 2C9.50564 2 7.88889 3.63096 7.88889 5.64286C7.88889 7.65475 9.50564 9.28571 11.5 9.28571C13.4944 9.28571 15.1111 7.65475 15.1111 5.64286C15.1111 3.63096 13.4944 2 11.5 2Z" fill="white" />
+                    <path d="M11.5 11.7143C9.43794 11.7143 7.53706 12.2297 6.33237 13.1031C5.58304 13.6463 5 14.4118 5 15.3571C5 16.3025 5.58304 17.0679 6.33237 17.6112C7.53706 18.4846 9.43794 19 11.5 19C13.5621 19 15.4629 18.4846 16.6676 17.6112C17.417 17.0679 18 16.3025 18 15.3571C18 14.4118 17.417 13.6463 16.6676 13.1031C15.4629 12.2297 13.5621 11.7143 11.5 11.7143Z" fill="white" />
+                </svg>
+            </div>
+        </div>
+        <div class="online d-flex align-items-center">
+            <span>142</span>
+            <svg viewBox="0 0 26 26" fill="none" style="width: 1.5rem; height: 1.5rem;">
+                <circle cx="13" cy="13" r="5" fill="#3FFF74" fill-opacity="0.85" />
+                <circle cx="13" cy="13" r="9" stroke="#38AF59" stroke-opacity="0.35" stroke-width="8" />
+            </svg>
+        </div>
+    </div>
+    
+    <div id="player-list"></div>
+    
+    <div id="player-list-no-results" class="d-none">
+        Brak wyników
+    </div>
+
+    <div id="player-list-tip">
+        Naciśnij prawy przycisk myszy, aby pokazać kursor
+    </div>
+</div>
+
+<script>
+    let avatars = {};
+    let categories = [
+        ['Wszyscy', 'all'],
+        ['Gracze', 'players'],
+        ['Administracja', 'administration'],
+        ['Służba', 'duty'],
+    ];
+
+    function setCategory(category) {
+        document.querySelector('#scoreboard .category span').innerText = category;
+    }
+
+    window.scoreboard_nextCategory = function() {
+        let current = document.querySelector('#scoreboard .category span').innerText;
+        let index = categories.findIndex(c => c[0] === current);
+        let next = categories[(index + 1) % categories.length][0];
+        setCategory(next);
+        scoreboard_updateFilter();
+    }
+
+    window.scoreboard_clearScoreboard = function() {
+        document.querySelector('#scoreboard #player-list').innerHTML = '';
+    }
+
+    window.scoreboard_addPlayer = function(uid, id, name, ping, organization, status, statusColor, level, me, category) {
+        const table = document.querySelector('#scoreboard #player-list');
+        const item = document.createElement('div');
+        const avatar = (avatars[uid] && avatars[uid].length > 100) ? `data:image/png;base64,${avatars[uid]}` : '/m-avatars/data/user.png';
+        item.classList.add('item');
+        if (me) item.classList.add('me');
+        item.dataset.category = category;
+
+        item.innerHTML = `
+            <div class="d-flex gap-4 align-items-center">
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="avatar">
+                        <img src="${avatar}" alt="">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="nickname">(${id}) ${name}</div>
+                        <div class="status">
+                            <svg viewBox="0 0 12 12" fill="none" style="width: 1rem; height: 1rem;">
+                                <circle cx="6" cy="6" r="4" fill="${statusColor}" fill-opacity="0.75" />
+                                <circle cx="6" cy="6" r="5" stroke="${statusColor}" stroke-opacity="0.25" stroke-width="2" />
+                            </svg>
+                            <span>${status}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="organization">${organization}</div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="level d-flex flex-column align-items-center">
+                    <span>${level}</span>
+                    <span>LEVEL</span>
+                </div>
+                <div class="d-flex flex-column align-items-center gap-1">
+                    <svg viewBox="0 0 26 20" fill="none" style="width: 1.1rem; height: 1.1rem;">
+                        <path d="M1.74227 6.77752C3.39243 5.00862 5.00107 3.81287 6.77172 3.05131C8.54236 2.28974 10.5375 1.93548 13 1.93548C15.4625 1.93548 17.4576 2.28974 19.2283 3.05131C20.9989 3.81287 22.6076 5.00862 24.2577 6.77752C24.6278 7.17424 25.2602 7.2055 25.6701 6.84735C26.08 6.48921 26.1123 5.87726 25.7423 5.48054C23.9559 3.56567 22.1287 2.18077 20.0406 1.28264C17.9524 0.384504 15.6658 0 13 0C10.3342 0 8.0476 0.384504 5.95944 1.28264C3.87128 2.18077 2.04407 3.56567 0.25774 5.48054C-0.112348 5.87726 -0.0800383 6.48921 0.329905 6.84735C0.739848 7.2055 1.37219 7.17424 1.74227 6.77752Z" fill="${ping > 150 ? '#FFFFFF88' : 'white'}" />
+                        <path d="M13 6.45161C11.1357 6.45161 9.49907 6.76378 8.02885 7.47518C6.55863 8.18658 5.31861 9.26631 4.20001 10.7097C3.86864 11.1373 3.95818 11.7438 4.40001 12.0645C4.84183 12.3852 5.46863 12.2985 5.8 11.871C6.77717 10.6101 7.79068 9.75436 8.92327 9.20633C10.0559 8.6583 11.3714 8.3871 13 8.3871C14.6286 8.3871 15.9441 8.6583 17.0767 9.20633C18.2093 9.75436 19.2228 10.6101 20.2 11.871C20.5314 12.2985 21.1582 12.3852 21.6 12.0645C22.0418 11.7438 22.1314 11.1373 21.8 10.7097C20.6814 9.26631 19.4414 8.18658 17.9712 7.47518C16.5009 6.76378 14.8643 6.45161 13 6.45161Z" fill="${ping > 300 ? '#FFFFFF88' : 'white'}" />
+                        <rect x="10" y="14" width="6" height="6" rx="3" fill="white" />
+                    </svg>
+                    <span class="ping">${ping} ms</span>
+                </div>
+            </div>
+        `;
+
+        table.appendChild(item);
+    }
+
+    window.scoreboard_setAvatar = function(uid, url) {
+        avatars[uid] = url;
+    }
+
+    window.scoreboard_removeAvatar = function(uid) {
+        delete avatars[uid];
+    }
+
+    window.scoreboard_updateFilter = function() {
+        let filter = document.querySelector('#scoreboard .search input').value.toLowerCase();
+        let items = document.querySelectorAll('#scoreboard #player-list .item');
+        let currentCategory = document.querySelector('#scoreboard .category span').innerText;
+        let category = categories.find(c => c[0] === currentCategory)[1];
+        let results = 0;
+
+        for (let item of items) {
+            let name = item.querySelector('.nickname').innerText.toLowerCase();
+            let id = item.querySelector('.nickname').innerText.split(')')[0].replace('(', '');
+            if ((name.includes(filter) || id.includes(filter)) && (category === 'all' || item.dataset.category === category)) {
+                item.style.display = 'flex';
+                results++;
+            } else {
+                item.style.display = 'none';
+            }
+        }
+
+        document.querySelector('#scoreboard #player-list-no-results').classList.toggle('d-none', results > 0);
+        document.querySelector('#scoreboard #player-list-tip').classList.toggle('d-none', results === 0);
+    }
+
+    addEvent('scoreboard', 'interface:data:players', (data) => {
+        data = data[0];
+        
+        window.scoreboard_clearScoreboard();
+        data.sort((a, b) => a.me ? -1 : b.me ? 1 : a.id - b.id);
+        
+        for (let player of data) {
+            let { uid, id, name, ping, organization, status, statusColor, level, me, category } = player;
+            window.scoreboard_addPlayer(uid, id, name, ping, organization, status, statusColor, level, me, category);
+        }
+
+        document.querySelector('#scoreboard .online span').innerText = data.length;
+        scoreboard_updateFilter();
+    });
+
+    addEvent('scoreboard', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#scoreboard').classList.add('perspective');
+        document.querySelector('#scoreboard #scoreboard-inner').style.transform = appear ? 'rotateX(0)' : 'rotateX(90deg)';
+    });
+</script>

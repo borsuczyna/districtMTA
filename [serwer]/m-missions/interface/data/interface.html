@@ -1,0 +1,249 @@
+<style>
+    #missionEditor {
+        opacity: 0;
+    }
+
+    #missionEditor .window {
+        background-color: rgba(27, 27, 27, 0.4);
+        border-radius: 0.5rem;
+        position: fixed;
+        top: var(--y);
+        left: var(--x);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    #missionEditor .title-bar {
+        background-color: rgba(27, 27, 27, 0.8);
+        padding: 0.3rem;
+        font-size: 0.8rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+    }
+
+    #missionEditor .body {
+        padding: 0.3rem;
+    }
+
+    #missionEditor .list {
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(27, 27, 27, 0.2);
+        border-radius: 0.35rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 30rem;
+    }
+
+    #missionEditor .list .item {
+        cursor: pointer;
+        padding: 0.4rem 0.5rem;
+        background-color: rgba(27, 27, 27, 0.4);
+        font-size: 0.8rem;
+        border: 1px solid transparent;
+        transition: 0.2s background-color, 0.2s border;
+    }
+
+    #missionEditor .list .item:nth-child(2n) {
+        background-color: rgba(42, 42, 42, 0.3);
+    }
+
+    #missionEditor .list .item:hover {
+        background-color: rgba(69, 69, 69, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #missionEditor .list .item.active {
+        background-color: rgba(69, 69, 69, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    #missionEditor .arrow {
+        width: 1rem;
+        height: 1rem;
+        transition: 0.2s transform;
+    }
+
+    #missionEditor .active .arrow {
+        transform: rotate(90deg);
+    }
+
+    #missionEditor .details {
+        max-height: 0;
+        overflow: hidden;
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+    
+    #missionEditor .active .details {
+        max-height: 100rem;
+        margin-top: 0.2rem;
+    }
+
+    #missionEditor .argument {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    #missionEditor .argument .name {
+        font-size: 0.8rem;
+    }
+
+    #missionEditor .argument input, #missionEditor .mission-input {
+        background-color: rgba(27, 27, 27, 0.4);
+        border: 1px solid transparent;
+        padding: 0.25rem;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 0.25rem;
+    }
+
+    #missionEditor .argument input:focus {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    #missionEditor .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.25rem;
+        background-color: rgba(86, 86, 86, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: 0.2s background-color, 0.2s border;
+    }
+
+    #missionEditor .icon:hover {
+        background-color: rgba(86, 86, 86, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #missionEditor .argument[data-type="position"] input, #missionEditor .argument[data-type="rotation"] input, #missionEditor .argument[data-type="rotation3d"] input {
+        max-width: 4rem;
+    }
+
+    #missionEditor select {
+        background-color: rgba(27, 27, 27, 0.4);
+        border: 1px solid transparent;
+        padding: 0.25rem;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 0.25rem;
+    }
+
+    #missionEditor select:focus {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    #missionEditor select option {
+        background-color: rgba(27, 27, 27, 0.4);
+        color: rgba(255, 255, 255, 0.9);
+    }
+</style>
+
+<div class="window" style="--x: 1rem; --y: 30%;" id="events">
+    <div class="title-bar">Eventy</div>
+    <div class="body"></div>
+</div>
+
+<div class="window d-none" style="--x: 45%; --y: 30%;" id="addEvent">
+    <div class="title-bar">Dodaj event</div>
+    <div class="body"></div>
+</div>
+
+<div class="window d-none" style="--x: 20%; --y: 30%;" id="actions">
+    <div class="title-bar">Akcje</div>
+    <div class="body"></div>
+</div>
+
+<div class="window d-none" style="--x: 60%; --y: 30%;" id="addAction">
+    <div class="title-bar">Dodaj akcje</div>
+    <div class="body"></div>
+</div>
+
+<div class="window" style="--x: calc(100% - 16rem); --y: calc(100% - 8.5rem);" id="manage">
+    <div class="title-bar">Zarządzanie</div>
+    <div class="body d-flex flex-column gap-1">
+        <input class="simple-input" placeholder="Nazwa misji" id="missionName" />
+        <div class="d-flex gap-1">
+            <div class="flat-button flat-button-small flex-grow-1" onclick="editor_saveMission()">Zapisz</div>
+            <div class="flat-button flat-button-small flex-grow-1" onclick="editor_testMission()">Przetestuj</div>
+            <div class="flat-button flat-button-small flex-grow-1" onclick="editor_loadMission()">Wczytaj</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let iconsList = {
+        'trash': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <g clip-path="url(#clip0_892_67)">
+                <path opacity="0.8" d="M4.5 7H19.5L18.3832 21.5188C18.308 22.4957 17.4934 23.25 16.5137 23.25H7.48631C6.50655 23.25 5.69198 22.4957 5.61683 21.5188L4.5 7ZM7 9.5L7.56798 14.6118L16.4397 14.5424L17 9.5H7Z" fill="currentColor" />
+                <path opacity="0.8" fill-rule="evenodd" clip-rule="evenodd" d="M14.5 2.625V1.375C14.5 1.02982 14.2202 0.75 13.875 0.75H10.125C9.77982 0.75 9.5 1.02982 9.5 1.375V2.625H3.875C3.52982 2.625 3.25 2.90482 3.25 3.25V3.875C3.25 4.22018 3.52982 4.5 3.875 4.5H20.125C20.4702 4.5 20.75 4.22018 20.75 3.875V3.25C20.75 2.90482 20.4702 2.625 20.125 2.625H14.5Z" fill="currentColor" />
+            </g>
+        </svg>`,
+        'close': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M14.8487 12.0004L23.7626 3.0871C24.0791 2.77057 24.0791 2.25836 23.7626 1.94193L22.059 0.237724C21.9073 0.0861017 21.7014 0.000732422 21.4865 0.000732422C21.2716 0.000732422 21.0657 0.0861017 20.9139 0.237724L12 9.15175L3.08609 0.237724C2.93436 0.0861017 2.72847 0.000732422 2.51351 0.000732422C2.2986 0.000732422 2.09265 0.0861017 1.94098 0.237724L0.237396 1.94193C-0.0791319 2.25836 -0.0791319 2.77057 0.237396 3.0871L9.15132 12.0005L0.238281 20.9128C-0.0780902 21.2293 -0.0780902 21.7415 0.238281 22.058L1.94197 23.7622C2.09359 23.9138 2.29954 23.9992 2.5145 23.9992C2.72946 23.9992 2.93535 23.9138 3.08713 23.7622L12 14.8492L20.9128 23.7622C21.0646 23.9138 21.2705 23.9992 21.4854 23.9992C21.7004 23.9992 21.9063 23.9138 22.058 23.7622L23.7616 22.058C24.078 21.7415 24.078 21.2293 23.7616 20.9128L14.8487 12.0004Z" fill="currentColor" opacity="0.8" transform="scale(0.9) translate(2 2)" />
+        </svg>`,
+        'add': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M12 5.25V18.75" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M5.25 12H18.75" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>`,
+        'edit': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 326 326" version="1.1">
+            <path d="M121.499 266.352L58.6563 203.524L210.653 51.5624L273.496 114.391L121.499 266.352ZM52.7821 214.591L110.43 272.225L24 301L52.7821 214.591ZM292.825 95.1495L281.925 106.047L218.999 43.1356L229.899 32.238C240.879 21.254 258.684 21.254 269.664 32.238L292.825 55.3934C303.725 66.4073 303.725 84.1388 292.825 95.1495Z" fill="currentColor" />
+        </svg>`,
+        'arrow-up': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M3 16.5L12.5 7L22 16.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </svg>`,
+        'arrow-down': `<svg style="width: 1rem !important; height: 1rem !important;" viewBox="0 0 24 24" version="1.1">
+            <path d="M3 7.5L12.5 17L22 7.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </svg>`,
+    }
+
+    window.editor_getIcon = (name, button = false, event = '') => {
+        if (!button)
+            return iconsList[name] || '';
+        else
+            return `<div class="icon" onclick="${event}">${iconsList[name] || ''}</div>`;
+    }
+
+    window.editor_openListItem = (event, element) => {
+        if (event && event.target.closest('.details'))
+            return;
+
+        element.parentElement.querySelectorAll('.item').forEach((item) => {
+            if (item === element) {
+                item.classList.toggle('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    addEvent('missionEditor', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#missionEditor').style.opacity = appear ? '1' : '0';
+    });
+
+    async function loadIncludes() {
+        let tasks = [];
+
+        tasks.push(include('/m-missions/interface/data/arguments.js'));
+        tasks.push(include('/m-missions/interface/data/windows.js'));
+        tasks.push(include('/m-missions/interface/data/actions.js'));
+        tasks.push(include('/m-missions/interface/data/events.js'));
+        tasks.push(include('/m-missions/interface/data/save.js'));
+
+        await Promise.all(tasks);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        finishIncludes('missionEditor');
+    }
+
+    loadIncludes();
+</script>

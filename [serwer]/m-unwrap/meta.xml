@@ -1,0 +1,6 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+    <file src='gradient.png'/>
+    <file src='mta-helper.fx'/>
+    <file src='shader.fx'/>
+</meta>

@@ -1,0 +1,30 @@
+<meta>
+    <min_mta_version server='1.6.0-9.22459' client='1.6.0-9.22420'></min_mta_version>
+    <download_priority_group>9999</download_priority_group>
+    
+    <include resource='m-ui'/>
+    
+    <script src='client/injector.lua' type='client' cache='false'/>
+    <script src='client/integration.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/commands.lua' type='client' cache='false'/>
+    <!-- <script src='client/fly-hack.lua' type='client' cache='false'/> -->
+    <script src='client/explosions.lua' type='client' cache='false'/>
+    <script src='client/world.lua' type='client' cache='false'/>
+    
+    <script src='server/main.lua' type='server'/>
+    <script src='server/reconnect.lua' type='server'/>
+    <script src='server/vpn.lua' type='server'/>
+    <script src='server/trigger-locker.lua' type='server'/>
+    <script src='server/element-datas.lua' type='server'/>
+    <script src='server/explosions.lua' type='server'/>
+    
+    <export function='loadInterface' type='client'/>
+    <export function='createWindow' type='client'/>
+    <export function='getRandomPlayers' type='client'/>
+    
+    <export function='setPlayerTriggerLocked' type='server'/>
+    <export function='isPlayerTriggerLocked' type='server'/>
+    <export function='ban' type='server'/>
+    <export function='kick' type='server'/>
+</meta>

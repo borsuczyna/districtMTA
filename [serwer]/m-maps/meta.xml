@@ -1,0 +1,13 @@
+<meta>
+    <download_priority_group>9950</download_priority_group>
+    <include resource='m-ui'/>
+    
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/map.png'/>
+    <file src='data/map-dark.png'/>
+    <file src='data/map-transparent.png'/>
+    <file src='data/marker.png'/>
+    <file src='data/blips/job.png'/>
+</meta>

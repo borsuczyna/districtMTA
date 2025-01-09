@@ -1,0 +1,5 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+
+    <export function='getPlayerStatus' type='client'/>
+</meta>

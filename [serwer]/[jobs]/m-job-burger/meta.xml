@@ -1,0 +1,43 @@
+<meta>
+    <script src='settings.lua' type='shared' cache='false'/>
+    <script src='shared.lua' type='shared' cache='false'/>
+    
+    <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/interior.lua' type='client' cache='false'/>
+    <script src='client/movement.lua' type='client' cache='false'/>
+    <script src='client/click.lua' type='client' cache='false'/>
+    <script src='client/board.lua' type='client' cache='false'/>
+    <script src='client/grill.lua' type='client' cache='false'/>
+    <script src='client/fries.lua' type='client' cache='false'/>
+    <script src='client/cola.lua' type='client' cache='false'/>
+    <script src='client/npc.lua' type='client' cache='false'/>
+    <script src='client/circle.lua' type='client' cache='false'/>
+
+    <script src='server/main.lua' type='server'/>
+    <script src='server/carry.lua' type='server'/>
+    <script src='server/events.lua' type='server'/>
+    <script src='server/board.lua' type='server'/>
+    <script src='server/grill.lua' type='server'/>
+    <script src='server/fryer.lua' type='server'/>
+    <script src='server/cola.lua' type='server'/>
+    <script src='server/npc.lua' type='server'/>
+
+    <file src='data/circle.fx'/>
+    <file src='data/stoper-bg.png'/>
+    <file src='data/stoper.png'/>
+    <file src='data/flame.png'/>
+    <file src='data/cola.png'/>
+    <file src='data/burger.png'/>
+    <file src='data/fries.png'/>
+    <file src='data/salad.png'/>
+    <file src='data/cloud.png'/>
+
+    <file src='data/grill.wav'/>
+    <file src='data/cant.wav'/>
+    <file src='data/trash.wav'/>
+    <file src='data/bell.wav'/>
+    <file src='data/burn.wav'/>
+    <file src='data/click.wav'/>
+
+    <min_mta_version server='1.6.0-9.20752' client='1.6.0-9.20752'/>
+</meta>

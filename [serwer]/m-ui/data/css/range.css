@@ -1,0 +1,30 @@
+.range-input {
+    width: 100%;
+    height: 0.3rem;
+    background: #353535;
+    border-radius: 0.3125rem;
+    position: relative;
+    --progress: 0;
+}   
+
+.range-input .thumb {
+    width: 0.5rem;
+    height: 1rem;
+    background: #ffab48;
+    border-radius: 10rem;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    left: var(--progress);
+}
+
+.range-input .range-bar {
+    width: var(--progress);
+    height: 100%;
+    background: #ffab48;
+    border-radius: 0.3125rem 0 0 0.3125rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

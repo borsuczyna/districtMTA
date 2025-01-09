@@ -1,0 +1,8 @@
+<meta>
+    <script src='classes.lua' type='server'/>
+    <script src='server.lua' type='server'/>
+    <script src='data.lua' type='server'/>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/interface.html'/>
+</meta>

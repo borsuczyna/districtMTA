@@ -1,0 +1,97 @@
+<style>
+    #scooter {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(30, 30, 30, 0.9);
+        border: 0.0625rem solid rgba(45, 45, 44, 0.45);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        color: rgba(255, 255, 255, 0.7);
+        max-width: 35rem;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    #scooter h2 {
+        color: #fff;
+        margin-top: 0rem;
+        margin-bottom: 0.6rem;
+    }
+
+    #scooter span {
+        text-align: center;
+        margin-bottom: 0.4rem;
+    }
+
+    #scooter .row {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        align-self: flex-start;
+    }
+
+    #scooter h4 {
+        margin-top: 0rem;
+        margin-bottom: 0.1rem;
+        align-self: flex-start;
+    }
+</style>
+
+<h2>Wypożyczalnia hulajnóg</h2>
+<span>Hulajnogi są darmowe dla każdego!<br>
+Pamiętaj, aby zachować ostrożność na drodze.<br>
+Hulajnoga automatycznie zniknie po minucie nieaktywności.</span>
+
+<h4>Klawiszologia</h4>
+<div class="row">
+    <kbd class="keycap">H</kbd>
+    <div class="controller-button square"></div>
+    - Złóż/rozłóż hulajnogę
+</div>
+<div class="row">
+    <kbd class="keycap">F</kbd>
+    <div class="controller-button triangle"></div>
+    - Wsiądź/wysiądź z hulajnogi
+</div>
+<div class="row">
+    <kbd class="keycap">CTRL</kbd>
+    <div class="controller-button cross"></div>
+    - Skok
+</div>
+
+<div class="d-flex justify-center w-100 mt-2">
+    <div class="nice-button button-sm" id="rent-button" onclick="scooter_rentScooter(this)">Wypożycz</div>
+</div>
+
+<script>
+    window.scooter_rentScooter = async (button) => {
+        if (isButtonSpinner(button)) return;
+        
+        makeButtonSpinner(button);
+        let data = await mta.fetch('scooter', 'rent');
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        }
+        
+        makeButtonSpinner(button, false);
+        document.querySelector('#scooter #rent-button').innerText = data.renting ? 'Zwróć' : 'Wypożycz';
+    }
+
+    addEvent('scooter', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#scooter').style.opacity = appear ? '1' : '0';
+    });
+
+    addEvent('scooter', 'interface:data:renting', (renting) => {
+        document.querySelector('#scooter #rent-button').innerText = renting ? 'Zwróć' : 'Wypożycz';
+    });
+</script>

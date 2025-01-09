@@ -1,0 +1,9 @@
+<map edf:definitions="editor_main">
+    <object id="object (Streetlamp2) (1)" breakable="false" interior="0" alpha="255" dimension="0" model="1231" scale="1" doublesided="false" collisions="true" posX="1160.8" posY="-2040.9" posZ="70.7" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (Streetlamp2) (2)" breakable="false" interior="0" alpha="255" dimension="0" model="1231" scale="1" doublesided="false" collisions="true" posX="1180.2002" posY="-2046.7002" posZ="70.7" rotX="0" rotY="0" rotZ="90"></object>
+    <object id="object (Streetlamp2) (3)" breakable="false" interior="0" alpha="255" dimension="0" model="1231" scale="1" doublesided="false" collisions="true" posX="1169.5" posY="-2027.1" posZ="70.7" rotX="0" rotY="0" rotZ="90"></object>
+    <object id="object (Streetlamp2) (4)" breakable="false" interior="0" alpha="255" dimension="0" model="1231" scale="1" doublesided="false" collisions="true" posX="1191.7" posY="-2033.1" posZ="70.7" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (Streetlamp2) (6)" breakable="false" interior="0" alpha="255" dimension="0" model="1231" scale="1" doublesided="false" collisions="true" posX="1202.3" posY="-2040.9" posZ="70.7" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (Streetlamp2) (8)" breakable="false" interior="0" alpha="255" dimension="0" model="1231" scale="1" doublesided="false" collisions="true" posX="1144.2" posY="-2033.1" posZ="70.7" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (chillidogcart) (1)" breakable="false" interior="0" alpha="255" dimension="0" model="1340" scale="1" doublesided="false" collisions="true" posX="1148" posY="-2032.8" posZ="69.1" rotX="0" rotY="0" rotZ="-90"></object>
+</map>

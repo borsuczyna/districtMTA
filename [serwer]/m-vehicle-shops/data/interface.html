@@ -1,0 +1,236 @@
+<style>
+    #vehicle-shops {
+        position: absolute;
+        left: 50%;
+        bottom: 1rem;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.8);
+        transition: transform 0.2s, opacity 0.2s;
+    }
+
+    #vehicle-shops .top {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0.625rem;
+        color: #ffffffee;
+        padding: 0.625rem;
+        border-bottom: 0.0625rem solid rgba(54, 54, 54, 0.45);
+    }
+
+    #vehicle-shops .body {
+        padding: 0.625rem;
+        padding-top: 0;
+    }
+
+    #vehicle-shops .rows {
+        width: 20rem;
+        text-wrap: nowrap;
+    }
+
+    #vehicle-shops .rows .row {
+        background: rgba(54, 54, 54, 0.4);
+        color: #ffffffd0;
+        font-weight: 500;
+        padding: 0.225rem 0.325rem;
+        border-radius: 0.25rem;
+        gap: 3rem;
+        transition: background 0.2s;
+    }
+
+    #vehicle-shops .rows .row:nth-child(even) {
+        background: rgba(54, 54, 54, 0.25);
+    }
+
+    #vehicle-shops .rows .row:hover {
+        background: rgba(54, 54, 54, 0.7);
+    }
+
+    #vehicle-shops .rows .row .value {
+        font-weight: 400;
+        color: #ffffffa4;
+    }
+</style>
+
+<div class="top" id="vehicle-name">
+    Infernus
+</div>
+
+<div class="body">
+    <div class="d-flex gap-2">
+        <div class="d-flex flex-column gap-1 rows">
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Paliwo</span>
+                <span class="value" id="fuel"></span>
+            </div>
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Pojemność baku</span>
+                <span class="value" id="max-fuel"></span>
+            </div>
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Przebieg</span>
+                <span class="value" id="mileage"></span>
+            </div>
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Ilość sztuk</span>
+                <span class="value" id="count"></span>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-1 rows">
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Pojemność silnika</span>
+                <span class="value" id="engine-capacity"></span>
+            </div>
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Typ paliwa</span>
+                <span class="value" id="fuel-type"></span>
+            </div>
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Stan techniczny</span>
+                <span class="value" id="quality"></span>
+            </div>
+            <div class="d-flex justify-between align-items-center row">
+                <span class="name">Rotacja pojazdu</span>
+                <span class="value" style="font-size: 0.9rem;" id="rotation-time"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info d-flex flex-column mt-2 gap-1 align-items-center">
+        <span id="price">Cena: $100,000</span>
+        <br>
+        <div class="d-flex gap-1">
+            <div class="flat-button flat-button-small" onclick="vehicleShops_buyVehicle(this)">Zakup pojazd</div>
+            <div class="flat-button flat-button-small" onclick="mta.triggerEvent('vehicle-shop:close')">Zamknij</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let qualities = {
+        0: 'Słaby',
+        1: 'Średni',
+        2: 'Dobry',
+        3: 'Bardzo dobry',
+    }
+
+    let fuelTypes = {
+        petrol: 'Benzyna',
+        diesel: 'Diesel',
+    }
+
+    let shopData = false;
+
+    function timeDifference(current, previous) {
+        let msPerMinute = 60 * 1000;
+        let msPerHour = msPerMinute * 60;
+        let msPerDay = msPerHour * 24;
+        let msPerMonth = msPerDay * 30;
+        let msPerYear = msPerDay * 365;
+
+        let elapsed = current - previous;
+        if (elapsed > 0) {
+            if (elapsed < msPerMinute) {
+                return Math.round(elapsed / 1000) + ' sekund temu';
+            } else if (elapsed < msPerHour) {
+                return Math.round(elapsed / msPerMinute) + ' minut temu';
+            } else if (elapsed < msPerDay) {
+                return Math.round(elapsed / msPerHour) + ' godzin temu';
+            } else if (elapsed < msPerMonth) {
+                return Math.round(elapsed / msPerDay) + ' dni temu';
+            } else if (elapsed < msPerYear) {
+                return Math.round(elapsed / msPerMonth) + ' miesięcy temu';
+            } else {
+                return Math.round(elapsed / msPerYear) + ' lat temu';
+            }
+        } else {
+            elapsed = Math.abs(elapsed);
+            if (elapsed < msPerMinute) {
+                return 'za ' + Math.round(elapsed / 1000) + ' sekund';
+            } else if (elapsed < msPerHour) {
+                return 'za ' + Math.round(elapsed / msPerMinute) + ' minut';
+            } else if (elapsed < msPerDay) {
+                return 'za ' + Math.round(elapsed / msPerHour) + ' godzin';
+            } else if (elapsed < msPerMonth) {
+                return 'za ' + Math.round(elapsed / msPerDay) + ' dni';
+            } else if (elapsed < msPerYear) {
+                return 'za ' + Math.round(elapsed / msPerMonth) + ' miesięcy';
+            } else {
+                return 'za ' + Math.round(elapsed / msPerYear) + ' lat';
+            }
+        }
+    }
+
+    function addCents(amount) {
+        return '$' + (amount / 100).toFixed(2);
+    }
+
+    function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function setVehicleData(data) {
+        let element = document.getElementById('vehicle-shops');
+        let rotationDate = new Date(data.rotationTime * 1000);
+
+        element.querySelector('#vehicle-name').innerText = data.name;
+        element.querySelector('#fuel').innerText = `${data.fuel}L`;
+        element.querySelector('#engine-capacity').innerText = data.engineCapacity.toFixed(1) + 'dm³';
+        element.querySelector('#mileage').innerText = `${formatNumber(data.mileage)}km`;
+        element.querySelector('#fuel-type').innerText = fuelTypes[data.fuelType];
+        element.querySelector('#max-fuel').innerText = `${data.maxFuel}L`;
+        element.querySelector('#quality').innerText = qualities[data.quality];
+        element.querySelector('#count').innerText = data.count;
+        element.querySelector('#rotation-time').innerText = timeDifference(new Date(), rotationDate);
+        element.querySelector('#price').innerText = `Cena: ${addCents(data.price)}`;
+
+        shopData = data;
+    }
+
+    function showLoading() {
+        let element = document.getElementById('vehicle-shops');
+
+        element.querySelector('#fuel').innerHTML = spinnerSvg;
+        element.querySelector('#engine-capacity').innerHTML = spinnerSvg;
+        element.querySelector('#mileage').innerHTML = spinnerSvg;
+        element.querySelector('#fuel-type').innerHTML = spinnerSvg;
+        element.querySelector('#max-fuel').innerHTML = spinnerSvg;
+        element.querySelector('#quality').innerHTML = spinnerSvg;
+        element.querySelector('#price').innerHTML = `Cena: ${spinnerSvg}`;
+    }
+
+    window.vehicleShops_buyVehicle = async (button) => {
+        if (isButtonSpinner(button)) return;
+        
+        makeButtonSpinner(button);
+        let data = await mta.fetch('vehicle-shops', 'buyVehicle', [shopData.shopId, shopData.vehicleId]);
+        makeButtonSpinner(button, false);
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            return;
+        } else if (data.status != 'success') {
+            notis_addNotification('error', 'Błąd', data.message);
+            return;
+        }
+
+        notis_addNotification('success', 'Sukces', data.message);
+    }
+
+    addEvent('vehicle-shops', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#vehicle-shops').style.opacity = appear ? '1' : '0';
+        document.querySelector('#vehicle-shops').style.transform = appear ? 'translate(-50%, 0%) scale(0.9)' : 'translate(-50%, 0%) scale(0.8)';
+    });
+
+    addEvent('vehicle-shops', 'interface:data:shopData', (data) => {
+        setVehicleData(data[0]);
+    });
+
+    showLoading();
+</script>

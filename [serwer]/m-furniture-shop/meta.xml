@@ -1,0 +1,6 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <export function='getShops' type='shared'/>
+</meta>

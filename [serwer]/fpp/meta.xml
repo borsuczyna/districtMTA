@@ -1,0 +1,5 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+<file src='tex.fx'/>
+<file src='xd.png'/>
+</meta>

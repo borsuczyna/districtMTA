@@ -1,0 +1,366 @@
+<style>
+    #intro-wrapper.hidden {
+        display: none;
+    }
+
+    #intro-wrapper #intro-background {
+        opacity: 0;
+        transition: opacity 0.3s;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 5000;
+        fill: rgba(0, 0, 0, 0.4);
+    }
+
+    #intro-wrapper.active #intro-background {
+        opacity: 1;
+    }
+
+    #intro-wrapper.rect-transition #intro-background rect {
+        transition: all 0.3s;
+    }
+
+    #intro-wrapper #intro-content {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        z-index: 5001;
+        color: #fff;
+        text-align: center;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid #232323;
+        padding: 1rem;
+        border-radius: 0.625rem;
+        opacity: 0;
+        z-index: 5001;
+        transition: opacity 0.3s;
+    }
+
+    #intro-wrapper.rect-transition #intro-content {
+        transition: opacity 0.3s, transform 0.3s, left 0.3s, top 0.3s;
+    }
+
+    #intro-wrapper.active #intro-content {
+        opacity: 1;
+    }
+
+    #intro-wrapper #intro-content #intro-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.1rem;
+        margin-top: 0;
+    }
+
+    #intro-wrapper #intro-content #intro-text {
+        font-size: 1rem;
+        margin-top: 0;
+        margin-bottom: 0;
+        max-width: 50vw;
+        text-wrap: wrap;
+        color: #ccc;
+    }
+
+    #intro-wrapper #intro-content .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: #666;
+        transition: background 0.3s;
+        cursor: pointer;
+    }
+
+    #intro-wrapper #intro-content .dot.active {
+        background: #fff;
+        cursor: default;
+    }
+
+    #intro-wrapper #intro-content .flat-button {
+        padding-inline: 0.6rem;
+        padding-block: 0.4rem;
+    }
+
+    #intro-wrapper #intro-content .prev-invisible {
+        width: 2.5rem;
+        display: none;
+    }
+</style>
+
+<div id="intro-wrapper" class="hidden">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" id="intro-background">
+        <mask id="mask">
+            <rect x="0" y="0" width="0" height="0" fill="white" rx="5" ry="10"/>
+            <rect x="0" y="0" width="0" height="0" fill="black" rx="5" ry="10"/>
+        </mask>
+        <rect x="0" y="0" width="0" height="0" fill="#666" rx="10" ry="10" mask="url(#mask)"/>
+        <path d="M0 0H100V100H0V0Z" mask="url(#mask)"/>
+    </svg>
+
+    <div id="intro-content">
+        <h1 id="intro-title">Intro title</h1>
+        <p id="intro-text">Intro text</p>
+
+        <div class="mt-2 d-flex align-items-center justify-between gap-4">
+            <div class="flat-button flat-button-small prev" onclick="intro_prevStep()">Wstecz</div>
+            <div class="prev-invisible"></div>
+            <div class="d-flex gap-1" style="flex-wrap: wrap;" id="dots"></div>
+            <div class="flat-button flat-button-small next" onclick="intro_nextStep()">Dalej</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentIntro = false;
+    let knownIntros = [];
+
+    function setRectDimensions(rect, x, y, w, h) {
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', w);
+        rect.setAttribute('height', h);
+    }
+
+    window.intro_isIntroKnown = (id) => {
+        return knownIntros.includes(id);
+    }
+
+    async function intro_showStep(step, isFirstStep) {
+        if (!step) return;
+
+        const element = typeof step.element === 'function' ? step.element() : step.element;
+        if (!element) return;
+
+        await step.onShow?.();
+        if (step.waitForAnimationFinish) {
+            await waitForAnimationFinish(element);
+        }
+
+        const rect = element.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) {
+            await hideIntro();
+            return;
+        }
+
+        const intro = document.querySelector('#intro-wrapper');
+        intro.classList.add('active');
+        await new Promise(resolve => setTimeout(resolve, 0));
+        currentIntro.element = element;
+        
+        // if any parent is scrollable, we need to cut off the scrollable part
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent.scrollHeight > parent.clientHeight) {
+                const parentRect = parent.getBoundingClientRect();
+                rect.y = Math.max(rect.y, parentRect.y);
+                rect.height = Math.min(rect.height, parentRect.y + parentRect.height - rect.y);
+            }
+            parent = parent.parentElement;
+        }
+
+        const introContent = document.querySelector('#intro-wrapper #intro-content');
+        introContent.querySelector('#intro-title').innerText = step.title;
+        introContent.querySelector('#intro-text').innerText = step.content;
+        
+        updateBackgroundMask();
+
+        if (isFirstStep) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            intro_toggleRectTransition(true);
+        }
+    }
+
+    function updateBackgroundMask() {
+        const intro = document.querySelector('#intro-wrapper');
+        const introBackground = intro.querySelector('#intro-background');
+        const introContent = intro.querySelector('#intro-content');
+        const element = currentIntro.element;
+
+        let rect = element.getBoundingClientRect();
+        let introContentRect = introContent.getBoundingClientRect();
+        let bestPosition = rect.y > window.innerHeight / 2 ? 'top' : 'bottom';
+        if (bestPosition === 'top' && rect.y < introContentRect.height + 30) {
+            bestPosition = 'bottom';
+        } else if (bestPosition === 'bottom' && rect.y + rect.height + introContentRect.height + 30 > window.innerHeight) {
+            bestPosition = 'top';
+        }
+
+        if (rect.x > window.innerWidth * 0.6) {
+            bestPosition = 'left';
+        } else if (rect.x + rect.width < window.innerWidth * 0.4) {
+            bestPosition = 'right';
+        }
+
+        let path = introBackground.querySelector('path');
+        path.setAttribute('d', `M0 0H${window.innerWidth}V${window.innerHeight}H0V0Z`);
+        introBackground.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
+
+        let mask = introBackground.querySelectorAll('rect');
+        setRectDimensions(mask[0], 0, 0, window.innerWidth, window.innerHeight);
+        setRectDimensions(mask[1], rect.x - 4, rect.y - 4, rect.width + 8, rect.height + 8);
+        setRectDimensions(mask[2], rect.x - 6, rect.y - 6, rect.width + 12, rect.height + 12);
+
+        switch (bestPosition) {
+            case 'top':
+                introContent.style.transform = `translate(-50%, -100%)`;
+                introContent.style.left = `${rect.x + rect.width / 2}px`;
+                introContent.style.top = `${rect.y - 30}px`;
+                break;
+            case 'bottom':
+                introContent.style.transform = `translate(-50%, 0)`;
+                introContent.style.left = `${rect.x + rect.width / 2}px`;
+                introContent.style.top = `${rect.y + rect.height + 30}px`;
+                break;
+            case 'left':
+                introContent.style.transform = `translate(-100%, -50%)`;
+                introContent.style.left = `${rect.x - 30}px`;
+                introContent.style.top = `${rect.y + rect.height / 2}px`;
+                break;
+            case 'right':
+                introContent.style.transform = `translate(0, -50%)`;
+                introContent.style.left = `${rect.x + rect.width + 30}px`;
+                introContent.style.top = `${rect.y + rect.height / 2}px`;
+                break;
+        }
+
+        currentIntro.rect = rect;
+    }
+
+    function checkIfElementRectChanged() {
+        if (!currentIntro) return;
+
+        const element = currentIntro.element;
+        if (!element) return;
+        
+        const rect = element.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) {
+            hideIntro();
+            return;
+        }
+
+        if (rect.x !== currentIntro.rect.x || rect.y !== currentIntro.rect.y || rect.width !== currentIntro.rect.width || rect.height !== currentIntro.rect.height) {
+            updateBackgroundMask();
+        }
+    }
+
+    function setupDots(count, activeIndex) {
+        const dots = document.querySelector('#intro-wrapper #intro-content #dots');
+        dots.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === activeIndex) {
+                dot.classList.add('active');
+            }
+            dot.setAttribute('onclick', `intro_gotoStep(${i})`);
+            dots.appendChild(dot);
+        }
+    }
+
+    function setActiveDot(index) {
+        const dots = document.querySelector('#intro-wrapper #intro-content #dots');
+        dots.querySelectorAll('.dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    function updateButtonsVisibility(index, count) {
+        const intro = document.querySelector('#intro-wrapper');
+        intro.querySelector('.prev-invisible').style.display = index === 0 ? 'block' : 'none';
+        intro.querySelector('.flat-button.prev').style.display = index === 0 ? 'none' : 'block';
+        intro.querySelector('.flat-button.next').innerText = index === count - 1 ? 'Zakończ' : 'Dalej';
+    }
+
+    function intro_toggleRectTransition(enabled) {
+        const intro = document.querySelector('#intro-wrapper');
+        intro.classList.toggle('rect-transition', enabled);
+    }
+
+    async function hideIntro() {
+        const intro = document.querySelector('#intro-wrapper');
+        intro.classList.remove('active');
+        intro_toggleRectTransition(false);
+        currentIntro = false;
+        await new Promise(resolve => setTimeout(resolve, 300));
+        intro.classList.add('hidden');
+    }
+
+    window.intro_gotoStep = (index) => {
+        if (!currentIntro) return;
+        if (index < 0 || index >= currentIntro.steps.length) return;
+
+        currentIntro.currentStep = index;
+        setActiveDot(index);
+        updateButtonsVisibility(index, currentIntro.steps.length);
+        intro_showStep(currentIntro.steps[index], index === 0);
+    }
+
+    window.intro_nextStep = () => {
+        if (!currentIntro) return;
+        if (currentIntro.currentStep >= currentIntro.steps.length) {
+            if (!intro_isIntroKnown(currentIntro.id)) {
+                knownIntros.push(currentIntro.id);
+                mta.fetch('intro', 'setIntroAsKnown', currentIntro.id);
+            }
+
+            hideIntro();
+            return;
+        }
+
+        const step = currentIntro.steps[currentIntro.currentStep];
+        currentIntro.currentStep++;
+
+        setActiveDot(currentIntro.currentStep - 1);
+        updateButtonsVisibility(currentIntro.currentStep - 1, currentIntro.steps.length);
+        intro_showStep(step, currentIntro.currentStep === 1);
+    }
+
+    window.intro_prevStep = () => {
+        if (!currentIntro) return;
+        if (currentIntro.currentStep <= 1) return;
+
+        currentIntro.currentStep -= 2;
+        intro_nextStep();
+    }
+
+    window.intro_startIntro = async (id, steps) => {
+        if (currentIntro) {
+            await hideIntro();
+        }
+
+        currentIntro = {
+            id: id,
+            steps: steps.filter(step => step.condition === undefined || step.condition()),
+            currentStep: 0,
+        };
+
+        const intro = document.querySelector('#intro-wrapper');
+        intro.classList.remove('hidden');
+        await new Promise(resolve => setTimeout(resolve, 0));
+
+        setupDots(currentIntro.steps.length, 0);
+        intro_toggleRectTransition(false);
+        intro_nextStep();
+    }
+
+    window.intro_hideIntro = async (id) => {
+        if (!currentIntro || currentIntro.id !== id) return;
+        await hideIntro();
+    }
+
+    window.intro_isVisible = () => {
+        return currentIntro !== false;
+    }
+
+    addEvent('intro', 'hide', (id) => {
+        intro_hideIntro(id);
+    });
+
+    addEvent('intro', 'interface:data:knownIntros', (data) => {
+        knownIntros = data[0];
+    });
+
+    addEvent('intro', 'update', () => {
+        checkIfElementRectChanged();
+    });
+</script>

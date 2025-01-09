@@ -1,0 +1,10 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/door.mp3'/>
+    <file src='data/ride.mp3'/>
+
+    <min_mta_version server='1.5.8' client='1.5.8' />
+</meta>

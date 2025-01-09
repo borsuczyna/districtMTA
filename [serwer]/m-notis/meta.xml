@@ -1,0 +1,15 @@
+<meta>
+    <include resource='m-ui'/>
+    
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/interface.html'/>
+    <file src='data/success.mp3'/>
+    <file src='data/error.mp3'/>
+    <file src='data/warning.mp3'/>
+    <file src='data/info.mp3'/>
+
+    <export function='addNotification' type='shared'/>
+    <min_mta_version server='1.5.8' client='1.5.8'/>
+</meta>

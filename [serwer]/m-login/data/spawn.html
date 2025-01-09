@@ -1,0 +1,335 @@
+<style>
+    #login-spawn #spawn-list {
+        position: absolute;
+        left: 0;
+        margin: 1rem;
+        width: 25rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0rem;
+        color: white;
+        background: #1E1E1E;
+        box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.6);
+        border-radius: 0.5rem;
+        z-index: 1;
+        animation: goFromLeft 0.5s;
+        /* mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0)); */
+    }
+
+    #login-spawn.hide #spawn-list {
+        animation: goToLeft 1s forwards;
+    }
+
+    #login-spawn #spawn-list hr {
+        margin: 0.5rem 0;
+        border: 0;
+        border-top: 0.0625rem solid #dbdbdb33;
+    }
+
+    #login-spawn #spawn-list #spawn-categories {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #login-spawn #spawn-list .item {
+        display: flex;
+        align-items: center;
+        gap: 0.1rem;
+        cursor: pointer;
+        transition: color 0.2s;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    #login-spawn #spawn-list .item:hover {
+        color: #dbdbdb;
+    }
+
+    #login-spawn #spawn-list .item.active {
+        color: #ff9500;
+    }
+
+    #login-spawn #spawn-list .item .arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #login-spawn #spawn-list .item .arrow {
+        transition: rotate 0.2s;
+    }
+
+    #login-spawn #spawn-list .item.active .arrow {
+        rotate: 90deg;
+    }
+
+    #login-spawn #spawn-list .category-items {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.2s;
+    }
+
+    #login-spawn #spawn-list .category-items .spawn {
+        padding: 0.5rem 0.7rem;
+        background: #252525;
+        cursor: pointer;
+        transition: background 0.2s;
+        color: #dbdbdbd6;
+        border-bottom: 0.0625rem solid #dbdbdb12;
+        font-size: 0.95rem;
+    }
+
+    #login-spawn #spawn-list .category-items .spawn.active {
+        background: #343434 !important;
+        color: #ff9500 !important;
+    }
+
+    #login-spawn #spawn-list .category-items .spawn:hover {
+        background: #2e2e2e;
+        color: #dbdbdb;
+    }
+
+    #login-spawn #spawn-list .category-items .spawn:last-child {
+        border-bottom: 0;
+    }
+
+    #login-spawn #spawn-list h2, #login-spawn #spawn-list h3, #login-spawn #spawn-list h4 {
+        margin-block: 0;
+        text-shadow: 0.125rem 0.125rem 0.1rem rgba(0, 0, 0, 0.361);
+    }
+
+    #login-spawn #spawn-list h4 {
+        color: #dbdbdbca;
+        font-weight: 400;
+    }
+
+    #login-spawn #map-container {
+        position: absolute;
+        right: 0;
+        height: 100%;
+        width: 80%;
+        animation: fadeIn 0.5s;
+
+        mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0));
+    }
+
+    #login-spawn.hide #map-container {
+        animation: fadeOut 1s forwards;
+    }
+
+    #login-spawn #map-container .marker.active {
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: translate(-50%, -100%) scale(1);
+        }
+        
+        50% {
+            transform: translate(-50%, -150%) scale(1.5);
+        }
+        
+        100% {
+            transform: translate(-50%, -100%) scale(1);
+        }
+    }
+
+    @keyframes goFromLeft {
+        0% {
+            transform: translateX(-100%) scale(0.5);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes goToLeft {
+        0% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(-100%) scale(0.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<div id="spawn-list">
+    <h2>Lokalizacje</h2>
+    <h4>Wybierz miejsce spawnu</h4>
+    <hr>
+    <div id="spawn-categories" class="mt-2"></div>
+    <hr>
+    <div class="nice-button mt-3 grayed" id="spawn-select" onclick="login_spawn_onSpawnSelect(this)">
+        Wybierz
+    </div>
+</div>
+<div id="map-container-parent"><div id="map-container"></div></div>
+
+<script>
+    window.login_spawn_spawns = [];
+
+    let arrowRight = `
+        <svg width="1.5rem" height="1.5rem" viewBox="0 0 18 18" fill="none">
+            <path d="M6.21967 5.28033C5.92678 4.98744 5.92678 4.51256 6.21967 4.21967C6.51256 3.92678 6.98744 3.92678 7.28033 4.21967L11.7803 8.71967C12.0643 9.0036 12.0742 9.46079 11.8029 9.75679L7.67786 14.2568C7.39797 14.5621 6.92354 14.5828 6.61821 14.3029C6.31287 14.023 6.29224 13.5485 6.57213 13.2432L10.2119 9.27256L6.21967 5.28033Z" fill="currentColor"/>
+        </svg>
+    `;
+
+    window.login_spawn_onCategoryClick = (category) => {
+        let allCategories = document.querySelectorAll('#login-spawn #spawn-categories .item');
+        allCategories.forEach((c) => {
+            if (c !== category) {
+                c.classList.remove('active');
+                c.nextElementSibling.style.maxHeight = '0px';
+            }
+        });
+
+        category.classList.toggle('active');
+
+        let categoryItems = category.nextElementSibling;
+        let isActive = categoryItems.style.maxHeight === '0px' || !categoryItems.style.maxHeight;
+        if (isActive) {
+            categoryItems.style.maxHeight = `${categoryItems.scrollHeight}px`;
+        } else {
+            categoryItems.style.maxHeight = '0px';
+        }
+
+        // add class active
+        categoryItems.classList.toggle('active', isActive);
+    }
+
+    // jsut print spawn
+    window.login_spawn_onSpawnClick = (button, category, index) => {
+        let spawns = window.login_spawn_spawns;
+        let spawn = spawns.find((s) => s.name === category).spawns[index];
+        let allBlips = document.querySelectorAll('#login-spawn #map-container .marker');
+        let specialKey = `${category}-${spawn[0]}`;
+        let blip = [...allBlips].find((b) => b.dataset.specialKey === specialKey);
+        let allButtons = document.querySelectorAll('#login-spawn #spawn-categories .spawn');
+
+        allButtons.forEach((b) => {
+            b.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        mapGoToPosition(document.querySelector('#login-spawn #map-container'), spawn[1], spawn[2], 500);
+
+        allBlips.forEach((b) => {
+            b.classList.remove('active');
+        });
+
+        blip.classList.add('active');
+
+        document.querySelector('#login-spawn #spawn-select').classList.remove('grayed');
+    }
+    
+    window.login_spawn_onSpawnSelect = (button) => {
+        if (button.disabled) return;
+        
+        let allButtons = document.querySelectorAll('#login-spawn #spawn-categories .spawn');
+        let selectedButton = [...allButtons].find((b) => b.classList.contains('active'));
+        if (!selectedButton) {
+            return;
+        }
+        
+        button.disabled = true;
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>`;
+        let category = selectedButton.parentElement.dataset.category;
+        let index = [...selectedButton.parentElement.children].indexOf(selectedButton);
+        let spawn = window.login_spawn_spawns.find((s) => s.name === category).spawns[index];
+
+        mta.triggerEvent('login-spawn:spawn', category, index);
+        document.querySelector('#login-spawn').classList.add('hide');
+    }
+
+    let defaultBlip = {
+        element: document.querySelector('#login-spawn #map-container'),
+        icon: '/m-maps/data/marker.png',
+        size: 30,
+        position: 'top',
+        class: 'marker'
+    };
+
+    createMap({
+        element: document.querySelector('#login-spawn #map-container'),
+        minZoom: 1,
+        zoom: 1.5,
+        maxZoom: 4,
+        x: 0,
+        y: 0,
+        limitBounds: true,
+        texture: 'map-dark.png?v1.01'
+    });
+
+    addEvent('login-spawn', 'interface:data:spawns', (spawnsData) => {
+        window.login_spawn_spawns = spawnsData[0];
+        let spawns = spawnsData[0];
+
+        destroyAllMapBlips(document.querySelector('#login-spawn #map-container'));
+        document.querySelector('#login-spawn #spawn-categories').innerHTML = '';
+
+        for (let data of spawns) {
+            let category = document.createElement('h3');
+            category.classList.add('item');
+            category.onclick = login_spawn_onCategoryClick.bind(null, category);
+            category.innerHTML = `<span class="arrow">${arrowRight}</span> ${data.name}`;
+            document.querySelector('#login-spawn #spawn-categories').appendChild(category);
+
+            let categoryItems = document.createElement('div');
+            categoryItems.classList.add('category-items');
+            categoryItems.dataset.category = data.name;
+            categoryItems.innerHTML = data.spawns.map((blip, i) => {
+                return `<div class="spawn" onclick="login_spawn_onSpawnClick(this, '${data.name}', ${i})">${blip[0]}</div>`;
+            }).join('');
+            document.querySelector('#login-spawn #spawn-categories').appendChild(categoryItems);
+
+            for (let blip of data.spawns) {
+                createMapBlip({
+                    ...defaultBlip,
+                    x: blip[1],
+                    y: blip[2],
+                    specialKey: `${data.name}-${blip[0]}`,
+                    onclick: (blip) => {
+                        let category = document.querySelectorAll('#login-spawn #spawn-categories .item')[c];
+                        let button = category.nextElementSibling.querySelectorAll('.spawn')[i];
+                        login_spawn_onSpawnClick(button, data.name, i);
+
+                        if (!category.classList.contains('active')) {
+                            login_spawn_onCategoryClick(category);
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>

@@ -1,0 +1,549 @@
+<style>
+    .__maps-map {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .__maps-map-image {
+        position: absolute;
+    }
+
+    .__maps-map-blip {
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    .__maps-map-blip-top {
+        transform: translate(-50%, -100%);
+    }
+
+    .__maps-map-blip-bottom {
+        transform: translate(-50%, 0);
+    }
+
+    .__maps-map-blip-left {
+        transform: translate(-100%, -50%);
+    }
+
+    .__maps-map-blip-right {
+        transform: translate(0, -50%);
+    }
+
+    .__maps-map-area {
+        position: absolute;
+    }
+</style>
+
+<script>
+    let maps = [];
+    let requestedMapUpdates = {};
+
+    function requestMapUpdate(map) {
+        if (requestedMapUpdates[map.element]) return;
+
+        requestedMapUpdates[map.element] = true;
+        requestAnimationFrame(updateMap.bind(null, map));
+    }
+
+    function updateMap(map) {
+        requestedMapUpdates[map.element] = false;
+
+        if (!document.body.contains(map.element)) {
+            maps.splice(maps.indexOf(map), 1);
+            return;
+        }
+        
+        updateMapLimitBounds(map);
+        let dom = map.element.getBoundingClientRect();
+        let maxSize = Math.max(dom.width, dom.height);
+        if (maxSize < 1) {
+            // requestAnimationFrame(updateMap.bind(null, map));
+            requestMapUpdate(map);
+            return;
+        }
+        
+        let mapSize = maxSize * map.zoom;
+        map.mapImage.style.width = `${mapSize}px`;
+        map.mapImage.style.height = `${mapSize}px`;
+
+        let mapX = map.x / 6000 * mapSize;
+        let mapY = map.y / 6000 * mapSize;
+        let mapLeft = dom.width / 2 - mapSize / 2 - mapX;
+        let mapTop = dom.height / 2 - mapSize / 2 + mapY;
+        let mapRight = mapLeft + mapSize;
+        let mapCenterX = mapLeft + mapSize / 2;
+        let mapCenterY = mapTop + mapSize / 2;
+
+        map.mapImage.style.left = `${mapLeft}px`;
+        map.mapImage.style.top = `${mapTop}px`;
+
+        // update blips
+        map.blips.forEach(blip => {
+            let blipX = mapCenterX + blip.x / 6000 * mapSize;
+            let blipY = mapCenterY - blip.y / 6000 * mapSize;
+
+            blip.element.style.left = `${blipX}px`;
+            blip.element.style.top = `${blipY}px`;
+            blip.element.style.width = `${blip.size * map.zoom}px`;
+            blip.element.style.height = `${blip.size * map.zoom}px`;
+            blip.element.style.transform = `translate(-50%, -50%) rotate(${-blip.rotation}deg)`;
+        });
+
+        // update areas
+        map.areas.forEach(area => {
+            let areaX = mapCenterX + area.x / 6000 * mapSize;
+            let areaY = mapCenterY - area.y / 6000 * mapSize;
+            let areaWidth = area.width / 6000 * mapSize;
+            let areaHeight = area.height / 6000 * mapSize;
+
+            area.element.style.left = `${areaX}px`;
+            area.element.style.top = `${areaY}px`;
+            area.element.style.width = `${areaWidth}px`;
+            area.element.style.height = `${areaHeight}px`;
+        });
+
+        // update smooth movement
+        if (map.targetX !== undefined && map.targetY !== undefined) {
+            let time = Date.now() - map.startMoveTime;
+            let percent = Math.min(time / map.moveTime, 1);
+            percent = 1 - (1 - percent) * (1 - percent);
+
+            if (percent >= 1) {
+                map.x = map.targetX;
+                map.y = map.targetY;
+                map.targetX = undefined;
+                map.targetY = undefined;
+            } else {
+                map.x = map.startMovePosition.x + (map.targetX - map.startMovePosition.x) * percent;
+                map.y = map.startMovePosition.y + (map.targetY - map.startMovePosition.y) * percent;
+                // requestAnimationFrame(updateMap.bind(null, map));
+                requestMapUpdate(map);
+            }
+        }
+    }
+
+    function updateMapLimitBounds(map) {
+        let dom = map.element.getBoundingClientRect();
+        let mapSize = Math.max(dom.width, dom.height) * map.zoom;
+        let mapX = map.x / 6000 * mapSize;
+        let mapY = map.y / 6000 * mapSize;
+        let mapLeft = dom.width / 2 - mapSize / 2 - mapX;
+        let mapTop = dom.height / 2 - mapSize / 2 + mapY;
+        let mapRight = mapLeft + mapSize;
+        let mapBottom = mapTop + mapSize;
+        let bounds = {
+            x: map.bounds.x * mapSize / 6000,
+            y: map.bounds.y * mapSize / 6000,
+        }
+
+        if (mapRight + bounds.x < dom.width)
+            map.x += (mapRight + bounds.x - dom.width) * 6000 / mapSize;
+
+        if (mapLeft - bounds.x > 0)
+            map.x += (mapLeft - bounds.x) * 6000 / mapSize;
+
+        if (mapBottom + bounds.y < dom.height)
+            map.y -= (mapBottom + bounds.y - dom.height) * 6000 / mapSize;
+
+        if (mapTop - bounds.y > 0)
+            map.y -= (mapTop - bounds.y) * 6000 / mapSize;
+    }
+
+    function mousemoveMap(event) {
+        let map = maps.find(map => map.holding);
+        if (!map) return;
+
+        let dom = map.mapImage.getBoundingClientRect();
+        let deltaX = event.clientX - map.lastX;
+        let deltaY = event.clientY - map.lastY;
+        deltaX *= 6000 / dom.width;
+        deltaY *= 6000 / dom.height;
+
+        map.x -= deltaX;
+        map.y += deltaY;
+
+        map.lastX = event.clientX;
+        map.lastY = event.clientY;
+
+        if (map.limitBounds) {
+            updateMapLimitBounds(map);
+        }
+
+        updateMap(map);
+    }
+
+    window.createMap = async (data) => {
+        let element = data.element;
+
+        if (data.background) element.style.background = data.background;
+        element.classList.add('__maps-map');
+
+        element.innerHTML = '';
+        let mapImage = document.createElement('img');
+        mapImage.src = `/m-maps/data/${data.texture ?? 'map.png'}`;
+        mapImage.classList.add('__maps-map-image');
+        element.appendChild(mapImage);
+
+        let map = {
+            element: element,
+            mapImage: mapImage,
+            minZoom: data.minZoom ?? 1,
+            maxZoom: data.maxZoom ?? 4,
+            zoom: data.zoom ?? data.minZoom ?? 1,
+            x: data.x ?? 0,
+            y: data.y ?? 0,
+            limitBounds: data.limitBounds ?? false,
+            bounds: data.bounds ?? { x: 0, y: 0 },
+            holding: false,
+            blips: [],
+            areas: [],
+        };
+
+        maps.push(map);
+
+        requestMapUpdate(map);
+
+        data.blips?.forEach(blipData => {
+            createMapBlip({
+                element: element,
+                ...blipData,
+            });
+        });
+
+        data.areas?.forEach(areaData => {
+            createMapArea({
+                element: element,
+                ...areaData,
+            });
+        });
+    }
+
+    window.getBlipById = (element, id) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        return map.blips.find(blip => blip.id === id);
+    }
+
+    window.updateBlipById = (element, id, data) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return false;
+
+        let blip = map.blips.find(blip => blip.id === id);
+        if (!blip) return false;
+
+        if (data.x !== undefined) blip.x = data.x;
+        if (data.y !== undefined) blip.y = data.y;
+        if (data.rotation !== undefined) blip.rotation = data.rotation;
+        if (data.size !== undefined) blip.size = data.size;
+        if (data.priority !== undefined) blip.priority = data.priority;
+        if (data.hoverTooltip !== undefined) blip.element.dataset.tooltip = data.hoverTooltip;
+        if (data.icon !== undefined) blip.element.src = data.icon;
+
+        requestMapUpdate(map);
+        return true;
+    }
+
+    window.createMapBlip = (data) => {
+        let element = data.element;
+
+        let blip = document.createElement('img');
+        blip.src = data.icon;
+        blip.style.width = `${data.size}px`;
+        blip.style.height = `${data.size}px`;
+        blip.classList.add('__maps-map-blip');
+        if (data.priority) blip.style.zIndex = data.priority;
+        if (data.hoverTooltip) blip.dataset.tooltip = data.hoverTooltip;
+        if (data.class) blip.className += ` ${data.class}`;
+        if (data.position) blip.classList.add(`__maps-map-blip-${data.position}`);
+        if (data.specialKey) blip.dataset.specialKey = data.specialKey;
+        if (data.id) blip.dataset.id = data.id;
+        element.appendChild(blip);
+
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let blipData = {
+            element: blip,
+            x: data.x,
+            y: data.y,
+            rotation: data.rotation ?? 0,
+            size: data.size,
+            priority: data.priority ?? 0,
+            id: data.id,
+        };
+
+        map.blips.push(blipData);
+
+        // requestAnimationFrame(updateMap.bind(null, map));
+        requestMapUpdate(map);
+    }
+
+    window.destroyAllMapBlips = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.blips.forEach(blip => {
+            blip.element.remove();
+        });
+
+        map.blips = [];
+    }
+
+    window.destroyBlipById = (element, id) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let blip = map.blips.find(blip => blip.id === id);
+        if (!blip) return;
+
+        blip.element.remove();
+        map.blips.splice(map.blips.indexOf(blip), 1);
+    }
+
+    window.createMapArea = (data) => {
+        let element = data.element;
+
+        let color = data.color ? data.color.r ? [data.color.r, data.color.g, data.color.b, data.color.a ?? 0.4] : [data.color[0], data.color[1], data.color[2], data.color[3] ?? 0.4] : [255, 255, 255, 0.4];
+        let border = data.border ? data.border.r ? [data.border.r, data.border.g, data.border.b, data.border.a ?? 1] : [data.border[0], data.border[1], data.border[2], data.border[3] ?? 1] : [0, 0, 0, 1];
+
+        let area = document.createElement('div');
+        area.style.position = 'absolute';
+        area.classList.add('__maps-map-area');
+        area.style.backgroundColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
+        if (data.border) area.style.border = `${data.borderWidth ? (typeof data.border === 'number' ? `${data.border}px` : data.border) : '1px'} solid rgba(${border[0]}, ${border[1]}, ${border[2]}, ${border[3]})`;
+        if (data.roundness) area.style.borderRadius = typeof data.roundness === 'number' ? `${data.roundness}px` : data.roundness;
+        if (data.class) area.className = data.class;
+        if (data.hoverTooltip) area.dataset.tooltip = data.hoverTooltip;
+        if (data.specialKey) area.dataset.specialKey = data.specialKey;
+        if (data.id) area.dataset.id = data.id;
+        element.appendChild(area);
+
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let areaData = {
+            element: area,
+            x: data.x,
+            y: data.y,
+            width: data.width,
+            height: data.height,
+        };
+
+        if (data.onclick) {
+            area.addEventListener('click', data.onclick.bind(null, areaData));
+            map.holding = false;
+        }
+
+        map.areas.push(areaData);
+
+        // requestAnimationFrame(updateMap.bind(null, map));
+        requestMapUpdate(map);
+    }
+
+    window.destroyAllMapAreas = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.areas.forEach(area => {
+            area.element.remove();
+        });
+
+        map.areas = [];
+    }
+
+    window.destroyAreaById = (element, id) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        let area = map.areas.find(area => area.id === id);
+        if (!area) return;
+
+        area.element.remove();
+        map.areas.splice(map.areas.indexOf(area), 1);
+    }
+
+    window.updateAreaById = (element, id, data) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return false;
+
+        let area = map.areas.find(area => area.id === id);
+        if (!area) return false;
+
+        if (data.x !== undefined) area.x = data.x;
+        if (data.y !== undefined) area.y = data.y;
+        if (data.width !== undefined) area.width = data.width;
+        if (data.height !== undefined) area.height = data.height;
+        if (data.hoverTooltip !== undefined) area.element.dataset.tooltip = data.hoverTooltip;
+        if (data.class !== undefined) area.element.className = data.class;
+
+        requestMapUpdate(map);
+        return true;
+    }
+
+    window.destroyMap = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.blips.forEach(blip => {
+            blip.element.remove();
+        });
+
+        map.element.remove();
+        maps.splice(maps.indexOf(map), 1);
+    }
+
+    window.mapGoToPosition = (element, x, y, moveTime = false) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        if (!moveTime) {
+            map.x = x;
+            map.y = y;
+        } else {
+            map.targetX = x;
+            map.targetY = y;
+            map.moveTime = moveTime;
+            map.startMoveTime = Date.now();
+            map.startMovePosition = { x: map.x, y: map.y };
+        }
+        
+        updateMap(map);
+    }
+
+    window.getMapPosition = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        return { x: map.x, y: map.y };
+    }
+
+    window.setMapPosition = (element, x, y) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.x = x;
+        map.y = y;
+        updateMap(map);
+    }
+
+    window.getMapZoom = (element) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        return map.zoom;
+    }
+
+    window.setMapZoom = (element, zoom) => {
+        let map = maps.find(map => map.element === element);
+        if (!map) return;
+
+        map.zoom = zoom;
+        updateMap(map);
+    }
+
+    addEvent('maps', 'mousedown', (event) => {
+        let map = maps.find(map => map.element === event.target.parentElement || map.element === event.target);
+        if (!map) return;
+
+        map.holding = true;
+        map.lastX = event.clientX;
+        map.lastY = event.clientY;
+
+        event.preventDefault();
+    });
+
+    addEvent('maps', 'mousemove', (event) => {
+        let map = maps.find(map => map.holding);
+        if (!map) return;
+
+        let dom = map.mapImage.getBoundingClientRect();
+        let deltaX = event.clientX - map.lastX;
+        let deltaY = event.clientY - map.lastY;
+        deltaX *= 6000 / dom.width;
+        deltaY *= 6000 / dom.height;
+
+        map.x -= deltaX;
+        map.y += deltaY;
+
+        map.lastX = event.clientX;
+        map.lastY = event.clientY;
+
+        if (map.limitBounds) {
+            updateMapLimitBounds(map);
+        }
+
+        updateMap(map);
+
+        event.preventDefault();
+    });
+
+    addEvent('maps', 'mouseup', (event) => {
+        let map = maps.find(map => map.holding);
+        if (!map) return;
+
+        map.holding = false;
+    });
+
+    addEvent('maps', 'wheel', (event) => {
+        let map = maps.find(map => map.element === event.target.parentElement || map.element === event.target);
+        if (!map) return;
+
+        let delta = -event.deltaY / 100;
+
+        let dom = map.element.getBoundingClientRect();
+        let cursorX = event.clientX - dom.left;
+        let cursorY = event.clientY - dom.top;
+        let cursorXPercent = cursorX / dom.width - 0.5;
+        let cursorYPercent = -cursorY / dom.height + 0.5;
+        let cursorXMap = cursorXPercent * 6000;
+        let cursorYMap = cursorYPercent * 6000;
+        let cursorXMapOld = cursorXMap / map.zoom;
+        let cursorYMapOld = cursorYMap / map.zoom;
+        map.zoom = Math.min(Math.max(map.zoom + delta, map.minZoom), map.maxZoom);
+        let cursorXMapNew = cursorXMap / map.zoom;
+        let cursorYMapNew = cursorYMap / map.zoom;
+        map.x += (cursorXMapOld - cursorXMapNew);
+        map.y += (cursorYMapOld - cursorYMapNew);
+
+        event.preventDefault();
+
+        updateMap(map);
+    });
+
+    addEvent('maps', 'update', async () => {
+        if (!cursorVisible) return;
+
+        // get map under cursor
+        let map = document.elementFromPoint(cursorPosition.x, cursorPosition.y);
+        if (!map) return;
+
+        map = map.closest('.__maps-map');
+        if (!map) return;
+
+        let mapData = maps.find(mapData => mapData.element === map);
+        if (!mapData) return;
+
+        // changing position using controller
+        let axis = getControllerAxis(0);
+        let distance = Math.sqrt(axis.x ** 2 + axis.y ** 2);
+        if (distance >= 0.1) {
+            let position = getMapPosition(map);
+            position.x += axis.x * 60 / mapData.zoom;
+            position.y -= axis.y * 60 / mapData.zoom;
+
+            setMapPosition(map, position.x, position.y);
+        }
+
+        // zooming using controller
+        axis = getControllerAxis(1);
+        distance = Math.sqrt(axis.x ** 2 + axis.y ** 2);
+        if (distance >= 0.1) {
+            let zoom = getMapZoom(map);
+            zoom -= axis.y * 0.1;
+            zoom = Math.min(mapData.maxZoom, Math.max(mapData.minZoom, zoom));
+
+            setMapZoom(map, zoom);
+        }
+    });
+</script>

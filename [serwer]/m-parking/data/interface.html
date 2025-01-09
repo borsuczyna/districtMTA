@@ -1,0 +1,204 @@
+<style>
+    #parking {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        padding: 1.25rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #parking h2 {
+        margin: 0;
+        margin-bottom: 1.25rem;
+    }
+
+    #parking .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+        transform: translateY(-0.425rem);
+    }
+
+    #parking .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #parking .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #parking .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+
+    #parking .nice-table-wrapper {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+<div class="d-flex justify-between">
+    <h2>Przechowalnia</h2>
+    <div class="d-flex logo justify-end">
+        <span>
+            <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+            <span class="gradient-text text-glow">MTA</span>
+        </span>
+        <img src="/m-login/data/logo.png" style="width: 3rem;"/>
+    </div>
+</div>
+
+<div class="d-flex p-3 align-items-center justify-center flex-column" id="loading">
+    <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+    <span class="mt-3 label">
+        Wczytywanie danych...
+    </span>
+</div>
+
+<div class="nice-table-wrapper striped d-none" style="width: 35rem;" id="data">
+    <table id="parking-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Model</th>
+                <th>Ostatni kierowca</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let parkingId = 1;
+    let waiting = false;
+
+    window.parking_selectItem = (item) => {
+        let items = document.querySelectorAll('#parking .item');
+        items.forEach((item) => item.classList.remove('active'));
+
+        item.classList.add('active');
+    }
+
+    window.parking_getVehicle = async (button, uid) => {
+        if (waiting || isButtonSpinner(button)) return;
+        
+        makeButtonSpinner(button);
+        waiting = true;
+        let data = await mta.fetch('parking', 'getVehicle', [parkingId, uid]);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            makeButtonSpinner(button, false);
+            waiting = false;
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+            
+            if (data.status == 'success') {
+                mta.triggerEvent('parking:hideInterface');
+            } else {
+                makeButtonSpinner(button, false);
+                waiting = false;
+            }
+        }
+    }
+
+    function setLoadingVisible(visible) {
+        document.querySelector('#parking #loading').classList.toggle('d-none', !visible);
+        document.querySelector('#parking #data').classList.toggle('d-none', visible);
+    }
+
+    function loadVehicles(vehicles) {
+        let vehiclesTable = document.querySelector('#parking #parking-table');
+
+        new DataTable(vehiclesTable, {
+            ...defaultTableData,
+            destroy: true,
+            data: vehicles,
+            columns: [
+                { data: 'uid' },
+                // { data: 'model', render: (data) => window.vehicleNames[parseInt(data) - 400] },
+                { data: 'modelName' },
+                { data: 'lastDriverName' },
+                { data: 'uid', render: (data) => `<div class="flat-button flat-button-small" onclick="parking_getVehicle(this, ${data})">Wyjmij</div>` }
+            ],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: [0], className: 'text-start' }
+            ],
+            pageLength: 5
+        });
+    }
+
+    async function fetchVehicles() {
+        let data = await mta.fetch('parking', 'getVehicles');
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            
+            if (data.status == 'success') {
+                loadVehicles(data.data);
+            } else {
+                notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+                loadVehicles([]);
+            }
+
+            setLoadingVisible(false);
+        }
+    }
+
+    addEvent('parking', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#parking').style.opacity = appear ? '1' : '0';
+        document.querySelector('#parking').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+
+    addEvent('parking', 'interface:data:parkingId', async (id) => {
+        parkingId = id;
+        setLoadingVisible(true);
+        fetchVehicles();
+    });
+</script>

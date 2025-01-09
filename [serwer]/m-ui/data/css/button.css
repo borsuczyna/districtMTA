@@ -1,0 +1,263 @@
+.nice-button {
+    background: linear-gradient(135deg, #ffac4a 0.01%, #e7784d 25%, #dc604e 50%, #e7784d 75%, #ffac4a 100%);
+    border-radius: 0.438rem;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0.063rem 0.063rem 0.125rem rgba(0, 0, 0, 0.4);
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    cursor: pointer;
+    transition: background-position 0.5s;
+}
+
+.nice-button:hover {
+    background-position: 100% 0;
+}
+
+.button-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+}
+
+.nice-button.grayed {
+    background: linear-gradient(135deg, rgb(55, 55, 55) 0.01%, rgb(50, 50, 50) 25%, rgb(45, 45, 45) 50%, rgb(50, 50, 50) 75%, rgb(55, 55, 55) 100%);
+    color: rgba(255, 255, 255, 0.602);
+    text-shadow: 0.063rem 0.063rem 0.125rem rgba(255, 255, 255, 0.4);
+}
+
+.keycap {
+    background-color: #fff;
+    color: #333;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    box-shadow: inset 0 -0.16rem 0.15rem rgba(0, 0, 0, 0.5);
+}
+
+.controller-button {
+    width: 1.875rem;
+    height: 1.875rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: rgb(0,0,0);
+    background: linear-gradient(45deg, rgb(19, 19, 19) 45%, rgba(34,34,34,1) 85%, rgba(255,255,255,1) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.controller-button.small {
+    width: 1rem;
+    height: 1rem;
+}
+
+.controller-button.triangle::before,
+.controller-button.triangle::after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 0.9375rem solid transparent;
+    border-right: 0.9375rem solid transparent;
+}
+
+.controller-button.small.triangle::before,
+.controller-button.small.triangle::after {
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+}
+
+.controller-button.triangle::before {
+    scale: 0.5;
+    border-bottom: 1.875rem solid #0DEFD5;
+    margin-bottom: 0.1rem;
+}
+
+.controller-button.small.triangle::before {
+    border-bottom: 1rem solid #0DEFD5;
+    margin-bottom: 0.1rem;
+}
+
+.controller-button.triangle::after {
+    border-bottom: 1.875rem solid black;
+    scale: 0.25;
+}
+
+.controller-button.small.triangle::after {
+    border-bottom: 1rem solid black;
+    scale: 0.25;
+}
+
+.controller-button.circle::before,
+.controller-button.circle::after {
+    position: absolute;
+    content: '';
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+}
+
+.controller-button.small.circle::before,
+.controller-button.small.circle::after {
+    width: 0.7rem;
+    height: 0.7rem;
+}
+
+.controller-button.circle::before {
+    background: #D4706C;
+}
+
+.controller-button.circle::after {
+    background: black;
+    scale: 0.7;
+}
+
+.controller-button.square::before,
+.controller-button.square::after {
+    position: absolute;
+    content: '';
+    width: 1.25rem;
+    height: 1.25rem;
+    background: #D78DB5;
+}
+
+.controller-button.small.square::before,
+.controller-button.small.square::after {
+    width: 1rem;
+    height: 1rem;
+}
+
+.controller-button.square::before {
+    border-radius: 0.25rem;
+    scale: 0.84;
+}
+
+.controller-button.small.square::before {
+    border-radius: 0.25rem;
+    scale: 0.55;
+}
+
+.controller-button.square::after {
+    background: black;
+    border-radius: 0.25rem;
+    scale: 0.55;
+}
+
+.controller-button.small.square::after {
+    border-radius: 0.25rem;
+    scale: 0.35;
+}
+
+.controller-button.cross::before,
+.controller-button.cross::after {
+    position: absolute;
+    content: '';
+    width: 1.1rem;
+    height: 0.2rem;
+    background: #9FAAD9;
+}
+
+.controller-button.small.cross::before,
+.controller-button.small.cross::after {
+    width: 0.6rem;
+    height: 0.1rem;
+}
+
+.controller-button.cross::before {
+    transform: rotate(45deg);
+}
+
+.controller-button.cross::after {
+    transform: rotate(-45deg);
+}
+
+.controller-button.arrow::before,
+.controller-button.arrow::after {
+    position: absolute;
+    content: '';
+    width: 1rem;
+    height: 0.7rem;
+    background: #808080;
+    margin-bottom: 0.2rem;
+}
+
+.controller-button.arrow::before {
+    scale: 0.8;
+}
+
+.controller-button.arrow::after {
+    height: 1rem;
+    margin-top: 0.6rem;
+    transform: rotate(-45deg);
+    scale: 0.5;
+}
+
+.controller-button.arrow-right {
+    transform: rotate(90deg);
+}
+
+.controller-button.arrow-bottom {
+    transform: rotate(180deg);
+}
+
+.controller-button.arrow-left {
+    transform: rotate(-90deg);
+}
+
+.controller .keycap {
+    display: none;
+}
+
+body:not(.controller) .controller-button {
+    display: none;
+}
+
+.keycap-sm {
+    padding: 0.1rem 0.3rem;
+}
+
+.flat-button {
+    background: rgba(91, 91, 91, 0.7);
+    border: 1px solid rgba(54, 54, 54, 0.7);
+    padding: 0.8rem;
+    color: #ffffffcc;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    width: calc(100% - 2rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: background 0.2s, border 0.2s;
+}
+
+.flat-button:hover {
+    background: rgba(116, 116, 116, 0.8);
+    border: 1px solid rgba(97, 97, 97, 0.7);
+    animation: button-hover 0.8s infinite;
+}
+
+.flat-button-small {
+    width: auto;
+    font-size: 0.8rem;
+    height: auto;
+    padding: 0.5rem 0.56rem;
+}
+
+.flat-button.grayed {
+    background: rgba(91, 91, 91, 0.3);
+    border: 1px solid rgba(54, 54, 54, 0.3);
+    cursor: not-allowed;
+}
+
+.flat-button.grayed:hover {
+    background: rgba(91, 91, 91, 0.3);
+    border: 1px solid rgba(54, 54, 54, 0.3);
+}

@@ -1,0 +1,95 @@
+.nice-table-wrapper {
+    background: rgb(33, 33, 33);
+    border: 1px solid rgba(44, 44, 44, 0.6);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: #ffffffc0;
+}
+
+.nice-table-wrapper .dt-paging {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.nice-table-wrapper .dt-paging-button {
+    background: #cccccc00 !important;
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    max-width: 2rem !important;
+    max-height: 2rem !important;
+    min-width: 2rem !important;
+    min-height: 2rem !important;
+    font-size: 1rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: background 0.2s;
+}
+
+.nice-table-wrapper .dt-paging-button:hover {
+    background: #cccccc11 !important;
+}
+
+.nice-table-wrapper div.dt-container .dt-paging .dt-paging-button.current, .nice-table-wrapper div.dt-container .dt-paging .dt-paging-button.current:hover {
+    background: linear-gradient(to bottom, #ffab48 0%, #ff8b2c 100%) !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+.nice-table-wrapper div.dt-container .dt-paging-button.disabled, .nice-table-wrapper div.dt-container .dt-paging-button.disabled:hover, .nice-table-wrapper div.dt-container .dt-paging-button.disabled:active {
+    background: #48484800 !important;
+    color: #ffffff66 !important;
+    cursor: not-allowed;
+}
+
+.nice-table-wrapper table.dataTable thead>tr>th.dt-orderable-asc, .nice-table-wrapper table.dataTable thead>tr>th.dt-orderable-desc, .nice-table-wrapper table.dataTable thead>tr>th.dt-orderable-none {
+    border-color: #52525233 !important;
+}
+
+.nice-table-wrapper table.dataTable thead>tr>th.dt-orderable-asc:hover, .nice-table-wrapper table.dataTable thead>tr>th.dt-orderable-desc:hover, .nice-table-wrapper table.dataTable thead>tr>th.dt-orderable-none:hover {
+    outline: none !important;
+}
+
+.nice-table-wrapper div.dt-container .dt-search input {
+    background: rgba(42, 42, 42, 0.7);
+    border: 1px solid rgba(54, 54, 54, 0.6);
+    padding: 0.4rem;
+    color: #ffffffcc;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.nice-table-wrapper div.dt-container.dt-empty-footer tbody>tr:last-child>* {
+    border-bottom: 1px solid #52525233;
+}
+
+.nice-table-wrapper table.dataTable thead th {
+    font-weight: 600;
+    color: #ffffffdd;
+}
+
+input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.nice-table-wrapper.striped tbody tr {
+    background: rgba(54, 54, 54, 0.1);
+    color: rgba(255, 255, 255, 0.75);
+    transition: background 0.1s, color 0.1s;
+}
+
+.nice-table-wrapper.striped tbody tr:nth-child(2n) {
+    background: rgba(54, 54, 54, 0.35);
+}
+
+.nice-table-wrapper.striped tbody tr:hover {
+    background: rgba(54, 54, 54, 0.6);
+    color: rgba(255, 255, 255, 0.95);
+}

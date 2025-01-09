@@ -1,0 +1,82 @@
+<meta>
+    <!-- main -->
+    <script src='useful.lua' type='shared' cache='false'/>
+    <script src='custom.lua' type='shared' cache='false'/>
+    <script src='map.lua' type='client' cache='false'/>
+    <script src='keep-away.lua' type='client' cache='false'/>
+    
+    <!-- effects -->
+    <script src='client/effects/main.lua' type='client' cache='false'/>
+    <script src='client/effects/bloom.lua' type='client' cache='false'/>
+    <script src='client/effects/fire.lua' type='client' cache='false'/>
+    <script src='client/effects/smoke.lua' type='client' cache='false'/>
+    <script src='client/effects/texture.lua' type='client' cache='false'/>
+    <script src='client/effects/rift.lua' type='client' cache='false'/>
+    <script src='client/effects/flash.lua' type='client' cache='false'/>
+    
+    <!-- client -->
+    <script src='client/gpu.lua' type='client' cache='false'/>
+    <script src='client/missile.lua' type='client' cache='false'/>
+    <script src='client/effects.lua' type='client' cache='false'/>
+    <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/music.lua' type='client' cache='false'/>
+    <script src='client/gun.lua' type='client' cache='false'/>
+    <script src='client/hole.lua' type='client' cache='false'/>
+    
+    <!-- server -->
+    <script src='server/main.lua' type='server'/>
+    <script src='server/gun.lua' type='server'/>
+    <script src='server/ufo.lua' type='server'/>
+
+    <!-- files -->
+    <file src='data/smoke.dff'/>
+    <file src='data/smoke.col'/>
+    <file src='data/fire.dff'/>
+    <file src='data/fire.col'/>
+    <file src='data/missile.dff'/>
+    <file src='data/missile.txd'/>
+    <file src='data/missile.col'/>
+    <file src='data/story-building.dff'/>
+    <file src='data/story-building.txd'/>
+    <file src='data/story-building.col'/>
+    <file src='data/fonts/Inter-Bold.ttf'/>
+    <file src='data/plane.dff'/>
+    <file src='data/plane.col'/>
+
+    <!-- textures -->
+    <file src='data/textures/bloom-1.png'/>
+    <file src='data/textures/bloom-2.png'/>
+    <file src='data/textures/bloom-3.png'/>
+    <file src='data/textures/bloom-4.png'/>
+    <file src='data/textures/rift.png'/>
+    <file src='data/textures/rift-glow.png'/>
+    <file src='data/textures/rift-dissolve.png'/>
+    <file src='data/textures/rift-glow-dissolve.png'/>
+    <file src='data/textures/flash.png'/>
+    <file src='data/textures/flash-dissolve.png'/>
+    <file src='data/textures/sky.png'/>
+    <file src='data/textures/sky-dissolve.png'/>
+    <file src='data/textures/crosshair.png'/>
+    <file src='data/textures/white.png'/>
+
+    <!-- sounds -->
+    <file src='data/sounds/alarm1-echo.wav'/>
+    <file src='data/sounds/alarm2-echo.wav'/>
+    <file src='data/sounds/rocket.wav'/>
+    <file src='data/sounds/launch.wav'/>
+    <file src='data/sounds/music.mp3'/>
+    <file src='data/sounds/turret.wav'/>
+    <file src='data/sounds/sky.wav'/>
+    <file src='data/sounds/crash.wav'/>
+    <file src='data/sounds/showdown.mp3'/>
+
+    <!-- shaders -->
+    <file src='data/shaders/mta-helper.fx'/>
+    <file src='data/shaders/smoke.fx'/>
+    <file src='data/shaders/fire.fx'/>
+    <file src='data/shaders/texture.fx'/>
+    <file src='data/shaders/dissolve.fx'/>
+    <file src='data/shaders/test.fx'/>
+
+    <min_mta_version server='1.5.8' client='1.5.8'/>
+</meta>

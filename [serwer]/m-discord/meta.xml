@@ -1,0 +1,9 @@
+<meta>
+    <download_priority_group>9996</download_priority_group>
+
+    <include resource='m-status'/>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <export function='setDiscordPresenceDetails' type='client'/>
+    <export function='setDiscordPresenceState' type='client'/>
+</meta>

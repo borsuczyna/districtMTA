@@ -1,0 +1,95 @@
+<style>
+    #putUp {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 0.625rem;
+        max-width: 34rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #putUp .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+</style>
+
+<div class="d-flex gap-4 align-items-center mb-2">
+    <span class="label">Giełda</span>
+    <div class="line"></div>
+</div>
+
+<div class="label">
+    Pojazd: <span id="vehicle-name"></span><br>
+    Tuning: <span id="vehicle-tuning"></span><br><br>
+    Na tej giełdzie można wystawiać pojazdy w zakresie cenowym od $<span id="min-price"></span> do $<span id="max-price"></span><br><br>
+
+    <input type="number" id="price" class="simple-input" placeholder="Cena"><br><br>
+
+    Uwaga! Administracja może cię ukarać za wystawienie pojazdu z zawyżoną lub fałszywą ceną.<br>
+</div>
+
+<div class="d-flex justify-center mt-2 gap-2">
+    <div class="flat-button flat-button-small" onclick="putUp_putVehicleUp(this)">Wystaw</div>
+    <div class="flat-button flat-button-small" onclick="mta.triggerEvent('carExchange:closePutUpWindow')">Zamknij</div>
+</div>
+
+<script>
+    let interfaceData = [];
+
+    function fomratNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    putUp_putVehicleUp = async (button) => {
+        if (isButtonSpinner(button)) return;
+
+        let price = document.querySelector('#putUp #price').value;
+        if (price < interfaceData.prices[0] || price > interfaceData.prices[1]) {
+            notis_addNotification('error', 'Błąd', 'Cena pojazdu jest poza zakresem cenowym');
+            return;
+        }
+        
+        makeButtonSpinner(button);
+        let data = await mta.fetch('carExchange', 'putUp', [interfaceData.vehicleUid, price]);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+            
+            if (data.status == 'success') {
+                mta.triggerEvent('carExchange:closePutUpWindow');
+            }
+        }
+        
+        makeButtonSpinner(button, false);
+    }
+
+    addEvent('putUp', 'interface:data:data', async (data) => {
+        interfaceData = data[0];
+
+        document.querySelector('#putUp #vehicle-name').innerText = `(${interfaceData.vehicleUid}) ${interfaceData.vehicleName}`;
+        document.querySelector('#putUp #vehicle-tuning').innerText = interfaceData.tuning.length > 0 ? interfaceData.tuning.join(', ') : 'Brak';
+        document.querySelector('#putUp #min-price').innerText = fomratNumber(interfaceData.prices[0]);
+        document.querySelector('#putUp #max-price').innerText = fomratNumber(interfaceData.prices[1]);
+        document.querySelector('#putUp #price').value = interfaceData.prices[0];
+        document.querySelector('#putUp #price').min = interfaceData.prices[0];
+        document.querySelector('#putUp #price').max = interfaceData.prices[1];
+    });
+
+    addEvent('putUp', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#putUp').style.opacity = appear ? '1' : '0';
+        document.querySelector('#putUp').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+</script>

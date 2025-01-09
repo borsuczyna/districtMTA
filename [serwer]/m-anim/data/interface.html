@@ -1,0 +1,449 @@
+<style>
+    #anim {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        padding: 0.625rem;
+        transform: scale(0.9);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #anim #timeline-view {
+        position: relative;
+        max-height: 15rem;
+        overflow: auto;
+        width: 100%;
+    }
+
+    #anim #bones-list {
+        background: rgba(39, 39, 39, 0.9);
+        border-radius: 0.45rem 0 0 0.45rem;
+        gap: 0.25rem;
+    }
+
+    #anim #timeline {
+        position: relative;
+        background: rgba(39, 39, 39, 0.7);
+        border-radius: 0 0.45rem 0.45rem 0;
+        width: calc(100% - 3rem);
+        padding-right: 1.2rem;
+        gap: 0.25rem;
+    }
+
+    #anim .row {
+        position: relative;
+        background-color: rgba(81, 81, 81, 0.2);
+        width: 100%;
+        height: 1.2rem;
+    }
+
+    #anim .row.active {
+        background-color: rgba(81, 81, 81, 0.6);
+    }
+
+    #anim #timeline #time-pointer {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.5);
+        width: 2px;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transform: translateX(0.6rem);
+    }
+
+    #anim .keyframe {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.5);
+        width: 0.7rem;
+        height: 0.7rem;
+        top: 0;
+        transform: translate(0.35rem, 0.25rem);
+    }
+
+    #anim #easing-select {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        color: #fff;
+        display: none;
+        flex-direction: column;
+        gap: 0.45rem;
+        padding: 0.625rem;
+        transform: translate(-50%, -50%);
+        max-height: 10rem;
+        flex-wrap: wrap;
+        transition: opacity 0.2s;
+    }
+</style>
+
+<div class="d-flex gap-2">
+    <div class="flat-button flat-button-small" onclick="anim_playPause(this)">Play</div>
+    <div class="flat-button flat-button-small" onclick="anim_deleteFrame()">Delete frame</div>
+    <div class="flat-button flat-button-small" onclick="anim_copyFrame()">Copy frame</div>
+    <div class="flat-button flat-button-small" onclick="anim_cutFrame()">Cut frame</div>
+    <div class="flat-button flat-button-small" onclick="anim_pasteFrame()">Paste frame</div>
+    <div class="flat-button flat-button-small" onclick="anim_createSnapshot()">Snapshot</div>
+    <div class="flat-button flat-button-small" onclick="anim_cutAnimation()">Cut animation</div>
+    <div class="d-flex flex-column gap-1">  
+        Animation time:
+        <input type="number" id="anim-time" value="2000" min="0" max="10000" step="1">
+    </div>
+    <div class="flat-button flat-button-small" onclick="anim_setAnimTime()">Set</div>
+    <div class="d-flex flex-column gap-1">  
+        Easing:
+        <div id="anim-easing" onclick="anim_openEasingSelect(event)"></div>
+    </div>
+    <div class="d-flex gap-1">
+        Position:
+        <input type="number" id="anim-position-x" value="0" min="-100" max="100" step="0.01" oninput="anim_setPosition()">
+        <input type="number" id="anim-position-y" value="0" min="-100" max="100" step="0.01" oninput="anim_setPosition()">
+        <input type="number" id="anim-position-z" value="0" min="-100" max="100" step="0.01" oninput="anim_setPosition()">
+    </div>
+    <div class="d-flex flex-column gap-1">  
+        Animation name:
+        <input type="text" id="anim-name" value="my-animation">
+    </div>
+    <div class="flat-button flat-button-small" onclick="anim_saveAnimation()">Save</div>
+    <div class="flat-button flat-button-small" onclick="anim_resetAnimation()">Reset</div>
+    <div class="flat-button flat-button-small" onclick="anim_close()">Close</div>
+</div>
+
+<div id="timeline-view" class="nice-scroll">
+    <div class="d-flex gap-2">
+        <div class="d-flex flex-column" id="bones-list"></div>
+        <div class="d-flex flex-column" id="timeline" onclick="anim_setTimelineTime(event)"></div>
+    </div>
+</div>
+
+<div id="easing-select">
+    <div onclick="anim_setEasing(this.innerHTML)">Linear</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InQuad</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutQuad</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InOutQuad</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutInQuad</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InElastic</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutElastic</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InOutElastic</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutInElastic</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InBack</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutBack</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InOutBack</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutInBack</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InBounce</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutBounce</div>
+    <div onclick="anim_setEasing(this.innerHTML)">InOutBounce</div>
+    <div onclick="anim_setEasing(this.innerHTML)">OutInBounce</div>
+</div>
+
+<script>
+    let bones = [
+        {
+            bone: 0,
+            name: 'ROOT'
+        },
+        {
+            bone: 1,
+            name: 'PELVIS1'
+        },
+        {
+            bone: 2,
+            name: 'PELVIS'
+        },
+        {
+            bone: 3,
+            name: 'SPINE1'
+        },
+        {
+            bone: 4,
+            name: 'UPPERTORSO'
+        },
+        {
+            bone: 5,
+            name: 'NECK'
+        },
+        {
+            bone: 6,
+            name: 'HEAD2'
+        },
+        {
+            bone: 7,
+            name: 'HEAD1'
+        },
+        {
+            bone: 8,
+            name: 'HEAD'
+        },
+        {
+            bone: 21,
+            name: 'RIGHTUPPERTORSO'
+        },
+        {
+            bone: 22,
+            name: 'RIGHTSHOULDER'
+        },
+        {
+            bone: 23,
+            name: 'RIGHTELBOW'
+        },
+        {
+            bone: 24,
+            name: 'RIGHTWRIST'
+        },
+        {
+            bone: 25,
+            name: 'RIGHTHAND'
+        },
+        {
+            bone: 26,
+            name: 'RIGHTTHUMB'
+        },
+        {
+            bone: 31,
+            name: 'LEFTUPPERTORSO'
+        },
+        {
+            bone: 32,
+            name: 'LEFTSHOULDER'
+        },
+        {
+            bone: 33,
+            name: 'LEFTELBOW'
+        },
+        {
+            bone: 34,
+            name: 'LEFTWRIST'
+        },
+        {
+            bone: 35,
+            name: 'LEFTHAND'
+        },
+        {
+            bone: 36,
+            name: 'LEFTTHUMB'
+        },
+        {
+            bone: 41,
+            name: 'LEFTHIP'
+        },
+        {
+            bone: 42,
+            name: 'LEFTKNEE'
+        },
+        {
+            bone: 43,
+            name: 'LEFTANKLE'
+        },
+        {
+            bone: 44,
+            name: 'LEFTFOOT'
+        },
+        {
+            bone: 51,
+            name: 'RIGHTHIP'
+        },
+        {
+            bone: 52,
+            name: 'RIGHTKNEE'
+        },
+        {
+            bone: 53,
+            name: 'RIGHTANKLE'
+        },
+        {
+            bone: 54,
+            name: 'RIGHTFOOT'
+        },
+        {
+            bone: 201,
+            name: 'BELLY'
+        },
+        {
+            bone: 301,
+            name: 'RIGHTBREAST'
+        },
+        {
+            bone: 302,
+            name: 'LEFTBREAST'
+        },
+    ];
+    let timelineTime = 0;
+    let timelineData = [];
+    let positionsData = [];
+    let selectedBone = false;
+
+    function updateEasing() {
+        document.querySelector('#anim #anim-easing').innerHTML = 'Linear';
+
+        if (selectedBone === false) return;
+        let keyframes = timelineData[selectedBone];
+        if (!keyframes) return;
+
+        let keyframe = keyframes.find(keyframe => keyframe.time === timelineTime);
+        if (!keyframe) return;
+
+        document.querySelector('#anim #anim-easing').innerHTML = keyframe.easing || 'Linear';
+    }
+
+    function updatePosition() {
+        let position = positionsData[timelineTime];
+        if (!position) return;
+
+        // document.querySelector('#anim #anim-position-x').value = position[0];
+        // document.querySelector('#anim #anim-position-y').value = position[1];
+        // document.querySelector('#anim #anim-position-z').value = position[2];
+        // if its the same dont update
+
+        let [x, y, z] = [document.querySelector('#anim #anim-position-x').value, document.querySelector('#anim #anim-position-y').value, document.querySelector('#anim #anim-position-z').value];
+        if (parseFloat(x) != parseFloat(position[0])) document.querySelector('#anim #anim-position-x').value = position[0];
+        if (parseFloat(y) != parseFloat(position[1])) document.querySelector('#anim #anim-position-y').value = position[1];
+        if (parseFloat(z) != parseFloat(position[2])) document.querySelector('#anim #anim-position-z').value = position[2];
+    }
+
+    function renderTimeline() {
+        let bonesList = document.querySelector('#anim #bones-list');
+        let timeline = document.querySelector('#anim #timeline');
+
+        bonesList.innerHTML = bones.map(bone => `<div class="row ${selectedBone === bone.bone ? 'active' : ''}" data-bone="${bone.bone}" onclick="anim_setBone(${bone.bone})">${bone.name}</div>`).join('');
+        timeline.innerHTML = bones.map(bone => `<div class="row ${selectedBone === bone.bone ? 'active' : ''}" data-bone="${bone.bone}" onclick="anim_setBone(${bone.bone})"></div>`).join('');
+        timeline.innerHTML += `<div id="time-pointer" style="left: ${timelineTime}%;"></div>`;
+
+        for (let [bone, keyframes] of Object.entries(timelineData)) {
+            let row = timeline.querySelector(`.row[data-bone="${bone}"]`);
+
+            row.innerHTML = keyframes.map(keyframe => {
+                let time = keyframe.time;
+                let timePercent = time / 100;
+
+                return `<div class="keyframe" style="left: ${timePercent * 100}%;"></div>`;
+            }).join('');
+        }
+
+        updateEasing();
+        updatePosition();
+    }
+
+    window.anim_deleteFrame = () => {
+        mta.triggerEvent('anim:deleteFrame');
+    }
+
+    window.anim_playPause = (button) => {
+        mta.triggerEvent('anim:playPause');
+        button.innerHTML = button.innerHTML === 'Play' ? 'Pause' : 'Play';
+    }
+
+    window.anim_copyFrame = () => {
+        mta.triggerEvent('anim:copyFrame');
+    }
+
+    window.anim_cutFrame = () => {
+        mta.triggerEvent('anim:cutFrame');
+    }
+
+    window.anim_pasteFrame = () => {
+        mta.triggerEvent('anim:pasteFrame');
+    }
+
+    window.anim_createSnapshot = () => {
+        mta.triggerEvent('anim:createSnapshot');
+    }
+
+    window.anim_cutAnimation = () => {
+        mta.triggerEvent('anim:cutAnimation');
+    }
+
+    window.anim_setAnimTime = () => {
+        let time = document.querySelector('#anim-time').value;
+        mta.triggerEvent('anim:setAnimTime', time);
+    }
+
+    window.anim_openEasingSelect = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        let select = document.querySelector('#anim #easing-select');
+        select.style.display = select.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    window.anim_setEasing = (easing) => {
+        mta.triggerEvent('anim:setEasing', easing);
+        document.querySelector('#anim #easing-select').style.display = 'none';
+    }
+
+    window.anim_setPosition = () => {
+        let x = document.querySelector('#anim #anim-position-x').value;
+        let y = document.querySelector('#anim #anim-position-y').value;
+        let z = document.querySelector('#anim #anim-position-z').value;
+        x = parseFloat(x);
+        y = parseFloat(y);
+        z = parseFloat(z);
+        if (isNaN(x) || isNaN(y) || isNaN(z)) return;
+
+        mta.triggerEvent('anim:setPosition', x, y, z);
+    }
+
+    window.anim_saveAnimation = () => {
+        let name = document.querySelector('#anim #anim-name').value;
+        mta.triggerEvent('anim:saveAnimation', name);
+    }
+
+    window.anim_resetAnimation = () => {
+        mta.triggerEvent('anim:resetAnimation');
+    }
+
+    window.anim_close = () => {
+        mta.triggerEvent('anim:close');
+    }
+
+    window.anim_setTimelineTime = (event) => {
+        let timeline = document.querySelector('#anim #timeline');
+        let timePointer = document.querySelector('#anim #time-pointer');
+        let rect = timeline.getBoundingClientRect();
+        timelineTime = Math.floor(((event.clientX - rect.left) / rect.width) * 100);
+        timelineTime = timelineTime < 0 ? 0 : timelineTime;
+
+        mta.triggerEvent('anim:setTimelineTime', timelineTime);
+        renderTimeline();
+    }
+
+    window.anim_setBone = (bone) => {
+        mta.triggerEvent('anim:setBone', bone);
+    }
+
+    renderTimeline();
+
+    addEvent('anim', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#anim').style.opacity = appear ? '1' : '0';
+        document.querySelector('#anim').style.transform = appear ? 'scale(1)' : 'scale(0.9)';
+    });
+
+    addEvent('anim', 'interface:data:timeline', async (data) => {
+        timelineData = data[0];
+        renderTimeline();
+    });
+
+    addEvent('anim', 'interface:data:positions', async (data) => {
+        positionsData = data[0];
+        renderTimeline();
+    });
+
+    addEvent('anim', 'interface:data:selectedBone', async (bone) => {
+        // let bonesList = document.querySelector('#anim #bones-list');
+        // let timeline = document.querySelector('#anim #timeline');
+
+        // bonesList.querySelectorAll('.row').forEach(row => row.classList.toggle('active', parseInt(row.dataset.bone) === bone));
+        // timeline.querySelectorAll('.row').forEach(row => row.classList.toggle('active', parseInt(row.dataset.bone) === bone));
+
+        selectedBone = bone;
+        renderTimeline();
+    });
+</script>

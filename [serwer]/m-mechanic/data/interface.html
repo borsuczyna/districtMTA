@@ -1,0 +1,215 @@
+<style>
+    #mechanic {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 30rem;
+        padding: 1.25rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #mechanic h2 {
+        margin: 0;
+        margin-bottom: 1.25rem;
+    }
+
+    #mechanic .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+        transform: translateY(-0.425rem);
+    }
+
+    #mechanic .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #mechanic .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #mechanic .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+
+    #mechanic .nice-table-wrapper {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    .text-start {
+        text-align: start !important;
+    }
+</style>
+
+<div class="d-flex justify-between">
+    <h2>Mechanik</h2>
+    <div class="d-flex logo justify-end">
+        <span>
+            <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+            <span class="gradient-text text-glow">MTA</span>
+        </span>
+        <img src="/m-login/data/logo.png" style="width: 3rem;"/>
+    </div>
+</div>
+
+<div id="mechanic-loading" class="pt-3 pb-4 d-flex justify-center align-items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+    Wczytywanie...
+</div>
+
+<div id="mechanic-data" class="d-none">
+    <div class="nice-table-wrapper striped" style="width: auto;">
+        <table id="mechanic-table">
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Cena</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="d-flex justify-between mt-1 mb-1">
+        <div>Podsumowanie:</div>
+        <div id="total">0$ / 0 sek.</div>
+    </div>
+
+    <div class="d-flex justify-center gap-2">
+        <div class="flat-button flat-button-small" id="repair-button" onclick="mechanic_repairVehicle(this)">Napraw</div>
+        <div class="flat-button flat-button-small" onclick="mechanic_selectAll()">Zaznacz wszystko</div>
+        <div class="flat-button flat-button-small" onclick="mta.triggerEvent('mechanic:hide')">Anuluj</div>
+    </div>
+</div>
+
+<script>
+    let waiting = false;
+    let selectedParts = [];
+    let currentParts = [];
+    let mechanicTableElement;
+
+    function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function loadParts(data) {
+        let mechanicTable = document.querySelector('#mechanic #mechanic-table');
+        currentParts = data;
+
+        let currentPage = mechanicTableElement ? mechanicTableElement.page.info().page : 0;
+
+        mechanicTableElement = new DataTable(mechanicTable, {
+            ...defaultTableData,
+            destroy: true,
+            data: data,
+            columns: [
+                { data: 'name' },
+                { data: 'price', render: (data) => `$${formatNumber(addCents(data))}` },
+                { data: 'name', render: (data, type, row, meta) => `<div class="d-flex justify-end"><div style="width: 4rem;" class="flat-button flat-button-small" onclick="mechanic_toggleRepair('${data}')">${selectedParts.includes(data) ? 'Usuń' : 'Napraw'}</div></div>` }
+            ],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: [0], className: 'text-start' },
+                { targets: [2], orderable: false, className: 'text-end' }
+            ],
+            pageLength: 7
+        });
+
+        document.querySelector('#mechanic #mechanic-loading').classList.add('d-none');
+        document.querySelector('#mechanic #mechanic-data').classList.remove('d-none');
+        updateTotal();
+        
+        mechanicTableElement.page(currentPage).draw('page');
+    }
+
+    window.mechanic_toggleRepair = function(part) {
+        selectedParts = selectedParts.includes(part) ? selectedParts.filter(p => p !== part) : [...selectedParts, part];
+        loadParts(currentParts);
+    }
+
+    window.mechanic_repairVehicle = function(button) {
+        if (waiting) return;
+        if (selectedParts.length === 0) {
+            notis_addNotification('warning', 'Stanowisko naprawcze', 'Nie wybrano żadnych części do naprawy.');
+            return;
+        }
+
+        waiting = true;
+
+        makeButtonSpinner(button);
+        mta.triggerEvent('mechanic:repair', selectedParts.join(','));
+    }
+
+    window.mechanic_selectAll = function() {
+        if (selectedParts.length === currentParts.length) selectedParts = [];
+        else selectedParts = currentParts.map(p => p.name);
+        
+        loadParts(currentParts);
+    }
+
+    function updateTotal() {
+        let totalPrice = selectedParts.reduce((acc, part) => acc + currentParts.find(p => p.name === part).price, 0);
+        let totalTime = selectedParts.reduce((acc, part) => acc + currentParts.find(p => p.name === part).time, 0);
+
+        document.querySelector('#mechanic #total').innerText = `$${formatNumber(addCents(totalPrice))} / ${totalTime} sek.`;
+    }
+
+    addEvent('mechanic', 'interface:data:repairs', (data) => {
+        loadParts(data[0]);
+    });
+
+    addEvent('mechanic', 'response', async (success) => {
+        let button = document.querySelector('#mechanic #repair-button');
+        makeButtonSpinner(button, false);
+    });
+    
+    addEvent('mechanic', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#mechanic').style.opacity = appear ? '1' : '0';
+        document.querySelector('#mechanic').style.transform = appear ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(0.8)';
+    });
+</script>

@@ -1,0 +1,23 @@
+<meta>
+    <min_mta_version client='1.6.0-9.21695'></min_mta_version>
+    <!--<include resource='m-ui'/>-->
+
+    <script src='utils.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/shader.fx'/>
+    <file src='data/glow.png'/>
+    <file src='data/ground.png'/>
+    <file src='data/overlay.png'/>
+    <file src='data/texture.png'/>
+    <file src='data/innerBackground.png'/>
+    <file src='data/outterBackground.png'/>
+
+    <file src='data/icons/entrance.png'/>
+    <file src='data/icons/work.png'/>
+    <file src='data/icons/cart.png'/>
+    <file src='data/icons/mechanic.png'/>
+    <file src='data/icons/house.png'/>
+    <file src='data/icons/station.png'/>
+    <file src='data/icons/spray.png'/>
+</meta>

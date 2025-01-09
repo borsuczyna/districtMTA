@@ -1,0 +1,109 @@
+<style>
+    #virtual-parking {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 0.625rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #virtual-parking .line {
+        flex: 1;
+        height: 0.0625rem;
+        background: #ffffff0d;
+    }
+
+    #virtual-parking #items {
+        display: flex;
+        gap: 0.325rem;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>
+
+<div class="d-flex gap-4 align-items-center mb-2">
+    <span class="label">Parking wirtualny</span>
+    <div class="line"></div>
+</div>
+
+<select id="vehicle"></select>
+
+<div class="d-flex justify-center mt-2 gap-2">
+    <div class="flat-button flat-button-small" onclick="virtualParking_take(this)">Wyjmij</div>
+    <div class="flat-button flat-button-small" onclick="virtualParking_close()">Zamknij</div>
+</div>
+
+<script>
+    let itemsData = {};
+    
+    $('#virtual-parking #vehicle').select2();
+
+    virtualParking_renderItems = () => {
+        // const itemsContainer = document.querySelector('#items');
+        // itemsContainer.innerHTML = itemsData.items.map((item, index) => {
+        //     return `
+        //         <div class="d-flex gap-2 align-items-center item justify-between">
+        //             <span>${item.name}</span>
+        //             <div class="flat-button flat-button-small" onclick="virtualParking_takeVehicle(this, ${index})">Weź</div>
+        //         </div>
+        //     `;
+        // }).join('');
+
+        let select = document.querySelector('#vehicle');
+
+        for (let index in itemsData.data) {
+            let vehicle = itemsData.data[index];
+            let option = new Option(vehicle.name, index);
+            select.add(option);
+        }
+    }
+
+    virtualParking_take = async (button) => {
+        if (isButtonSpinner(button)) return;
+
+        let index = document.querySelector('#vehicle').value;
+        if (index == '') {
+            notis_addNotification('error', 'Błąd', 'Wybierz pojazd');
+            makeButtonSpinner(button, false);
+            return;
+        }
+        
+        makeButtonSpinner(button);
+        let data = await mta.fetch('factions', 'useVirtualParking', [itemsData.faction, index]);
+
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+        } else {
+            notis_addNotification(data.status, data.status == 'success' ? 'Sukces' : 'Błąd', data.message);
+        }
+        
+        makeButtonSpinner(button, false);
+    }
+
+    virtualParking_close = () => {
+        mta.triggerEvent('factions:closeVirtualParkingPanel');
+    }
+
+    addEvent('virtual-parking', 'interface:data:data', (data) => {
+        itemsData = data[0];
+        virtualParking_renderItems();
+    });
+
+    addEvent('virtual-parking', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#virtual-parking').style.opacity = appear ? '1' : '0';
+        document.querySelector('#virtual-parking').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    
+        if (!appear) {
+            $('#vehicle').select2('close');
+        }
+    });
+</script>

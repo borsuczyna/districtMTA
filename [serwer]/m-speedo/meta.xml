@@ -1,0 +1,32 @@
+<meta>
+    <script src='useful.lua' type='client' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/icons/lights.png'/>
+    <file src='data/icons/engine.png'/>
+    <file src='data/icons/door.png'/>
+    <file src='data/icons/handbrake.png'/>
+
+    <file src='data/modern/background.png'/>
+    <file src='data/modern/stripes.png'/>
+    <file src='data/modern/arrow.png'/>
+    <file src='data/modern/fuel.png'/>
+    <file src='data/modern/fuel-2.png'/>
+
+    <file src='data/old/background.png'/>
+    <file src='data/old/overlay.png'/>
+    <file src='data/old/stripes.png'/>
+    <file src='data/old/fuel-gauge.png'/>
+    <file src='data/old/gauge.png'/>
+
+    <file src='data/compact/background.png'/>
+    <file src='data/compact/stripes.png'/>
+    <file src='data/compact/gauge.png'/>
+    <file src='data/compact/fuel-gauge.png'/>
+    
+    <file src='data/muscle/background.png'/>
+    <file src='data/muscle/overlay.png'/>
+    <file src='data/muscle/stripes.png'/>
+    <file src='data/muscle/gauge.png'/>
+    <file src='data/muscle/fuel-gauge.png'/>
+</meta>

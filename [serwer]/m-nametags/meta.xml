@@ -1,0 +1,11 @@
+<meta>
+	<include resource='m-ui'/>
+
+	<script src='client.lua' type='client' cache='false'/>
+
+	<file src='img/rank.png'/>
+	<file src='img/afk.png'/>
+	<file src='img/premium.png'/>
+	<file src='img/rp.png'/>
+	<file src='img/mute.png'/>
+</meta>

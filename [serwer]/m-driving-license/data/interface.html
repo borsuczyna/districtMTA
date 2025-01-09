@@ -1,0 +1,437 @@
+<style>
+    #driving-license #view {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 1rem;
+        width: 34rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #driving-license #category-id {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #f0f0f0;
+    }
+
+    #driving-license #category-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #e1e1e1;
+    }
+
+    #driving-license #category-description {
+        font-size: 0.9rem;
+        color: #d2d2d2;
+    }
+
+    #driving-license #category-rows div {
+        flex: 1;
+    }
+
+    #driving-license #category-preview {
+        width: 13rem;
+        height: 8rem;
+        border-radius: 0.625rem;
+    }
+
+    #driving-license .category-item {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #d3d3d3;
+        border-radius: 0.625rem;
+        background: rgba(43, 43, 43, 0.5);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        width: 2.8rem;
+        height: 2.8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background 0.2s, color 0.2s, border 0.2s;
+        cursor: pointer;
+    }
+
+    #driving-license .category-item:hover {
+        background: rgba(43, 43, 43, 0.8);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.65);
+        color: #fff;
+    }
+
+    #driving-license .category-item.active {
+        background: rgba(43, 43, 43, 0.9);
+        border: 0.0625rem solid rgba(66, 66, 66, 0.6);
+        color: #fff;
+        cursor: default;
+    }
+
+    #driving-license #questions {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        opacity: 0;
+        padding: 1rem;
+        width: 34rem;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #driving-license #questions .title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #f0f0f0;
+    }
+
+    #driving-license #questions .description {
+        font-size: 1rem;
+        color: #d2d2d2;
+    }
+
+    #driving-license #questions label {
+        font-size: 1rem;
+        color: #d2d2d2;
+    }
+
+    #driving-license #questions input[type="checkbox"] {
+        display: none;
+    }
+
+    /* better checkboxes, make them radio */
+    #driving-license #questions input[type="checkbox"] + label {
+        display: inline-block;
+        cursor: pointer;
+        position: relative;
+        padding-left: 1.7rem;
+        padding-top: 0.05rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.625rem;
+    }
+
+    #driving-license #questions input[type="checkbox"] + label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1.3rem;
+        height: 1.3rem;
+        background: #1a1a1a;
+        box-shadow: inset 0 0 0 0.1rem #3a3a3a;
+        border-radius: 50%;
+        transition: box-shadow 0.2s, background 0.2s;
+    }
+
+    #driving-license #questions input[type="checkbox"]:checked + label:before {
+        box-shadow: inset 0 0 0 0.1rem #ffa200c2;
+        background: #2f2f2f;
+    }
+
+    #driving-license #questions input[type="checkbox"] + label:after {
+        content: '';
+        position: absolute;
+        left: 0.65rem;
+        top: 0.65rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        transform: translate(-50%, -50%);
+        background: transparent;
+        border-radius: 50%;
+        transition: background 0.2s;
+    }
+
+    #driving-license #questions input[type="checkbox"]:checked + label:after {
+        background: #ffa200;
+    }
+</style>
+
+<div id="view">
+    <div class="d-flex flex-column gap-2">
+        <div class="d-flex justify-between gap-4" id="category-rows">
+            <div>
+                <div id="category-id"></div>
+                <div id="category-name"></div>
+                <div id="category-description"></div>
+            </div>
+            <img id="category-preview" src="/m-jobs/data/images/trash.png"/>
+        </div>
+        <div class="d-flex justify-between gap-2 mt-2 align-items-center">
+            <div class="nice-button" onclick="drivingLicense_startCourse()">Rozpocznij egzamin</div>
+            <div class="d-flex gap-2">
+                <div onclick="drivingLicense_setCategory(this)" class="category-item">A</div>
+                <div onclick="drivingLicense_setCategory(this)" class="category-item active">B</div>
+                <div onclick="drivingLicense_setCategory(this)" class="category-item">C</div>
+                <div onclick="drivingLicense_setCategory(this)" class="category-item">L1</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="questions" class="d-none">
+    <div class="text-center title">Pytanie 1</div>
+    <div class="text-center description">Jaki jest limit prędkości na autostradzie?</div>
+
+    <div class="d-flex flex-column gap-2 mt-2">
+        <input type="checkbox" id="answer-1" onchange="drivingLicense_answerChanged(this)">
+        <label for="answer-1">120 km/h</label>
+
+        <input type="checkbox" id="answer-2" onchange="drivingLicense_answerChanged(this)">
+        <label for="answer-2">140 km/h</label>
+
+        <input type="checkbox" id="answer-3" onchange="drivingLicense_answerChanged(this)">
+        <label for="answer-3">160 km/h</label>
+
+        <input type="checkbox" id="answer-4" onchange="drivingLicense_answerChanged(this)">
+        <label for="answer-4">180 km/h</label>
+
+        <div class="d-flex justify-center">
+            <div class="nice-button" onclick="drivingLicense_nextQuestion(this)">Dalej</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let waiting = false;
+    let defaultQuestions = [
+        {
+            question: 'Jaki jest limit prędkości na autostradzie?',
+            answers: [
+                '120 km/h',
+                '140 km/h',
+                '160 km/h',
+                '180 km/h'
+            ],
+            correct: 1
+        },
+        {
+            question: 'Jaki jest maksymalna dopuszczalna prędkość w terenie zabudowanym?',
+            answers: [
+                '40 km/h',
+                '50 km/h',
+                '60 km/h',
+                '70 km/h'
+            ],
+            correct: 1
+        },
+        {
+            question: 'Jaki jest dopuszczalny poziom alkoholu we krwi?',
+            answers: [
+                '0,2 promila',
+                '0,5 promila',
+                '0,8 promila',
+                '1,0 promila'
+            ],
+            correct: 0
+        },
+        {
+            question: 'Kiedy należy używać świateł mijania?',
+            answers: [
+                'W dzień',
+                'W nocy',
+                'W dzień i w nocy',
+                'Nigdy'
+            ],
+            correct: 2
+        },
+        {
+            question: 'Kiedy należy używać świateł przeciwmgielnych tylnich?',
+            answers: [
+                'W dzień',
+                'W nocy',
+                'W deszczu',
+                'Podczas gdy widoczność jest ograniczona do 50 metrów'
+            ],
+            correct: 3
+        }
+    ];
+    let licenseInfos = {
+        A: {
+            id: 'Kategoria A',
+            name: 'Motocykle',
+            description: 'Kategoria A umożliwia prowadzenie motocykli, motorowerów oraz quadów. Wymagane jest ukończenie kursu prawa jazdy kategorii A oraz zdanie egzaminu praktycznego.',
+            cost: 1000,
+            preview: '/m-jobs/data/images/trash.png',
+            questions: defaultQuestions
+        },
+        B: {
+            id: 'Kategoria B',
+            name: 'Samochody osobowe',
+            description: 'Kategoria B umożliwia prowadzenie samochodów osobowych oraz samochodów dostawczych o dopuszczalnej masie całkowitej do 3,5 tony.',
+            cost: 100,
+            preview: '/m-jobs/data/images/trash.png',
+            questions: defaultQuestions
+        },
+        C: {
+            id: 'Kategoria C',
+            name: 'Samochody ciężarowe',
+            description: 'Kategoria C umożliwia prowadzenie samochodów ciężarowych o dopuszczalnej masie całkowitej powyżej 3,5 tony. Wymagane jest ukończenie kursu prawa jazdy kategorii C oraz zdanie egzaminu praktycznego.',
+            cost: 2000,
+            preview: '/m-jobs/data/images/burger.png',
+            questions: defaultQuestions
+        },
+        L1: {
+            id: 'Kategoria L1',
+            name: 'Samoloty',
+            description: 'Kategoria L1 umożliwia latanie samolotami o dopuszczalnej masie całkowitej poniżej 4 ton. Wymagane jest ukończenie kursu prawa jazdy kategorii C oraz zdanie egzaminu praktycznego.',
+            cost: 5000,
+            preview: '/m-jobs/data/images/burger.png',
+            questions: defaultQuestions
+        }
+    };
+    let currentQuestions = false;
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+
+    function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function shuffleQuestions(category) {
+        let questions = licenseInfos[category].questions;
+        for (let i = questions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questions[i], questions[j]] = [questions[j], questions[i]];
+        }
+
+        currentQuestions = questions;
+        currentQuestion = 0;
+        correctAnswers = 0;
+    }
+
+    function renderQuestion() {
+        let element = document.querySelector('#questions .nice-button');
+        let isLast = currentQuestion === currentQuestions.length - 1;
+        if (isLast) {
+            element.innerText = 'Zakończ';
+        } else {
+            element.innerText = 'Dalej';
+        }
+
+        let question = currentQuestions[currentQuestion];
+        document.querySelector('#questions .title').innerText = 'Pytanie ' + (currentQuestion + 1);
+        document.querySelector('#questions .description').innerText = question.question;
+
+        let answers = document.querySelectorAll('#questions input[type="checkbox"] + label');
+        for (let i = 0; i < answers.length; i++) {
+            answers[i].innerText = question.answers[i];
+            answers[i].previousElementSibling.checked = false;
+        }
+    }
+
+    window.drivingLicense_answerChanged = function(element) {
+        let answers = document.querySelectorAll('#questions input[type="checkbox"]');
+        for (let i = 0; i < answers.length; i++) {
+            answers[i].checked = answers[i] === element;
+        }
+    }
+
+    window.drivingLicense_nextQuestion = async function(element) {
+        let question = currentQuestions[currentQuestion];
+        let answers = document.querySelectorAll('#questions input[type="checkbox"]');
+        let selectedAnswer = -1;
+        for (let i = 0; i < answers.length; i++) {
+            if (answers[i].checked) {
+                selectedAnswer = i;
+                break;
+            }
+        }
+
+        if (selectedAnswer === -1) {
+            notis_addNotification('warning', 'Egzamin', 'Nie wybrano odpowiedzi na pytanie.');
+            return;
+        }
+
+        let wasCorrect = selectedAnswer === question.correct;
+        if (wasCorrect) {
+            correctAnswers++;
+        }
+
+        currentQuestion++;
+        if (currentQuestion >= currentQuestions.length) {
+            let category = document.querySelector('#category-name').innerText;
+            let success = correctAnswers >= currentQuestions.length * 0.75;
+            let successText = success ? 'Udało ci się zdać egzamin!' : 'Niestety nie zdałeś egzaminu.';
+            notis_addNotification(success ? 'success' : 'error', 'Egzamin', `Egzamin zakończony. Uzyskano ${correctAnswers} na ${currentQuestions.length} punktów.<br>${successText}`);
+            
+            drivingLicense_goToQuestions(false);
+    
+            if (success)
+                mta.triggerEvent('drivingLicense:finish');
+            
+            await mta.fetch('drivingLicense', 'finish', success);
+            return;
+        }
+
+        renderQuestion();
+    }
+
+    window.drivingLicense_startCourse = async function() {
+        if (waiting) return;
+
+        let selectedCategory = document.querySelector('#driving-license .category-item.active').innerText;
+        waiting = true;
+        let data = await mta.fetch('drivingLicense', 'start', selectedCategory);
+        waiting = false;
+        if (data == null) {
+            notis_addNotification('error', 'Błąd', 'Połączenie przekroczyło czas oczekiwania');
+            return;
+        } else if (data.status != 'success') {
+            notis_addNotification('error', 'Błąd', data.message);
+            return;
+        }
+
+        drivingLicense_goToQuestions();
+        notis_addNotification('info', 'Egzamin', data.message);
+    }
+
+    window.drivingLicense_goToQuestions = async function(visible = true) {
+        mta.triggerEvent('drivingLicense:goToQuestions', visible);
+
+        let questions = document.querySelector('#questions');
+        questions.classList.toggle('d-none', !visible);
+
+        appearWindow(!visible);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        appearWindow(visible, questions);
+
+        if (visible) {
+            let selectedCategory = document.querySelector('#driving-license .category-item.active').innerText;
+            shuffleQuestions(selectedCategory);
+            renderQuestion();
+        }
+    }
+
+    window.drivingLicense_setCategory = function(element) {
+        document.querySelectorAll('#driving-license .category-item').forEach(e => e.classList.remove('active'));
+        element.classList.add('active');
+
+        let category = element.innerText;
+        document.querySelector('#category-id').innerText = licenseInfos[category].id;
+        document.querySelector('#category-name').innerText = licenseInfos[category].name;
+        document.querySelector('#category-description').innerText = licenseInfos[category].description + '\n\nKoszt egzaminu: $' + formatNumber(licenseInfos[category].cost);
+        document.querySelector('#category-preview').src = licenseInfos[category].preview;
+    }
+
+    drivingLicense_setCategory(document.querySelector('#driving-license .category-item.active'));
+
+    function appearWindow(appear, window) {
+        (window ?? document.querySelector('#driving-license #view')).style.opacity = appear ? '1' : '0';
+        (window ?? document.querySelector('#driving-license #view')).style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    }
+
+    addEvent('driving-license', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        appearWindow(appear);
+    });
+</script>

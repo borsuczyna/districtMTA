@@ -1,0 +1,13 @@
+<meta>
+    <script src='updates.lua' type='shared' cache='false'/>
+    <script src='client.lua' type='client' cache='false'/>
+
+    <file src='data/1.png'/>
+    <file src='data/2.png'/>
+    <file src='data/3.png'/>
+    <file src='data/4.png'/>
+    <file src='data/interface.html'/>
+
+    <export function='getUpdates' type='shared'/>
+    <export function='showLastChanges' type='client'/>
+</meta>

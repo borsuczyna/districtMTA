@@ -1,0 +1,11 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/user.png'/>
+
+    <export function='getPlayerAvatar' type='client'/>
+    <export function='getPlayerAvatarByUid' type='client'/>
+
+    <min_mta_version server='1.5.8' client='1.5.8'/>
+</meta>

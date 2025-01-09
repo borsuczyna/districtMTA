@@ -1,0 +1,881 @@
+<style>
+    #inventory {
+        height: 1px;
+    }
+
+    #inventory-wrapper {
+        position: absolute;
+        left: 1.5rem;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 21rem;
+        padding: 1rem;
+        opacity: 0;
+        transform: translateY(-50%) scale(0.8);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #inventory .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 0.625rem 0.625rem 0 0;
+    }
+
+    #inventory .title {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #ffffffee;
+    }
+
+    #inventory .items {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.5rem;
+        margin-top: 1rem;
+        max-height: 20rem;
+        overflow-y: auto;
+    }
+
+    #inventory .items-small {
+        max-height: 10rem;
+    }
+
+    #inventory .item {
+        background: rgba(87, 87, 87, 0.1);
+        border-radius: 0.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        --rarity-color: #bebebe;
+        --rarity-color-dark: #bebebe;
+        aspect-ratio: 1/1;
+        cursor: pointer;
+    }
+
+    #inventory .item.empty {
+        cursor: default;
+    }
+
+    #inventory .item img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain;
+    }
+
+    #inventory .item .count {
+        position: absolute;
+        bottom: 0.25rem;
+        right: 0.25rem;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.25rem;
+        font-size: 0.7rem;
+    }
+
+    #inventory .item:not(.empty) {
+        /* background: linear-gradient(rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.1)); */
+        background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+        border: 0.0625rem solid rgba(54, 54, 54, 0.6);
+        background-size: 100% 100% !important;
+        background-position: 0% 0% !important;
+        transition: background-size 0.2s, background-position 0.2s;
+    }
+
+    /* rarities */
+    /* green - uncommon */
+    #inventory .item.uncommon {
+        /* background: linear-gradient(rgba(74, 255, 39, 0.05), rgba(74, 255, 39, 0.2)); */
+        background: radial-gradient(circle at 50% 50%, rgba(132, 220, 95, 0.3), rgba(48, 119, 47, 0.2));
+        border: 0.0625rem solid rgba(74, 255, 39, 0.05);
+        --rarity-color: rgb(74, 255, 39);
+        --rarity-color-dark: rgb(132, 220, 95);
+    }
+
+    /* blueuish-cyan - rare */
+    #inventory .item.rare {
+        background: radial-gradient(circle at 50% 50%, rgba(130, 201, 255, 0.302), rgba(46, 141, 244, 0.15));
+        border: 0.0625rem solid rgba(39, 255, 255, 0.05);
+        --rarity-color: rgb(39, 255, 255);
+        --rarity-color-dark: rgb(130, 201, 255);
+    }
+
+    /* purplish pink - epic */
+    #inventory .item.epic {
+        background: radial-gradient(circle at 50% 50%, rgba(188, 111, 229, 0.35), rgba(84, 57, 141, 0.3));
+        border: 0.0625rem solid rgba(255, 39, 255, 0.05);
+        --rarity-color: rgb(255, 39, 255);
+        --rarity-color-dark: rgb(188, 111, 229);
+    }
+
+    /* orange - legendary */
+    #inventory .item.legendary {
+        background: radial-gradient(circle at 50% 50%, rgba(255, 174, 81, 0.35), rgba(175, 75, 0, 0.14));
+        border: 0.0625rem solid rgba(255, 39, 39, 0.05);
+        --rarity-color: rgb(255, 123, 0);
+        --rarity-color-dark: rgb(255, 174, 81);
+    }
+
+    /* gold - mythic */
+    #inventory .item.mythic {
+        background: radial-gradient(circle at 50% 50%, rgba(236, 200, 95, 0.4), rgba(149, 114, 35, 0.14));
+        border: 0.0625rem solid rgba(255, 255, 39, 0.05);
+        --rarity-color: rgb(255, 255, 39);
+        --rarity-color-dark: rgb(236, 200, 95);
+    }
+
+    /* cyan green exotic */
+    #inventory .item.exotic {
+        background: radial-gradient(circle at 50% 50%, rgba(101, 244, 208, 0.35), rgba(78, 117, 184, 0.14));
+        border: 0.0625rem solid rgba(39, 255, 39, 0.05);
+        --rarity-color: rgb(39, 255, 107);
+        --rarity-color-dark: rgb(101, 244, 177);
+    }
+      
+    /* red - divine */
+    #inventory .item.divine {
+        background: radial-gradient(circle at 50% 50%, rgba(255, 39, 39, 0.35), rgba(255, 39, 39, 0.14));
+        border: 0.0625rem solid rgba(255, 39, 39, 0.05);
+        --rarity-color: rgb(255, 39, 39);
+        --rarity-color-dark: rgb(255, 39, 39);
+    }
+    
+    #inventory .item:not(.empty):hover {
+        background-size: 150% 150% !important;
+        background-position: 25% 25% !important;
+    }
+
+    #inventory .categories {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    #inventory .category {
+        background: rgba(87, 87, 87, 0.2);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 2rem;
+        height: 2rem;
+        transition: 0.2s;
+        color: #ffffff73;
+        cursor: pointer;
+    }
+    
+    #inventory .category svg {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    #inventory .category:hover {
+        background: rgba(87, 87, 87, 0.3);
+        color: #ffffffaa;
+    }
+
+    #inventory .category.active {
+        background: rgba(135, 135, 135, 0.3);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        color: #ffffff;
+        cursor: default;
+    }
+
+    #inventory #inventory-tooltip {
+        position: absolute;
+        background: rgba(33, 33, 33, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        padding: 0.5rem;
+        color: #fff;
+        font-size: 0.8rem;
+        max-width: 14rem;
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s, left 0.2s, top 0.2s;
+        transform: translate(-50%, -100%);
+    }
+
+    #inventory #inventory-tooltip .title {
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 0.2rem;
+        background-image: linear-gradient(90deg, #ddd 0.01%, #ccc 21.88%, #ddd 44.06%, #ccc 70%, #ddd 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-size: 200% 200%;
+        position: relative;
+        z-index: 1;
+        animation: gradient 3s linear infinite;
+    }
+
+    #inventory #inventory-tooltip .title::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: inherit;
+        filter: blur(0.5rem);
+        opacity: 0.5;
+        z-index: 0;
+    }
+
+    #inventory #inventory-tooltip .description {
+        font-size: 0.9rem;
+        color: #ffffffdd;
+        font-weight: 400;
+    }
+
+    #inventory #inventory-tooltip .title.uncommon {
+        background-image: linear-gradient(90deg, #84dc5f 0.01%, #70d695 21.88%, #77d670 44.06%, #70d695 70%, #84dc5f 100%);
+    }
+
+    #inventory #inventory-tooltip .title.rare {
+        background-image: linear-gradient(90deg, #45aeff 0.01%, #419af8 21.88%, #3b94f4 44.06%, #51aff7 70%, #45aeff 100%);
+    }
+
+    #inventory #inventory-tooltip .title.epic {
+        background-image: linear-gradient(90deg, #b86fe5 0.01%, #ad50ca 21.88%, #b86fe5 44.06%, #ba68d3 70%, #b86fe5 100%);
+    }
+
+    #inventory #inventory-tooltip .title.legendary {
+        background-image: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+    }
+
+    #inventory #inventory-tooltip .title.mythic {
+        background-image: linear-gradient(90deg, #ecb95f 0.01%, #ecb95f 21.88%, #ecb95f 44.06%, #ecb95f 70%, #ecb95f 100%);
+    }
+
+    #inventory #inventory-tooltip .title.exotic {
+        background-image: linear-gradient(90deg, #65f4d0 0.01%, #4e75b8 21.88%, #65f4d0 44.06%, #4e75b8 70%, #65f4d0 100%);
+    }
+
+    #inventory #inventory-tooltip .title.divine {
+        background-image: linear-gradient(90deg, #ff0000 0.01%, #cd0000 21.88%, #ff3d3d 44.06%, #cd0000 70%, #ff0000 100%);
+    }
+
+    #inventory #inventory-options {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 0.12rem;
+        background: rgba(33, 33, 33, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.425rem;
+        overflow: hidden;
+        color: #fff;
+        left: 50%;
+        top: 50%;
+        font-size: 0.8rem;
+        padding: 0.04rem;
+        opacity: 0;
+        display: none;
+        transition: opacity 0.2s;
+    }
+
+    #inventory #inventory-options .option {
+        padding: 0.5rem 0.7rem;
+        background: rgba(87, 87, 87, 0.2);
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        color: #ffffffbb;
+        transition: 0.1s;
+        cursor: pointer;
+    }
+
+    #inventory #inventory-options .option.empty {
+        cursor: default;
+    }
+
+    #inventory #inventory-options .option:hover {
+        background: rgba(87, 87, 87, 0.4);
+        color: #ffffff;
+    }
+
+    #inventory #inventory-options .option:first-child {
+        border-radius: 0.325rem 0.325rem 0 0;
+    }
+
+    #inventory #inventory-options .option:last-child {
+        border-radius: 0 0 0.325rem 0.325rem;
+    }
+
+    #inventory #inventory-options .option svg {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+
+    #inventory:has(#inventory-options.show) #inventory-tooltip {
+        display: none !important;
+    }
+
+    #inventory .status {
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        background: #ff0000;
+    }
+
+    #inventory .status.active {
+        background: #00ff00;
+    }
+
+    #inventory #accepted-timer {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #ff0000;
+        text-align: center;
+        animation: blink-danger 1.2s infinite;
+    }
+
+    #inventory #player-list {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    #inventory #player-list .player {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0.7rem;
+        background: rgba(87, 87, 87, 0.2);
+        border-radius: 0.625rem;
+        color: #ffffffbb;
+        margin-left: 0rem;
+    }
+
+    #inventory .progress {
+        width: 100%;
+        height: 0.5rem;
+        background: rgba(90, 90, 90, 0.615);
+        margin-top: 0.5rem;
+        margin-bottom: 0.2rem;
+        border-radius: 0.25rem;
+    }
+
+    #inventory .progress .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #ffab48, #fc8c5b 100%);
+        border-radius: 0.25rem;
+        transition: width 10s cubic-bezier(0.2, 0.2, 0.2, 0.2);
+        box-shadow: 0 0 1rem 0.5rem #ffaa4822;
+    }
+
+    #inventory .progress .colored-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--rarity-color), var(--rarity-color-dark) 50%, var(--rarity-color) 100%);
+        background-size: 200% 100%;
+        background-position: 0% 0;
+        border-radius: 0.25rem;
+        transition: width 10s cubic-bezier(0.2, 0.2, 0.2, 0.2);
+        box-shadow: 0 0 1rem 0.5rem color-mix(in srgb, var(--rarity-color) 20%, transparent 80%);
+        animation: gradient-progress 1s linear infinite;
+    }
+
+    #inventory .label {
+        font-size: 0.8rem;
+        color: #ffffff99;
+    }
+
+    #inventory .input {
+        padding: 0.475rem 0.5rem;
+        border-radius: 0.625rem;
+        border: none;
+        background: rgba(62, 62, 62, 0.35);
+        color: #ffffffcd;
+    }
+
+    #inventory .input::-webkit-inner-spin-button,
+    #inventory .input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    #inventory-crafting {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 28rem;
+        padding: 1rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #inventory-crafting #recipes {
+        margin-top: 1rem;
+        max-height: 20rem;
+        overflow-y: auto;
+    }
+
+    #inventory-crafting .item {
+        width: 3.5rem;
+        height: 3.5rem;
+        min-width: 3.5rem;
+        min-height: 3.5rem;
+    }
+
+    #inventory-crafting .recipe-name {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #ffffffde;
+    }
+
+    #inventory-crafting .recipe .symbol {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffffcc;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 200% 50%;
+        }
+    }
+
+    @keyframes blink-danger {
+        0% {
+            color: #ff0000;
+        }
+
+        50% {
+            color: rgb(255, 99, 99)
+        }
+
+        100% {
+            color: #ff0000;
+        }
+    }
+
+    @keyframes gradient-progress {
+        0% {
+            background-position: 0% 0%;
+        }
+
+        50% {
+            background-position: 100% 0%;
+        }
+
+        100% {
+            background-position: 200% 0%;
+        }
+    }
+</style>
+
+<div id="inventory-wrapper" class="nice-scroll">
+    <div class="top">
+        <span class="title" id="main-tab-title">Twoje przedmioty</span>
+    </div>
+
+    <div id="items-loading" class="pt-4 pb-3 d-flex justify-center align-items-center gap-2 d-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+        Wczytywanie...
+    </div>
+    
+    <div id="items-wrapper">
+        <div class="items pr-2"></div>
+    </div>
+
+    <div id="players-wrapper" class="d-none mt-2">
+        <div id="player-list"></div>
+    </div>
+
+    <div class="d-flex justify-center mt-3">
+        <div class="categories"></div>
+    </div>
+
+    <div id="trade-wrapper" class="d-none">
+        <div id="your-offer-wrapper">
+            <div class="top mt-2">
+                <span class="title">Twoja oferta</span>
+            </div>
+            
+            <div class="items items-small pr-2">elo</div>
+        </div>
+    
+        <div id="their-offer-wrapper">
+            <div class="top mt-2">
+                <span class="title"></span>
+            </div>
+            
+            <div class="items items-small pr-2"></div>
+        </div>
+
+        <div class="d-flex justify-between align-items-center mt-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="status"></div>
+                <span id="trade-1"></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span id="trade-2"></span>
+                <div class="status"></div>
+            </div>
+        </div>
+
+        <div id="accepted-timer" class="mt-2 d-none">
+            Finalizacja wymiany za 14 sekund...
+        </div>
+
+        <div class="d-flex justify-center gap-2 align-items-center mt-2">
+            <div class="flat-button flat-button-small" onclick="inventory_acceptTrading()" id="accept-button">Zatwierdź</div>
+            <div class="flat-button flat-button-small" onclick="inventory_cancelTrading()">Anuluj</div>
+        </div>
+    </div>
+</div>
+
+<div id="inventory-crafting" class="nice-scroll">
+    <div class="top">
+        <span class="title">Crafting</span>
+    </div>
+
+    <div id="crafting-loading" class="pt-4 pb-3 d-flex justify-center align-items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+        Wczytywanie...
+    </div>
+
+    <div id="recipes" class="d-flex flex-column gap-3 pr-2"></div>
+
+    <div class="d-flex justify-center mt-3">
+        <div class="categories"></div>
+    </div>
+</div>
+
+<style>
+    #inventory-shops {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        color: #fff;
+        width: 30rem;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #inventory-shops .title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #ffffffee;
+    }
+
+    #inventory-shops .small-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #ffffffaa;
+    }
+
+    #inventory-shops .item-list {
+        max-height: 14rem;
+        overflow-y: auto;
+    }
+
+    #inventory-shops .item {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    #inventory-shops .row {
+        background: rgba(87, 87, 87, 0.1);
+        border-radius: 0.625rem;
+        padding-right: 0.5rem;
+        transition: 0.2s background;
+    }
+
+    #inventory-shops .row:has(.item):hover {
+        background: rgba(87, 87, 87, 0.2);
+    }
+
+    #inventory-shops .details-wrapper .details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s, 0.2s margin-top;
+    }
+
+    #inventory-shops .details-wrapper summary {
+        cursor: pointer;
+    }
+
+    #inventory-shops .details-wrapper .arrow {
+        width: 1rem;
+        height: 1rem;
+        transition: 0.2s transform;
+    }
+    #inventory-shops .details-wrapper:has(.active) .arrow {
+        transform: rotate(90deg);
+    }
+
+    #inventory-shops .details-wrapper .details.active {
+        margin-top: 0.5rem;
+    }
+</style>
+
+<div id="inventory-shops" class="d-none nice-scroll">
+    <div class="d-flex flex-column">
+        <div class="title" id="shop-title"></div>
+        <div class="small-title" id="shop-description"></div>
+    </div>
+
+    <div class="small-title mt-3 mb-1">Sklep</div>
+    <div id="shop-items" class="item-list d-flex flex-column gap-2 pr-2"></div>
+
+    <div class="small-title mt-3 mb-1">Wybrane przedmioty</div>
+    <div id="selected-items" class="item-list d-flex flex-column gap-2 pr-2"></div>
+
+    <div class="d-flex justify-end mt-2">
+        <div class="label" id="total-price"></div>
+    </div>
+
+    <div class="mt-1 d-flex justify-center gap-1">
+        <div class="flat-button flat-button-small" onclick="inventory_buySelectedItems(this)">Potwierdź</div>
+        <div class="flat-button flat-button-small" onclick="inventory_setShopVisible(false)">Anuluj</div>
+    </div>
+</div>
+
+<div id="inventory-options"></div>
+<div id="inventory-tooltip">
+    <div class="title"></div>
+    <div class="description"></div>
+</div>
+
+<script>
+    window.inventory_icons = {
+        star: `<svg height="800px" width="800px" version="1.1" viewBox="0 0 47.94 47.94" xml:space="preserve">
+            <path fill="currentColor" d="M26.285,2.486l5.407,10.956c0.376,0.762,1.103,1.29,1.944,1.412l12.091,1.757 c2.118,0.308,2.963,2.91,1.431,4.403l-8.749,8.528c-0.608,0.593-0.886,1.448-0.742,2.285l2.065,12.042 c0.362,2.109-1.852,3.717-3.746,2.722l-10.814-5.685c-0.752-0.395-1.651-0.395-2.403,0l-10.814,5.685 c-1.894,0.996-4.108-0.613-3.746-2.722l2.065-12.042c0.144-0.837-0.134-1.692-0.742-2.285l-8.749-8.528 c-1.532-1.494-0.687-4.096,1.431-4.403l12.091-1.757c0.841-0.122,1.568-0.65,1.944-1.412l5.407-10.956 C22.602,0.567,25.338,0.567,26.285,2.486z"/>
+        </svg>`,
+        food: `<svg width="266" height="265" viewBox="0 0 266 265" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5024 162L163.002 2.99985C153.169 -0.666812 128.702 -3.70015 109.502 13.4999C90.3024 30.6999 31.5024 87 12.0024 111C-7.4976 135 4.5024 162 4.5024 162ZM82.5011 226.5C80.5011 237.3 85.3345 248.333 88.0011 252.5C75.9998 264.5 33.5014 273.5 11.0015 240.5C-6.99855 214.1 5.50145 185.833 14.0015 175C60.1681 129 156.501 32.8 172.501 16C192.501 -5.00002 241.001 -6.50002 257.501 26.5C270.701 52.9 260.335 77.5001 253.501 86.5001C250.668 84.3334 242.601 80.1001 233.001 80.5001C221.001 81.0001 214.001 84.5001 206.001 91.5001C198.001 98.5001 112.001 185.5 101.501 196.5C100.822 197.212 100.162 197.9 99.5198 198.57L99.5136 198.576C90.2373 208.248 84.8389 213.876 82.5011 226.5ZM216.002 103.5L105.502 213C94.2001 224.2 96.4598 236 99.0024 240.5C102.669 247.667 115.402 262.4 137.002 264C158.602 265.6 173.669 255.667 178.502 250.5L248.002 180.5C252.669 177.833 262.602 166.8 265.002 144C268.002 115.5 245.002 96.4999 233.502 96.4999C224.302 96.4999 218.002 101.167 216.002 103.5ZM222.157 44.1569C225.281 41.0327 225.281 35.9673 222.157 32.8431C219.033 29.719 213.967 29.719 210.843 32.8431C208.61 35.076 206.816 35.1437 200.832 34.942C194.889 34.7417 186.103 34.583 177.843 42.8431C169.65 51.0363 169.746 60.0488 169.811 66.0718L169.813 66.2717C169.877 72.37 169.731 74.955 166.843 77.8431C165.292 79.3945 164.182 79.7365 163.251 79.8695C161.865 80.0676 160.383 79.8884 157.316 79.5007C154.629 79.1609 150.683 78.669 146.4 79.5209C141.847 80.4266 137.486 82.7003 133.343 86.8431C129.199 90.9871 126.901 95.3671 125.79 99.8472C124.736 104.096 124.849 108.126 124.941 111.065C125.139 117.317 125.114 119.573 122.343 122.343C119.641 125.045 117.333 125.143 111.992 124.603C111.695 124.573 111.38 124.539 111.049 124.503L111.047 124.503C105.97 123.951 97.1902 122.996 89.8431 130.343C83.0809 137.105 82.7306 145.623 82.5057 151.093L82.5056 151.096C82.4866 151.556 82.4686 151.995 82.4476 152.409C82.1506 158.29 81.591 162.095 77.8431 165.843C75.9112 167.775 74.8266 167.732 68.7603 167.105C65.9751 166.817 62.0468 166.464 57.7763 167.42C53.2873 168.424 48.9584 170.727 44.8425 174.843C40.223 179.463 38.4466 185.006 38.0302 189.736C37.625 194.337 38.4568 198.548 39.5234 201.348C41.0963 205.477 45.7185 207.549 49.8473 205.976C53.9761 204.403 56.0481 199.781 54.4752 195.652C54.2085 194.952 53.7903 193.163 53.9685 191.139C54.1354 189.244 54.7756 187.537 56.1562 186.157C58.2903 184.023 59.9615 183.326 61.2694 183.034C62.796 182.692 64.4616 182.746 67.114 183.02C67.4455 183.054 67.7978 183.094 68.169 183.137C73.1817 183.706 81.645 184.669 89.1568 177.157C97.409 168.905 98.0993 159.71 98.4273 153.216C98.7828 146.177 98.9895 143.824 101.157 141.657C102.83 139.984 104.128 139.889 110.383 140.522C116.166 141.107 125.359 141.955 133.657 133.657C141.478 125.836 141.166 117.098 140.963 111.424C140.953 111.127 140.942 110.839 140.933 110.56C140.839 107.562 140.858 105.56 141.319 103.7C141.723 102.07 142.551 100.263 144.657 98.1569C146.764 96.0497 148.341 95.4484 149.522 95.2135C150.973 94.9247 152.559 95.0266 155.309 95.3743C155.507 95.3994 155.716 95.4266 155.935 95.4551C158.327 95.7667 161.874 96.2287 165.514 95.7087C169.943 95.076 174.208 93.1054 178.157 89.1569C185.998 81.316 185.89 72.4912 185.819 66.6935C185.816 66.4931 185.814 66.2963 185.812 66.1033C185.75 60.2506 185.941 57.3725 189.157 54.1569C192.397 50.917 195.111 50.7583 200.293 50.933C200.575 50.9425 200.868 50.9539 201.172 50.9658L201.173 50.9658C206.413 51.1701 214.816 51.4978 222.157 44.1569Z" fill="currentColor" />
+        </svg>`,
+        weapon: `<svg width="90" height="60" viewBox="0 0 90 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M89.5 6.8H88.5V1.8L87.7 0.5H82.3L81.6 1.7H24.7H19.5C18.2 1.7 17.2 1.6 17.2 1.6L11.1 1C10.1 1 9.3 1.8 9.3 2.8C9.3 3.1 9.4 3.3 9.5 3.6V3.7C9.6 3.8 9.6 3.9 9.7 4C9.7 4 11 5.2 11.6 6.4C11.6 6.5 11.8 7.1 11.1 7.9L6.1 14C4.6 15.9 3.5 16.4 2.9 16.5C2.9 16.5 2.6 16.6 2.6 17.2V20.5C2.6 20.7 2.7 21 3.4 21H4.5C6.3 21 13.3 21.7 9.5 28.8L5 37C3.2 40.5 0 48.5 0 55.1V57.5C0 57.8 0.1 59.7 2.4 59.7H26.5C28.1 59.7 27.9 58.5 27.9 58.5V54.2C27.9 53.1 28.1 51.8 28.3 50.5C29.2 46.6 31.3 41.7 33.1 38.1C34.9 35.2 37.4 34.3 39.2 34.1H48.7C48.8 34.1 51 34.1 53.3 33C55.5 32 58.1 29.7 58.1 25V23C58.1 21.5 59.3 21.3 59.7 21.3H83H86.6H87.8L88.3 17.4L88.5 15.6H89.5C89.7 15.6 89.9 13.6 89.9 11.2C89.8 8.8 89.7 6.8 89.5 6.8ZM54.8 24.9C54.8 30.5 49.2 30.7 48.6 30.7H42.4C39.1 30.5 38.8 28.2 38.7 27.6C38.7 27.5 38.7 27.5 38.7 27.4C38.7 24.7 40.8 23.1 42.7 22.3C42.9 22.7 43.1 23.2 43.2 23.7C44 25.9 45.6 27.1 47.1 27.9C48.6 28.8 48.7 28.2 48.6 28C48.6 27.7 47.7 26.7 47.7 26.7C46.1 24.7 45.7 22.5 45.6 21.2C45.7 21.2 45.7 21.2 45.7 21.2H53.2C53.5 21.2 54.8 21.4 54.8 22.9C54.8 22.9 54.8 22.9 54.8 23V24.9Z" fill="currentColor" />
+        </svg>`,
+        target: `<svg height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 487.715 487.715" xml:space="preserve">
+            <path fill="currentColor" d="M208.295,444.942v42.773h73.157v-43.138c82.968-15.444,148.265-81.026,163.303-164.14h41.943 v-73.157h-41.943c-15.038-83.115-80.335-148.688-163.303-164.14V0h-73.157v42.773C124.359,57.526,58.119,123.489,42.96,207.279 H1.016v73.157H42.96C58.119,364.225,124.359,430.189,208.295,444.942z M243.857,96.527c81.237,0,147.33,66.093,147.33,147.33 s-66.093,147.33-147.33,147.33s-147.33-66.093-147.33-147.33S162.62,96.527,243.857,96.527z"/>
+        </svg>`,
+        close: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M70.5 19L18 71.5M18 19L70.5 71.5" stroke="currentColor" stroke-width="16" stroke-linecap="round" />
+        </svg>`,
+        add: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M81.3731 45.2501H7.12689M44.25 8.12695V82.3732" stroke="currentColor" stroke-width="16" stroke-linecap="round" />
+        </svg>`,
+        trade: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M77.5 27H10M10 27L27 10M10 27L27 44M77.5 62H10M77.5 62L60.5 45M77.5 62L60.5 79" stroke="currentColor" stroke-width="11" stroke-linecap="round" />
+        </svg>`,
+        fish: `<svg width="266" height="265" viewBox="0 0 266 265" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M199.879 35.0549C193.311 25.2108 189.521 16.0444 187.541 10.2966C220.497 -1.7734 252.999 -0.985921 266.306 0.0260336C266.896 7.78105 267.416 22.0442 265.376 39.0147C264.042 50.0837 261.455 63.4338 256.538 77.2705C232.606 69.7394 213.563 55.5528 199.879 35.0549ZM234.126 23.7942L221.957 11.631L209.789 23.7942L221.957 35.9626L234.126 23.7942Z" fill="currentColor" />
+            <path d="M103.5 61.5C89.5005 88 83.3337 108 84.0004 118.5C52.4006 112.5 46.4995 89 46.5 74C73.5 18 112 6 162.5 3C152.667 7.66667 119.683 30.8686 103.5 61.5Z" fill="currentColor" />
+            <path d="M57.3012 207.37C42.9448 211.947 24.1645 210.968 0.171867 197.509C24.6728 149.207 59.3188 152.302 79.6855 159.723C82.748 160.839 85.488 162.059 87.8234 163.207C92.018 165.28 94.9003 167.15 95.994 167.894C95.9721 147.489 97.908 128.676 101.747 111.837C111.728 68.0407 134.742 36.4571 170.143 17.9555C170.525 17.7529 170.903 17.556 171.28 17.3649L172.418 16.7686C172.423 16.7738 172.423 16.7847 172.423 16.7904C174.807 23.4788 178.975 33.1426 185.822 43.5393C196.662 59.9956 216.487 81.4123 250.192 92.4594C245.215 102.747 238.757 112.941 230.383 122.32C201.77 154.374 157.219 170.502 97.8476 170.322C98.9522 172.093 100.582 174.905 102.261 178.514C103.371 180.904 104.509 183.644 105.531 186.663C112.493 207.215 114.15 240.653 67.1551 264.497C53.6971 240.507 52.718 221.726 57.3012 207.37Z" fill="currentColor" />
+        </svg>`,
+        craft: `<svg width="89" height="89" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M45.4342 4.37999C42.9883 4.64479 40.7863 5.0838 38.3613 5.7876C37.3648 6.0733 37.2115 6.14298 36.9537 6.41475C36.4032 6.99312 36.4241 7.80841 37.0025 8.36588C37.2533 8.6028 37.3927 8.67249 37.7969 8.76308C38.431 8.90941 38.5773 8.90244 39.316 8.72823C40.1661 8.52615 41.9221 8.56796 43.0649 8.82579C46.3331 9.56443 49.6152 11.3274 51.9774 13.613C53.7195 15.3063 54.6254 16.9021 54.716 18.47C54.7648 19.2853 54.6672 19.8079 54.3118 20.5605C53.9077 21.3967 53.8101 21.9472 53.8519 23.09C53.8798 23.8425 53.9216 24.1422 54.0679 24.5882L54.2491 25.1456L48.1936 31.2011L42.1312 37.2636L41.4134 36.6016C38.8839 34.2811 33.2047 28.8458 33.2047 28.7413C33.2047 28.6716 33.372 27.8633 33.581 26.9504C35.5322 18.3933 35.8666 16.8463 35.8318 16.5676C35.8179 16.4004 35.7203 16.1286 35.6228 15.9614C35.4555 15.6826 34.7796 15.2297 27.6161 10.6167C23.3097 7.83629 19.6235 5.48099 19.4144 5.37647C18.9824 5.15348 18.5852 5.12561 18.181 5.29285C17.8744 5.41828 13.4774 9.74561 13.1359 10.2543C12.8851 10.6306 12.8154 11.0208 12.9269 11.4389C13.0105 11.7386 13.3589 12.1148 17.4493 16.2262L21.8882 20.6859L21.2331 22.9854C20.8708 24.2467 20.5502 25.2989 20.5154 25.3198C20.4806 25.3407 19.4353 25.6543 18.181 26.0097L15.9024 26.6578L11.5402 22.3025C8.6344 19.4037 7.08046 17.8986 6.88534 17.801C6.53693 17.6268 6.07702 17.6129 5.7077 17.7662C5.51955 17.8428 4.77394 18.5396 3.28969 20.01C2.11204 21.1876 1.05982 22.2677 0.962262 22.421C0.71837 22.7694 0.655655 23.4384 0.836832 23.7938C0.955293 24.0168 10.697 38.0858 11.4078 39.0614C11.798 39.591 12.1673 39.814 12.6412 39.814C12.8084 39.814 15.5749 39.3123 18.7942 38.699C24.5292 37.605 24.6476 37.5841 24.7591 37.7165C24.8288 37.7932 26.1737 39.2356 27.7625 40.9219C29.3443 42.6083 30.6892 44.0507 30.7379 44.1204C30.8216 44.2458 30.724 44.3573 29.63 45.4374C28.968 46.0924 22.9752 51.8553 16.3065 58.2452C9.63784 64.6352 3.97955 70.0914 3.74263 70.3631C2.11204 72.1819 1.97964 74.1957 3.35937 76.2793C3.81231 76.9622 10.0211 83.2197 10.7528 83.7214C11.4357 84.1953 12.3067 84.5925 13.122 84.8015C13.7143 84.9548 13.9025 84.9757 14.669 84.9479C15.3658 84.927 15.6515 84.8852 16.1044 84.7388C16.7037 84.5367 17.3657 84.1465 17.8814 83.6866C18.0556 83.5333 23.5257 77.7844 30.0341 70.9276C36.5426 64.0638 42.1381 58.1755 42.4726 57.8411L43.0649 57.2278L43.5876 57.7783C43.8733 58.078 49.4758 64.0289 56.033 71.0042C62.5902 77.9726 68.0952 83.812 68.2624 83.9653C69.4192 85.0524 70.9522 85.8468 72.4156 86.1255C73.2657 86.2858 74.8266 86.23 75.607 86.014C78.7637 85.15 81.2026 82.4741 81.7462 79.2756C81.8367 78.767 81.8507 78.3698 81.8228 77.6869C81.7531 76.0772 81.2653 74.795 80.2061 73.4153C80.0528 73.2132 73.7186 67.1786 66.1301 60.0082C58.5416 52.8308 51.9565 46.5872 51.4966 46.1412L50.6604 45.3259L56.5487 39.4307C59.7889 36.1904 62.4578 33.5425 62.4857 33.5425C62.5135 33.5425 62.6878 33.6331 62.8689 33.7446C64.1929 34.5598 65.9211 34.7898 67.7746 34.4065C68.7851 34.1975 69.1195 34.2184 69.7676 34.525C70.3181 34.7898 71.1891 35.5981 72.0602 36.6713L72.7013 37.4587L72.4016 37.828C71.7675 38.6084 71.4609 39.5352 71.4609 40.678C71.4609 41.5421 71.5933 42.0996 71.9835 42.9149C73.3981 45.8555 77.1261 46.8799 79.5442 45.0054C79.7532 44.8381 81.342 43.2842 83.0701 41.5421C86.1641 38.4342 86.2198 38.3785 86.5055 37.7932C86.8888 36.9988 87.0003 36.511 87.0003 35.6608C87.0003 34.7898 86.833 34.093 86.4428 33.3404C85.746 32.0025 84.6171 31.0548 83.1677 30.6018C82.7496 30.4764 82.4918 30.4416 81.8437 30.4416C81.3908 30.4416 80.8751 30.4834 80.6661 30.5391L80.2828 30.6367L80.1156 30.4346C80.025 30.3231 79.7532 29.9329 79.5093 29.5636C79.0633 28.8946 78.8613 28.5044 77.9484 26.5045C76.9659 24.3582 75.5931 22.4071 73.5862 20.3026C70.8407 17.4247 63.4334 9.94072 62.7923 9.40416C59.4545 6.60289 55.9703 5.06986 51.5315 4.44271C50.4444 4.28941 46.6118 4.2476 45.4342 4.37999ZM74.6315 76.9831C75.2447 77.2618 75.5722 77.7775 75.5722 78.4534C75.5722 79.0875 75.2586 79.6171 74.729 79.8889C73.6211 80.4463 72.3459 79.6798 72.3459 78.4534C72.3459 77.2548 73.5514 76.4744 74.6315 76.9831Z" fill="currentColor" />
+        </svg>`,
+        furniture: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" data-name="glyph">
+            <path d="m59.91513 27.79185a5.80619 5.80619 0 0 0 -5.531-4.79087c-3.62066-.11006-5.471 3.13053-5.9411 4.81089l-2.33045 6.94129c-3.13058-1.22026-9.22166-1.70033-14.15258-1.89037-3.88584.08843-11.88565.82122-14.07258 1.88048l-2.31042-6.8814c-.49008-1.73036-2.36048-4.95093-5.96112-4.86088a5.803 5.803 0 0 0 .29 11.60211l3.86076 10.512a4.17526 4.17526 0 0 0 4.38084 2.66039c8.11155.00118 19.59305-.00073 27.705.00007a4.18157 4.18157 0 0 0 4.38084-2.65056l3.86079-10.5219a5.84646 5.84646 0 0 0 5.82102-6.81125z" fill="currentColor" />
+            <path d="m39.2213 49.77589 1.32026 3.62067a2.237 2.237 0 0 0 2.10042 1.4703h1.0102a2.23246 2.23246 0 0 0 2.23039-2.23046v-2.86051c-1.10291-.00123-6.66127 0-6.66127 0z" fill="currentColor" />
+            <path d="m18.11743 49.77589v2.86051a2.23246 2.23246 0 0 0 2.23039 2.23046h1.01018a2.21582 2.21582 0 0 0 2.0804-1.46029l1.34028-3.63068c-1.14668-.00056-6.66125 0-6.66125 0z" fill="currentColor" />
+            <path d="m17.48731 27.27173 1.6803 4.99092c2.82036-.773 9.29685-1.30375 12.86242-1.40018a66.708 66.708 0 0 1 12.80236 1.41019l1.70032-5.05092c.89095-3.551 5.35776-7.967 10.80207-5.56091-3.64378-11.59237-17.71428-17.24058-26.03513-7.6913a13.48013 13.48013 0 0 1 -3.56047 3.07037c-1.79029 1.40025-5.421.66006-6.59116.29-2.83054-1.19022-5.341-1.3302-7.4614-.41a7.66732 7.66732 0 0 0 -3.93073 4.08076c4.04398-.21149 7.14121 3.76821 7.73142 6.27107z" fill="currentColor" />
+        </svg>`,
+        vehicle: `<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23">
+            <path d="M23.5 7c.276 0 .5.224.5.5v.511c0 .793-.926.989-1.616.989l-1.086-2h2.202zm-1.441 3.506c.639 1.186.946 2.252.946 3.666 0 1.37-.397 2.533-1.005 3.981v1.847c0 .552-.448 1-1 1h-1.5c-.552 0-1-.448-1-1v-1h-13v1c0 .552-.448 1-1 1h-1.5c-.552 0-1-.448-1-1v-1.847c-.608-1.448-1.005-2.611-1.005-3.981 0-1.414.307-2.48.946-3.666.829-1.537 1.851-3.453 2.93-5.252.828-1.382 1.262-1.707 2.278-1.889 1.532-.275 2.918-.365 4.851-.365s3.319.09 4.851.365c1.016.182 1.45.507 2.278 1.889 1.079 1.799 2.101 3.715 2.93 5.252zm-16.059 2.994c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5zm10 1c0-.276-.224-.5-.5-.5h-7c-.276 0-.5.224-.5.5s.224.5.5.5h7c.276 0 .5-.224.5-.5zm2.941-5.527s-.74-1.826-1.631-3.142c-.202-.298-.515-.502-.869-.566-1.511-.272-2.835-.359-4.441-.359s-2.93.087-4.441.359c-.354.063-.667.267-.869.566-.891 1.315-1.631 3.142-1.631 3.142 1.64.313 4.309.497 6.941.497s5.301-.184 6.941-.497zm2.059 4.527c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5zm-18.298-6.5h-2.202c-.276 0-.5.224-.5.5v.511c0 .793.926.989 1.616.989l1.086-2z" fill="currentColor"/>
+        </svg>`
+    };
+
+    addEvent('inventory', 'mousedown', (event) => {
+        if (!event.target.closest('#inventory-options'))
+            inventory_hideOptions();
+    });
+
+    addEvent('inventory', 'interface:data:itemsData', (data) => {
+        data = data[0];
+
+        inventory_itemsData = data;
+        inventory_renderCrafting();
+        inventory_renderShopItems();
+    });
+
+    addEvent('inventory', 'interface:data:trading', (data) => {
+        if (!data) {
+            inventory_hideTrading();
+            return;
+        }
+
+        data = data[0];
+
+        inventory_renderCategories();
+        inventory_renderItems();
+        inventory_showTrade();
+        inventory_updateTrade();
+
+        document.querySelector('#inventory #their-offer-wrapper .title').textContent = `Oferta gracza ${data.otherName}`;
+        document.querySelector('#inventory #trade-1').textContent = data.myName;
+        document.querySelector('#inventory #trade-2').textContent = data.otherName;
+    });
+
+    addEvent('inventory', 'play-animation', async (appear) => {
+        if (!appear) {
+            inventory_toggleCrafting(false);
+            inventory_setShopVisible(false);
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#inventory #inventory-wrapper').style.opacity = appear ? '1' : '0';
+        document.querySelector('#inventory #inventory-wrapper').style.transform = appear ? 'translateY(-50%)' : 'translateY(-50%) scale(0.8)';
+    
+        if (appear) {
+            inventory_showIntro();
+        } else {
+            intro_hideIntro('inventory');
+            intro_hideIntro('inventory-shops');
+        }
+    });
+
+    async function loadIncludes() {
+        let tasks = [];
+
+        tasks.push(include('/m-inventory/data/trade.js'));
+        tasks.push(include('/m-inventory/data/player-list.js'));
+        tasks.push(include('/m-inventory/data/tooltip.js'));
+        tasks.push(include('/m-inventory/data/options.js'));
+        tasks.push(include('/m-inventory/data/categories.js'));
+        tasks.push(include('/m-inventory/data/items.js'));
+        tasks.push(include('/m-inventory/data/crafting.js'));
+        tasks.push(include('/m-inventory/data/shop.js'));
+
+        await Promise.all(tasks);
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        finishIncludes('inventory');
+        inventory_loadPossibleOptions();
+        inventory_renderCategories();
+        inventory_renderItems();
+        inventory_loadItems();
+        // inventory_toggleCrafting(true);
+    }
+
+    window.inventory_showIntro = () => {
+        if (intro_isIntroKnown('inventory') || intro_isVisible()) return;
+
+        intro_startIntro('inventory', [
+            {
+                title: 'Ekwipunek',
+                content: 'Tutaj znajdziesz wszystkie swoje przedmioty',
+                element: document.querySelector('#inventory #inventory-wrapper'),
+            },
+            // categories
+            {
+                title: 'Kategorie',
+                content: 'W tym miejscu znajdziesz kategorie przedmiotów',
+                element: document.querySelector('#inventory .categories'),
+            },
+            // trade
+            {
+                title: 'Handel',
+                content: 'W kategorii handlu możesz wymieniać się przedmiotami z innymi graczami',
+                element: document.querySelector('#inventory #inventory-wrapper'),
+                onShow: async () => {
+                    inventory_goToCategory('trade');
+                },
+            },
+            // crafting
+            {
+                title: 'Crafting',
+                content: 'W kategorii crafting możesz tworzyć przedmioty z innych',
+                element: document.querySelector('#inventory #inventory-crafting'),
+                onShow: async () => {
+                    inventory_setShopVisible(false);
+                    if (!inventory_isCraftingOpen()) {
+                        inventory_goToCategory('craft');
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                },
+            },
+        ]);
+    }
+
+    window.inventory_showShopsIntro = () => {
+        if (intro_isIntroKnown('inventory-shops') || intro_isVisible()) return;     
+
+        intro_startIntro('inventory-shops', [
+            {
+                title: 'Sklepy',
+                content: 'Znajdujesz się w sklepie, tutaj możesz kupować przedmioty których potrzebujesz',
+                element: document.querySelector('#inventory #inventory-shops'),
+            },
+            // categories
+            {
+                title: 'Kategorie',
+                content: 'W tym miejscu znajdziesz kategorie przedmiotów',
+                condition: () => {
+                    let categories = inventory_shop_getCategories();
+                    return categories.length > 1;
+                },
+                element: document.querySelector('#inventory #shop-items'),
+            },
+            // categories
+            {
+                title: 'Przedmioty',
+                content: 'Po otwarciu kategorii znajdziesz przedmioty które możesz kupić lub sprzedać',
+                condition: () => {
+                    let categories = inventory_shop_getCategories();
+                    return categories.length > 1;
+                },
+                onShow: async () => {
+                    let element = document.querySelector('#inventory #shop-items .details-wrapper');
+                    let isOpen = element.querySelector('.details').classList.contains('active');
+                    if (!isOpen) {
+                        element.querySelector('summary').click();
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                },
+                element: document.querySelector('#inventory #shop-items .details'),
+            },
+            // default items
+            {
+                title: 'Przedmioty',
+                content: 'Tutaj znajdziesz przedmioty które możesz kupić lub sprzedać',
+                condition: () => {
+                    let categories = inventory_shop_getCategories();
+                    return categories.length == 1;
+                },
+                element: document.querySelector('#inventory #shop-items'),
+            },
+            // price
+            {
+                title: 'Cena',
+                content: 'Po dodaniu przedmiotu do koszyka zobaczysz jego poniżej',
+                element: document.querySelector('#inventory #total-price'),
+            },
+        ]);
+    }
+
+    loadIncludes();
+</script>

@@ -1,0 +1,14 @@
+<meta>
+    <script src='shared.lua' type='shared' cache='false'/>
+    
+    <script src='client/main.lua' type='client' cache='false'/>
+    <script src='client/putup.lua' type='client' cache='false'/>
+    <script src='client/offer.lua' type='client' cache='false'/>
+    
+    <script src='server/main.lua' type='server'/>
+
+    <file src='data/putup.html'/>
+    <file src='data/offer.html'/>
+
+    <min_mta_version server='1.5.8' client='1.5.8'/>
+</meta>

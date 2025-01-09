@@ -1,0 +1,518 @@
+<style>
+    #helper #helper-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: rgba(26, 26, 26, 0.9);
+        border: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        border-radius: 0.625rem;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        width: 51rem;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    #helper .top {
+        background: rgba(34, 34, 34, 0.5);
+        padding: 0.6rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 0.625rem 0.625rem 0 0;
+    }
+
+    #helper .logo {
+        display: flex;
+        text-wrap: nowrap;
+        gap: 0.313rem;
+        width: 15rem;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 400;
+    }
+
+    #helper .gradient-text {
+        margin-left: 0.213rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffab48 0.01%, #ffb762 21.88%, #fc8c5b 44.06%, #dc604f 70%, #ffab48 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient 3s linear infinite;
+    }
+    
+    #helper .text-glow {
+        filter: blur(1.275rem);
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    #helper .text-glow-bit {
+        filter: blur(1.25rem);
+        position: absolute;
+        opacity: 1;
+        transform: translateX(-100%);
+    }
+    
+    #helper .level-box {
+        background: linear-gradient(270deg, #333 50%, #2d2d2d 50%);
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #eef2ef;
+        width: 2.2rem;
+        height: 2.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #helper .level {
+        color: #eef2efde;
+        font-size: 1rem;
+    }
+
+    #helper .next-level-xp {
+        font-size: 1rem;
+        color: #eef2ef;
+    }
+
+    #helper .next-level {
+        font-size: 0.8rem;
+        color: #eef2efd4;
+    }
+
+    #helper .progress-bar {
+        background: rgba(255, 255, 255, 0.1);
+        width: 100%;
+        position: relative;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        height: 0.375rem;
+        background: rgba(58, 58, 58, 0.7);
+    }
+
+    #helper .progress {
+        border-radius: 0.5rem;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(252, 166, 74, 0.8) 0%, rgba(233, 125, 76, 0.8) 57.81%, rgba(221, 100, 77, 0.8) 100%);
+        box-shadow: 0px 0px 1.325rem #ffab4a6b;
+    }
+
+    #helper .bottom {
+        border-radius: 0 0 0.625rem 0.625rem;
+        display: flex;
+        height: 25rem;
+        overflow: hidden;
+    }
+
+    #helper .list {
+        background: rgba(34, 34, 34, 0.5);
+        border-radius: 0 0 0 0.625rem;
+        width: 15rem;
+        min-width: 15rem;
+        max-width: 15rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    #helper .item {
+        padding: 0.9rem;
+        background: rgba(34, 34, 34, 0.5);
+        border-bottom: 0.0625rem solid rgba(54, 54, 54, 0.45);
+        color: #ffffffb1;
+    }
+
+    #helper .item:last-child {
+        border-bottom: none;
+    }
+
+    #helper .item:hover {
+        background: rgba(36, 36, 36, 0.8);
+    }
+
+    #helper .item.active {
+        background: rgba(44, 44, 44, 0.8);
+        color: #fff;
+    }
+
+    #helper #view {
+        padding: 1rem;
+        flex-grow: 1;
+    }
+
+    #helper .tab {
+        display: none;
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        color: #ffffffcc;
+        font-size: 0.95rem;
+    }
+
+    #helper .tab h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+        margin-top: 0;
+        color: #fff;
+    }
+
+    #helper .tab p {
+        margin-top: 0rem;
+        margin-bottom: 1rem;
+    }
+
+    #helper .tab a {
+        color: #ffab48;
+        text-decoration: none;
+        text-shadow: 0px 0px 1rem #ffab4aaa;
+    }
+
+    #helper .tab a:hover {
+        text-decoration: underline;
+    }
+
+    #helper .tab.active {
+        display: block;
+    }
+
+    #helper ::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    #helper #map-1 {
+        height: 10rem;
+    }
+
+    #helper #map-2 {
+        height: 10rem;
+    }
+
+    #helper #updates-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #helper #updates-list .item {
+        padding: 0.5rem;
+        background: rgba(34, 34, 34, 0.5);
+        border-radius: 0.5rem;
+        display: flex;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #helper #updates-list .item .update-image {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 0.5rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-height: 30rem;
+        z-index: -1;
+    }
+
+    #helper #updates-list .item .title {
+        font-size: 1.1rem;
+        color: #ffffffcc;
+        font-weight: 600;
+    }
+
+    #helper #updates-list .item .description {
+        font-size: 0.9rem;
+    }
+
+    #helper .blip {
+        width: 2.375rem !important;
+        height: 2.375rem !important;
+    }
+
+    #helper .blip:hover {
+        width: 2.75rem !important;
+        height: 2.75rem !important;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 200% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+<div id="helper-wrapper" class="nice-scroll">
+    <div class="top gap-2">
+        <div class="d-flex gap-1 logo">
+            <img src="/m-login/data/logo.png" style="width: 3rem;"/>
+            <span>
+                <span>district</span><span class="text-glow-bit">district</span><span class="gradient-text">MTA</span>
+                <span class="gradient-text text-glow">MTA</span>
+            </span>
+        </div>
+        <div class="d-flex flex-column flex-grow-1">
+            <div class="d-flex justify-between align-items-center w-100">
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="level-box">25</div>
+                    <div class="level">Poziom</div>
+                </div>
+                <div class="d-flex flex-column text-end">
+                    <span class="next-level-xp">305 xp</span>
+                    <span class="next-level">Następny poziom</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" style="width: 67%;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom d-flex">
+        <div class="list d-flex flex-column">
+            <div class="item active" data-tab="server" onclick="helper_changeTab()">Serwer</div>
+            <div class="item" data-tab="start" onclick="helper_changeTab()">Jak zacząć?</div>
+            <div class="item" data-tab="test" onclick="helper_changeTab()">Zarobki</div>
+            <div class="item" data-tab="premium" onclick="helper_changeTab()">Premium</div>
+            <div class="item" data-tab="updates" onclick="helper_changeTab()">Aktualizacje</div>
+        </div>
+        <div id="view">
+            <div class="tab active" data-tab="server">
+                <h2>Serwer</h2>
+                <p>districtMTA to serwer tworzony od graczy dla graczy który ma na celu wyeksponować całe piękno serwerów, między innymi poprzez innowacyjne rozwiązania czyt. Skrypty które ulepszają grę. Dobra jak już dowiedziałeś się o informacjach serwerach to teraz czas przejść do tego od czego warto zacząć.</p>
+                <p>Pamiętaj! są to informacje które podajamy jako PORADA bo głównym celem jest abyście toczyli własne drogi.</p>
+            </div>
+            <div class="tab" data-tab="start">
+                <h2>Prawo jazdy</h2>
+                <p>Warto najpierw zdać egzamin na prawo jazdy. Możesz znaleźć lokalizacje <a href="#" onclick="helper_focusMapBlip('driving-school')">ośrodków szkoleniowych</a> na poniższej mapie. W ośrodku szkoleniowym możesz uzyskać prawo jazdy kategorii B, które jest bezpłatne. Istnieją również inne kategorie, takie jak A, C, D, które mogą być przydatne do różnych prac na serwerze. Po zdobyciu prawa jazdy możesz przejść do kolejnego kroku.</p>
+                
+                <h2>Zarobienie pierwszych pieniędzy</h2>
+                <p>Dobra jeżeli zdałeś już prawo jazdy to pora zacząć prawdziwą rozgrywke lecz pewnie zastanawias się jak dostać się do jakieś pracy, a więc przychodze z odpowiedzią na serwerze znajdują się hulajnogi są oczywiście płatne lecz w Dashboardzie możesz odebrać darmowe sianko.</p>
+                <p>Hulajnoge znajdziesz między innymi tutaj <a href="#" onclick="helper_focusMapBlip('scooter')">Hulajnogi czy też na spawnach lub w różnych popularnych miejscach</a> </p>
+                <p>Jak masz już hulajnoge to na sam start najlepiej jest udać się do pracy burgerowni w której możesz pracować sam lub ze swoim znajmomym. Praca znajduje się tutaj <a href="#" onclick="helper_focusMapBlip('job-burger')">Pracownik burgerowni</a> lub też możesz iść do pracy magazyniera która znajduje się tutaj <a href="#" onclick="helper_focusMapBlip('job-box')">Pracownik burgerowni</a>. </p> 
+
+                <h2>Zakup pierwszego pojazdu</h2>
+                <p>Gratulacje zarobiłeś swoje pierwsze pieniądze, czas kupić własną bestie którą możesz kupić w różnych miejscach w całym San Andreans lecz my zalecamy na sam start kupić samochód z najtańszego salonu który znajduje się <a href="#" onclick="helper_focusMapBlip('poor-cardealer')">Cygan</a>. </p>
+
+                <div id="map-1" class="mb-2"></div>
+            </div>
+            <div class="tab" data-tab="test">
+                <h2>Zarobki</h2>
+                <p> Na naszym serwerze zarobki są zbalansowane w taki sposób, aby gracze nie musieli poświęcać czterech dni na zdobycie najtańszego pojazdu, ani grać przez pół roku bez przerwy, by kupić super samochód. Te same zasady dotyczą tuningów mechanicznych i wizualnych, dzięki czemu koszt jednego tuningu nie przewyższy ceny dobrego samochodu. </p>
+                <p> Aktualny spis pracy to: </p>
+                <p> - Burgerownia <a href="#" onclick="helper_focusMapBlip('job-burger')"> </p>
+                <p> - Kurier <a href="#" onclick="helper_focusMapBlip('job-courier')"> </p>
+                <p> - Magazynier <a href="#" onclick="helper_focusMapBlip('job-box')"> </p>
+                <p> - Śmieciarki <a href="#" onclick="helper_focusMapBlip('job-garbage')"></a> </p>
+                <p> - Rafineria </p>
+                <p> - Opony </p>
+
+                <div id="map-2" class="mb-3"></div>
+            </div>
+            <div class="tab" data-tab="premium">
+                <h2>Premium</h2>
+                <p>Premium na serwerze daje dużo korzyści zarobkowych oraz eventowych. Posiadając premium masz aż do 25% lepszy zarobek jak i drop EXP'a który pomoże ci w dalszym rozwoju swoich planów, aut czy też posiadłości a nawet możesz spieniężyć swoje punkty premium innym graczom. Premium również też odzieli cię innym kolorem nick przez co będzie widać że jesteś premium graczem.</p>
+                <p>Chcą zakupić owe premium wejdź na strone https://forum.district-mta.pl i wejdz w kategorie sklep a tam możesz już wybrać dogodną ilość twoich punktów premium</p>
+            </div>
+            <div class="tab" data-tab="updates">
+                </div>
+                <h2>Aktualizacje</h2>
+                <p>Historia aktualizacji</p>
+
+                <div id="updates-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let startTick = new Date().getTime();
+    let startMap = [
+        {
+            x: 1110.263,
+            y: -1837.194,
+            blip: 42,
+            name: 'Ośrodek szkoleniowy',
+            id: 'driving-school'
+        },
+        {
+            x: 1206.763,
+            y: -908.107,
+            blip: 40,
+            name: 'Pracownik burgerowni',
+            id: 'job-burger'
+        },
+        {
+            x: 2141.894,
+            y: -2268.325,
+            blip: 40,
+            name: 'Kurier',
+            id: 'job-courier'
+        },
+        {
+            x: 2161.458,
+            y: -1964.054,
+            blip: 40,
+            name: 'Magazynier',
+            id: 'job-garbage'
+        },
+        {
+            x: 2618.775,
+            y: -2367.869,
+            blip: 40,
+            name: 'Magazynier',
+            id: 'job-box'
+        },
+        {
+            x: 1885.585,
+            y: -1866.281,
+            blip: 38,
+            name: 'Cygan',
+            id: 'poor-cardealer'
+        },
+        { 
+            x: 1168.036,
+            y: -1694.432,
+            blip: 42,
+            name: 'Hulajnoga',
+            id: 'scooter'
+        },
+    ];
+
+    window.helper_changeTab = () => {
+        for (const item of document.querySelectorAll('#helper .item')) {
+            item.classList.toggle('active', item === event.target);
+        }
+
+        for (const tab of document.querySelectorAll('#helper .tab')) {
+            tab.classList.toggle('active', tab.dataset.tab === event.target.dataset.tab);
+        }
+    }
+
+    window.helper_setExpToNext = (exp) => {
+        document.querySelector('#helper .next-level-xp').innerText = exp + ' xp';
+    }
+
+    window.helper_setLevel = (level) => {
+        document.querySelector('#helper .level-box').innerText = level;
+    }
+
+    window.helper_setProgress = (progress) => {
+        document.querySelector('#helper .progress').style.width = progress + '%';
+    }
+
+    window.helper_setExp = (exp) => {
+        let next = document.querySelector('#helper .next-level-xp').innerText.split(' ')[0];
+        let progress = Math.round((exp / next) * 100);
+        document.querySelector('#helper .progress').style.width = progress + '%';
+    }
+
+    window.helper_setUpdates = (updates) => {
+        let list = document.querySelector('#helper #updates-list');
+        list.innerHTML = '';
+
+        for (const update of updates) {
+            let item = document.createElement('div');
+            item.className = 'item d-flex gap-2 update';
+            item.innerHTML = `
+                <img src="/m-updates/${update.image}" class="update-image"/>
+                <div class="d-flex flex-column w-100">
+                    <div class="d-flex justify-between">
+                        <div class="title">${update.title}</div>
+                        <div class="date">${new Date(update.date * 1000).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                    </div>
+                    <div class="description">${update.description}</div>
+                </div>
+            `;
+            list.appendChild(item);
+        }
+    }
+
+    function loadStartMap() {
+        createMap({
+            element: document.querySelector('#helper #map-1'),
+            minZoom: 1.5,
+            zoom: 2.5,
+            maxZoom: 4,
+            x: 1500,
+            y: 1500,
+            limitBounds: true,
+            bounds: { x: 1400, y: 1400 },
+            texture: 'map-transparent.png?v1.01'
+        });
+
+        createMap({
+            element: document.querySelector('#helper #map-2'),
+            minZoom: 1.5,
+            zoom: 2.5,
+            maxZoom: 4,
+            x: 1500,
+            y: 1500,
+            limitBounds: true,
+            bounds: { x: 1400, y: 1400 },
+            texture: 'map-transparent.png?v1.01'
+        });
+
+        for (let blip of startMap) {
+            createMapBlip({
+                element: document.querySelector('#helper #map-1'),
+                icon: `/m-hud/data/images/blips/${blip.blip}.png?${startTick}`,
+                size: 15,
+                class: 'blip',
+                x: blip.x,
+                y: blip.y,
+                hoverTooltip: blip.name,
+            });
+        }
+    }
+
+    window.helper_focusMapBlip = (id) => {
+        let blipData = startMap.find(b => b.id === id);
+        if (!blipData) return;
+        
+        mapGoToPosition(document.querySelector('#helper #map-1'), blipData.x, blipData.y, 500);
+        mapGoToPosition(document.querySelector('#helper #map-2'), blipData.x, blipData.y, 500);
+
+        let startTab = document.querySelector('#helper .tab[data-tab="start"]');
+        startTab.scrollTo({
+            top: startTab.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+
+    addEvent('helper', 'play-animation', async (appear) => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        document.querySelector('#helper #helper-wrapper').style.opacity = appear ? '1' : '0';
+        document.querySelector('#helper #helper-wrapper').style.transform = appear ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.9)';
+    });
+
+    addEvent('helper', 'interface:data:player', (data) => {
+        data = data[0];
+        helper_setExpToNext(data.expToNext);
+        helper_setLevel(data.level);
+        helper_setExp(data.exp);
+    });
+
+    addEvent('helper', 'interface:data:updates', (data) => {
+        let updates = data[0];
+        helper_setUpdates(updates);
+    });
+
+    loadStartMap();
+</script>

@@ -1,0 +1,201 @@
+<style>
+    #notis {
+        display: inline-flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin: 0.625rem;
+        justify-content: end;
+    }
+    
+    #notis #notis-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+    
+    #notis .notification {
+        align-self: flex-end;
+        display: inline-flex;
+        flex-direction: column;
+        border-radius: 0.3125rem;
+        /* width: 23rem; */
+        max-width: 23rem;
+        background-color: red;
+        text-align: right;
+        padding: 0.625rem;
+        padding-left: 0.9rem;
+        position: relative;
+        cursor: pointer;
+    }
+
+    #notis .notification .title {
+        font-weight: 800;
+        font-size: 1.1rem;
+        margin-right: 0.525rem;
+    }
+
+    #notis .notification .description {
+        font-size: 0.84rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.75);
+        text-shadow: 0.125rem 0.125rem 0.0625rem rgba(0, 0, 0, 0.2);
+        margin-right: 0.525rem;
+    }
+
+    #notis .notification .box {
+        position: absolute;
+        top: 20%;
+        right: 0;
+        width: 0.4rem;
+        height: 60%;
+        border-radius: 0.3125rem 0 0 0.3125rem;
+    }
+
+    /* info */
+    #notis .notification.info {
+        background: linear-gradient(270deg, #323e4acc 0%, #3a3d40cc 100%);
+    }
+
+    #notis .notification.info .title {
+        color: #81c2ff;
+        text-shadow: 0 0 0.925rem #81c2ff8e;
+    }
+
+    #notis .notification.info .box {
+        background: #81c2ff;
+        box-shadow: 0 0 0.825rem 0 rgba(129, 194, 255, 0.7);
+    }
+
+    /* success */
+    #notis .notification.success {
+        background: linear-gradient(270deg, #324a34cc 0%, #3a403bcc 100%);
+    }
+
+    #notis .notification.success .title {
+        color: #c7ff81;
+        text-shadow: 0 0 0.925rem #c7ff818e;
+    }
+
+    #notis .notification.success .box {
+        background: #c7ff81;
+        box-shadow: 0 0 0.825rem 0 rgba(199, 255, 129, 0.7);
+    }
+
+    /* error */
+    #notis .notification.error {
+        background: linear-gradient(270deg, #4a3232cc 0%, #403a3acc 100%);
+    }
+
+    #notis .notification.error .title {
+        color: #ff4e4e;
+        text-shadow: 0 0 0.925rem #ff4e4e8e;
+    }
+
+    #notis .notification.error .box {
+        background: #ff4e4e;
+        box-shadow: 0 0 0.825rem 0 rgba(255, 78, 78, 0.7);
+    }
+
+    /* warning */
+    #notis .notification.warning {
+        background: linear-gradient(270deg, #53392acc 0%, #403d3acc 100%);
+    }
+
+    #notis .notification.warning .title {
+        color: #ff984e;
+        text-shadow: 0 0 0.925rem #ff984e8e;
+    }
+
+    #notis .notification.warning .box {
+        background: #ff984e;
+        box-shadow: 0 0 0.825rem 0 rgba(255, 152, 78, 0.7);
+    }
+
+    #notis .notification.appear {
+        animation: appear 0.5s;
+    }
+
+    @keyframes appear {
+        0% {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    #notis .notification.disappear {
+        animation: disappear 0.5s;
+    }
+
+    @keyframes disappear {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-1rem);
+        }
+    }
+</style>
+
+<div id="notis-wrapper"></div>
+
+<script>
+    window.notis_queue = [];
+
+    window.notis_updateQueue = () => {
+        let children = document.getElementById('notis-wrapper').children;
+        while (children.length < 5 && window.notis_queue.length > 0) {
+            let notification = window.notis_queue.shift();
+            notis_addNotification(notification[0], notification[1], notification[2], notification[3]);
+        }
+    }
+
+    function notis_removeNotificationInternal(notification) {
+        notification.remove();
+        notis_updateQueue();
+    }
+
+    function notis_removeNotification(notification) {
+        notification.classList.remove('appear');
+        notification.classList.add('disappear');
+        setTimer('notis', notis_removeNotificationInternal, 500, notification);
+    }
+
+    window.notis_addNotification = (type, title, description, time = 5000) => {
+        if (document.getElementById('notis-wrapper').children.length >= 8) {
+            window.notis_queue.push([type, title, description, time]);
+            return;
+        }
+
+        let notification = document.createElement('div');
+        notification.classList.add('notification', type, 'appear');
+        notification.onclick = () => notis_removeNotification(notification);
+        notification.innerHTML = `
+            <span class="title">${title}</span>
+            <span class="description">${description}</span>
+            <div class="box"></div>
+        `;
+
+        document.getElementById('notis-wrapper').appendChild(notification);
+        setTimer('notis', notis_removeNotification, time, notification);
+        // setTimer('notis', notis_removeNotificationInternal, time + 500, notification);
+        notis_hudVisibilityChanged();
+    }
+
+    window.notis_hudVisibilityChanged = () => {
+        let visible = isInterfaceVisible('hud') && isInterfaceLoaded('hud');
+        document.getElementById('notis').style.top = visible ? (window.jobData ? (window.jobData.coop ? '28rem' : '25rem') : '17rem') : '0';
+    }
+
+    addEvent('notis', 'interface:visible', (name, visible) => {
+        if (name == 'hud') notis_hudVisibilityChanged();
+    });
+
+    notis_hudVisibilityChanged();
+</script>

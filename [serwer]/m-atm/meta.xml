@@ -1,0 +1,9 @@
+<meta>
+    <script src='client.lua' type='client' cache='false'/>
+    <script src='shared.lua' type='shared' cache='false'/>
+    <script src='server.lua' type='server'/>
+
+    <file src='data/interface.html'/>
+
+    <export function='isPlayerInAnyColShape' type='server'/>
+</meta>
