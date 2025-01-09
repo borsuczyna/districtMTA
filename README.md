@@ -35,4 +35,13 @@ Include me in credits
 # Contributing
 Anyone is free to contribute to this project by creating a pull request.
 
+# Installation
+1. Download the latest version of the gamemode using `git clone https://github.com/borsuczyna/districtMTA .` in your server's `resources` directory or by downloading the ZIP file by clicking the green "Code" button at the top of the page.
+2. Import the SQL file to your database.
+3. Change MTA secret API key in `[serwer]/m-sockets/main.lua:L9` and inside `[bot]/Defines.cs` to your own generated key.
+4. Install dotnet https://dotnet.microsoft.com/en-us/
+5. Install ml-sockets module on your server https://wiki.multitheftauto.com/wiki/Modules/Sockets
+6. Run the bot by executing `dotnet run` in the `bot` directory.
+7. Start the server and enjoy!
+
 ### ⭐ Don't forget to star my work! ⭐
