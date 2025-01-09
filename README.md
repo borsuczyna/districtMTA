@@ -35,4 +35,4 @@ Include me in credits
 # Contributing
 Anyone is free to contribute to this project by creating a pull request.
 
-### Don't forget to star my work!
+### ⭐ Don't forget to star my work! ⭐
