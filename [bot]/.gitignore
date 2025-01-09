@@ -1,2 +1,5 @@
 obj
 bin
+js-obfuscator/node_modules
+js-obfuscator/test.js
+js-obfuscator/out.js
