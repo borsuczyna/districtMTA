@@ -30,7 +30,8 @@ It's basically **impossible** to cheat on this gamemode.
 - Mechanic system.
 
 # License
-Include me in credits
+The name "districtMTA" and its logo are protected by copyright and may not be used by third parties without my explicit permission.
+Copying, using, or modifying these elements in other projects or servers without authorization is strictly prohibited.
 
 # Contributing
 Anyone is free to contribute to this project by creating a pull request.
