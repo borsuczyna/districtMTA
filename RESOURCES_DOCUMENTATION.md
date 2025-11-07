@@ -100,10 +100,11 @@ This document provides a comprehensive overview of all resources in the district
 **Features:**
 - Multiple vehicle models per shop
 - Random vehicle properties (fuel, mileage, color, damage)
-- Quality system (affects vehicle condition)
-- Vehicle rotation system
-- Dynamic pricing
+- Quality system (affects vehicle condition - higher quality means less damage to wheels, panels, doors, and lights)
+- Vehicle rotation system with time-based inventory refresh
+- Dynamic pricing based on model and quality
 - Exit positions for test drives
+- Random spawn counts per rotation
 
 ### m-tuning
 **Description:** Vehicle customization garage
@@ -445,9 +446,13 @@ This document provides a comprehensive overview of all resources in the district
 - Surprise mechanics
 
 ### m-wh
-**Description:** Possible warehouse or special event system
+**Description:** Wallhack/X-ray vision debugging tool for admins
 **Features:**
-- Event-specific mechanics
+- Display object information through walls
+- Show resource names, model IDs, alpha values
+- Display colshape locations
+- Debug tool for map/object placement
+- Admin/developer utility
 
 ## Transportation
 
