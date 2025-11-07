@@ -378,13 +378,13 @@ Progressive crafting system with 7 quality tiers:
 - Player blips on radar
 - Team and faction indicators
 
-## 🎪 Events & Special Features
+## 🎪 Special Features
 
-### UFO Live Event
-- Special live UFO event
-- Server-wide event
-- Unique rewards
-- Community experience
+### UFO Cosmetics
+- UFO-themed cosmetic items
+- UFO hat (hovering UFO above player's head)
+- UFO traces for electric scooters
+- Exclusive seasonal/event items
 
 ### Scooter Effects
 - Visual trail effects behind electric scooters

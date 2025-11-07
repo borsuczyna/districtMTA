@@ -67,9 +67,9 @@ This document provides a comprehensive overview of all resources in the district
 - **station:** Gas station shop
 
 **Crafting System:**
-- Fishing rod upgrades (7 tiers: common → uncommon → rare → epic → legendary → mythic → exotic → divine)
-- Requires wire items for crafting
-- Progressive upgrade system
+- Fishing rod upgrades (7 tiers: Common → Uncommon → Rare → Epic → Legendary → Mythic → Exotic → Divine)
+- Progressive wire requirements: 2, 4, 7, 10, 18, 31, 40 wire for each upgrade tier
+- Each upgrade improves fishing rod quality and effectiveness
 
 **Items Include:**
 - Weapons (M4, etc.)
